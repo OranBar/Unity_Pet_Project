@@ -17,9 +17,9 @@ public class RandomMovement : MonoBehaviour {
 		}
 		if(frame%changeDirectionFrequencyInFrames == 0){
 			
-			currTarget = new Vector3(Random.Range(2, 50), 
-				Random.Range(2, 50),
-				Random.Range(2, 50));
+			currTarget = new Vector3(Random.Range(2, 100), 
+				Random.Range(2, 100),
+				Random.Range(2, 100));
 		}
 
 		Vector3 dirToTarget = (currTarget - this.transform.position).normalized;
