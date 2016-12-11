@@ -2,7 +2,7 @@
 using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
-public class AutomatonAgent_Seek : MonoBehaviour {
+public class AutomatonAgent_SeekAndStop : MonoBehaviour {
 
 	public Transform targetEntity;
 	public float maxSpeed = 100f;
@@ -10,14 +10,12 @@ public class AutomatonAgent_Seek : MonoBehaviour {
 	private Rigidbody myRigidBody;
 	private Vector3 previousTargetPosition;
 
-	// Use this for initialization
 	void Start () {
 		myRigidBody = GetComponent<Rigidbody>();
 		myRigidBody.useGravity = false;
 		previousTargetPosition = targetEntity.position;
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
 		Seek();
 
@@ -37,7 +35,10 @@ public class AutomatonAgent_Seek : MonoBehaviour {
 
 	private Vector3 Seek_GetSteering(Vector3 target){
 		Vector3 vectorToTarget = target - this.transform.position;
-		Vector3 desiredVelocity = vectorToTarget.normalized * maxSpeed;
+
+		//Take the min between the max speed, or the magnitude vector from my position in the next frame to my target
+		Vector3 desiredVelocity = vectorToTarget.normalized * 
+			Mathf.Min((vectorToTarget-myRigidBody.velocity).magnitude, maxSpeed);
 
 		Vector3 steer = desiredVelocity - myRigidBody.velocity;
 
