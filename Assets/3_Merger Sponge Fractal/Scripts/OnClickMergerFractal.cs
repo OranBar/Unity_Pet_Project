@@ -72,7 +72,7 @@ public class OnClickMergerFractal : MonoBehaviour {
 		if(Input.GetButtonDown("Fire1")){
 			if(++noOfClicks >= 3){
 				Debug.LogWarning("A further step may overload the program and lead to a crash " +
-					"because of the excessive number of objects. If you really want to risk it, use" +
+					"because of the excessive number of objects. If you really want to risk it, use " +
 					"the right mouse button");
 				return;
 			}
