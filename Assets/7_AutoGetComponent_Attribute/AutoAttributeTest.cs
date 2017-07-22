@@ -9,5 +9,11 @@ public class AutoAttributeTest : MonoBehaviour {
 	[Auto] public Collider myCollider { get; set; } 
 
 	[Auto(true)] public Camera myCamera;
-	[Auto(true)] public Light myLight;  
+	[Auto(true)] public Light myLight;
+
+
+	[Auto]
+	[SerializeField]
+	//[MyOtherAttribute]
+	private string myString;
 }
