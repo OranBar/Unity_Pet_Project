@@ -66,7 +66,7 @@ public class ImmediateWindow : MonoBehaviour {
 
 			switch (charAfterInvocation)
 			{
-				//This is a set
+				//This is a Set
 				case '=':
 					
 					string value = source.Substring( source.IndexOf(afterOperator) + afterOperator.IndexOf(charAfterInvocation)+1).Trim();
@@ -78,21 +78,46 @@ public class ImmediateWindow : MonoBehaviour {
 					result += before + replacement;
 
 					break;
+
+				case '(':
+
+					//GetType().GetMethod("Foo", BindingFlags.NonPublic, BindingFlags.Instance, BindingFlags.Static).ReturnParameter.ParameterType;
+					//foo..Do(myInt, myString);
+					
+					string parameters = new string(afterOperator.SkipWhile(c => c!= '(').TakeWhile(c => c != ')').ToArray());
+
+					replacement = string.Format("({0}.GetType().GetMethod(\"{1}\", BindingFlags.NonPublic, BindingFlags.Instance, BindingFlags.Static).Invoke({2}));", 
+						caller,
+						invocation,
+						parameters);
+
+					//Cast to correct type
+					replacement = string.Format("({0}.GetType().GetMethod(\"{1}\", BindingFlags.NonPublic, BindingFlags.Instance, BindingFlags.Static).ReturnParameter.ParameterType)" + replacement,
+						caller,
+						invocation);
+
+					Debug.Log(replacement);
+
+					before = new string(beforeOperator.Take(callerStartIndex).ToArray());
+					after = new string(afterOperator.TakeWhile(c => c != ')').ToArray());
+					result += before + replacement + after;
+					break;
+
 				//This is a Get
-				case '.':
-					replacement = string.Format("{0}.GetType().GetField(\"{1}\")", caller, invocation);
+				default:
+					replacement = string.Format("{0}.GetType().GetField(\"{1}\")", caller, invocation.Replace(";", ""));
 					Debug.Log(replacement);
 
 					before = new string(beforeOperator.Take(callerStartIndex).ToArray());
 					after = new string(afterOperator.Skip(invocationEndIndex).ToArray());
-					result += before + replacement + after;
+					result += before + replacement + after + ";";
 
 					break;
 			}
 			Debug.Log("result is "+result);
 		}
 
-		return null;
+		return result;
 	}
 
 }
