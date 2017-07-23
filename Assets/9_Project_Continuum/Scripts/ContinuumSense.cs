@@ -13,14 +13,14 @@ public class ContinuumSense {
 	private Dictionary<Type, List<string>> typeToProperties;
 	private Dictionary<Type, List<string>> typeToMethods;
 
-	private Stack<Type> type_Scope_History;
+	private Stack<Type> type_scope_history;
 		
 	private string currentLine;
 
 
 	public void Init(/*TODO: Add parameters: Namespaces to analyze*/)
 	{
-		type_Scope_History = new Stack<Type>();
+		type_scope_history = new Stack<Type>();
 		typeToFields = new Dictionary<Type, List<string>>();
 		typeToProperties = new Dictionary<Type, List<string>>();
 		typeToMethods = new Dictionary<Type, List<string>>();
@@ -43,7 +43,7 @@ public class ContinuumSense {
 		//set current line
 		if (currentLine.Contains('.') == false)
 			{
-				var allMembersAndMethods = GuessField(type_Scope_History.Peek(), "");
+				var allMembersAndMethods = Guess(type_scope_history.Peek(), "");
 				//TODO: display suggestions
 				DisplaySuggestionList(allMembersAndMethods);
 				return;
@@ -53,9 +53,25 @@ public class ContinuumSense {
 			string guess = new string(reversedLine.TakeWhile(c => c != '.').Reverse().ToArray());
 			//string caller = new string(reversedLine.SkipWhile(c => c == '.').TakeWhile(c1 => c1 != '.').Reverse().ToArray());
 
-			var suggestions = GuessField(type_Scope_History.Peek(), guess);
+			var suggestions = Guess(type_scope_history.Peek(), guess);
 			DisplaySuggestionList(suggestions);
 		//endIf
+	}
+
+	public void ScopeDown(Type type)
+	{
+		if (initialized == false) { throw new ContinuumNotInitializedException(); }
+
+		type_scope_history.Push(type);
+	}
+
+	public void ScopeUp()
+	{
+		if (initialized == false) { throw new ContinuumNotInitializedException(); }
+
+		Debug.Assert(type_scope_history.Count >= 1, "Error! Can't scope up anymore.");
+
+		type_scope_history.Pop();
 	}
 
 	private void DisplaySuggestionList(List<string> suggestions)
@@ -63,22 +79,6 @@ public class ContinuumSense {
 		if (initialized == false) { throw new ContinuumNotInitializedException(); }
 
 		throw new NotImplementedException();
-	}
-
-	public void ScopeDown(Type type)
-	{
-		if (initialized == false) { throw new ContinuumNotInitializedException(); }
-
-		type_Scope_History.Push(type);
-	}
-
-	public void ScopeUp()
-	{
-		if (initialized == false) { throw new ContinuumNotInitializedException(); }
-
-		Debug.Assert(type_Scope_History.Count >= 1, "Error! Can't scope up anymore.");
-
-		type_Scope_History.Pop();
 	}
 
 	private void ScanAllNamespaces()
@@ -124,8 +124,21 @@ public class ContinuumSense {
 
 			typeToMethods[type] = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
 				.Select(f => f.Name)
+				//.Select(f => string.Format("{0}({1})", 
+				//	f.Name, 
+				//	f.GetParameters()
+				//		.Aggregate("", (agg, param) => agg = agg + param.ParameterType+" "+param.Name+","))
+				//	)
 				.ToList();
-		
+
+			typeToMethods[type].Remove("Finalize");
+			typeToMethods[type].Remove("obj_address");
+			typeToMethods[type].Remove("MemberwiseClone");
+
+			typeToMethods[type] = typeToMethods[type]
+				.Where(method => (method.StartsWith("get_")==false && method.StartsWith("set_")==false) || typeToProperties[type].Contains(method.Substring(4)) == false)
+				.ToList();
+			
 		}
 	}
 
@@ -134,36 +147,48 @@ public class ContinuumSense {
 	/// </summary>
 	/// <param name="guess"></param>
 	/// <returns></returns>
-	public List<string> Guess(string guess)
+	public List<string> Guess(Type typeScope, string guess)
 	{
 		if (initialized == false) { throw new ContinuumNotInitializedException(); }
 
-		List<string> result = new List<string>(typeToFields[type_Scope_History.Peek()]); //This creates a copy
+		//I want to create copies of the lists, so I don't alter the real ones
+		List<string> result =
+			new List<string>(typeToFields[typeScope])
+			.Concat(
+				new List<string>(typeToProperties[typeScope])
+			).Concat(
+				new List<string>(typeToMethods[typeScope])
+			).ToList();
 
-		//This allows for complete scans of a class
+		//List<string> result = new List<string>(typeToFields[typeScope]);
+
+		//Special Case: We list everything we got. If this happens, the programmer needs all the help he can get.
 		if (string.IsNullOrEmpty(guess))
 		{
 			return result;
 		}
 
-		//Filter all symbols shorter than the guess
+		//Filter all symbols SHORTER than the guess. 
 		result = result.Where(symbol => symbol.Length >= guess.Length).ToList();
 
-outer:  for (int i = result.Count - 1; i >= 0; i--)
+		outer: for (int i = result.Count - 1; i >= 0; i--)
 		{
 			string field = result[i].ToLower(); //Let's be case insensitive.
-			string inputCopy = "" + guess.ToLower(); //"" + and ToLower() assures we get a copy
-			
+			string inputCopy = "" + guess.ToLower();
+
+			//Loop InputCopy (reversed). For each character, either delete that character in field, or continue to next field if that character isn't contained in the field
 			for (int k = inputCopy.Length - 1; k >= 0; k--)
 			{
 				char currChar = inputCopy[k];
 
 				if (field.Contains(currChar) == false)
 				{
+					//This is the only place where we modify result. So, it starts with all options, and then we remove the ones that don't match. The rest stays.
 					result.RemoveAt(i);
 					goto outer;
 				}
 
+				//If we skipped the previous if, we can proceed to remove the currChar from both field and inputcopy (ordering is important, we take out the last one)
 				field = field.Remove(
 					field.LastIndexOf(currChar),
 					1
@@ -178,37 +203,14 @@ outer:  for (int i = result.Count - 1; i >= 0; i--)
 		return result;
 	}
 
-	public List<string> GuessField(Type scope, string guess)
+	/// <summary>
+	/// Uses the current scope to guess the next symbol.
+	/// </summary>
+	/// <param name="guess"></param>
+	/// <returns></returns>
+	public List<string> Guess(string guess)
 	{
-		if (initialized == false) { throw new ContinuumNotInitializedException(); }
-
-		List<string> result = new List<string>(typeToFields[scope]); //This creates a copy
-
-		//This allows for complete scans of a class
-		if (string.IsNullOrEmpty(guess))
-		{
-			return result;
-		}
-
-		for (int i = result.Count - 1; i >= 0; i--)
-		{
-			string field = result[i].ToLower();	//Let's be case insensitive.
-			string inputCopy = "" + guess.ToLower(); //"" + and ToLower() assures we get a copy
-
-			for (int k = inputCopy.Length - 1; k >= 0; k--)
-			{
-				if (field.Contains(inputCopy[k]) == false)
-				{
-					result.RemoveAt(i);
-					continue;
-				}
-				inputCopy.Remove(k);
-			}
-		}
-
-		result = SortResult(result);
-
-		return result;
+		return Guess(type_scope_history.Peek(), guess);
 	}
 
 	private List<string> SortResult(List<string> result)
