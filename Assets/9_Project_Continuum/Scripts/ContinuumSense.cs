@@ -149,19 +149,27 @@ public class ContinuumSense {
 		//Filter all symbols shorter than the guess
 		result = result.Where(symbol => symbol.Length >= guess.Length).ToList();
 
-		for (int i = result.Count - 1; i >= 0; i--)
+outer:  for (int i = result.Count - 1; i >= 0; i--)
 		{
 			string field = result[i].ToLower(); //Let's be case insensitive.
 			string inputCopy = "" + guess.ToLower(); //"" + and ToLower() assures we get a copy
-
+			
 			for (int k = inputCopy.Length - 1; k >= 0; k--)
 			{
-				if (field.Contains(inputCopy[k]) == false)
+				char currChar = inputCopy[k];
+
+				if (field.Contains(currChar) == false)
 				{
 					result.RemoveAt(i);
-					continue;
+					goto outer;
 				}
-				inputCopy.Remove(k);
+
+				field = field.Remove(
+					field.LastIndexOf(currChar),
+					1
+				);
+
+				inputCopy = inputCopy.Remove(k, 1);
 			}
 		}
 
