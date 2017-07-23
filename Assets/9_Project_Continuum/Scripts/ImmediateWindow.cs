@@ -84,23 +84,25 @@ public class ImmediateWindow : MonoBehaviour {
 					//GetType().GetMethod("Foo", BindingFlags.NonPublic, BindingFlags.Instance, BindingFlags.Static).ReturnParameter.ParameterType;
 					//foo..Do(myInt, myString);
 					
-					string parameters = new string(afterOperator.SkipWhile(c => c!= '(').TakeWhile(c => c != ')').ToArray());
+					string parameters = new string(afterOperator.SkipWhile(c => c!= '(').Skip(1).TakeWhile(c => c != ')').ToArray());
 
-					replacement = string.Format("({0}.GetType().GetMethod(\"{1}\", BindingFlags.NonPublic, BindingFlags.Instance, BindingFlags.Static).Invoke({2}));", 
+					print("Parameters are " + parameters);
+
+					replacement = string.Format("( {0}.GetType().GetMethod(\"{1}\").Invoke({2}) );", 
 						caller,
 						invocation,
 						parameters);
 
 					//Cast to correct type
-					replacement = string.Format("({0}.GetType().GetMethod(\"{1}\", BindingFlags.NonPublic, BindingFlags.Instance, BindingFlags.Static).ReturnParameter.ParameterType)" + replacement,
+					replacement = string.Format("({0}.GetType().GetMethod(\"{1}\").ReturnParameter.ParameterType) " + replacement,
 						caller,
 						invocation);
 
 					Debug.Log(replacement);
 
 					before = new string(beforeOperator.Take(callerStartIndex).ToArray());
-					after = new string(afterOperator.TakeWhile(c => c != ')').ToArray());
-					result += before + replacement + after;
+					//after = new string(afterOperator.TakeWhile(c => c != ')').ToArray());
+					result += before + replacement;
 					break;
 
 				//This is a Get
