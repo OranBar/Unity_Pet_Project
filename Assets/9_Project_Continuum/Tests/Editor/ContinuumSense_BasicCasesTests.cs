@@ -25,9 +25,9 @@ public class ContinuumSense_BasicCasesTests {
 		Assert.True(result.Contains("myInt"));
 		Assert.True(result.Contains("myFloat"));
 		Assert.True(result.Contains("aString"));
-		Assert.True(result.Contains("property"));
+		Assert.True(result.Contains("Property"));
 		Assert.True(result.Contains("Method"));
-		Assert.AreEqual(5, result.Count);
+		Assert.True(result.Count >= 5);
 	}
 
 	[Test]
@@ -56,43 +56,41 @@ public class ContinuumSense_BasicCasesTests {
 	}
 
 	[Test]
-	public void MatchField()
+	public void MatchFieldPrefix()
 	{
-		var result = cs.Guess("myIn");
-		Assert.AreEqual(1, result.Count);
-		Assert.True(result.Contains("myInt"));
-
-		result = cs.Guess("myInt");
-		Assert.AreEqual(1, result.Count);
-		Assert.True(result.Contains("myInt"));
+		List<string> guess;
+		for (int i = 0; i < "myInt".Length; i++)
+		{
+			guess = cs.Guess("myInt".Substring(i));
+			Assert.True(guess.Contains("myInt"));
+		}
 	}
 
 	[Test]
-	public void MatchProperty()
+	public void MatchPropertyPrefix()
 	{
-		var result = cs.Guess("propert");
-		Assert.AreEqual(1, result.Count);
-		Assert.True(result.Contains("property"));
-
-		result = cs.Guess("property");
-		Assert.AreEqual(1, result.Count);
-		Assert.True(result.Contains("property"));
+		List<string> guess;
+		for (int i = 0; i < "Property".Length; i++)
+		{
+			guess = cs.Guess("Property".Substring(i));
+			Assert.True(guess.Contains("Property"));
+		}
 	}
 
 	[Test]
-	public void MatchMethod()
+	public void MatchMethodPrefix()
 	{
 		var result = cs.Guess("Metho");
 		Assert.AreEqual(1, result.Count);
-		Assert.True(result.Contains("Method()"));
+		Assert.True(result.Contains("Method"));
 
 		result = cs.Guess("Method");
 		Assert.AreEqual(1, result.Count);
-		Assert.True(result.Contains("Method()"));
+		Assert.True(result.Contains("Method"));
 
-		result = cs.Guess("Method(");
+		result = cs.Guess("Method");
 		Assert.AreEqual(1, result.Count);
-		Assert.True(result.Contains("Method()"));
+		Assert.True(result.Contains("Method"));
 	}
 
 }
@@ -106,7 +104,7 @@ public class ContinuumSense_BasicCasesTests {
 		private float myFloat;
 		protected string aString;
 
-		public int property { get; set; }
+		public int Property { get; set; }
 
 		public void Method()
 		{

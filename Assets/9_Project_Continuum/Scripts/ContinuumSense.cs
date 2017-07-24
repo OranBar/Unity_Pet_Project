@@ -9,6 +9,9 @@ public class ContinuumSense {
 
 	bool initialized = false;
 
+	private Dictionary<Type, List<MemberInfo>> typeToMembers;
+
+
 	private Dictionary<Type, List<string>> typeToFields;
 	private Dictionary<Type, List<string>> typeToProperties;
 	private Dictionary<Type, List<string>> typeToMethods;
@@ -24,7 +27,9 @@ public class ContinuumSense {
 		typeToFields = new Dictionary<Type, List<string>>();
 		typeToProperties = new Dictionary<Type, List<string>>();
 		typeToMethods = new Dictionary<Type, List<string>>();
-		
+		typeToMembers = new Dictionary<Type, List<MemberInfo>>();
+
+
 		ScanNamespace("FooNamespace");
 		//Register to new input event
 		
@@ -113,6 +118,24 @@ public class ContinuumSense {
 
 		foreach(var type in namespaceTypes)
 		{
+			typeToMembers[type] = (type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
+				.Where(f => f.Name.Contains("k__BackingField") == false)
+				.Cast<MemberInfo>()
+				.ToList()
+			);
+
+			typeToMembers[type] = (type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
+				.Cast<MemberInfo>()
+				.ToList()
+			);
+
+			typeToMembers[type] = (type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
+				.Cast<MemberInfo>()
+				.ToList()
+			);
+
+			//------------------------------------------------------------
+
 			typeToFields[type] = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
 				.Where(f => f.Name.Contains("k__BackingField") == false)
 				.Select(f => f.Name)
@@ -124,16 +147,15 @@ public class ContinuumSense {
 
 			typeToMethods[type] = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
 				.Select(f => f.Name)
-				//.Select(f => string.Format("{0}({1})", 
-				//	f.Name, 
-				//	f.GetParameters()
-				//		.Aggregate("", (agg, param) => agg = agg + param.ParameterType+" "+param.Name+","))
-				//	)
 				.ToList();
 
+			//typeToMethods[type].Remove(typeToMethods[type].First(m => m.Contains("Finalize")));
+			//typeToMethods[type].Remove(typeToMethods[type].First(m => m.Contains("obj_address")));
+			//typeToMethods[type].Remove(typeToMethods[type].First(m => m.Contains("MemberwiseClone")));
 			typeToMethods[type].Remove("Finalize");
 			typeToMethods[type].Remove("obj_address");
 			typeToMethods[type].Remove("MemberwiseClone");
+
 
 			typeToMethods[type] = typeToMethods[type]
 				.Where(method => (method.StartsWith("get_")==false && method.StartsWith("set_")==false) || typeToProperties[type].Contains(method.Substring(4)) == false)
@@ -228,7 +250,7 @@ namespace FooNamespace {
 		private float myFloat;
 		protected string aString;
 
-		public int property { get; set; }
+		public int Property { get; set; }
 
 		public void Method()
 		{
