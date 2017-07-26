@@ -167,33 +167,6 @@ namespace TonRan.Continuum
 					.ToList()
 				));
 
-				//------------------------------------------------------------
-
-				//typeToFields[type] = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
-				//	.Where(f => f.Name.Contains("k__BackingField") == false)
-				//	.Select(f => f.Name)
-				//	.ToList();
-
-				//typeToProperties[type] = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
-				//	.Select(f => f.Name)
-				//	.ToList();
-
-				//typeToMethods[type] = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
-				//	.Select(f => f.Name)
-				//	.ToList();
-
-				//typeToMethods[type].Remove(typeToMethods[type].First(m => m.Contains("Finalize")));
-				//typeToMethods[type].Remove(typeToMethods[type].First(m => m.Contains("obj_address")));
-				////typeToMethods[type].Remove(typeToMethods[type].First(m => m.Contains("MemberwiseClone")));
-				//typeToMethods[type].Remove("Finalize");
-				//typeToMethods[type].Remove("obj_address");
-				//typeToMethods[type].Remove("MemberwiseClone");
-
-
-				//typeToMethods[type] = typeToMethods[type]
-				//	.Where(method => (method.StartsWith("get_") == false && method.StartsWith("set_") == false) || typeToProperties[type].Contains(method.Substring(4)) == false)
-				//	.ToList();
-
 			}
 		}
 

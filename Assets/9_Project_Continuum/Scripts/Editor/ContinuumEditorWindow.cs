@@ -34,7 +34,7 @@ namespace TonRan.Continuum
 			#region VerticalGroup
 			//GUILayout.BeginVertical("Background");
 
-			code = EditorGUILayout.TextArea(code, GUILayout.Width(350), GUILayout.Height(100));
+			code = EditorGUILayout.TextArea(code/*, GUILayout.Width(350), GUILayout.Height(100)*/);
 
 			string parsedCode = code.Replace("..", "!");
 			if (GUILayout.Button("Guess!"))
