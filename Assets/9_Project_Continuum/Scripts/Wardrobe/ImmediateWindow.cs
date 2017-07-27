@@ -61,61 +61,7 @@ public class ImmediateWindow : EditorWindow
 		// show the execute button
 		if (GUILayout.Button("Execute"))
 		{
-			// if our script method needs compiling
-			if (lastScriptMethod == null)
-			{
-				// create and configure the code provider
-				var codeProvider = new CSharpCodeProvider();
-				var options = new CompilerParameters();
-				options.GenerateInMemory = true;
-				options.GenerateExecutable = false;
-
-				// bring in system libraries
-				options.ReferencedAssemblies.Add("System.dll");
-				options.ReferencedAssemblies.Add("System.Core.dll");
-
-				// bring in Unity assemblies
-				options.ReferencedAssemblies.Add(typeof(EditorWindow).Assembly.Location);
-				options.ReferencedAssemblies.Add(typeof(Transform).Assembly.Location);
-				options.ReferencedAssemblies.Add(typeof(UnityEngine.Object).Assembly.Location);
-				options.ReferencedAssemblies.Add(typeof(ContinuumTesterA).Assembly.Location);
-
-				// compile an assembly from our source code
-				var result = codeProvider.CompileAssemblyFromSource(options, string.Format(scriptFormat, scriptText));
-
-				// log any errors we got
-				if (result.Errors.Count > 0)
-				{
-					foreach (CompilerError error in result.Errors)
-					{
-						// the magic -13 on the line is to compensate for usings and class wrapper around the user script code.
-						// subtracting 13 from it will give the user the line numbers in their code.
-						if (error.IsWarning)
-						{
-							Debug.LogWarning(string.Format("Immediate Compiler Warning ({0}): {1}", error.Line - 13, error.ErrorText));
-						}
-						else
-						{
-							Debug.LogError(string.Format("Immediate Compiler Error ({0}): {1}", error.Line - 13, error.ErrorText));
-						}
-					}
-				}
-
-				// If NO errors : use reflection to pull out our action method so we can invoke it
-				if (result.Errors.HasErrors == false)
-				{
-
-					var type = result.CompiledAssembly.GetType("ImmediateWindowCodeWrapper");
-					lastScriptMethod = type.GetMethod("PerformAction", BindingFlags.Public | BindingFlags.Static);
-
-					Debug.Log("Immediate Window: Script successfully Executed");
-				}
-
-			}
-
-			// if we have a compiled method, invoke it
-			if (lastScriptMethod != null)
-				lastScriptMethod.Invoke(null, null);
+			CompileAndRun();
 		}
 
 		// restore the GUI
@@ -123,6 +69,66 @@ public class ImmediateWindow : EditorWindow
 
 		// close the scroll view
 		EditorGUILayout.EndScrollView();
+	}
+
+	private void CompileAndRun()
+	{
+		// if our script method needs compiling
+		if (lastScriptMethod == null)
+		{
+			// create and configure the code provider
+			var codeProvider = new CSharpCodeProvider();
+			var options = new CompilerParameters();
+			options.GenerateInMemory = true;
+			options.GenerateExecutable = false;
+
+			// bring in system libraries
+			options.ReferencedAssemblies.Add("System.dll");
+			options.ReferencedAssemblies.Add("System.Core.dll");
+
+			// bring in Unity assemblies
+			options.ReferencedAssemblies.Add(typeof(EditorWindow).Assembly.Location);
+			options.ReferencedAssemblies.Add(typeof(Transform).Assembly.Location);
+			options.ReferencedAssemblies.Add(typeof(UnityEngine.Object).Assembly.Location);
+			//TODO: reference to something more secure... To import project code.
+			options.ReferencedAssemblies.Add(typeof(ContinuumTesterA).Assembly.Location);
+
+			// compile an assembly from our source code
+			var result = codeProvider.CompileAssemblyFromSource(options, string.Format(scriptFormat, scriptText));
+
+			// log any errors we got
+			if (result.Errors.Count > 0)
+			{
+				foreach (CompilerError error in result.Errors)
+				{
+					// the magic -13 on the line is to compensate for usings and class wrapper around the user script code.
+					// subtracting 13 from it will give the user the line numbers in their code.
+					if (error.IsWarning)
+					{
+						Debug.LogWarning(string.Format("Immediate Compiler Warning ({0}): {1}", error.Line - 13, error.ErrorText));
+					}
+					else
+					{
+						Debug.LogError(string.Format("Immediate Compiler Error ({0}): {1}", error.Line - 13, error.ErrorText));
+					}
+				}
+			}
+
+			// If NO errors : use reflection to pull out our action method so we can invoke it
+			if (result.Errors.HasErrors == false)
+			{
+
+				var type = result.CompiledAssembly.GetType("ImmediateWindowCodeWrapper");
+				lastScriptMethod = type.GetMethod("PerformAction", BindingFlags.Public | BindingFlags.Static);
+
+				Debug.Log("Immediate Window: Script successfully Executed");
+			}
+
+		}
+
+		// if we have a compiled method, invoke it
+		if (lastScriptMethod != null)
+			lastScriptMethod.Invoke(null, null);
 	}
 
 	[MenuItem("Window/Immediate")]
