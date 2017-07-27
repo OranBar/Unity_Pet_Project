@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ContinuumTesterA : MonoBehaviour {
 
+	public int myInt = 5;
+
 	public void CanYouCallMe()
 	{
 		Debug.Log("Good job");
