@@ -28,122 +28,123 @@ using UnityEditor;
 */
 
 // Modified by Oran Bar™
-
-public class Continuum_ImmediateWindow : EditorWindow
+namespace TonRan.Continuum
 {
-	// script text
-	private string scriptText = string.Empty;
-
-	// cache of last method we compiled so repeat executions only incur a single compilation
-	private MethodInfo lastScriptMethod;
-
-	// position of scroll view
-	private Vector2 scrollPos;
-
-	void OnGUI()
+	public class Continuum_ImmediateWindow : EditorWindow
 	{
-		// start the scroll view
-		scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+		// script text
+		private string scriptText = string.Empty;
 
-		// show the script field
-		string newScriptText = EditorGUILayout.TextArea(scriptText);
-		if (newScriptText != scriptText)
+		// cache of last method we compiled so repeat executions only incur a single compilation
+		private MethodInfo lastScriptMethod;
+
+		// position of scroll view
+		private Vector2 scrollPos;
+
+		void OnGUI()
 		{
-			// if the script changed, update our cached version and null out our cached method
-			scriptText = newScriptText;
-			lastScriptMethod = null;
-		}
+			// start the scroll view
+			scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
 
-		// store if the GUI is enabled so we can restore it later
-		bool guiEnabled = GUI.enabled;
-
-		// disable the GUI if the script text is empty
-		GUI.enabled = guiEnabled && !string.IsNullOrEmpty(scriptText);
-
-		// show the execute button
-		if (GUILayout.Button("Execute"))
-		{
-			CompileAndRun();
-		}
-
-		// restore the GUI
-		GUI.enabled = guiEnabled;
-
-		// close the scroll view
-		EditorGUILayout.EndScrollView();
-	}
-
-	private void CompileAndRun()
-	{
-		// if our script method needs compiling
-		if (lastScriptMethod == null)
-		{
-			// create and configure the code provider
-			var codeProvider = new CSharpCodeProvider();
-			var options = new CompilerParameters();
-			options.GenerateInMemory = true;
-			options.GenerateExecutable = false;
-
-			// bring in system libraries
-			options.ReferencedAssemblies.Add("System.dll");
-			options.ReferencedAssemblies.Add("System.Core.dll");
-
-			// bring in Unity assemblies
-			options.ReferencedAssemblies.Add(typeof(EditorWindow).Assembly.Location);
-			options.ReferencedAssemblies.Add(typeof(Transform).Assembly.Location);
-			options.ReferencedAssemblies.Add(typeof(UnityEngine.Object).Assembly.Location);
-			//TODO: reference to something more secure... To import project code.
-			options.ReferencedAssemblies.Add(typeof(ContinuumTesterA).Assembly.Location);
-
-			// compile an assembly from our source code
-			var result = codeProvider.CompileAssemblyFromSource(options, string.Format(scriptFormat, scriptText));
-
-			// log any errors we got
-			if (result.Errors.Count > 0)
+			// show the script field
+			string newScriptText = EditorGUILayout.TextArea(scriptText);
+			if (newScriptText != scriptText)
 			{
-				foreach (CompilerError error in result.Errors)
+				// if the script changed, update our cached version and null out our cached method
+				scriptText = newScriptText;
+				lastScriptMethod = null;
+			}
+
+			// store if the GUI is enabled so we can restore it later
+			bool guiEnabled = GUI.enabled;
+
+			// disable the GUI if the script text is empty
+			GUI.enabled = guiEnabled && !string.IsNullOrEmpty(scriptText);
+
+			// show the execute button
+			if (GUILayout.Button("Execute"))
+			{
+				CompileAndRun();
+			}
+
+			// restore the GUI
+			GUI.enabled = guiEnabled;
+
+			// close the scroll view
+			EditorGUILayout.EndScrollView();
+		}
+
+		private void CompileAndRun()
+		{
+			// if our script method needs compiling
+			if (lastScriptMethod == null)
+			{
+				// create and configure the code provider
+				var codeProvider = new CSharpCodeProvider();
+				var options = new CompilerParameters();
+				options.GenerateInMemory = true;
+				options.GenerateExecutable = false;
+
+				// bring in system libraries
+				options.ReferencedAssemblies.Add("System.dll");
+				options.ReferencedAssemblies.Add("System.Core.dll");
+
+				// bring in Unity assemblies
+				options.ReferencedAssemblies.Add(typeof(EditorWindow).Assembly.Location);
+				options.ReferencedAssemblies.Add(typeof(Transform).Assembly.Location);
+				options.ReferencedAssemblies.Add(typeof(UnityEngine.Object).Assembly.Location);
+				//TODO: reference to something more secure... To import project code.
+				options.ReferencedAssemblies.Add(typeof(ContinuumTesterA).Assembly.Location);
+
+				// compile an assembly from our source code
+				var result = codeProvider.CompileAssemblyFromSource(options, string.Format(scriptFormat, scriptText));
+
+				// log any errors we got
+				if (result.Errors.Count > 0)
 				{
-					// the magic -13 on the line is to compensate for usings and class wrapper around the user script code.
-					// subtracting 13 from it will give the user the line numbers in their code.
-					if (error.IsWarning)
+					foreach (CompilerError error in result.Errors)
 					{
-						Debug.LogWarning(string.Format("Immediate Compiler Warning ({0}): {1}", error.Line - 13, error.ErrorText));
-					}
-					else
-					{
-						Debug.LogError(string.Format("Immediate Compiler Error ({0}): {1}", error.Line - 13, error.ErrorText));
+						// the magic -13 on the line is to compensate for usings and class wrapper around the user script code.
+						// subtracting 13 from it will give the user the line numbers in their code.
+						if (error.IsWarning)
+						{
+							Debug.LogWarning(string.Format("Immediate Compiler Warning ({0}): {1}", error.Line - 13, error.ErrorText));
+						}
+						else
+						{
+							Debug.LogError(string.Format("Immediate Compiler Error ({0}): {1}", error.Line - 13, error.ErrorText));
+						}
 					}
 				}
+
+				// If NO errors : use reflection to pull out our action method so we can invoke it
+				if (result.Errors.HasErrors == false)
+				{
+
+					var type = result.CompiledAssembly.GetType("ImmediateWindowCodeWrapper");
+					lastScriptMethod = type.GetMethod("PerformAction", BindingFlags.Public | BindingFlags.Static);
+
+					Debug.Log("Immediate Window: Script successfully Executed");
+				}
+
 			}
 
-			// If NO errors : use reflection to pull out our action method so we can invoke it
-			if (result.Errors.HasErrors == false)
-			{
-
-				var type = result.CompiledAssembly.GetType("ImmediateWindowCodeWrapper");
-				lastScriptMethod = type.GetMethod("PerformAction", BindingFlags.Public | BindingFlags.Static);
-
-				Debug.Log("Immediate Window: Script successfully Executed");
-			}
-
+			// if we have a compiled method, invoke it
+			if (lastScriptMethod != null)
+				lastScriptMethod.Invoke(null, null);
 		}
 
-		// if we have a compiled method, invoke it
-		if (lastScriptMethod != null)
-			lastScriptMethod.Invoke(null, null);
-	}
+		[MenuItem("Continuum/Continuum_Immediate_a1.0")]
+		static void Init()
+		{
+			// get the window, show it, and hand it focus
+			var window = EditorWindow.GetWindow<Continuum_ImmediateWindow>("Continuum_Immediate_a1.0", false);
+			window.Show();
+			window.Focus();
+		}
 
-	[MenuItem("Continuum/Continuum_Immediate_a1.0")]
-	static void Init()
-	{
-		// get the window, show it, and hand it focus
-		var window = EditorWindow.GetWindow<Continuum_ImmediateWindow>("Continuum_Immediate_a1.0", false);
-		window.Show();
-		window.Focus();
-	}
-
-	// script we wrap around user entered code
-	static readonly string scriptFormat = @"
+		// script we wrap around user entered code
+		static readonly string scriptFormat = @"
 using UnityEngine; 
 using UnityEditor;
 using System.Collections;
@@ -170,128 +171,130 @@ public static class ImmediateWindowCodeWrapper
 
 
 
-	public static string ConvertPrivateInvocations_ToReflectionInvokes(string source)
-	{
-		string result = "";
-
-		source = source.Replace("..", "!");
-		//source += ";";
-		var splitSource = source.Split('!');
-
-		//Early out
-		if (splitSource.Length == 0)
-		{ return source; }
-
-		for (int i = 1; i < splitSource.Length; i++)
+		public static string ConvertPrivateInvocations_ToReflectionInvokes(string source)
 		{
-			string beforeOperator = splitSource[i - 1];
-			string afterOperator = splitSource[i];
+			string result = "";
 
-			Debug.Log("beforeOperator " + beforeOperator);
+			source = source.Replace("..", "!");
+			//source += ";";
+			var splitSource = source.Split('!');
 
+			//Early out
+			if (splitSource.Length == 0)
+			{ return source; }
 
-			string caller = new string(
-				beforeOperator
-				.Reverse()
-				.TakeWhile(c => c != '=' && c != '(' && c != ',' && c != '.' && c != '!')
-				.Reverse()
-				.ToArray()
-			);
-
-			int callerStartIndex = beforeOperator.IndexOf(caller);
-
-
-			string invocation = new string(
-				afterOperator
-				.TakeWhile(c1 => c1 != '=' && c1 != '(' && c1 != ',' && c1 != '.' && c1 != '!')
-				.ToArray()
-			);
-
-			int invocationEndIndex = afterOperator.IndexOf(invocation) + invocation.Length;
-
-			char charAfterInvocation = afterOperator
-				.Skip(1)
-				.FirstOrDefault(c1 => c1 == ';' || c1 == '=' || c1 == '(' || c1 == ',' || c1 == '.' || c1 == '!');
-
-			Debug.Log("caller <color=red>" + caller + "</color>\n"
-				+ "invocation <color=red>" + invocation + "</color>\n"
-				+ "charAfterInvocation is " + charAfterInvocation);
-
-			string replacement = "";
-			string before, after;
-
-			switch (charAfterInvocation)
+			for (int i = 1; i < splitSource.Length; i++)
 			{
-				//This is a Set
-				case '=':
+				string beforeOperator = splitSource[i - 1];
+				string afterOperator = splitSource[i];
 
-					string value = source.Substring(source.IndexOf(afterOperator) + afterOperator.IndexOf(charAfterInvocation) + 1).Trim();
-					value = value.Remove(value.Length - 1); //Let's take out the ";"
-					replacement = string.Format("{0}.GetType().SetField(\"{1}\", {2});", caller, invocation, value);
-					Debug.Log(replacement);
+				Debug.Log("beforeOperator " + beforeOperator);
 
-					before = new string(beforeOperator.Take(callerStartIndex).ToArray());
-					result += before + replacement;
 
-					break;
+				string caller = new string(
+					beforeOperator
+					.Reverse()
+					.TakeWhile(c => c != '=' && c != '(' && c != ',' && c != '.' && c != '!')
+					.Reverse()
+					.ToArray()
+				);
 
-				case '(':
+				int callerStartIndex = beforeOperator.IndexOf(caller);
 
-					//GetType().GetMethod("Foo", BindingFlags.NonPublic, BindingFlags.Instance, BindingFlags.Static).ReturnParameter.ParameterType;
-					//foo..Do(myInt, myString);
 
-					string parameters = new string(afterOperator.SkipWhile(c => c != '(').Skip(1).TakeWhile(c => c != ')').ToArray());
+				string invocation = new string(
+					afterOperator
+					.TakeWhile(c1 => c1 != '=' && c1 != '(' && c1 != ',' && c1 != '.' && c1 != '!')
+					.ToArray()
+				);
 
-					Debug.Log("Parameters are " + parameters);
+				int invocationEndIndex = afterOperator.IndexOf(invocation) + invocation.Length;
 
-					replacement = string.Format("( {0}.GetType().GetMethod(\"{1}\").Invoke({2}) );",
-						caller,
-						invocation,
-						parameters);
+				char charAfterInvocation = afterOperator
+					.Skip(1)
+					.FirstOrDefault(c1 => c1 == ';' || c1 == '=' || c1 == '(' || c1 == ',' || c1 == '.' || c1 == '!');
 
-					//Cast to correct type
-					replacement = string.Format("({0}.GetType().GetMethod(\"{1}\").ReturnParameter.ParameterType) " + replacement,
-						caller,
-						invocation);
+				Debug.Log("caller <color=red>" + caller + "</color>\n"
+					+ "invocation <color=red>" + invocation + "</color>\n"
+					+ "charAfterInvocation is " + charAfterInvocation);
 
-					Debug.Log(replacement);
+				string replacement = "";
+				string before, after;
 
-					before = new string(beforeOperator.Take(callerStartIndex).ToArray());
-					//after = new string(afterOperator.TakeWhile(c => c != ')').ToArray());
-					result += before + replacement;
-					break;
+				switch (charAfterInvocation)
+				{
+					//This is a Set
+					case '=':
 
-				//This is a Get
-				default:
-					replacement = string.Format("{0}.GetType().GetField(\"{1}\")", caller, invocation.Replace(";", ""));
-					Debug.Log(replacement);
+						string value = source.Substring(source.IndexOf(afterOperator) + afterOperator.IndexOf(charAfterInvocation) + 1).Trim();
+						value = value.Remove(value.Length - 1); //Let's take out the ";"
+						replacement = string.Format("{0}.GetType().SetField(\"{1}\", {2});", caller, invocation, value);
+						Debug.Log(replacement);
 
-					before = new string(beforeOperator.Take(callerStartIndex).ToArray());
-					after = new string(afterOperator.Skip(invocationEndIndex).ToArray());
-					result += before + replacement + after + ";";
+						before = new string(beforeOperator.Take(callerStartIndex).ToArray());
+						result += before + replacement;
 
-					break;
+						break;
+
+					case '(':
+
+						//GetType().GetMethod("Foo", BindingFlags.NonPublic, BindingFlags.Instance, BindingFlags.Static).ReturnParameter.ParameterType;
+						//foo..Do(myInt, myString);
+
+						string parameters = new string(afterOperator.SkipWhile(c => c != '(').Skip(1).TakeWhile(c => c != ')').ToArray());
+
+						Debug.Log("Parameters are " + parameters);
+
+						replacement = string.Format("( {0}.GetType().GetMethod(\"{1}\").Invoke({2}) );",
+							caller,
+							invocation,
+							parameters);
+
+						//Cast to correct type
+						replacement = string.Format("({0}.GetType().GetMethod(\"{1}\").ReturnParameter.ParameterType) " + replacement,
+							caller,
+							invocation);
+
+						Debug.Log(replacement);
+
+						before = new string(beforeOperator.Take(callerStartIndex).ToArray());
+						//after = new string(afterOperator.TakeWhile(c => c != ')').ToArray());
+						result += before + replacement;
+						break;
+
+					//This is a Get
+					default:
+						replacement = string.Format("{0}.GetType().GetField(\"{1}\")", caller, invocation.Replace(";", ""));
+						Debug.Log(replacement);
+
+						before = new string(beforeOperator.Take(callerStartIndex).ToArray());
+						after = new string(afterOperator.Skip(invocationEndIndex).ToArray());
+						result += before + replacement + after + ";";
+
+						break;
+				}
+				Debug.Log("result is " + result);
 			}
-			Debug.Log("result is " + result);
+
+			return result;
 		}
 
-		return result;
 	}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
