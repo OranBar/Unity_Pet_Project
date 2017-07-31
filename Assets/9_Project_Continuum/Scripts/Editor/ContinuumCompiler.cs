@@ -77,7 +77,7 @@ public class ContinuumCompiler {
 		options.ReferencedAssemblies.Add(typeof(Transform).Assembly.Location);
 		options.ReferencedAssemblies.Add(typeof(UnityEngine.Object).Assembly.Location);
 		//TODO: reference to something more secure... To import project code.
-		options.ReferencedAssemblies.Add(typeof(ContinuumTesterA).Assembly.Location);
+		options.ReferencedAssemblies.Add(typeof(ZDontTouch_Continuum).Assembly.Location);
 
 		CompilerResults result = codeProvider.CompileAssemblyFromSource(options, string.Format(scriptFormat_NoShowResults, code));
 
