@@ -32,6 +32,8 @@ namespace TonRan.Continuum
 {
 	public class Continuum_ImmediateWindow : EditorWindow
 	{
+		private ContinuumCompiler continuumCompiler = new ContinuumCompiler();
+
 		// script text
 		private string scriptText = string.Empty;
 
@@ -74,64 +76,11 @@ namespace TonRan.Continuum
 			EditorGUILayout.EndScrollView();
 		}
 
+		public const int MAGIC_NUMBER = 14;
+
 		private void CompileAndRun()
 		{
-			// if our script method needs compiling
-			if (lastScriptMethod == null)
-			{
-				// create and configure the code provider
-				var codeProvider = new CSharpCodeProvider();
-				var options = new CompilerParameters();
-				options.GenerateInMemory = true;
-				options.GenerateExecutable = false;
-
-				// bring in system libraries
-				options.ReferencedAssemblies.Add("System.dll");
-				options.ReferencedAssemblies.Add("System.Core.dll");
-
-				// bring in Unity assemblies
-				options.ReferencedAssemblies.Add(typeof(EditorWindow).Assembly.Location);
-				options.ReferencedAssemblies.Add(typeof(Transform).Assembly.Location);
-				options.ReferencedAssemblies.Add(typeof(UnityEngine.Object).Assembly.Location);
-				//TODO: reference to something more secure... To import project code.
-				options.ReferencedAssemblies.Add(typeof(ContinuumTesterA).Assembly.Location);
-
-				// compile an assembly from our source code
-				var result = codeProvider.CompileAssemblyFromSource(options, string.Format(scriptFormat, scriptText));
-
-				// log any errors we got
-				if (result.Errors.Count > 0)
-				{
-					foreach (CompilerError error in result.Errors)
-					{
-						// the magic -13 on the line is to compensate for usings and class wrapper around the user script code.
-						// subtracting 13 from it will give the user the line numbers in their code.
-						if (error.IsWarning)
-						{
-							Debug.LogWarning(string.Format("Immediate Compiler Warning ({0}): {1}", error.Line - 13, error.ErrorText));
-						}
-						else
-						{
-							Debug.LogError(string.Format("Immediate Compiler Error ({0}): {1}", error.Line - 13, error.ErrorText));
-						}
-					}
-				}
-
-				// If NO errors : use reflection to pull out our action method so we can invoke it
-				if (result.Errors.HasErrors == false)
-				{
-
-					var type = result.CompiledAssembly.GetType("ImmediateWindowCodeWrapper");
-					lastScriptMethod = type.GetMethod("PerformAction", BindingFlags.Public | BindingFlags.Static);
-
-					Debug.Log("Immediate Window: Script successfully Executed");
-				}
-
-			}
-
-			// if we have a compiled method, invoke it
-			if (lastScriptMethod != null)
-				lastScriptMethod.Invoke(null, null);
+			continuumCompiler.CompileAndRun(scriptText);
 		}
 
 		[MenuItem("Continuum/Continuum_Immediate_a1.0")]
@@ -143,24 +92,7 @@ namespace TonRan.Continuum
 			window.Focus();
 		}
 
-		// script we wrap around user entered code
-		static readonly string scriptFormat = @"
-using UnityEngine; 
-using UnityEditor;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-
-public static class ImmediateWindowCodeWrapper
-{{
-    public static void PerformAction()
-    {{
-        // user code goes here
-        {0};
-    }}
-}}";
-
+		
 
 
 
