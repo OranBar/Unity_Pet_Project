@@ -94,7 +94,6 @@ public class Continuum_ImmediateWindow : EditorWindow
 			options.ReferencedAssemblies.Add(typeof(UnityEngine.Object).Assembly.Location);
 			//TODO: reference to something more secure... To import project code.
 			options.ReferencedAssemblies.Add(typeof(ContinuumTesterA).Assembly.Location);
-			Debug.Log("Mehere");
 
 			// compile an assembly from our source code
 			var result = codeProvider.CompileAssemblyFromSource(options, string.Format(scriptFormat, scriptText));
