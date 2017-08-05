@@ -57,8 +57,8 @@ namespace TonRan.Continuum
 			// get the window, show it, and hand it focus
 			continuumWindow = EditorWindow.GetWindow<Continuum_ImmediateWindow>("Continuum_Immediate_a1.0", false);
 
-			continuumWindow.continuumSense.Init();
-
+			continuumWindow.continuumSense.Init(typeof(GameObject));
+			
 			continuumWindow.Show();
 			continuumWindow.Focus();
 		}
@@ -75,15 +75,16 @@ namespace TonRan.Continuum
 			if (newScriptText != scriptText)
 			{
 				// if the script changed, update our cached version and null out our cached method
+				var tmp = scriptText;
 				scriptText = newScriptText;
-				OnTextChanged();
+				OnTextChanged(tmp, scriptText);
 			}
 
 			// store if the GUI is enabled so we can restore it later
 			bool guiEnabled = GUI.enabled;
 
 			// disable the GUI if the script text is empty
-			GUI.enabled = guiEnabled && !string.IsNullOrEmpty(scriptText);
+			//GUI.enabled = guiEnabled && !string.IsNullOrEmpty(scriptText);
 			
 			// show the execute button
 			if (GUILayout.Button("Execute"))
@@ -109,6 +110,44 @@ namespace TonRan.Continuum
 			// close the scroll view
 			EditorGUILayout.EndScrollView();
 
+			OpenAutocompleteWindowIfPointPressed(editor);
+
+
+			if (openAutocomplete)
+			{
+				var cursorPos = editor.graphicalCursorPos;
+
+				autocompleteWindow = ScriptableObject.CreateInstance<ContinuumAutocompletePopup>();
+				autocompleteWindow.position = new Rect(position.position + cursorPos + new Vector2(5, 18), new Vector2(350, 200));
+
+
+				//IEnumerable<string> seed = continuumSense.Guess("");
+				IEnumerable<string> seed = continuumSense.Guess("");
+				//IEnumerable<string> seed = Enumerable.Range(97, 3).Select(i => (char)i + "Boo");
+				//seed.ToList().ForEach(s => Debug.Log(s));
+				autocompleteWindow.Continuum_Init(seed);
+
+				autocompleteWindow.onEntryChosen += (str)=> OnAutocompleteEntryChosen(editor, str);
+
+				autocompleteWindow.ShowPopup();
+				openAutocomplete = false;
+			}
+		}
+
+		private void OnAutocompleteEntryChosen(TextEditor editor, string chosenEntry)
+		{
+			Debug.Log("Clicked: " + chosenEntry);
+			
+			scriptText = scriptText.Insert(editor.cursorIndex, chosenEntry);
+			moveForward = chosenEntry.Length;
+
+			CloseAutocompleteWindow();
+
+			continuumSense.ScopeDown(chosenEntry);
+		}
+
+		private void OpenAutocompleteWindowIfPointPressed(TextEditor editor)
+		{
 			try
 			{
 				if (scriptText[editor.cursorIndex - 1] == '.' && autocompleteWindowWasDisplayed == false)
@@ -120,34 +159,6 @@ namespace TonRan.Continuum
 			{
 				//It's okay
 			}
-
-			if (openAutocomplete)
-			{
-				var cursorPos = editor.graphicalCursorPos;
-
-				autocompleteWindow = ScriptableObject.CreateInstance<ContinuumAutocompletePopup>();
-				autocompleteWindow.position = new Rect(position.position + cursorPos + new Vector2(5, 18), new Vector2(350, 200));
-
-
-				//IEnumerable<string> seed = continuumSense.Guess("");
-				IEnumerable<string> seed = continuumSense.Guess(typeof(GameObject), "");
-				//IEnumerable<string> seed = Enumerable.Range(97, 3).Select(i => (char)i + "Boo");
-				//seed.ToList().ForEach(s => Debug.Log(s));
-				autocompleteWindow.Continuum_Init(seed);
-
-				autocompleteWindow.onEntryChosen += (chosenEntry) =>
-				{
-					Debug.Log("Clicked: " + chosenEntry);
-
-					scriptText = scriptText.Insert(editor.cursorIndex, chosenEntry);
-					moveForward = chosenEntry.Length;
-
-					CloseAutocompleteWindow();
-				};
-
-				autocompleteWindow.ShowPopup();
-				openAutocomplete = false;
-			}
 		}
 
 		private void CloseAutocompleteWindow()
@@ -158,10 +169,29 @@ namespace TonRan.Continuum
 			continuumWindow.Focus();
 		}
 
-		private void OnTextChanged()
+		private void OnTextChanged(string before, string after)
 		{
 			lastScriptMethod = null;
 			autocompleteWindowWasDisplayed = false;
+
+			if(WasCharacterAdded(before, after))
+			{
+				char newChar = after.Last();
+				for (int i = 0; i < before.Length; i++)
+				{
+					if(before[i] != after[i])
+					{
+						newChar = after[i];
+						break;
+					}
+				}
+				Debug.Log("New Char is "+newChar);
+			}
+		}
+
+		private bool WasCharacterAdded(string before, string after)
+		{
+			return after.Length - before.Length == 1; 
 		}
 
 		private void KeyEventHandling()

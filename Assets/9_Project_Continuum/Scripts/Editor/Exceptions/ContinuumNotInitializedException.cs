@@ -9,5 +9,10 @@ namespace TonRan.Continuum
 		{
 
 		}
+
+		public ContinuumNotInitializedException(string msg) : base(msg)
+		{
+
+		}
 	} 
 }

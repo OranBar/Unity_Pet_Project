@@ -4,12 +4,14 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.Linq;
+using System.Reflection;
 
 public class ContinuumAutocompletePopup : EditorWindow
 {
 	public event Action<string> onEntryChosen;
 			
-	private List<string> entries = new List<string>();
+	//I'm gonna make it a hashset for now to ignore duplicates. Those duplicates, though, are important: They are overloaded methods. We need to consider those.
+	private HashSet<string> entries = new HashSet<string>();
 			
 	static void Init()
 	{
@@ -20,7 +22,7 @@ public class ContinuumAutocompletePopup : EditorWindow
 	public void Continuum_Init(IEnumerable<string> entries)
 	{
 		onEntryChosen = (s) => { };
-		this.entries = entries.ToList();
+		this.entries = new HashSet<string>(entries);
 	}
 			
 	private Vector2 scrollPos;

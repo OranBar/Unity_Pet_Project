@@ -60,6 +60,12 @@ namespace TonRan.Continuum
 			initialized = true;
 		}
 
+		public void Init(Type baseType) 
+		{
+			Init();
+			type_scope_history.Push(baseType);
+		}
+
 		private void CurrentLineChanged(string previous, string current)
 		{
 			if (initialized == false) { throw new ContinuumNotInitializedException(); }
@@ -87,7 +93,36 @@ namespace TonRan.Continuum
 		public void ScopeDown(Type type)
 		{
 			if (initialized == false) { throw new ContinuumNotInitializedException(); }
+			if (type_scope_history.Peek() == null) { throw new ContinuumNotInitializedException("Current type is NULL. Please use ScopeDown at least once in the initialization"); }
 
+
+			type_scope_history.Push(type);
+		}
+
+		public void ScopeDown(string memberName)
+		{
+			if (initialized == false) { throw new ContinuumNotInitializedException(); }
+			if (type_scope_history.Peek() == null){	throw new ContinuumNotInitializedException("Current type is NULL. Please use ScopeDown at least once in the initialization");	}
+
+			Type type = null;
+			Type currentType = type_scope_history.Peek();
+			
+			var memberType = typeToMembers[currentType].FirstOrDefault(m => m.Name == memberName);
+			Debug.Assert(memberType != null);
+			if(memberType is PropertyInfo)
+			{
+				type = ((PropertyInfo)memberType).PropertyType;
+			}
+			if (memberType is FieldInfo)
+			{
+				type = ((FieldInfo)memberType).FieldType;
+			}
+			if (memberType is MethodInfo)
+			{
+				type = ((MethodInfo)memberType).ReturnType;
+			}
+
+			Debug.Log(type);
 			type_scope_history.Push(type);
 		}
 
@@ -124,7 +159,7 @@ namespace TonRan.Continuum
 
 		private void ScanTypes(IEnumerable<Type> types, bool includePrivateVariables)
 		{
-			BindingFlags reflectionOptions = BindingFlags.Public | BindingFlags.Instance;
+			BindingFlags reflectionOptions = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static;
 			if (includePrivateVariables)
 			{
 				reflectionOptions = reflectionOptions | BindingFlags.NonPublic;
@@ -193,6 +228,70 @@ namespace TonRan.Continuum
 			//-----------------------------------------------------------------
 
 		}
+
+		/*
+		public List<MemberInfo> GuessMember(Type typeScope, string guess)
+		{
+			if (initialized == false) { throw new ContinuumNotInitializedException(); }
+
+			List<MemberInfo> result = new List<MemberInfo>();
+
+			if (typeScope == null)
+			{
+				foreach (var membersList in typeToMembers.Values)
+				{
+					result.AddRange(membersList);
+				}
+			}
+			else
+			{
+				result.AddRange(typeToMembers[typeScope]);
+			}
+
+
+			//Special Case: We list everything we got. If this happens, the programmer needs all the help he can get.
+			if (string.IsNullOrEmpty(guess))
+			{
+				return result;
+			}
+
+			//Filter all symbols SHORTER than the guess. 
+			result = result
+				.Where(symbol => symbol.Name.Length >= guess.Length)
+				.ToList();
+
+			outer: for (int i = result.Count - 1; i >= 0; i--)
+			{
+				string field = result[i].Name.ToLower(); //Let's be case insensitive.
+				string inputCopy = "" + guess.ToLower();
+
+				//Loop InputCopy (reversed). For each character, either delete that character in field, or continue to next field if that character isn't contained in the field
+				for (int k = inputCopy.Length - 1; k >= 0; k--)
+				{
+					char currChar = inputCopy[k];
+
+					if (field.Contains(currChar) == false)
+					{
+						//This is the only place where we modify result. So, it starts with all options, and then we remove the ones that don't match. The rest stays.
+						result.RemoveAt(i);
+						goto outer;
+					}
+
+					//If we skipped the previous if, we can proceed to remove the currChar from both field and inputcopy (ordering is important, we take out the last one)
+					field = field.Remove(
+						field.LastIndexOf(currChar),
+						1
+					);
+
+					inputCopy = inputCopy.Remove(k, 1);
+				}
+			}
+
+			result = SortResult(result);
+
+			return result;
+		}
+		*/
 
 		/// <summary>
 		/// Uses the current scope to guess the next symbol.
@@ -279,6 +378,12 @@ namespace TonRan.Continuum
 		}
 
 		private List<string> SortResult(List<string> result)
+		{
+			//TODO: Sorting. I would start with classic statistical sorting or push-up sorting of the whole list(push up by Mathf.Floor(index/2)).
+			return result;
+		}
+
+		private List<MemberInfo> SortResult(List<MemberInfo> result)
 		{
 			//TODO: Sorting. I would start with classic statistical sorting or push-up sorting of the whole list(push up by Mathf.Floor(index/2)).
 			return result;

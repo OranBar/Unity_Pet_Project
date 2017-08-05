@@ -13,7 +13,7 @@ public class ContinuumCompiler {
 
 #region COMPILER_VARIABLES
 	// script we wrap around user entered code
-	private string scriptFormat_NoShowResults = @" 
+	private string scriptFormat_Base = @" 
 			using UnityEngine; //0
 			using UnityEditor; //1
 			using System.Collections; //2
@@ -28,6 +28,24 @@ public class ContinuumCompiler {
 				{{ //11
 					// user code goes here //12
 					{0}; //13 <<== THIS NUMBER + 1 = MAGIC NUMBER
+				}}
+			}}";
+
+	private string scriptFormat_Selection = @" 
+			using UnityEngine; //0
+			using UnityEditor; //1
+			using System.Collections; //2
+			using System.Collections.Generic; //3
+			using System.Text; //4
+			using System.Linq; //5
+			using MyNamespace; //6
+			//7
+			public static class ImmediateWindowCodeWrapper //8
+			{{ //9
+				public static void PerformAction() //10
+				{{ //11
+					// user code goes here //12
+					Selection.activeTransform.gameObject.{0}; //13 <<== THIS NUMBER + 1 = MAGIC NUMBER
 				}}
 			}}";
 
@@ -52,9 +70,10 @@ public class ContinuumCompiler {
 
 	public void CompileAndRun(string code)
 	{
-		
 		// compile an assembly from our source code
+		Debug.Log("Compiling");
 		MethodInfo result = Compile(code);
+		Debug.Log("Run");
 		// If NO errors : run
 		Run(result);
 		
@@ -78,8 +97,10 @@ public class ContinuumCompiler {
 		options.ReferencedAssemblies.Add(typeof(UnityEngine.Object).Assembly.Location);
 		//TODO: reference to something more secure... To import project code.
 		options.ReferencedAssemblies.Add(typeof(ZDontTouch_Continuum).Assembly.Location);
+		options.ReferencedAssemblies.Add(typeof(TransformEx).Assembly.Location);
 
-		CompilerResults result = codeProvider.CompileAssemblyFromSource(options, string.Format(scriptFormat_NoShowResults, code));
+		CompilerResults result = codeProvider.CompileAssemblyFromSource(options, string.Format(scriptFormat_Selection, code));
+		//CompilerResults result = codeProvider.CompileAssemblyFromSource(options, string.Format(scriptFormat_Base, code));
 
 		if (HasErrors(result))
 		{
@@ -108,6 +129,7 @@ public class ContinuumCompiler {
 	{
 		Debug.Assert(lastScriptMethod != null);
 		object result = lastScriptMethod.Invoke(null, null);
+		Debug.Log("Method run. Result was: "+result);
 		return result;
 	}
 
