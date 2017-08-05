@@ -7,6 +7,7 @@ using System.Reflection;
 using System.CodeDom.Compiler;
 using UnityEditor;
 using System.Collections;
+using MyNamespace;
 /*
 * ImmediateWindow.cs
 * Copyright (c) 2012 Nick Gravelyn
@@ -133,11 +134,11 @@ namespace TonRan.Continuum
 				autocompleteWindow = ScriptableObject.CreateInstance<ContinuumAutocompletePopup>();
 				autocompleteWindow.position = new Rect(position.position + cursorPos + new Vector2(5,18), new Vector2(350, 200));
 
-				continuumSense.Guess(typeof(GameObject), "");
 
-				IEnumerable<string> seed = continuumSense.Guess("");
+				//IEnumerable<string> seed = continuumSense.Guess("");
+				IEnumerable<string> seed = continuumSense.Guess(typeof(GameObject), ""); 
 				//IEnumerable<string> seed = Enumerable.Range(97, 3).Select(i => (char)i + "Boo");
-				seed.ToList().ForEach(s => Debug.Log(s));
+				//seed.ToList().ForEach(s => Debug.Log(s));
 				autocompleteWindow.Continuum_Init(seed);
 
 				autocompleteWindow.onEntryChosen += (chosenEntry) =>

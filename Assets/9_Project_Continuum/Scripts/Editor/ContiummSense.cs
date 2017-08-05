@@ -32,9 +32,25 @@ namespace TonRan.Continuum
 			//typeToMethods = new Dictionary<Type, List<string>>();
 			typeToMembers = new Dictionary<Type, List<MemberInfo>>();
 
+			/*
+			 * using UnityEngine; //0
+			using UnityEditor; //1
+			using System.Collections; //2
+			using System.Collections.Generic; //3
+			using System.Text; //4
+			using System.Linq; //5
+			using MyNamespace; //6
+			*/
+			ScanNamespace("UnityEditor", false);
+			//ScanNamespace("UnityEngine", false);
+			ScanAssembly(typeof(UnityEngine.GameObject).Assembly, false);
+			ScanNamespace("System.Collections", false);
+			ScanNamespace("System.Collections.Generic", false);
+			ScanNamespace("System.Text", false);
+			ScanNamespace("System.Linq", false);
+			ScanNamespace("MyNamespace", false);
 
-			//ScanNamespace("FooNamespace", true);
-			ScanType(typeof(UnityEngine.GameObject), false);
+			//ScanType(typeof(UnityEngine.GameObject), false);
 			//ScanAllAssembly(false);
 			//Register to new input event
 
@@ -44,14 +60,14 @@ namespace TonRan.Continuum
 			initialized = true;
 		}
 
-		private void InputListener()
+		private void CurrentLineChanged(string previous, string current)
 		{
 			if (initialized == false) { throw new ContinuumNotInitializedException(); }
 
 			//TODO: this
 			//If point was pressed
 			//set current line
-			if (currentLine.Contains('.') == false)
+			if (current.Contains('.') == false)
 			{
 				var allMembersAndMethods = Guess(type_scope_history.Peek(), "");
 				//TODO: display suggestions
@@ -59,7 +75,7 @@ namespace TonRan.Continuum
 				return;
 			}
 
-			string reversedLine = new string(currentLine.Reverse().ToArray());
+			string reversedLine = new string(current.Reverse().ToArray());
 			string guess = new string(reversedLine.TakeWhile(c => c != '.').Reverse().ToArray());
 			//string caller = new string(reversedLine.SkipWhile(c => c == '.').TakeWhile(c1 => c1 != '.').Reverse().ToArray());
 
@@ -140,11 +156,22 @@ namespace TonRan.Continuum
 			}
 		}
 
+		private void ScanAssembly(Assembly a, bool includePrivateVariables) 
+		{
+			ScanTypes(a.GetTypes(), includePrivateVariables);
+		}
+
 		private void ScanNamespace(string @namespace, bool includePrivateVariables)
 		{
 			var namespaceTypes = from t in Assembly.GetExecutingAssembly().GetTypes()
 								 where t.IsClass && t.Namespace == @namespace
 								 select t;
+
+			//var namespaceTypes = AppDomain.CurrentDomain.GetAssemblies()
+			//		   .SelectMany(t => t.GetTypes())
+			//		   .Where(t => t.IsClass && t.Namespace == @namespace);
+
+			ScanTypes(namespaceTypes, includePrivateVariables);
 
 
 			//Scan object, but don't allow access to its nonpublic members
@@ -165,36 +192,6 @@ namespace TonRan.Continuum
 			//);
 			//-----------------------------------------------------------------
 
-			BindingFlags reflectionOptions = BindingFlags.Public | BindingFlags.Instance;
-			if (includePrivateVariables)
-			{
-				reflectionOptions = reflectionOptions | BindingFlags.NonPublic;
-			}
-
-			foreach (var type in namespaceTypes)
-			{
-				typeToMembers[type] = new List<MemberInfo>();
-
-				typeToMembers[type].AddRange((type.GetFields(reflectionOptions)
-					.Where(f => f.Name.Contains("k__BackingField") == false)
-					.Cast<MemberInfo>()
-					.ToList()
-				));
-
-				typeToMembers[type].AddRange((type.GetProperties(reflectionOptions)
-					.Cast<MemberInfo>()
-					.ToList()
-				));
-
-				typeToMembers[type].AddRange((type.GetMethods(reflectionOptions)
-					.Where(method => method.Name != "Finalize" && method.Name != "obj_address" && method.Name != "MemberwiseClone")
-					//Discard methods such as get_propertyName and set_propertyName
-					.Where(m => (m.Name.StartsWith("get_") == false && m.Name.StartsWith("set_") == false) || typeToMembers[type].Select(mi => mi.Name).Contains(m.Name.Substring(4)) == false)
-					.Cast<MemberInfo>()
-					.ToList()
-				));
-
-			}
 		}
 
 		/// <summary>
@@ -207,10 +204,19 @@ namespace TonRan.Continuum
 			if (initialized == false) { throw new ContinuumNotInitializedException(); }
 
 			List<string> result = new List<string>();
-			foreach (var membersList in typeToMembers.Values)
+
+			if(typeScope == null)
 			{
-				result.AddRange(membersList.Select(mi => mi.Name));
+				foreach (var membersList in typeToMembers.Values)
+				{
+					result.AddRange(membersList.Select(mi => mi.Name));
+				}
 			}
+			else
+			{
+				result.AddRange(typeToMembers[typeScope].Select(mi => mi.Name));
+			}
+			
 
 			//Special Case: We list everything we got. If this happens, the programmer needs all the help he can get.
 			if (string.IsNullOrEmpty(guess))
@@ -297,3 +303,4 @@ namespace FooNamespace
 		}
 	}
 }
+ 
