@@ -35,6 +35,7 @@ namespace TonRan.Continuum
 	public class Continuum_ImmediateWindow : EditorWindow
 	{
 		private ContinuumCompiler continuumCompiler = new ContinuumCompiler();
+		private ContinuumSense continuumSense = new ContinuumSense();
 
 		// script text
 		private string scriptText = string.Empty;
@@ -43,8 +44,20 @@ namespace TonRan.Continuum
 
 		// position of scroll view
 		private Vector2 scrollPos;
+		private ContinuumAutocompletePopup autocompleteWindow;
 
-		
+
+		[MenuItem("Continuum/Continuum_Immediate_a1.0")]
+		static void Init()
+		{
+			// get the window, show it, and hand it focus
+			var window = EditorWindow.GetWindow<Continuum_ImmediateWindow>("Continuum_Immediate_a1.0", false);
+
+			window.continuumSense.Init();
+
+			window.Show();
+			window.Focus();
+		}
 
 		void OnGUI()
 		{
@@ -102,21 +115,28 @@ namespace TonRan.Continuum
 			// close the scroll view
 			EditorGUILayout.EndScrollView();
 
-			if(scriptText[editor.cursorIndex-1] == '.')
+			try { 
+				if(scriptText[editor.cursorIndex-1] == '.' && autocompleteWindow == null)
+				{
+					openAutocomplete = true;
+				}
+			}
+			catch(IndexOutOfRangeException)
 			{
-				openAutocomplete = true;
+				//It's okay
 			}
 
 			if (openAutocomplete)
 			{
-
-				//var charSize = styles.normalStyle.CalcSize(new GUIContent("W"));
 				var cursorPos = editor.graphicalCursorPos;
 
-				ContinuumAutocompletePopup autocompleteWindow = ScriptableObject.CreateInstance<ContinuumAutocompletePopup>();
-				autocompleteWindow.position = new Rect(position.position + cursorPos + new Vector2(5,18), new Vector2(450, 150));
+				autocompleteWindow = ScriptableObject.CreateInstance<ContinuumAutocompletePopup>();
+				autocompleteWindow.position = new Rect(position.position + cursorPos + new Vector2(5,18), new Vector2(350, 150));
 
-				IEnumerable<string> seed = Enumerable.Range(97, 3).Select(i => (char)i + "Boo");
+				continuumSense.Guess("");
+
+				IEnumerable<string> seed = continuumSense.Guess("");
+				//IEnumerable<string> seed = Enumerable.Range(97, 3).Select(i => (char)i + "Boo");
 				seed.ToList().ForEach(s => Debug.Log(s));
 				autocompleteWindow.Continuum_Init(seed);
 
@@ -133,15 +153,6 @@ namespace TonRan.Continuum
 				};
 
 				autocompleteWindow.ShowPopup();
-
-
-
-				//GUILayout.BeginArea(new Rect(new Vector2(100, 100), new Vector2(50, 25));
-				//if (GUILayout.Button("MyNewButton"))
-				//{
-				//	Debug.Log("Mehere");
-				//}
-				//GUILayout.EndArea();
 				openAutocomplete = false;
 			}
 		}
@@ -149,30 +160,12 @@ namespace TonRan.Continuum
 		public const int MAGIC_NUMBER = 14;
 		private static bool openAutocomplete;
 
-		//[MenuItem("HotKey/Run %H")]
-		//private static void PlayGame()
-		//{
-		//	//var window = EditorWindow.GetWindow<Continuum_ImmediateWindow>("Continuum_Immediate_a1.0", false);
-		//	openAutocomplete = true;
-		//}
-
 		private int moveForward;
 
 		private void CompileAndRun()
 		{
 			continuumCompiler.CompileAndRun(scriptText);
 		}
-
-		[MenuItem("Continuum/Continuum_Immediate_a1.0")]
-		static void Init()
-		{
-			// get the window, show it, and hand it focus
-			var window = EditorWindow.GetWindow<Continuum_ImmediateWindow>("Continuum_Immediate_a1.0", false);
-			window.Show();
-			window.Focus();
-		}
-
-		
 		public class ContinuumAutocompletePopup : EditorWindow
 		{
 			public event Action<string> onEntryChosen;
@@ -184,6 +177,7 @@ namespace TonRan.Continuum
 				ContinuumAutocompletePopup window = ScriptableObject.CreateInstance<ContinuumAutocompletePopup>();
 				//window.position = new Rect(Screen.width / 2, Screen.height / 2, 250, 150);
 				window.ShowPopup();
+				window.openTime = EditorApplication.timeSinceStartup;
 			}
 
 			public void Continuum_Init(IEnumerable<string> entries)
@@ -194,8 +188,20 @@ namespace TonRan.Continuum
 
 			private Vector2 scrollPos;
 
+			private double openTime;
+			private bool closed = false;
+
 			void OnGUI()
 			{
+				ContinuumAutocompletePopup window = ScriptableObject.CreateInstance<ContinuumAutocompletePopup>();
+
+				Debug.Log(EditorApplication.timeSinceStartup - openTime);
+
+				//if (EditorApplication.timeSinceStartup - openTime > 5500)
+				//{
+				//	window.Close();
+				//}
+
 				EditorGUILayout.LabelField("Welcome to the Continuum Window Autocomplete. We'll give it a cooler name at some point", EditorStyles.wordWrappedLabel);
 				//GUILayout.Space(70);
 
@@ -219,6 +225,7 @@ namespace TonRan.Continuum
 
 				GUILayout.EndScrollView();
 			}
+			
 		}
 		
 

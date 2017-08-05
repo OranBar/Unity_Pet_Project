@@ -33,7 +33,8 @@ namespace TonRan.Continuum
 			typeToMembers = new Dictionary<Type, List<MemberInfo>>();
 
 
-			ScanNamespace("FooNamespace", true);
+			//ScanNamespace("FooNamespace", true);
+			ScanAllAssembly(false);
 			//Register to new input event
 
 			//////
@@ -89,28 +90,47 @@ namespace TonRan.Continuum
 			throw new NotImplementedException();
 		}
 
-		private void ScanAllNamespaces()
+		private void ScanAllAssembly(bool includePrivateVariables)
 		{
-			var allNamespacesTypes = from t in Assembly.GetExecutingAssembly().GetTypes()
+			var allAssemblyTypes = from t in Assembly.GetExecutingAssembly().GetTypes()
 									 where t.IsClass
 									 select t;
 
-			//foreach (var type in allNamespacesTypes)
-			//{
-			//	typeToMembers[type] = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
-			//		.Where(f => f.Name.Contains("k_BackingField") == false)
-			//		.Select(f => f.Name)
-			//		.ToList();
+			ScanTypes(allAssemblyTypes, includePrivateVariables);
+		}
 
-			//	typeToMembers[type] = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
-			//		.Select(f => f.Name)
-			//		.ToList();
+		private void ScanTypes(IEnumerable<Type> types, bool includePrivateVariables)
+		{
+			BindingFlags reflectionOptions = BindingFlags.Public | BindingFlags.Instance;
+			if (includePrivateVariables)
+			{
+				reflectionOptions = reflectionOptions | BindingFlags.NonPublic;
+			}
 
-			//	typeToMembers[type] = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
-			//		.Select(f => f.Name)
-			//		.ToList();
+			foreach (var type in types)
+			{
+				typeToMembers[type] = new List<MemberInfo>();
 
-			//}
+				typeToMembers[type].AddRange((type.GetFields(reflectionOptions)
+					.Where(f => f.Name.Contains("k__BackingField") == false)
+					.Cast<MemberInfo>()
+					.ToList()
+				));
+
+				typeToMembers[type].AddRange((type.GetProperties(reflectionOptions)
+					.Cast<MemberInfo>()
+					.ToList()
+				));
+
+				typeToMembers[type].AddRange((type.GetMethods(reflectionOptions)
+					.Where(method => method.Name != "Finalize" && method.Name != "obj_address" && method.Name != "MemberwiseClone")
+					//Discard methods such as get_propertyName and set_propertyName
+					.Where(m => (m.Name.StartsWith("get_") == false && m.Name.StartsWith("set_") == false) || typeToMembers[type].Select(mi => mi.Name).Contains(m.Name.Substring(4)) == false)
+					.Cast<MemberInfo>()
+					.ToList()
+				));
+
+			}
 		}
 
 		private void ScanNamespace(string @namespace, bool includePrivateVariables)
