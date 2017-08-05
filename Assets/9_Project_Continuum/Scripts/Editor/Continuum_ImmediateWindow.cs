@@ -62,7 +62,18 @@ namespace TonRan.Continuum
 
 		void OnGUI()
 		{
-			
+			switch (Event.current.type)
+			{
+				case EventType.KeyDown:
+					{
+						if (Event.current.keyCode == (KeyCode.Escape))
+						{
+							// allow this key to be passed to the selected control
+							if (autocompleteWindow != null) { autocompleteWindow.Close(); }
+						}
+						break;
+					}
+			}
 
 			// start the scroll view
 			scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
@@ -219,7 +230,7 @@ namespace TonRan.Continuum
 
 				GUILayout.EndScrollView();
 			}
-			
+
 		}
 		
 
