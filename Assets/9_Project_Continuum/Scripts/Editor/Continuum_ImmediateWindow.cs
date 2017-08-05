@@ -6,6 +6,7 @@ using Microsoft.CSharp;
 using System.Reflection;
 using System.CodeDom.Compiler;
 using UnityEditor;
+using System.Collections;
 /*
 * ImmediateWindow.cs
 * Copyright (c) 2012 Nick Gravelyn
@@ -37,15 +38,18 @@ namespace TonRan.Continuum
 
 		// script text
 		private string scriptText = string.Empty;
-
 		// cache of last method we compiled so repeat executions only incur a single compilation
 		private MethodInfo lastScriptMethod;
 
 		// position of scroll view
 		private Vector2 scrollPos;
+
 		
+
 		void OnGUI()
 		{
+			
+
 			// start the scroll view
 			scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
 			//GUILayout.BeginScrollView(scrollPos);
@@ -79,6 +83,11 @@ namespace TonRan.Continuum
 
 			TextEditor editor = (TextEditor)GUIUtility.GetStateObject(typeof(TextEditor), GUIUtility.keyboardControl);
 
+			while (moveForward-- > 0)
+			{
+				editor.MoveRight();
+			}
+
 			//GUI.Label(new Rect(216, 8, 200, 200), string.Format("Selected text: {0}\nPos: {1}\nSelect pos: {2}",
 			//	editor.SelectedText,
 			//	editor.position,
@@ -93,20 +102,39 @@ namespace TonRan.Continuum
 			// close the scroll view
 			EditorGUILayout.EndScrollView();
 
+			if(scriptText[editor.cursorIndex-1] == '.')
+			{
+				openAutocomplete = true;
+			}
+
 			if (openAutocomplete)
 			{
 
 				//var charSize = styles.normalStyle.CalcSize(new GUIContent("W"));
 				var cursorPos = editor.graphicalCursorPos;
 
-				ContinuumAutocompletePopup window = ScriptableObject.CreateInstance<ContinuumAutocompletePopup>();
-				window.position = new Rect(position.position + cursorPos + new Vector2(5,18), new Vector2(450, 150));
+				ContinuumAutocompletePopup autocompleteWindow = ScriptableObject.CreateInstance<ContinuumAutocompletePopup>();
+				autocompleteWindow.position = new Rect(position.position + cursorPos + new Vector2(5,18), new Vector2(450, 150));
 
 				IEnumerable<string> seed = Enumerable.Range(97, 3).Select(i => (char)i + "Boo");
 				seed.ToList().ForEach(s => Debug.Log(s));
-				window.Continuum_Init(seed);
+				autocompleteWindow.Continuum_Init(seed);
 
-				window.ShowPopup();
+				autocompleteWindow.onEntryChosen += (chosenEntry) =>
+				{
+					Debug.Log("Clicked: "+chosenEntry);
+
+					scriptText = scriptText.Insert(editor.cursorIndex, chosenEntry);
+					moveForward = chosenEntry.Length;
+					
+					autocompleteWindow.Close();
+					var continuumWindow = EditorWindow.GetWindow<Continuum_ImmediateWindow>("Continuum_Immediate_a1.0", false);
+					continuumWindow.Focus();
+				};
+
+				autocompleteWindow.ShowPopup();
+
+
 
 				//GUILayout.BeginArea(new Rect(new Vector2(100, 100), new Vector2(50, 25));
 				//if (GUILayout.Button("MyNewButton"))
@@ -117,10 +145,19 @@ namespace TonRan.Continuum
 				openAutocomplete = false;
 			}
 		}
-
-		public const int MAGIC_NUMBER = 14;
-		private bool openAutocomplete;
 		
+		public const int MAGIC_NUMBER = 14;
+		private static bool openAutocomplete;
+
+		//[MenuItem("HotKey/Run %H")]
+		//private static void PlayGame()
+		//{
+		//	//var window = EditorWindow.GetWindow<Continuum_ImmediateWindow>("Continuum_Immediate_a1.0", false);
+		//	openAutocomplete = true;
+		//}
+
+		private int moveForward;
+
 		private void CompileAndRun()
 		{
 			continuumCompiler.CompileAndRun(scriptText);
@@ -135,7 +172,6 @@ namespace TonRan.Continuum
 			window.Focus();
 		}
 
-		
 		
 		public class ContinuumAutocompletePopup : EditorWindow
 		{
@@ -165,12 +201,10 @@ namespace TonRan.Continuum
 
 				scrollPos = GUILayout.BeginScrollView(scrollPos);
 
-				Debug.Log("3> " + entries.Count);
 				foreach (string entry in entries)
 				{
 					if (GUILayout.Button(entry))
 					{
-						Debug.Log("2> "+entry);
 						onEntryChosen(entry);
 					}
 				}
@@ -181,7 +215,7 @@ namespace TonRan.Continuum
 				//}
 
 
-				if (GUILayout.Button("Agree!")) this.Close();
+				//if (GUILayout.Button("Agree!")) this.Close();
 
 				GUILayout.EndScrollView();
 			}
