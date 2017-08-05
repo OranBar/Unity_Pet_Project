@@ -152,6 +152,8 @@ namespace TonRan.Continuum
 
 		private void CloseAutocompleteWindow()
 		{
+			if(autocompleteWindow == null) { return; }
+
 			autocompleteWindow.Close();
 			continuumWindow.Focus();
 		}
@@ -171,13 +173,15 @@ namespace TonRan.Continuum
 						if (Event.current.keyCode == (KeyCode.Escape))
 						{
 							// allow this key to be passed to the selected control
-							if (autocompleteWindow != null) { autocompleteWindow.Close(); }
+							//if (autocompleteWindow != null) { autocompleteWindow.Close(); }
+							CloseAutocompleteWindow();
 						}
-						if (Event.current.keyCode == (KeyCode.Space) && Event.current.shift)
-						{
-							// allow this key to be passed to the selected control
-							OpenAutocompleteAsync();
-						}
+						//TODO: I can't figure out how to ignore the space.
+						//if (Event.current.keyCode == (KeyCode.Space) && Event.current.shift)
+						//{
+						//	// allow this key to be passed to the selected control
+						//	OpenAutocompleteAsync();
+						//}
 						break;
 					}
 			}
@@ -206,9 +210,6 @@ namespace TonRan.Continuum
 			continuumCompiler.CompileAndRun(scriptText);
 		}
 		
-
-
-
 
 
 		public static string ConvertPrivateInvocations_ToReflectionInvokes(string source)
@@ -318,13 +319,10 @@ namespace TonRan.Continuum
 
 			return result;
 		}
-
+		
 		private void OnDestroy()
 		{
-			if(autocompleteWindow != null)
-			{
-				autocompleteWindow.Close();
-			}
+			CloseAutocompleteWindow();
 		}
 
 	}
