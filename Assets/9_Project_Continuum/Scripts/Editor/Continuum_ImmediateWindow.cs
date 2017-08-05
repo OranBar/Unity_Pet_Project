@@ -55,7 +55,7 @@ namespace TonRan.Continuum
 		private IEnumerable<string> autocompleteSeedForNextOnGui;
 		#endregion
 
-		[MenuItem("Continuum/Continuum_Immediate_a1.0")]
+		[MenuItem("Continuum/Continuum_Immediate_a1.3")]
 		static void Init()
 		{
 			// get the window, show it, and hand it focus
