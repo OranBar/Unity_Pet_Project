@@ -13,8 +13,7 @@ namespace TonRan.Continuum
 		bool initialized = false;
 
 		private Dictionary<Type, List<MemberInfo>> typeToMembers;
-
-
+		
 		//private Dictionary<Type, List<string>> typeToFields;
 		//private Dictionary<Type, List<string>> typeToProperties;
 		//private Dictionary<Type, List<string>> typeToMethods;
@@ -43,6 +42,7 @@ namespace TonRan.Continuum
 			*/
 			ScanNamespace("UnityEditor", false);
 			//ScanNamespace("UnityEngine", false);
+			ScanAssembly(typeof(ZDontTouch_Continuum).Assembly, false);
 			ScanAssembly(typeof(UnityEngine.GameObject).Assembly, false);
 			ScanNamespace("System.Collections", false);
 			ScanNamespace("System.Collections.Generic", false);
@@ -292,6 +292,11 @@ namespace TonRan.Continuum
 			return result;
 		}
 		*/
+
+		public List<string> GetAllTypes()
+		{
+			return typeToMembers.Keys.Select(k => k.Name).ToList();
+		}
 
 		/// <summary>
 		/// Uses the current scope to guess the next symbol.

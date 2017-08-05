@@ -25,6 +25,11 @@ namespace MyNamespace
 		{
 			myInt = 5;
 		}
+
+		public void Move()
+		{
+			this.transform.Translate(new Vector3(4, 0, 0));
+		}
 		
 	} 
 }

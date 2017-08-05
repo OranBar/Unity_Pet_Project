@@ -51,6 +51,10 @@ namespace TonRan.Continuum
 
 		private static Continuum_ImmediateWindow continuumWindow;
 
+		#region Async Temp Variables
+		private IEnumerable<string> autocompleteSeedForNextOnGui;
+		#endregion
+
 		[MenuItem("Continuum/Continuum_Immediate_a1.0")]
 		static void Init()
 		{
@@ -112,27 +116,35 @@ namespace TonRan.Continuum
 
 			OpenAutocompleteWindowIfPointPressed(editor);
 
-
 			if (openAutocomplete)
 			{
-				var cursorPos = editor.graphicalCursorPos;
+				IEnumerable<string> seed = autocompleteSeedForNextOnGui;
 
-				autocompleteWindow = ScriptableObject.CreateInstance<ContinuumAutocompletePopup>();
-				autocompleteWindow.position = new Rect(position.position + cursorPos + new Vector2(5, 18), new Vector2(350, 200));
+				if (seed == null)
+				{
+					seed = continuumSense.Guess("");
+				}
 
+				Action openAutoCompletePopup = () =>
+				{
+					autocompleteWindow = ScriptableObject.CreateInstance<ContinuumAutocompletePopup>();
+					var cursorPos = editor.graphicalCursorPos;
 
-				//IEnumerable<string> seed = continuumSense.Guess("");
-				IEnumerable<string> seed = continuumSense.Guess("");
-				//IEnumerable<string> seed = Enumerable.Range(97, 3).Select(i => (char)i + "Boo");
-				//seed.ToList().ForEach(s => Debug.Log(s));
-				autocompleteWindow.Continuum_Init(seed);
+					autocompleteWindow.position = new Rect(position.position + cursorPos + new Vector2(5, 18), new Vector2(350, 200));
 
-				autocompleteWindow.onEntryChosen += (str)=> OnAutocompleteEntryChosen(editor, str);
+					autocompleteWindow.Continuum_Init(seed);
 
-				autocompleteWindow.ShowPopup();
+					autocompleteWindow.onEntryChosen += (str) => OnAutocompleteEntryChosen(editor, str);
+
+					autocompleteWindow.ShowPopup();
+				};
+
+				openAutoCompletePopup();
+
 				openAutocomplete = false;
 			}
 		}
+
 
 		private void OnAutocompleteEntryChosen(TextEditor editor, string chosenEntry)
 		{
@@ -187,6 +199,23 @@ namespace TonRan.Continuum
 				}
 				Debug.Log("New Char is "+newChar);
 			}
+			try
+			{
+				TextEditor editor = (TextEditor)GUIUtility.GetStateObject(typeof(TextEditor), GUIUtility.keyboardControl);
+				var lastFourChars = editor.text.Substring(editor.cursorIndex - 4, 4);
+				if(lastFourChars == "new " && autocompleteWindowWasDisplayed==false)
+				{
+					//I do my shit here
+					IEnumerable<string> allTypes = continuumSense.GetAllTypes();
+					Debug.Assert(allTypes.Contains("Vector3"));
+					allTypes = new string[] { "Vector3" }.Concat(allTypes);
+					OpenAutocompleteAsync(allTypes);
+				}
+			}
+			catch (ArgumentOutOfRangeException){
+				//It's ok
+			}
+
 		}
 
 		private bool WasCharacterAdded(string before, string after)
@@ -217,12 +246,17 @@ namespace TonRan.Continuum
 			}
 		}
 
-		public void OpenAutocompleteAsync()
+		public void OpenAutocompleteAsync(IEnumerable<string> seed = null)
 		{
 			if (autocompleteWindow != null)
 			{
 				//CloseAutocompleteWindow();
 				return;
+			}
+
+			if(seed != null)
+			{
+				autocompleteSeedForNextOnGui = seed;
 			}
 
 			openAutocomplete = true;
