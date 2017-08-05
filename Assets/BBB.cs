@@ -23,7 +23,8 @@ namespace MyNamespace
 		// Update is called once per frame
 		void Update()
 		{
-
+			myInt = 5;
 		}
+		
 	} 
 }
