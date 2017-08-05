@@ -34,7 +34,8 @@ namespace TonRan.Continuum
 
 
 			//ScanNamespace("FooNamespace", true);
-			ScanAllAssembly(false);
+			ScanType(typeof(UnityEngine.GameObject), false);
+			//ScanAllAssembly(false);
 			//Register to new input event
 
 			//////
@@ -98,6 +99,12 @@ namespace TonRan.Continuum
 
 			ScanTypes(allAssemblyTypes, includePrivateVariables);
 		}
+
+		private void ScanType(Type type, bool includePrivateVariables)
+		{
+			ScanTypes(new Type[] { type }, includePrivateVariables);
+		}
+
 
 		private void ScanTypes(IEnumerable<Type> types, bool includePrivateVariables)
 		{

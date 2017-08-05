@@ -131,9 +131,9 @@ namespace TonRan.Continuum
 				var cursorPos = editor.graphicalCursorPos;
 
 				autocompleteWindow = ScriptableObject.CreateInstance<ContinuumAutocompletePopup>();
-				autocompleteWindow.position = new Rect(position.position + cursorPos + new Vector2(5,18), new Vector2(350, 150));
+				autocompleteWindow.position = new Rect(position.position + cursorPos + new Vector2(5,18), new Vector2(350, 200));
 
-				continuumSense.Guess("");
+				continuumSense.Guess(typeof(GameObject), "");
 
 				IEnumerable<string> seed = continuumSense.Guess("");
 				//IEnumerable<string> seed = Enumerable.Range(97, 3).Select(i => (char)i + "Boo");
@@ -195,14 +195,7 @@ namespace TonRan.Continuum
 			{
 				ContinuumAutocompletePopup window = ScriptableObject.CreateInstance<ContinuumAutocompletePopup>();
 
-				Debug.Log(EditorApplication.timeSinceStartup - openTime);
-
-				//if (EditorApplication.timeSinceStartup - openTime > 5500)
-				//{
-				//	window.Close();
-				//}
-
-				EditorGUILayout.LabelField("Welcome to the Continuum Window Autocomplete. We'll give it a cooler name at some point", EditorStyles.wordWrappedLabel);
+				//EditorGUILayout.LabelField("Welcome to the Continuum Window Autocomplete. We'll give it a cooler name at some point", EditorStyles.wordWrappedLabel);
 				//GUILayout.Space(70);
 
 				scrollPos = GUILayout.BeginScrollView(scrollPos);
