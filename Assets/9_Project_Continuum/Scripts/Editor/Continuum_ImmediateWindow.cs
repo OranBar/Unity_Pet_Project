@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Microsoft.CSharp;
@@ -42,26 +43,28 @@ namespace TonRan.Continuum
 
 		// position of scroll view
 		private Vector2 scrollPos;
-
+		
 		void OnGUI()
 		{
 			// start the scroll view
 			scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
-
+			//GUILayout.BeginScrollView(scrollPos);
 			// show the script field
-			string newScriptText = EditorGUILayout.TextArea(scriptText);
+			string newScriptText = GUILayout.TextArea(scriptText);
 			if (newScriptText != scriptText)
 			{
 				// if the script changed, update our cached version and null out our cached method
 				scriptText = newScriptText;
 				lastScriptMethod = null;
 			}
-
+			
 			// store if the GUI is enabled so we can restore it later
 			bool guiEnabled = GUI.enabled;
 
 			// disable the GUI if the script text is empty
 			GUI.enabled = guiEnabled && !string.IsNullOrEmpty(scriptText);
+
+			
 
 			// show the execute button
 			if (GUILayout.Button("Execute"))
@@ -69,15 +72,55 @@ namespace TonRan.Continuum
 				CompileAndRun();
 			}
 
+			if (GUILayout.Button("AutoComplete"))
+			{
+				openAutocomplete = true; 
+			}
+
+			TextEditor editor = (TextEditor)GUIUtility.GetStateObject(typeof(TextEditor), GUIUtility.keyboardControl);
+
+			//GUI.Label(new Rect(216, 8, 200, 200), string.Format("Selected text: {0}\nPos: {1}\nSelect pos: {2}",
+			//	editor.SelectedText,
+			//	editor.position,
+			//	editor.graphicalCursorPos));
+
+			//if (GUILayout.Button(/*new Rect(8, 216, 400, 20),*/ "Insert Tab"))
+			//	scriptText = scriptText.Insert(editor.cursorIndex, "\t");
+
 			// restore the GUI
 			GUI.enabled = guiEnabled;
 
 			// close the scroll view
 			EditorGUILayout.EndScrollView();
+
+			if (openAutocomplete)
+			{
+
+				//var charSize = styles.normalStyle.CalcSize(new GUIContent("W"));
+				var cursorPos = editor.graphicalCursorPos;
+
+				ContinuumAutocompletePopup window = ScriptableObject.CreateInstance<ContinuumAutocompletePopup>();
+				window.position = new Rect(position.position + cursorPos + new Vector2(5,18), new Vector2(450, 150));
+
+				IEnumerable<string> seed = Enumerable.Range(97, 3).Select(i => (char)i + "Boo");
+				seed.ToList().ForEach(s => Debug.Log(s));
+				window.Continuum_Init(seed);
+
+				window.ShowPopup();
+
+				//GUILayout.BeginArea(new Rect(new Vector2(100, 100), new Vector2(50, 25));
+				//if (GUILayout.Button("MyNewButton"))
+				//{
+				//	Debug.Log("Mehere");
+				//}
+				//GUILayout.EndArea();
+				openAutocomplete = false;
+			}
 		}
 
 		public const int MAGIC_NUMBER = 14;
-
+		private bool openAutocomplete;
+		
 		private void CompileAndRun()
 		{
 			continuumCompiler.CompileAndRun(scriptText);
@@ -93,7 +136,57 @@ namespace TonRan.Continuum
 		}
 
 		
+		
+		public class ContinuumAutocompletePopup : EditorWindow
+		{
+			public event Action<string> onEntryChosen;
 
+			private List<string> entries = new List<string>();
+
+			static void Init()
+			{
+				ContinuumAutocompletePopup window = ScriptableObject.CreateInstance<ContinuumAutocompletePopup>();
+				//window.position = new Rect(Screen.width / 2, Screen.height / 2, 250, 150);
+				window.ShowPopup();
+			}
+
+			public void Continuum_Init(IEnumerable<string> entries)
+			{
+				onEntryChosen = (s) => { };
+				this.entries = entries.ToList();
+			}
+
+			private Vector2 scrollPos;
+
+			void OnGUI()
+			{
+				EditorGUILayout.LabelField("Welcome to the Continuum Window Autocomplete. We'll give it a cooler name at some point", EditorStyles.wordWrappedLabel);
+				//GUILayout.Space(70);
+
+				scrollPos = GUILayout.BeginScrollView(scrollPos);
+
+				Debug.Log("3> " + entries.Count);
+				foreach (string entry in entries)
+				{
+					if (GUILayout.Button(entry))
+					{
+						Debug.Log("2> "+entry);
+						onEntryChosen(entry);
+					}
+				}
+
+				//if (GUILayout.Button(entries[0]))
+				//{
+				//	onEntryChosen(entries[0]);
+				//}
+
+
+				if (GUILayout.Button("Agree!")) this.Close();
+
+				GUILayout.EndScrollView();
+			}
+		}
+		
 
 
 
