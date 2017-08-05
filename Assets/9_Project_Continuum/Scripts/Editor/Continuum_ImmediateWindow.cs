@@ -47,6 +47,7 @@ namespace TonRan.Continuum
 		private Vector2 scrollPos;
 		private ContinuumAutocompletePopup autocompleteWindow;
 
+		private bool autocompleteWindowWasDisplayed = false;
 
 		[MenuItem("Continuum/Continuum_Immediate_a1.0")]
 		static void Init()
@@ -62,18 +63,7 @@ namespace TonRan.Continuum
 
 		void OnGUI()
 		{
-			switch (Event.current.type)
-			{
-				case EventType.KeyDown:
-					{
-						if (Event.current.keyCode == (KeyCode.Escape))
-						{
-							// allow this key to be passed to the selected control
-							if (autocompleteWindow != null) { autocompleteWindow.Close(); }
-						}
-						break;
-					}
-			}
+			KeyEventHandling();
 
 			// start the scroll view
 			scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
@@ -84,17 +74,15 @@ namespace TonRan.Continuum
 			{
 				// if the script changed, update our cached version and null out our cached method
 				scriptText = newScriptText;
-				lastScriptMethod = null;
+				OnTextChanged();
 			}
-			
+
 			// store if the GUI is enabled so we can restore it later
 			bool guiEnabled = GUI.enabled;
 
 			// disable the GUI if the script text is empty
 			GUI.enabled = guiEnabled && !string.IsNullOrEmpty(scriptText);
-
 			
-
 			// show the execute button
 			if (GUILayout.Button("Execute"))
 			{
@@ -103,7 +91,7 @@ namespace TonRan.Continuum
 
 			if (GUILayout.Button("AutoComplete"))
 			{
-				openAutocomplete = true; 
+				openAutocomplete = true;
 			}
 
 			TextEditor editor = (TextEditor)GUIUtility.GetStateObject(typeof(TextEditor), GUIUtility.keyboardControl);
@@ -112,28 +100,21 @@ namespace TonRan.Continuum
 			{
 				editor.MoveRight();
 			}
-
-			//GUI.Label(new Rect(216, 8, 200, 200), string.Format("Selected text: {0}\nPos: {1}\nSelect pos: {2}",
-			//	editor.SelectedText,
-			//	editor.position,
-			//	editor.graphicalCursorPos));
-
-			//if (GUILayout.Button(/*new Rect(8, 216, 400, 20),*/ "Insert Tab"))
-			//	scriptText = scriptText.Insert(editor.cursorIndex, "\t");
-
+			
 			// restore the GUI
 			GUI.enabled = guiEnabled;
 
 			// close the scroll view
 			EditorGUILayout.EndScrollView();
 
-			try { 
-				if(scriptText[editor.cursorIndex-1] == '.' && autocompleteWindow == null)
+			try
+			{
+				if (scriptText[editor.cursorIndex - 1] == '.' && autocompleteWindowWasDisplayed == false)
 				{
-					openAutocomplete = true;
+					OpenAutocompleteAsync();
 				}
 			}
-			catch(IndexOutOfRangeException)
+			catch (IndexOutOfRangeException)
 			{
 				//It's okay
 			}
@@ -143,22 +124,22 @@ namespace TonRan.Continuum
 				var cursorPos = editor.graphicalCursorPos;
 
 				autocompleteWindow = ScriptableObject.CreateInstance<ContinuumAutocompletePopup>();
-				autocompleteWindow.position = new Rect(position.position + cursorPos + new Vector2(5,18), new Vector2(350, 200));
+				autocompleteWindow.position = new Rect(position.position + cursorPos + new Vector2(5, 18), new Vector2(350, 200));
 
 
 				//IEnumerable<string> seed = continuumSense.Guess("");
-				IEnumerable<string> seed = continuumSense.Guess(typeof(GameObject), ""); 
+				IEnumerable<string> seed = continuumSense.Guess(typeof(GameObject), "");
 				//IEnumerable<string> seed = Enumerable.Range(97, 3).Select(i => (char)i + "Boo");
 				//seed.ToList().ForEach(s => Debug.Log(s));
 				autocompleteWindow.Continuum_Init(seed);
 
 				autocompleteWindow.onEntryChosen += (chosenEntry) =>
 				{
-					Debug.Log("Clicked: "+chosenEntry);
+					Debug.Log("Clicked: " + chosenEntry);
 
 					scriptText = scriptText.Insert(editor.cursorIndex, chosenEntry);
 					moveForward = chosenEntry.Length;
-					
+
 					autocompleteWindow.Close();
 					var continuumWindow = EditorWindow.GetWindow<Continuum_ImmediateWindow>("Continuum_Immediate_a1.0", false);
 					continuumWindow.Focus();
@@ -168,7 +149,40 @@ namespace TonRan.Continuum
 				openAutocomplete = false;
 			}
 		}
-		
+
+		private void OnTextChanged()
+		{
+			lastScriptMethod = null;
+			autocompleteWindowWasDisplayed = false;
+		}
+
+		private void KeyEventHandling()
+		{
+			switch (Event.current.type)
+			{
+				case EventType.KeyDown:
+					{
+						if (Event.current.keyCode == (KeyCode.Escape))
+						{
+							// allow this key to be passed to the selected control
+							if (autocompleteWindow != null) { autocompleteWindow.Close(); }
+						}
+						if (Event.current.keyCode == (KeyCode.Space) && Event.current.control)
+						{
+							// allow this key to be passed to the selected control
+							OpenAutocompleteAsync();
+						}
+						break;
+					}
+			}
+		}
+
+		public void OpenAutocompleteAsync()
+		{
+			openAutocomplete = true;
+			autocompleteWindowWasDisplayed = true;
+		}
+
 		public const int MAGIC_NUMBER = 14;
 		private static bool openAutocomplete;
 
