@@ -49,16 +49,18 @@ namespace TonRan.Continuum
 
 		private bool autocompleteWindowWasDisplayed = false;
 
+		private static Continuum_ImmediateWindow continuumWindow;
+
 		[MenuItem("Continuum/Continuum_Immediate_a1.0")]
 		static void Init()
 		{
 			// get the window, show it, and hand it focus
-			var window = EditorWindow.GetWindow<Continuum_ImmediateWindow>("Continuum_Immediate_a1.0", false);
+			continuumWindow = EditorWindow.GetWindow<Continuum_ImmediateWindow>("Continuum_Immediate_a1.0", false);
 
-			window.continuumSense.Init();
+			continuumWindow.continuumSense.Init();
 
-			window.Show();
-			window.Focus();
+			continuumWindow.Show();
+			continuumWindow.Focus();
 		}
 
 		void OnGUI()
@@ -91,7 +93,7 @@ namespace TonRan.Continuum
 
 			if (GUILayout.Button("AutoComplete"))
 			{
-				openAutocomplete = true;
+				OpenAutocompleteAsync();
 			}
 
 			TextEditor editor = (TextEditor)GUIUtility.GetStateObject(typeof(TextEditor), GUIUtility.keyboardControl);
@@ -140,14 +142,18 @@ namespace TonRan.Continuum
 					scriptText = scriptText.Insert(editor.cursorIndex, chosenEntry);
 					moveForward = chosenEntry.Length;
 
-					autocompleteWindow.Close();
-					var continuumWindow = EditorWindow.GetWindow<Continuum_ImmediateWindow>("Continuum_Immediate_a1.0", false);
-					continuumWindow.Focus();
+					CloseAutocompleteWindow();
 				};
 
 				autocompleteWindow.ShowPopup();
 				openAutocomplete = false;
 			}
+		}
+
+		private void CloseAutocompleteWindow()
+		{
+			autocompleteWindow.Close();
+			continuumWindow.Focus();
 		}
 
 		private void OnTextChanged()
@@ -167,7 +173,7 @@ namespace TonRan.Continuum
 							// allow this key to be passed to the selected control
 							if (autocompleteWindow != null) { autocompleteWindow.Close(); }
 						}
-						if (Event.current.keyCode == (KeyCode.Space) && Event.current.control)
+						if (Event.current.keyCode == (KeyCode.Space) && Event.current.shift)
 						{
 							// allow this key to be passed to the selected control
 							OpenAutocompleteAsync();
@@ -179,6 +185,12 @@ namespace TonRan.Continuum
 
 		public void OpenAutocompleteAsync()
 		{
+			if (autocompleteWindow != null)
+			{
+				//CloseAutocompleteWindow();
+				return;
+			}
+
 			openAutocomplete = true;
 			autocompleteWindowWasDisplayed = true;
 		}
@@ -187,70 +199,13 @@ namespace TonRan.Continuum
 		private static bool openAutocomplete;
 
 		private int moveForward;
+		
 
 		private void CompileAndRun()
 		{
 			continuumCompiler.CompileAndRun(scriptText);
 		}
-		public class ContinuumAutocompletePopup : EditorWindow
-		{
-			public event Action<string> onEntryChosen;
-
-			private List<string> entries = new List<string>();
-
-			static void Init()
-			{
-				ContinuumAutocompletePopup window = ScriptableObject.CreateInstance<ContinuumAutocompletePopup>();
-				//window.position = new Rect(Screen.width / 2, Screen.height / 2, 250, 150);
-				window.ShowPopup();
-				window.openTime = EditorApplication.timeSinceStartup;
-			}
-
-			public void Continuum_Init(IEnumerable<string> entries)
-			{
-				onEntryChosen = (s) => { };
-				this.entries = entries.ToList();
-			}
-
-			private Vector2 scrollPos;
-
-			private double openTime;
-			private bool closed = false;
-
-			void OnGUI()
-			{
-				ContinuumAutocompletePopup window = ScriptableObject.CreateInstance<ContinuumAutocompletePopup>();
-
-				//EditorGUILayout.LabelField("Welcome to the Continuum Window Autocomplete. We'll give it a cooler name at some point", EditorStyles.wordWrappedLabel);
-				//GUILayout.Space(70);
-
-				scrollPos = GUILayout.BeginScrollView(scrollPos);
-
-				foreach (string entry in entries)
-				{
-					if (GUILayout.Button(entry))
-					{
-						onEntryChosen(entry);
-					}
-				}
-
-				//if (GUILayout.Button(entries[0]))
-				//{
-				//	onEntryChosen(entries[0]);
-				//}
-
-
-				//if (GUILayout.Button("Agree!")) this.Close();
-
-				GUILayout.EndScrollView();
-			}
-
-		}
 		
-
-
-
-
 
 
 
@@ -362,6 +317,14 @@ namespace TonRan.Continuum
 			}
 
 			return result;
+		}
+
+		private void OnDestroy()
+		{
+			if(autocompleteWindow != null)
+			{
+				autocompleteWindow.Close();
+			}
 		}
 
 	}
