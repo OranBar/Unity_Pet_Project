@@ -10,7 +10,7 @@ namespace TonRan.Continuum
 	public class ContinuumSense
 	{
 
-		bool initialized = false;
+		public bool initialized { get; private set; }	//Starts false!
 
 		private Dictionary<Type, List<MemberInfo>> typeToMembers;
 		
@@ -331,30 +331,46 @@ namespace TonRan.Continuum
 			//Filter all symbols SHORTER than the guess. 
 			result = result.Where(symbol => symbol.Length >= guess.Length).ToList();
 
-			outer: for (int i = result.Count - 1; i >= 0; i--)
+		
+outer:      for (int i = result.Count - 1; i >= 0; i--)
 			{
 				string field = result[i].ToLower(); //Let's be case insensitive.
 				string inputCopy = "" + guess.ToLower();
 
+				int fuzzyMinIndex = field.Length-1;
+
 				//Loop InputCopy (reversed). For each character, either delete that character in field, or continue to next field if that character isn't contained in the field
-				for (int k = inputCopy.Length - 1; k >= 0; k--)
+				int k = inputCopy.Length-1;
+				while(k >= 0)
 				{
 					char currChar = inputCopy[k];
 
-					if (field.Contains(currChar) == false)
+					while (field[fuzzyMinIndex] != currChar)
 					{
-						//This is the only place where we modify result. So, it starts with all options, and then we remove the ones that don't match. The rest stays.
-						result.RemoveAt(i);
-						goto outer;
+						fuzzyMinIndex--;
+						if(fuzzyMinIndex < 0)
+						{
+							result.RemoveAt(i);
+							goto outer;
+						}
 					}
 
-					//If we skipped the previous if, we can proceed to remove the currChar from both field and inputcopy (ordering is important, we take out the last one)
-					field = field.Remove(
-						field.LastIndexOf(currChar),
-						1
-					);
+					k--;
 
-					inputCopy = inputCopy.Remove(k, 1);
+					//if (field.Contains(currChar) == false)
+					//{
+					//	//This is the only place where we modify result. So, it starts with all options, and then we remove the ones that don't match. The rest stays.
+					//	result.RemoveAt(i);
+					//	goto outer;
+					//}
+
+					//If we skipped the previous if, we can proceed to remove the currChar from both field and inputcopy (ordering is important, we take out the last one)
+					//field = field.Remove(
+					//	field.LastIndexOf(currChar),
+					//	1
+					//);
+
+					//inputCopy = inputCopy.Remove(k, 1);
 				}
 			}
 

@@ -24,6 +24,11 @@ public class ContinuumAutocompletePopup : EditorWindow
 		onEntryChosen = (s) => { };
 		this.entries = new HashSet<string>(entries);
 	}
+
+	public void ChangeEntries(IEnumerable<string> newEntries)
+	{
+		entries = new HashSet<string>(newEntries);
+	}
 			
 	private Vector2 scrollPos;
 			

@@ -35,6 +35,9 @@ namespace TonRan.Continuum
 {
 	public class Continuum_ImmediateWindow : EditorWindow
 	{
+		private const string CONTINUUM_VERSION = "a1.3";
+
+
 		private ContinuumCompiler continuumCompiler = new ContinuumCompiler();
 		private ContinuumSense continuumSense = new ContinuumSense();
 
@@ -55,11 +58,11 @@ namespace TonRan.Continuum
 		private IEnumerable<string> autocompleteSeedForNextOnGui;
 		#endregion
 
-		[MenuItem("Continuum/Continuum_Immediate_a1.3")]
+		[MenuItem("Continuum/Continuum_Immediate_"+ CONTINUUM_VERSION)]
 		static void Init()
 		{
 			// get the window, show it, and hand it focus
-			continuumWindow = EditorWindow.GetWindow<Continuum_ImmediateWindow>("Continuum_Immediate_a1.0", false);
+			continuumWindow = EditorWindow.GetWindow<Continuum_ImmediateWindow>("Continuum_Immediate_"+ CONTINUUM_VERSION, false);
 
 			continuumWindow.continuumSense.Init(typeof(GameObject));
 			
@@ -67,15 +70,47 @@ namespace TonRan.Continuum
 			continuumWindow.Focus();
 		}
 
+		private void ProcessCodeViewCommands()
+		{
+			if (Event.current.type == EventType.ValidateCommand)
+			{
+				if (Event.current.commandName == "SelectAll")
+				{
+					Debug.Log("select all");
+					Event.current.Use();
+				}
+				else if (Event.current.commandName == "Copy" || Event.current.commandName == "Cut")
+				{
+					Debug.Log("Copy or Cut");
+					Event.current.Use();
+				}
+				else if (Event.current.commandName == "Paste")
+				{
+					Debug.Log("Paste");
+
+					if (!string.IsNullOrEmpty(EditorGUIUtility.systemCopyBuffer))
+					{
+						Event.current.Use();
+					}
+				}
+				else if (Event.current.commandName == "Delete")
+				{
+					Debug.Log("Delete");
+					Event.current.Use();
+				}
+			}
+		}
+
 		void OnGUI()
 		{
 			KeyEventHandling();
 
-			// start the scroll view
 			scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
-			//GUILayout.BeginScrollView(scrollPos);
-			// show the script field
-			string newScriptText = GUILayout.TextArea(scriptText);
+
+			//This is the reason why we can't copy paste and select all. 
+			//EditorGUILayout is said to be exactly the same, plus those features, but then (TextEditor)EditorGUIUtility.GetStateObject(typeof(TextEditor), EditorGUIUtility.keyboardControl)
+			//doesn't return the correct object, but an unitialized blank one.
+			string newScriptText = GUILayout.TextArea(scriptText, GUILayout.Height(70));
 			if (newScriptText != scriptText)
 			{
 				// if the script changed, update our cached version and null out our cached method
@@ -83,12 +118,6 @@ namespace TonRan.Continuum
 				scriptText = newScriptText;
 				OnTextChanged(tmp, scriptText);
 			}
-
-			// store if the GUI is enabled so we can restore it later
-			bool guiEnabled = GUI.enabled;
-
-			// disable the GUI if the script text is empty
-			//GUI.enabled = guiEnabled && !string.IsNullOrEmpty(scriptText);
 			
 			// show the execute button
 			if (GUILayout.Button("Execute"))
@@ -101,15 +130,17 @@ namespace TonRan.Continuum
 				OpenAutocompleteAsync();
 			}
 
-			TextEditor editor = (TextEditor)GUIUtility.GetStateObject(typeof(TextEditor), GUIUtility.keyboardControl);
+			TextEditor editor = (TextEditor)EditorGUIUtility.GetStateObject(typeof(TextEditor), EditorGUIUtility.keyboardControl);
 
-			while (moveForward-- > 0)
+			var t = EditorGUIUtility.GetStateObject(typeof(TextEditor), EditorGUIUtility.keyboardControl).GetType();
+
+
+			while (moveForward > 0)
 			{
-				editor.MoveRight();
+				editor.MoveRight(); 
+				moveForward--;
 			}
 			
-			// restore the GUI
-			GUI.enabled = guiEnabled;
 
 			// close the scroll view
 			EditorGUILayout.EndScrollView();
@@ -122,6 +153,12 @@ namespace TonRan.Continuum
 
 				if (seed == null)
 				{
+					if (continuumSense.initialized == false)
+					{
+						Debug.LogError("Continuum was not initialized. Reinitializing");
+						continuumSense.Init(typeof(GameObject));
+					}
+
 					seed = continuumSense.Guess("");
 				}
 
@@ -148,8 +185,6 @@ namespace TonRan.Continuum
 
 		private void OnAutocompleteEntryChosen(TextEditor editor, string chosenEntry)
 		{
-			Debug.Log("Clicked: " + chosenEntry);
-			
 			scriptText = scriptText.Insert(editor.cursorIndex, chosenEntry);
 			moveForward = chosenEntry.Length;
 
@@ -178,13 +213,22 @@ namespace TonRan.Continuum
 			if(autocompleteWindow == null) { return; }
 
 			autocompleteWindow.Close();
-			continuumWindow.Focus();
+			continuumWindow?.Focus();
 		}
 
 		private void OnTextChanged(string before, string after)
 		{
 			lastScriptMethod = null;
 			autocompleteWindowWasDisplayed = false;
+
+			if(before != after)
+			{
+				string reversedLine = new string(after.Reverse().ToArray());
+				string guess = new string(reversedLine.TakeWhile(c => c != '.').Reverse().ToArray());
+
+				var guesses = continuumSense.Guess(guess);
+				autocompleteWindow.ChangeEntries(guesses);
+			}
 
 			if(WasCharacterAdded(before, after))
 			{
@@ -197,11 +241,13 @@ namespace TonRan.Continuum
 						break;
 					}
 				}
-				Debug.Log("New Char is "+newChar);
+				//Debug.Log("New Char is "+newChar);
+
 			}
 			try
 			{
-				TextEditor editor = (TextEditor)GUIUtility.GetStateObject(typeof(TextEditor), GUIUtility.keyboardControl);
+				//This block is to reacto to "new "
+				TextEditor editor = (TextEditor)EditorGUIUtility.GetStateObject(typeof(TextEditor), EditorGUIUtility.keyboardControl);
 				var lastFourChars = editor.text.Substring(editor.cursorIndex - 4, 4);
 				if(lastFourChars == "new " && autocompleteWindowWasDisplayed==false)
 				{
@@ -215,8 +261,40 @@ namespace TonRan.Continuum
 			catch (ArgumentOutOfRangeException){
 				//It's ok
 			}
+			
+
 
 		}
+
+		//public Type GetMemberType(Type scope, string memberName)
+		//{
+		//	//TODO: returns the type from a string, and a scope.
+		//}
+
+		//private void CurrentLineChanged(string previous, string current)
+		//{
+
+		//	if (initialized == false) { throw new ContinuumNotInitializedException(); }
+
+		//	//TODO: this
+		//	//If point was pressed
+		//	//set current line
+		//	if (current.Contains('.') == false)
+		//	{
+		//		var allMembersAndMethods = Guess(type_scope_history.Peek(), "");
+		//		//TODO: display suggestions
+		//		DisplaySuggestionList(allMembersAndMethods);
+		//		return;
+		//	}
+
+		//	string reversedLine = new string(current.Reverse().ToArray());
+		//	string guess = new string(reversedLine.TakeWhile(c => c != '.').Reverse().ToArray());
+		//	//string caller = new string(reversedLine.SkipWhile(c => c == '.').TakeWhile(c1 => c1 != '.').Reverse().ToArray());
+
+		//	var suggestions = Guess(type_scope_history.Peek(), guess);
+		//	DisplaySuggestionList(suggestions);
+		//	//endIf
+		//}
 
 		private bool WasCharacterAdded(string before, string after)
 		{
