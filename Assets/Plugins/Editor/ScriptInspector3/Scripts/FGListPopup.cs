@@ -481,8 +481,8 @@ namespace ScriptInspector
 
 				typedInPart = onToken.text.Substring(0, editor.caretPosition.characterIndex - textSpan.index);
 
-				typedInPart = "SoHere.IJustSet.TypedInPart";
-				//	Debug.Log("typedInPart " + typedInPart);
+				//typedInPart = "SoHere.IJustSet.TypedInPart";
+				Debug.Log("typedInPart " + typedInPart);
 			}
 			else
 			{
@@ -780,7 +780,7 @@ namespace ScriptInspector
 							styledName = sb.ToString();
 						}
 					}
-					Debug.Log(">> 2 << "+styledName);
+					Debug.Log(">> 10 << "+styledName);
 					var displayString = ItemDisplayString(filteredData[i], styledName);
 					var itemContent = new GUIContent(displayString, icon);
 					if (filteredData[i].GetTypeParameters() != null)

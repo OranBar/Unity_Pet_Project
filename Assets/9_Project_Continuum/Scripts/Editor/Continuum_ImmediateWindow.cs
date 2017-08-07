@@ -228,6 +228,7 @@ namespace TonRan.Continuum
 
 				var guesses = continuumSense.Guess(guess);
 				autocompleteWindow.ChangeEntries(guesses);
+				Debug.Log("Autocomplete Changed Entries: Seed is "+guess);
 			}
 
 			if(WasCharacterAdded(before, after))

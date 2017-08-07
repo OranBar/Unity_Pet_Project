@@ -28,6 +28,7 @@ public class ContinuumAutocompletePopup : EditorWindow
 	public void ChangeEntries(IEnumerable<string> newEntries)
 	{
 		entries = new HashSet<string>(newEntries);
+		Repaint();
 	}
 			
 	private Vector2 scrollPos;
