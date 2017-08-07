@@ -55,6 +55,7 @@ namespace TonRan.Continuum
 		private static Continuum_ImmediateWindow continuumWindow;
 
 		#region Async Temp Variables
+		private string userGuess = null;
 		private IEnumerable<string> autocompleteSeedForNextOnGui;
 		#endregion
 
@@ -145,7 +146,7 @@ namespace TonRan.Continuum
 			// close the scroll view
 			EditorGUILayout.EndScrollView();
 
-			OpenAutocompleteWindowIfPointPressed(editor);
+			//OpenAutocompleteWindowIfPointPressed(editor);
 
 			if (openAutocomplete)
 			{
@@ -193,27 +194,30 @@ namespace TonRan.Continuum
 			continuumSense.ScopeDown(chosenEntry);
 		}
 
-		private void OpenAutocompleteWindowIfPointPressed(TextEditor editor)
-		{
-			try
-			{
-				if (scriptText[editor.cursorIndex - 1] == '.' && autocompleteWindowWasDisplayed == false)
-				{
-					OpenAutocompleteAsync();
-				}
-			}
-			catch (IndexOutOfRangeException)
-			{
-				//It's okay
-			}
-		}
+		//private void OpenAutocompleteWindowIfPointPressed(TextEditor editor)
+		//{
+		//	try
+		//	{
+		//		if (scriptText[editor.cursorIndex - 1] == '.' && autocompleteWindowWasDisplayed == false)
+		//		{
+		//			OpenAutocompleteAsync();
+		//		}
+		//	}
+		//	catch (IndexOutOfRangeException)
+		//	{
+		//		//It's okay
+		//	}
+		//}
 
 		private void CloseAutocompleteWindow()
 		{
 			if(autocompleteWindow == null) { return; }
 
 			autocompleteWindow.Close();
-			continuumWindow?.Focus();
+			if(continuumWindow != null)
+			{
+				continuumWindow.Focus();
+			}
 		}
 
 		private void OnTextChanged(string before, string after)
@@ -242,8 +246,14 @@ namespace TonRan.Continuum
 					}
 				}
 				//Debug.Log("New Char is "+newChar);
-
+				if(newChar == '.')
+				{
+					//OpenAutocompleteAsync();
+				} 
 			}
+
+
+
 			try
 			{
 				//This block is to reacto to "new "
