@@ -248,7 +248,7 @@ namespace TonRan.Continuum
 				//Debug.Log("New Char is "+newChar);
 				if(newChar == '.')
 				{
-					//OpenAutocompleteAsync();
+					OpenAutocompleteAsync();
 				} 
 			}
 
