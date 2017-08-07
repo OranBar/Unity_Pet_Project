@@ -46,6 +46,7 @@ public class ContinuumAutocompletePopup : EditorWindow
 			}
 		}
 		GUILayout.EndScrollView();
+		Repaint();
 	}
 			
 }

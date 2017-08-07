@@ -20,8 +20,12 @@ namespace TonRan.Continuum
 
 		private Stack<Type> type_scope_history;
 
-		private string currentLine;
-
+		public Type CurrentScope {
+			get {
+				if (initialized == false) { return null; }
+				else return type_scope_history.Peek();
+			}
+		}
 
 		public void Init(/*TODO: Add parameters: Namespaces to analyze*/)
 		{
@@ -307,6 +311,7 @@ namespace TonRan.Continuum
 		{
 			if (initialized == false) { throw new ContinuumNotInitializedException(); }
 
+			Debug.Log("Guessing. Scope is "+typeScope.Name);
 			List<string> result = new List<string>();
 
 			if(typeScope == null)

@@ -181,6 +181,11 @@ namespace TonRan.Continuum
 
 				openAutocomplete = false;
 			}
+			Repaint();
+			if(autocompleteWindow != null)
+			{
+				autocompleteWindow.Repaint();
+			}
 		}
 
 
@@ -225,32 +230,37 @@ namespace TonRan.Continuum
 			lastScriptMethod = null;
 			autocompleteWindowWasDisplayed = false;
 
-			if(before != after)
-			{
-				string reversedLine = new string(after.Reverse().ToArray());
-				string guess = new string(reversedLine.TakeWhile(c => c != '.').Reverse().ToArray());
+			string guess = GetGuess(line: after);
 
-				var guesses = continuumSense.Guess(guess);
-				autocompleteWindow.ChangeEntries(guesses);
-			}
+			UpdateGuesses_Csense(guess);
+			UpdateGuesses_AutoCompleteWindow(guess);
 
-			if(WasCharacterAdded(before, after))
+			bool wasCharAdded = (after.Length > before.Length) == true;
+			bool wasCharRemoved = (after.Length < before.Length) == true;
+
+			char newChar = GetDifferentChar(before, after);
+
+			if (wasCharAdded)
 			{
-				char newChar = after.Last();
-				for (int i = 0; i < before.Length; i++)
-				{
-					if(before[i] != after[i])
-					{
-						newChar = after[i];
-						break;
-					}
-				}
 				//Debug.Log("New Char is "+newChar);
-				if(newChar == '.')
+				if (newChar == '.')
 				{
+					Type lastMemberType = null;
+					continuumSense.ScopeDown(lastMemberType);
 					OpenAutocompleteAsync();
-				} 
+				}
 			}
+
+			if (wasCharRemoved)
+			{
+				if (newChar == '.')
+				{
+					continuumSense.ScopeUp();
+					Debug.Log("Current scope is " + continuumSense.CurrentScope);
+				}
+			}
+
+
 
 
 
@@ -259,7 +269,7 @@ namespace TonRan.Continuum
 				//This block is to reacto to "new "
 				TextEditor editor = (TextEditor)EditorGUIUtility.GetStateObject(typeof(TextEditor), EditorGUIUtility.keyboardControl);
 				var lastFourChars = editor.text.Substring(editor.cursorIndex - 4, 4);
-				if(lastFourChars == "new " && autocompleteWindowWasDisplayed==false)
+				if (lastFourChars == "new " && autocompleteWindowWasDisplayed == false)
 				{
 					//I do my shit here
 					IEnumerable<string> allTypes = continuumSense.GetAllTypes();
@@ -268,12 +278,48 @@ namespace TonRan.Continuum
 					OpenAutocompleteAsync(allTypes);
 				}
 			}
-			catch (ArgumentOutOfRangeException){
+			catch (ArgumentOutOfRangeException)
+			{
 				//It's ok
 			}
-			
+		}
 
+		private static char GetDifferentChar(string before, string after)
+		{
+			char newChar = (after.Length > before.Length) ? after.Last() : before.Last();
+			for (int i = 0; i < ((after.Length < before.Length) ? after.Length : before.Length); i++)
+			{
+				if (before[i] != after[i])
+				{
+					newChar = after[i];
+					break;
+				}
+			}
 
+			return newChar;
+		}
+
+		private void UpdateGuesses_AutoCompleteWindow(string guess)
+		{
+			if (autocompleteWindow != null)
+			{
+				autocompleteWindow.ChangeEntries(guesses);
+			}
+		}
+
+		private void UpdateGuesses_Csense(string guess)
+		{
+			var guesses = continuumSense.Guess(guess);
+		}
+
+		private string GetGuess(string line)
+		{
+			string guess = "";
+
+			string reversedLine = new string(line.Reverse().ToArray());
+			guess = new string(reversedLine.TakeWhile(c => c != '.').Reverse().ToArray());
+
+			return guess;
 		}
 
 		//public Type GetMemberType(Type scope, string memberName)
@@ -306,10 +352,7 @@ namespace TonRan.Continuum
 		//	//endIf
 		//}
 
-		private bool WasCharacterAdded(string before, string after)
-		{
-			return after.Length - before.Length == 1; 
-		}
+
 
 		private void KeyEventHandling()
 		{
