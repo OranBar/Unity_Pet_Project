@@ -121,9 +121,13 @@ namespace TonRan.Continuum
 		{
 			if (initialized == false) { throw new ContinuumNotInitializedException(); }
 
+			
+
 			Debug.Assert(type_scope_history.Count >= 1, "Error! Can't scope up anymore.");
 
-			type_scope_history.Pop();
+			var result = type_scope_history.Pop();
+
+			Debug.Log("Scoping Up to " + result);
 		}
 
 		public void ScopeAllTheWayUp()

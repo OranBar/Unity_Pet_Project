@@ -253,6 +253,11 @@ namespace TonRan.Continuum
 					autocompleteWindow.ChangeEntries(continuumSense.GuessMemberInfo(""));
 					OpenAutocompleteAsync();
 				}
+
+				if (char.IsLetter(newChar) == false && newChar != '_' && newChar != '.') 
+				{
+					CloseAutocompleteWindow();
+				}
 			}
 
 			if (wasCharRemoved)
@@ -260,7 +265,7 @@ namespace TonRan.Continuum
 				if (newChar == '.')
 				{
 					continuumSense.ScopeUp();
-					Debug.Log("Current scope is " + continuumSense.CurrentScope);
+					//Debug.Log("Current scope is " + continuumSense.CurrentScope);
 				}
 			}
 
