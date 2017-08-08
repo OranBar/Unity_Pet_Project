@@ -1,3 +1,18 @@
-Create variable called @this, and allow this to be used in the scripting window.
+- Create variable called @this, and allow this to be used in the scripting window.
 do a replace this => @this, to make the code compile.
 this.transform.position.
+
+- Differ between object selected and object not selected.
+
+- Make peace with Text Area, and start talking to it.
+
+- Enable FlowMode: Mouse Click Debugging. Every press brings up a new automcomplete window, and inserts automatically a doy. Maybe bind FlowMode to mouse right, or have a shortcut to enable/disable.
+
+- Fix autocomplete window not closing when it should.
+
+- General Gui
+-- Coloring Methods/Fields/Properties
+
+
+
+

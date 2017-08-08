@@ -1,16 +1,22 @@
 fileFormatVersion: 2
-guid: 974b85e285f47a94aa988645647ff9c9
+guid: c683654d0ff943b4195355bb2bad3a95
 TrueTypeFontImporter:
-  serializedVersion: 2
+  serializedVersion: 4
   fontSize: 12
   forceTextureCase: -2
-  characterSpacing: 1
-  characterPadding: 0
+  characterSpacing: 0
+  characterPadding: 1
   includeFontData: 1
-  use2xBehaviour: 0
-  fontNames: []
+  fontName: Monaco
+  fontNames:
+  - Monaco
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 974b85e285f47a94aa988645647ff9c9, type: 3}
+  - {fileID: 12800000, guid: 3ce24cbeeae06e347a0c966628168416, type: 3}
+  - {fileID: 12800000, guid: 4530eb7fcdcf22f428498f6f1ee5c499, type: 3}
   customCharacters: 
   fontRenderingMode: 1
+  ascentCalculationMode: 1
   userData: 
   assetBundleName: 
   assetBundleVariant: 

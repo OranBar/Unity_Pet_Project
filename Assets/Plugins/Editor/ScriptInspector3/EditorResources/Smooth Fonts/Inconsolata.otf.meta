@@ -1,18 +1,22 @@
 fileFormatVersion: 2
-guid: 93f0df04e28000e4d998db0ee8cc5877
+guid: 32b0a029f7768b445bd33e4057bad53c
 TrueTypeFontImporter:
-  serializedVersion: 2
+  serializedVersion: 4
   fontSize: 14
   forceTextureCase: -2
-  characterSpacing: 1
-  characterPadding: 0
+  characterSpacing: 0
+  characterPadding: 1
   includeFontData: 1
-  use2xBehaviour: 0
+  fontName: Inconsolata
   fontNames:
   - Inconsolata
   - Consolas
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 93f0df04e28000e4d998db0ee8cc5877, type: 3}
+  - {fileID: 12800000, guid: 00a06c0d1c7aac94b9ad4a2f169cfb54, type: 3}
   customCharacters: 
   fontRenderingMode: 0
+  ascentCalculationMode: 1
   userData: 
   assetBundleName: 
   assetBundleVariant: 
