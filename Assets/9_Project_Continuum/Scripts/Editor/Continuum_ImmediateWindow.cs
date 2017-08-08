@@ -55,7 +55,9 @@ namespace TonRan.Continuum
 		private static Continuum_ImmediateWindow continuumWindow;
 
 		#region Async Temp Variables
-		private IEnumerable<string> autocompleteSeedForNextOnGui;
+		private string userGuess = null;
+		//TODO: Do I neeed this?
+		//private IEnumerable<string> autocompleteSeedForNextOnGui;
 		#endregion
 
 		[MenuItem("Continuum/Continuum_Immediate_"+ CONTINUUM_VERSION)]
@@ -65,9 +67,13 @@ namespace TonRan.Continuum
 			continuumWindow = EditorWindow.GetWindow<Continuum_ImmediateWindow>("Continuum_Immediate_"+ CONTINUUM_VERSION, false);
 
 			continuumWindow.continuumSense.Init(typeof(GameObject));
-			
+
+			//TODO: If I take this out, I think i have serialization throughout closing and reopening window.
+			continuumWindow.scriptText = "";
+
 			continuumWindow.Show();
 			continuumWindow.Focus();
+			Debug.Log("Continuum Window Initialized");
 		}
 
 		private void ProcessCodeViewCommands()
@@ -101,10 +107,18 @@ namespace TonRan.Continuum
 			}
 		}
 
+
+
 		void OnGUI()
 		{
-			KeyEventHandling();
+			TextEditor editor = (TextEditor)EditorGUIUtility.GetStateObject(typeof(TextEditor), EditorGUIUtility.keyboardControl);
 
+			
+
+			
+
+			KeyEventHandling();
+			
 			scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
 
 			//This is the reason why we can't copy paste and select all. 
@@ -130,37 +144,42 @@ namespace TonRan.Continuum
 				OpenAutocompleteAsync();
 			}
 
-			TextEditor editor = (TextEditor)EditorGUIUtility.GetStateObject(typeof(TextEditor), EditorGUIUtility.keyboardControl);
 
 			var t = EditorGUIUtility.GetStateObject(typeof(TextEditor), EditorGUIUtility.keyboardControl).GetType();
 
+			if (deleteKeyNextFrame > 0) { deleteKeyNextFrame--; }
+			if (deleteKeyNextFrame == 0)
+			{
+				editor.Backspace();
+				deleteKeyNextFrame--;
+			}
 
 			while (moveForward > 0)
 			{
-				editor.MoveRight(); 
+				editor.MoveRight();
 				moveForward--;
 			}
-			
+
 
 			// close the scroll view
 			EditorGUILayout.EndScrollView();
 
-			OpenAutocompleteWindowIfPointPressed(editor);
+			//OpenAutocompleteWindowIfPointPressed(editor);
 
 			if (openAutocomplete)
 			{
-				IEnumerable<string> seed = autocompleteSeedForNextOnGui;
+				//IEnumerable<string> seed = autocompleteSeedForNextOnGui;
 
-				if (seed == null)
-				{
-					if (continuumSense.initialized == false)
-					{
-						Debug.LogError("Continuum was not initialized. Reinitializing");
-						continuumSense.Init(typeof(GameObject));
-					}
+				//if (seed == null)
+				//{
+				//	if (continuumSense.initialized == false)
+				//	{
+				//		Debug.LogError("Continuum was not initialized. Reinitializing");
+				//		continuumSense.Init(typeof(GameObject));
+				//	}
 
-					seed = continuumSense.Guess("");
-				}
+				//	seed = continuumSense.Guess("");
+				//}
 
 				Action openAutoCompletePopup = () =>
 				{
@@ -168,8 +187,10 @@ namespace TonRan.Continuum
 					var cursorPos = editor.graphicalCursorPos;
 
 					autocompleteWindow.position = new Rect(position.position + cursorPos + new Vector2(5, 18), new Vector2(350, 200));
+					
+					autocompleteWindow.Continuum_Init();
 
-					autocompleteWindow.Continuum_Init(seed);
+					autocompleteWindow.ChangeEntries(continuumSense.GuessMemberInfo(GetGuess(scriptText)));
 
 					autocompleteWindow.onEntryChosen += (str) => OnAutocompleteEntryChosen(editor, str);
 
@@ -180,40 +201,13 @@ namespace TonRan.Continuum
 
 				openAutocomplete = false;
 			}
-		}
-
-
-		private void OnAutocompleteEntryChosen(TextEditor editor, string chosenEntry)
-		{
-			scriptText = scriptText.Insert(editor.cursorIndex, chosenEntry);
-			moveForward = chosenEntry.Length;
-
-			CloseAutocompleteWindow();
-
-			continuumSense.ScopeDown(chosenEntry);
-		}
-
-		private void OpenAutocompleteWindowIfPointPressed(TextEditor editor)
-		{
-			try
+			Repaint();
+			if(autocompleteWindow != null)
 			{
-				if (scriptText[editor.cursorIndex - 1] == '.' && autocompleteWindowWasDisplayed == false)
-				{
-					OpenAutocompleteAsync();
-				}
+				autocompleteWindow.Repaint();
 			}
-			catch (IndexOutOfRangeException)
-			{
-				//It's okay
-			}
-		}
 
-		private void CloseAutocompleteWindow()
-		{
-			if(autocompleteWindow == null) { return; }
-
-			autocompleteWindow.Close();
-			continuumWindow?.Focus();
+			
 		}
 
 		private void OnTextChanged(string before, string after)
@@ -221,36 +215,65 @@ namespace TonRan.Continuum
 			lastScriptMethod = null;
 			autocompleteWindowWasDisplayed = false;
 
-			if(before != after)
+			//This happens for example when Ctrl+A + Del
+			if (after.Contains('.') == false)
 			{
-				string reversedLine = new string(after.Reverse().ToArray());
-				string guess = new string(reversedLine.TakeWhile(c => c != '.').Reverse().ToArray());
-
-				var guesses = continuumSense.Guess(guess);
-				autocompleteWindow.ChangeEntries(guesses);
-				Debug.Log("Autocomplete Changed Entries: Seed is "+guess);
+				continuumSense.ScopeAllTheWayUp();
 			}
 
-			if(WasCharacterAdded(before, after))
+			string guess = GetGuess(line: after);
+			RefreshAutoCompleteWindowGuesses(guess);
+
+			bool wasCharAdded = (after.Length > before.Length) == true;
+			bool wasCharRemoved = (after.Length < before.Length) == true;
+
+			char newChar = GetDifferentChar(before, after);
+			
+			if (wasCharAdded)
 			{
-				char newChar = after.Last();
-				for (int i = 0; i < before.Length; i++)
-				{
-					if(before[i] != after[i])
-					{
-						newChar = after[i];
-						break;
-					}
-				}
 				//Debug.Log("New Char is "+newChar);
+				if (newChar == '.')
+				{
+					int newCharIndex = after.Length - guess.Length; //For now it'll do
+					var previousMember = new string(after.Substring(0, newCharIndex-1)	//We want the char before the point
+						.Reverse()
+						.Skip(1)
+						.TakeWhile(c => c != '.')
+						.Reverse()
+						.ToArray());
 
+					//var previousMember = new string(after
+					//	.Reverse()
+					//	.Skip(1)
+					//	.TakeWhile(c => c != '.')
+					//	.Reverse()
+					//	.ToArray());
+
+					continuumSense.ScopeDown(previousMember);
+					autocompleteWindow.ChangeEntries(continuumSense.GuessMemberInfo(""));
+					OpenAutocompleteAsync();
+				}
 			}
+
+			if (wasCharRemoved)
+			{
+				if (newChar == '.')
+				{
+					continuumSense.ScopeUp();
+					Debug.Log("Current scope is " + continuumSense.CurrentScope);
+				}
+			}
+
+
+
+
+
 			try
 			{
 				//This block is to reacto to "new "
 				TextEditor editor = (TextEditor)EditorGUIUtility.GetStateObject(typeof(TextEditor), EditorGUIUtility.keyboardControl);
 				var lastFourChars = editor.text.Substring(editor.cursorIndex - 4, 4);
-				if(lastFourChars == "new " && autocompleteWindowWasDisplayed==false)
+				if (lastFourChars == "new " && autocompleteWindowWasDisplayed == false)
 				{
 					//I do my shit here
 					IEnumerable<string> allTypes = continuumSense.GetAllTypes();
@@ -259,12 +282,131 @@ namespace TonRan.Continuum
 					OpenAutocompleteAsync(allTypes);
 				}
 			}
-			catch (ArgumentOutOfRangeException){
+			catch (ArgumentOutOfRangeException)
+			{
 				//It's ok
 			}
-			
+		}
 
+		private void KeyEventHandling()
+		{
+			switch (Event.current.type)
+			{
+				case EventType.KeyDown:
+					{
+						if (Event.current.keyCode == (KeyCode.Escape))
+						{
+							
+							CloseAutocompleteWindow();
+						}
+						if (Event.current.keyCode == (KeyCode.Escape))
+						{
+							if (autocompleteWindow == null) { return; }
 
+							//autocompleteWindow.SimulateSelectFirstEntry();
+							CloseAutocompleteWindow();
+
+							Event.current.Use();
+							//deleteKeyNextFrame = 1;
+						}
+
+						//if (Event.current.keyCode == (KeyCode.Return))
+						//{
+						//	if (autocompleteWindow == null) { return; }
+
+						//	autocompleteWindow.SimulateSelectFirstEntry();
+						//	CloseAutocompleteWindow();
+
+						//	Event.current.Use();
+						//	//deleteKeyNextFrame = 1;
+						//}
+						////TODO: I can't figure out how to ignore the space.
+						//if (Event.current.keyCode == (KeyCode.Space) && Event.current.shift)
+						//{
+						//	OpenAutocompleteAsync();
+
+						//	Event.current.Use();
+						//	//deleteKeyNextFrame = 1;
+						//}
+						break;
+					}
+
+			}
+		}
+
+		private void OnAutocompleteEntryChosen(TextEditor editor, string chosenEntry)
+		{
+			scriptText = new string(scriptText
+				.Reverse()
+				.SkipWhile(c => c != '.')
+				.Reverse()
+				.ToArray())
+				+ chosenEntry;
+
+			//scriptText = scriptText.Insert(editor.cursorIndex, chosenEntry);
+			moveForward = chosenEntry.Length;
+
+			CloseAutocompleteWindow();
+
+			//continuumSense.ScopeDown(chosenEntry);
+		}
+
+		//private void OpenAutocompleteWindowIfPointPressed(TextEditor editor)
+		//{
+		//	try
+		//	{
+		//		if (scriptText[editor.cursorIndex - 1] == '.' && autocompleteWindowWasDisplayed == false)
+		//		{
+		//			OpenAutocompleteAsync();
+		//		}
+		//	}
+		//	catch (IndexOutOfRangeException)
+		//	{
+		//		//It's okay
+		//	}
+		//}
+		private void CloseAutocompleteWindow()
+		{
+			if(autocompleteWindow == null) { return; }
+
+			autocompleteWindow.Close();
+			if(continuumWindow != null)
+			{
+				continuumWindow.Focus();
+			}
+		}
+		private static char GetDifferentChar(string before, string after)
+		{
+			char newChar = (after.Length > before.Length) ? after.Last() : before.Last();
+			for (int i = 0; i < ((after.Length < before.Length) ? after.Length : before.Length); i++)
+			{
+				if (before[i] != after[i])
+				{
+					newChar = after[i];
+					break;
+				}
+			}
+
+			return newChar;
+		}
+
+		private void RefreshAutoCompleteWindowGuesses(string guess)
+		{
+			var guesses = continuumSense.GuessMemberInfo(guess);
+			if (autocompleteWindow != null)
+			{
+				autocompleteWindow.ChangeEntries(guesses);
+			}
+		}
+
+		private string GetGuess(string line)
+		{
+			string guess = "";
+
+			string reversedLine = new string(line.Reverse().ToArray());
+			guess = new string(reversedLine.TakeWhile(c => c != '.').Reverse().ToArray());
+
+			return guess;
 		}
 
 		//public Type GetMemberType(Type scope, string memberName)
@@ -296,35 +438,6 @@ namespace TonRan.Continuum
 		//	DisplaySuggestionList(suggestions);
 		//	//endIf
 		//}
-
-		private bool WasCharacterAdded(string before, string after)
-		{
-			return after.Length - before.Length == 1; 
-		}
-
-		private void KeyEventHandling()
-		{
-			switch (Event.current.type)
-			{
-				case EventType.KeyDown:
-					{
-						if (Event.current.keyCode == (KeyCode.Escape))
-						{
-							// allow this key to be passed to the selected control
-							//if (autocompleteWindow != null) { autocompleteWindow.Close(); }
-							CloseAutocompleteWindow();
-						}
-						//TODO: I can't figure out how to ignore the space.
-						//if (Event.current.keyCode == (KeyCode.Space) && Event.current.shift)
-						//{
-						//	// allow this key to be passed to the selected control
-						//	OpenAutocompleteAsync();
-						//}
-						break;
-					}
-			}
-		}
-
 		public void OpenAutocompleteAsync(IEnumerable<string> seed = null)
 		{
 			if (autocompleteWindow != null)
@@ -333,10 +446,10 @@ namespace TonRan.Continuum
 				return;
 			}
 
-			if(seed != null)
-			{
-				autocompleteSeedForNextOnGui = seed;
-			}
+			//if(seed != null)
+			//{
+			//	autocompleteSeedForNextOnGui = seed;
+			//}
 
 			openAutocomplete = true;
 			autocompleteWindowWasDisplayed = true;
@@ -346,7 +459,7 @@ namespace TonRan.Continuum
 		private static bool openAutocomplete;
 
 		private int moveForward;
-		
+		private int deleteKeyNextFrame = -1; //-1 means do nothing
 
 		private void CompileAndRun()
 		{
@@ -462,7 +575,16 @@ namespace TonRan.Continuum
 
 			return result;
 		}
-		
+
+		private void OnFocus()
+		{
+			if(autocompleteWindow != null)
+			{
+				var tmp = autocompleteWindow.position;
+				autocompleteWindow.position = tmp;
+			}
+		}
+
 		private void OnDestroy()
 		{
 			CloseAutocompleteWindow();

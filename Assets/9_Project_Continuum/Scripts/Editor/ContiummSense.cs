@@ -20,8 +20,14 @@ namespace TonRan.Continuum
 
 		private Stack<Type> type_scope_history;
 
-		private string currentLine;
+		private Type baseType = null;
 
+		public Type CurrentScope {
+			get {
+				if (initialized == false) { return null; }
+				else return type_scope_history.Peek();
+			}
+		}
 
 		public void Init(/*TODO: Add parameters: Namespaces to analyze*/)
 		{
@@ -56,13 +62,14 @@ namespace TonRan.Continuum
 
 			//////
 
-			type_scope_history.Push(null);
+			//type_scope_history.Push(null);
 			initialized = true;
 		}
 
 		public void Init(Type baseType) 
 		{
 			Init();
+			this.baseType = baseType;
 			type_scope_history.Push(baseType);
 		}
 
@@ -97,6 +104,7 @@ namespace TonRan.Continuum
 
 
 			type_scope_history.Push(type);
+			Debug.Log("Scoped Down: Type is "+type);
 		}
 
 		public void ScopeDown(string memberName)
@@ -104,26 +112,9 @@ namespace TonRan.Continuum
 			if (initialized == false) { throw new ContinuumNotInitializedException(); }
 			if (type_scope_history.Peek() == null){	throw new ContinuumNotInitializedException("Current type is NULL. Please use ScopeDown at least once in the initialization");	}
 
-			Type type = null;
-			Type currentType = type_scope_history.Peek();
-			
-			var memberType = typeToMembers[currentType].FirstOrDefault(m => m.Name == memberName);
-			Debug.Assert(memberType != null);
-			if(memberType is PropertyInfo)
-			{
-				type = ((PropertyInfo)memberType).PropertyType;
-			}
-			if (memberType is FieldInfo)
-			{
-				type = ((FieldInfo)memberType).FieldType;
-			}
-			if (memberType is MethodInfo)
-			{
-				type = ((MethodInfo)memberType).ReturnType;
-			}
+			Type type = GetGuessType(memberName);
 
-			Debug.Log(type);
-			type_scope_history.Push(type);
+			ScopeDown(type);
 		}
 
 		public void ScopeUp()
@@ -133,6 +124,14 @@ namespace TonRan.Continuum
 			Debug.Assert(type_scope_history.Count >= 1, "Error! Can't scope up anymore.");
 
 			type_scope_history.Pop();
+		}
+
+		public void ScopeAllTheWayUp()
+		{
+			if (initialized == false) { throw new ContinuumNotInitializedException(); }
+			
+			type_scope_history.Clear();
+			type_scope_history.Push(baseType);
 		}
 
 		private void DisplaySuggestionList(List<string> suggestions)
@@ -298,29 +297,69 @@ namespace TonRan.Continuum
 			return typeToMembers.Keys.Select(k => k.Name).ToList();
 		}
 
-		/// <summary>
-		/// Uses the current scope to guess the next symbol.
-		/// </summary>
-		/// <param name="guess"></param>
-		/// <returns></returns>
-		public List<string> Guess(Type typeScope, string guess)
+		public Type GetGuessType(string guess)
+		{
+			if (initialized == false) { throw new ContinuumNotInitializedException(); }
+			
+			string predictedType = Guess(guess)[0];
+			Type typeScope = type_scope_history.Peek();
+			return GetGuessType(typeToMembers[typeScope].First(typeName => typeName.Name == predictedType));
+		}
+
+		public Type GetGuessType(MemberInfo guess)
+		{
+			if (initialized == false) { throw new ContinuumNotInitializedException(); }
+			Type type = null;
+			
+			Debug.Assert(guess != null);
+			if (guess is PropertyInfo)
+			{
+				type = ((PropertyInfo)guess).PropertyType;
+			}
+			if (guess is FieldInfo)
+			{
+				type = ((FieldInfo)guess).FieldType;
+			}
+			if (guess is MethodInfo)
+			{
+				type = ((MethodInfo)guess).ReturnType;
+			}
+			return type;
+		}
+
+		public List<MemberInfo> GuessMemberInfo(string guess)
 		{
 			if (initialized == false) { throw new ContinuumNotInitializedException(); }
 
-			List<string> result = new List<string>();
+			return GuessMemberInfo(type_scope_history.Peek(), guess);
+		}
 
-			if(typeScope == null)
+		public List<MemberInfo> GuessMemberInfo(Type typeScope, string guess)
+		{
+			if (initialized == false) { throw new ContinuumNotInitializedException(); }
+
+			try
+			{
+				Debug.Log("Guessing. Scope is " + typeScope.Name);
+			}
+			catch
+			{
+				Debug.Log("Guessing. Scope is null");
+			}
+			List<MemberInfo> result = new List<MemberInfo>();
+
+			if (typeScope == null)
 			{
 				foreach (var membersList in typeToMembers.Values)
 				{
-					result.AddRange(membersList.Select(mi => mi.Name));
+					result.AddRange(membersList);
 				}
 			}
 			else
 			{
-				result.AddRange(typeToMembers[typeScope].Select(mi => mi.Name));
+				result.AddRange(typeToMembers[typeScope]);
 			}
-			
+
 
 			//Special Case: We list everything we got. If this happens, the programmer needs all the help he can get.
 			if (string.IsNullOrEmpty(guess))
@@ -329,26 +368,26 @@ namespace TonRan.Continuum
 			}
 
 			//Filter all symbols SHORTER than the guess. 
-			result = result.Where(symbol => symbol.Length >= guess.Length).ToList();
+			result = result.Where(symbol => symbol.Name.Length >= guess.Length).ToList();
 
-		
-outer:      for (int i = result.Count - 1; i >= 0; i--)
+
+			outer: for (int i = result.Count - 1; i >= 0; i--)
 			{
-				string field = result[i].ToLower(); //Let's be case insensitive.
+				string field = result[i].Name.ToLower(); //Let's be case insensitive.
 				string inputCopy = "" + guess.ToLower();
 
-				int fuzzyMinIndex = field.Length-1;
+				int fuzzyMinIndex = field.Length - 1;
 
 				//Loop InputCopy (reversed). For each character, either delete that character in field, or continue to next field if that character isn't contained in the field
-				int k = inputCopy.Length-1;
-				while(k >= 0)
+				int k = inputCopy.Length - 1;
+				while (k >= 0)
 				{
 					char currChar = inputCopy[k];
 
 					while (field[fuzzyMinIndex] != currChar)
 					{
 						fuzzyMinIndex--;
-						if(fuzzyMinIndex < 0)
+						if (fuzzyMinIndex < 0)
 						{
 							result.RemoveAt(i);
 							goto outer;
@@ -379,11 +418,16 @@ outer:      for (int i = result.Count - 1; i >= 0; i--)
 			return result;
 		}
 
-		public List<string> GetAllGuesses()
+		/// <summary>
+		/// Uses the current scope to guess the next symbol.
+		/// </summary>
+		/// <param name="guess"></param>
+		/// <returns></returns>
+		public List<string> Guess(Type typeScope, string guess)
 		{
 			if (initialized == false) { throw new ContinuumNotInitializedException(); }
 
-			return Guess("");
+			return GuessMemberInfo(typeScope, guess).Select(m => m.Name).ToList();
 		}
 
 		/// <summary>
@@ -398,6 +442,12 @@ outer:      for (int i = result.Count - 1; i >= 0; i--)
 			return Guess(type_scope_history.Peek(), guess);
 		}
 
+		public List<string> GetAllGuesses()
+		{
+			if (initialized == false) { throw new ContinuumNotInitializedException(); }
+
+			return Guess("");
+		}
 		private List<string> SortResult(List<string> result)
 		{
 			//TODO: Sorting. I would start with classic statistical sorting or push-up sorting of the whole list(push up by Mathf.Floor(index/2)).
