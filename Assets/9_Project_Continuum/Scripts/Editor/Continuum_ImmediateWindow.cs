@@ -53,6 +53,11 @@ namespace TonRan.Continuum
 		private bool autocompleteWindowWasDisplayed = false;
 
 		private static Continuum_ImmediateWindow continuumWindow;
+		private static bool openAutocomplete;
+		[SerializeField] private bool autocompletionEnabled;
+
+		private bool lastAutocompletionEnabled;
+			
 
 		#region Async Temp Variables
 		private string userGuess = null;
@@ -70,6 +75,9 @@ namespace TonRan.Continuum
 
 			//TODO: If I take this out, I think i have serialization throughout closing and reopening window.
 			continuumWindow.scriptText = "";
+
+			//This line brings back the value from the last session.
+			continuumWindow.lastAutocompletionEnabled = continuumWindow.autocompletionEnabled;
 
 			continuumWindow.Show();
 			continuumWindow.Focus();
@@ -144,8 +152,23 @@ namespace TonRan.Continuum
 				OpenAutocompleteAsync();
 			}
 
+			EditorGUILayout.EndScrollView();
 
-			var t = EditorGUIUtility.GetStateObject(typeof(TextEditor), EditorGUIUtility.keyboardControl).GetType();
+			autocompletionEnabled = GUILayout.Toggle(autocompletionEnabled, "Enable Autocomplete");
+			if(autocompletionEnabled != lastAutocompletionEnabled)
+			{
+				lastAutocompletionEnabled = autocompletionEnabled;
+				if (autocompletionEnabled)
+				{
+					OpenAutocompleteAsync();
+				}
+				else
+				{
+					CloseAutocompleteWindow();
+				}
+			}
+			
+
 
 			if (deleteKeyNextFrame > 0) { deleteKeyNextFrame--; }
 			if (deleteKeyNextFrame == 0)
@@ -162,7 +185,7 @@ namespace TonRan.Continuum
 
 
 			// close the scroll view
-			EditorGUILayout.EndScrollView();
+			
 
 			//OpenAutocompleteWindowIfPointPressed(editor);
 
@@ -458,7 +481,7 @@ namespace TonRan.Continuum
 		//}
 		public void OpenAutocompleteAsync(IEnumerable<string> seed = null)
 		{
-			if (autocompleteWindow != null)
+			if (autocompleteWindow != null || autocompletionEnabled == false)
 			{
 				//CloseAutocompleteWindow();
 				return;
@@ -474,11 +497,8 @@ namespace TonRan.Continuum
 		}
 
 		public const int MAGIC_NUMBER = 14;
-		private static bool openAutocomplete;
-
 		private int moveForward;
 		private int deleteKeyNextFrame = -1; //-1 means do nothing
-
 		private void CompileAndRun()
 		{
 			continuumCompiler.CompileAndRun(scriptText);
