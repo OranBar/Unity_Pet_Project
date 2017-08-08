@@ -8,6 +8,7 @@ using System.CodeDom.Compiler;
 using UnityEditor;
 using System.Collections;
 using MyNamespace;
+using Debug = TonRan.Continuum.Debug;
 /*
 * ImmediateWindow.cs
 * Copyright (c) 2012 Nick Gravelyn

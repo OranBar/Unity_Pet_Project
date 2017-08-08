@@ -5,6 +5,7 @@ using UnityEditor;
 using System;
 using System.Linq;
 using System.Reflection;
+using Debug = TonRan.Continuum.Debug;
 
 public class ContinuumAutocompletePopup : EditorWindow
 {
