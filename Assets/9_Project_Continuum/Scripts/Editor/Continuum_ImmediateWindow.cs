@@ -147,13 +147,19 @@ namespace TonRan.Continuum
 
 			var t = EditorGUIUtility.GetStateObject(typeof(TextEditor), EditorGUIUtility.keyboardControl).GetType();
 
+			if (deleteKeyNextFrame > 0) { deleteKeyNextFrame--; }
+			if (deleteKeyNextFrame == 0)
+			{
+				editor.Backspace();
+				deleteKeyNextFrame--;
+			}
 
 			while (moveForward > 0)
 			{
-				editor.MoveRight(); 
+				editor.MoveRight();
 				moveForward--;
 			}
-			
+
 
 			// close the scroll view
 			EditorGUILayout.EndScrollView();
@@ -200,50 +206,8 @@ namespace TonRan.Continuum
 			{
 				autocompleteWindow.Repaint();
 			}
-		}
 
-
-		private void OnAutocompleteEntryChosen(TextEditor editor, string chosenEntry)
-		{
-			scriptText = new string(scriptText
-				.Reverse()
-				.SkipWhile(c => c != '.')
-				.Reverse()
-				.ToArray())
-				+ chosenEntry;
-
-			//scriptText = scriptText.Insert(editor.cursorIndex, chosenEntry);
-			moveForward = chosenEntry.Length;
-
-			CloseAutocompleteWindow();
-
-			continuumSense.ScopeDown(chosenEntry);
-		}
-
-		//private void OpenAutocompleteWindowIfPointPressed(TextEditor editor)
-		//{
-		//	try
-		//	{
-		//		if (scriptText[editor.cursorIndex - 1] == '.' && autocompleteWindowWasDisplayed == false)
-		//		{
-		//			OpenAutocompleteAsync();
-		//		}
-		//	}
-		//	catch (IndexOutOfRangeException)
-		//	{
-		//		//It's okay
-		//	}
-		//}
-
-		private void CloseAutocompleteWindow()
-		{
-			if(autocompleteWindow == null) { return; }
-
-			autocompleteWindow.Close();
-			if(continuumWindow != null)
-			{
-				continuumWindow.Focus();
-			}
+			
 		}
 
 		private void OnTextChanged(string before, string after)
@@ -256,23 +220,37 @@ namespace TonRan.Continuum
 			{
 				continuumSense.ScopeAllTheWayUp();
 			}
-			
+
 			string guess = GetGuess(line: after);
 			RefreshAutoCompleteWindowGuesses(guess);
-			
+
 			bool wasCharAdded = (after.Length > before.Length) == true;
 			bool wasCharRemoved = (after.Length < before.Length) == true;
 
 			char newChar = GetDifferentChar(before, after);
-
+			
 			if (wasCharAdded)
 			{
 				//Debug.Log("New Char is "+newChar);
 				if (newChar == '.')
 				{
-					guess = new string(after.Reverse().TakeWhile(c => c != '.').ToArray());
+					int newCharIndex = after.Length - guess.Length; //For now it'll do
+					var previousMember = new string(after.Substring(0, newCharIndex-1)	//We want the char before the point
+						.Reverse()
+						.Skip(1)
+						.TakeWhile(c => c != '.')
+						.Reverse()
+						.ToArray());
 
-					continuumSense.ScopeDown(guess);
+					//var previousMember = new string(after
+					//	.Reverse()
+					//	.Skip(1)
+					//	.TakeWhile(c => c != '.')
+					//	.Reverse()
+					//	.ToArray());
+
+					continuumSense.ScopeDown(previousMember);
+					autocompleteWindow.ChangeEntries(continuumSense.Guess(""));
 					OpenAutocompleteAsync();
 				}
 			}
@@ -310,6 +288,93 @@ namespace TonRan.Continuum
 			}
 		}
 
+		private void KeyEventHandling()
+		{
+			switch (Event.current.type)
+			{
+				case EventType.KeyDown:
+					{
+						if (Event.current.keyCode == (KeyCode.Escape))
+						{
+							
+							CloseAutocompleteWindow();
+						}
+						if (Event.current.keyCode == (KeyCode.Escape))
+						{
+							if (autocompleteWindow == null) { return; }
+
+							//autocompleteWindow.SimulateSelectFirstEntry();
+							CloseAutocompleteWindow();
+
+							Event.current.Use();
+							//deleteKeyNextFrame = 1;
+						}
+
+						//if (Event.current.keyCode == (KeyCode.Return))
+						//{
+						//	if (autocompleteWindow == null) { return; }
+
+						//	autocompleteWindow.SimulateSelectFirstEntry();
+						//	CloseAutocompleteWindow();
+
+						//	Event.current.Use();
+						//	//deleteKeyNextFrame = 1;
+						//}
+						////TODO: I can't figure out how to ignore the space.
+						//if (Event.current.keyCode == (KeyCode.Space) && Event.current.shift)
+						//{
+						//	OpenAutocompleteAsync();
+
+						//	Event.current.Use();
+						//	//deleteKeyNextFrame = 1;
+						//}
+						break;
+					}
+
+			}
+		}
+
+		private void OnAutocompleteEntryChosen(TextEditor editor, string chosenEntry)
+		{
+			scriptText = new string(scriptText
+				.Reverse()
+				.SkipWhile(c => c != '.')
+				.Reverse()
+				.ToArray())
+				+ chosenEntry;
+
+			//scriptText = scriptText.Insert(editor.cursorIndex, chosenEntry);
+			moveForward = chosenEntry.Length;
+
+			CloseAutocompleteWindow();
+
+			//continuumSense.ScopeDown(chosenEntry);
+		}
+
+		//private void OpenAutocompleteWindowIfPointPressed(TextEditor editor)
+		//{
+		//	try
+		//	{
+		//		if (scriptText[editor.cursorIndex - 1] == '.' && autocompleteWindowWasDisplayed == false)
+		//		{
+		//			OpenAutocompleteAsync();
+		//		}
+		//	}
+		//	catch (IndexOutOfRangeException)
+		//	{
+		//		//It's okay
+		//	}
+		//}
+		private void CloseAutocompleteWindow()
+		{
+			if(autocompleteWindow == null) { return; }
+
+			autocompleteWindow.Close();
+			if(continuumWindow != null)
+			{
+				continuumWindow.Focus();
+			}
+		}
 		private static char GetDifferentChar(string before, string after)
 		{
 			char newChar = (after.Length > before.Length) ? after.Last() : before.Last();
@@ -373,32 +438,6 @@ namespace TonRan.Continuum
 		//	DisplaySuggestionList(suggestions);
 		//	//endIf
 		//}
-
-
-
-		private void KeyEventHandling()
-		{
-			switch (Event.current.type)
-			{
-				case EventType.KeyDown:
-					{
-						if (Event.current.keyCode == (KeyCode.Escape))
-						{
-							// allow this key to be passed to the selected control
-							//if (autocompleteWindow != null) { autocompleteWindow.Close(); }
-							CloseAutocompleteWindow();
-						}
-						//TODO: I can't figure out how to ignore the space.
-						//if (Event.current.keyCode == (KeyCode.Space) && Event.current.shift)
-						//{
-						//	// allow this key to be passed to the selected control
-						//	OpenAutocompleteAsync();
-						//}
-						break;
-					}
-			}
-		}
-
 		public void OpenAutocompleteAsync(IEnumerable<string> seed = null)
 		{
 			if (autocompleteWindow != null)
@@ -420,7 +459,7 @@ namespace TonRan.Continuum
 		private static bool openAutocomplete;
 
 		private int moveForward;
-		
+		private int deleteKeyNextFrame = -1; //-1 means do nothing
 
 		private void CompileAndRun()
 		{

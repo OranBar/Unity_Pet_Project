@@ -53,5 +53,9 @@ public class ContinuumAutocompletePopup : EditorWindow
 		GUILayout.EndScrollView();
 		Repaint();
 	}
-			
+
+	internal void SimulateSelectFirstEntry()
+	{
+		onEntryChosen(entries.First());
+	}
 }
