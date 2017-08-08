@@ -327,39 +327,39 @@ namespace TonRan.Continuum
 			return type;
 		}
 
+		public List<MemberInfo> GuessMemberInfo(string guess)
+		{
+			if (initialized == false) { throw new ContinuumNotInitializedException(); }
 
+			return GuessMemberInfo(type_scope_history.Peek(), guess);
+		}
 
-		/// <summary>
-		/// Uses the current scope to guess the next symbol.
-		/// </summary>
-		/// <param name="guess"></param>
-		/// <returns></returns>
-		public List<string> Guess(Type typeScope, string guess)
+		public List<MemberInfo> GuessMemberInfo(Type typeScope, string guess)
 		{
 			if (initialized == false) { throw new ContinuumNotInitializedException(); }
 
 			try
 			{
-				Debug.Log("Guessing. Scope is "+typeScope.Name);
+				Debug.Log("Guessing. Scope is " + typeScope.Name);
 			}
 			catch
 			{
 				Debug.Log("Guessing. Scope is null");
 			}
-			List<string> result = new List<string>();
+			List<MemberInfo> result = new List<MemberInfo>();
 
-			if(typeScope == null)
+			if (typeScope == null)
 			{
 				foreach (var membersList in typeToMembers.Values)
 				{
-					result.AddRange(membersList.Select(mi => mi.Name));
+					result.AddRange(membersList);
 				}
 			}
 			else
 			{
-				result.AddRange(typeToMembers[typeScope].Select(mi => mi.Name));
+				result.AddRange(typeToMembers[typeScope]);
 			}
-			
+
 
 			//Special Case: We list everything we got. If this happens, the programmer needs all the help he can get.
 			if (string.IsNullOrEmpty(guess))
@@ -368,26 +368,26 @@ namespace TonRan.Continuum
 			}
 
 			//Filter all symbols SHORTER than the guess. 
-			result = result.Where(symbol => symbol.Length >= guess.Length).ToList();
+			result = result.Where(symbol => symbol.Name.Length >= guess.Length).ToList();
 
-		
-outer:      for (int i = result.Count - 1; i >= 0; i--)
+
+			outer: for (int i = result.Count - 1; i >= 0; i--)
 			{
-				string field = result[i].ToLower(); //Let's be case insensitive.
+				string field = result[i].Name.ToLower(); //Let's be case insensitive.
 				string inputCopy = "" + guess.ToLower();
 
-				int fuzzyMinIndex = field.Length-1;
+				int fuzzyMinIndex = field.Length - 1;
 
 				//Loop InputCopy (reversed). For each character, either delete that character in field, or continue to next field if that character isn't contained in the field
-				int k = inputCopy.Length-1;
-				while(k >= 0)
+				int k = inputCopy.Length - 1;
+				while (k >= 0)
 				{
 					char currChar = inputCopy[k];
 
 					while (field[fuzzyMinIndex] != currChar)
 					{
 						fuzzyMinIndex--;
-						if(fuzzyMinIndex < 0)
+						if (fuzzyMinIndex < 0)
 						{
 							result.RemoveAt(i);
 							goto outer;
@@ -418,11 +418,16 @@ outer:      for (int i = result.Count - 1; i >= 0; i--)
 			return result;
 		}
 
-		public List<string> GetAllGuesses()
+		/// <summary>
+		/// Uses the current scope to guess the next symbol.
+		/// </summary>
+		/// <param name="guess"></param>
+		/// <returns></returns>
+		public List<string> Guess(Type typeScope, string guess)
 		{
 			if (initialized == false) { throw new ContinuumNotInitializedException(); }
 
-			return Guess("");
+			return GuessMemberInfo(typeScope, guess).Select(m => m.Name).ToList();
 		}
 
 		/// <summary>
@@ -437,6 +442,12 @@ outer:      for (int i = result.Count - 1; i >= 0; i--)
 			return Guess(type_scope_history.Peek(), guess);
 		}
 
+		public List<string> GetAllGuesses()
+		{
+			if (initialized == false) { throw new ContinuumNotInitializedException(); }
+
+			return Guess("");
+		}
 		private List<string> SortResult(List<string> result)
 		{
 			//TODO: Sorting. I would start with classic statistical sorting or push-up sorting of the whole list(push up by Mathf.Floor(index/2)).
