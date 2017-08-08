@@ -56,7 +56,8 @@ namespace TonRan.Continuum
 
 		#region Async Temp Variables
 		private string userGuess = null;
-		private IEnumerable<string> autocompleteSeedForNextOnGui;
+		//TODO: Do I neeed this?
+		//private IEnumerable<string> autocompleteSeedForNextOnGui;
 		#endregion
 
 		[MenuItem("Continuum/Continuum_Immediate_"+ CONTINUUM_VERSION)]
@@ -69,6 +70,7 @@ namespace TonRan.Continuum
 			
 			continuumWindow.Show();
 			continuumWindow.Focus();
+			Debug.Log("Continuum Window Initialized");
 		}
 
 		private void ProcessCodeViewCommands()
@@ -150,18 +152,18 @@ namespace TonRan.Continuum
 
 			if (openAutocomplete)
 			{
-				IEnumerable<string> seed = autocompleteSeedForNextOnGui;
+				//IEnumerable<string> seed = autocompleteSeedForNextOnGui;
 
-				if (seed == null)
-				{
-					if (continuumSense.initialized == false)
-					{
-						Debug.LogError("Continuum was not initialized. Reinitializing");
-						continuumSense.Init(typeof(GameObject));
-					}
+				//if (seed == null)
+				//{
+				//	if (continuumSense.initialized == false)
+				//	{
+				//		Debug.LogError("Continuum was not initialized. Reinitializing");
+				//		continuumSense.Init(typeof(GameObject));
+				//	}
 
-					seed = continuumSense.Guess("");
-				}
+				//	seed = continuumSense.Guess("");
+				//}
 
 				Action openAutoCompletePopup = () =>
 				{
@@ -169,8 +171,8 @@ namespace TonRan.Continuum
 					var cursorPos = editor.graphicalCursorPos;
 
 					autocompleteWindow.position = new Rect(position.position + cursorPos + new Vector2(5, 18), new Vector2(350, 200));
-
-					autocompleteWindow.Continuum_Init(seed);
+					
+					autocompleteWindow.Continuum_Init();
 
 					autocompleteWindow.onEntryChosen += (str) => OnAutocompleteEntryChosen(editor, str);
 
@@ -191,7 +193,14 @@ namespace TonRan.Continuum
 
 		private void OnAutocompleteEntryChosen(TextEditor editor, string chosenEntry)
 		{
-			scriptText = scriptText.Insert(editor.cursorIndex, chosenEntry);
+			scriptText = new string(scriptText
+				.Reverse()
+				.SkipWhile(c => c != '.')
+				.Reverse()
+				.ToArray())
+				+ chosenEntry;
+
+			//scriptText = scriptText.Insert(editor.cursorIndex, chosenEntry);
 			moveForward = chosenEntry.Length;
 
 			CloseAutocompleteWindow();
@@ -230,11 +239,15 @@ namespace TonRan.Continuum
 			lastScriptMethod = null;
 			autocompleteWindowWasDisplayed = false;
 
+			//This happens for example when Ctrl+A + Del
+			if (after.Contains('.') == false)
+			{
+				continuumSense.ScopeAllTheWayUp();
+			}
+			
 			string guess = GetGuess(line: after);
-
-			UpdateGuesses_Csense(guess);
-			UpdateGuesses_AutoCompleteWindow(guess);
-
+			RefreshAutoCompleteWindowGuesses(guess);
+			
 			bool wasCharAdded = (after.Length > before.Length) == true;
 			bool wasCharRemoved = (after.Length < before.Length) == true;
 
@@ -245,8 +258,9 @@ namespace TonRan.Continuum
 				//Debug.Log("New Char is "+newChar);
 				if (newChar == '.')
 				{
-					Type lastMemberType = null;
-					continuumSense.ScopeDown(lastMemberType);
+					guess = new string(after.Reverse().TakeWhile(c => c != '.').ToArray());
+
+					continuumSense.ScopeDown(guess);
 					OpenAutocompleteAsync();
 				}
 			}
@@ -299,17 +313,13 @@ namespace TonRan.Continuum
 			return newChar;
 		}
 
-		private void UpdateGuesses_AutoCompleteWindow(string guess)
+		private void RefreshAutoCompleteWindowGuesses(string guess)
 		{
+			var guesses = continuumSense.Guess(guess);
 			if (autocompleteWindow != null)
 			{
 				autocompleteWindow.ChangeEntries(guesses);
 			}
-		}
-
-		private void UpdateGuesses_Csense(string guess)
-		{
-			var guesses = continuumSense.Guess(guess);
 		}
 
 		private string GetGuess(string line)
@@ -385,10 +395,10 @@ namespace TonRan.Continuum
 				return;
 			}
 
-			if(seed != null)
-			{
-				autocompleteSeedForNextOnGui = seed;
-			}
+			//if(seed != null)
+			//{
+			//	autocompleteSeedForNextOnGui = seed;
+			//}
 
 			openAutocomplete = true;
 			autocompleteWindowWasDisplayed = true;
@@ -514,7 +524,16 @@ namespace TonRan.Continuum
 
 			return result;
 		}
-		
+
+		private void OnFocus()
+		{
+			if(autocompleteWindow != null)
+			{
+				var tmp = autocompleteWindow.position;
+				autocompleteWindow.position = tmp;
+			}
+		}
+
 		private void OnDestroy()
 		{
 			CloseAutocompleteWindow();

@@ -18,7 +18,12 @@ public class ContinuumAutocompletePopup : EditorWindow
 		ContinuumAutocompletePopup window = ScriptableObject.CreateInstance<ContinuumAutocompletePopup>();
 		window.ShowPopup();
 	}
-			
+
+	public void Continuum_Init()
+	{
+		onEntryChosen = (s) => { };
+	}
+
 	public void Continuum_Init(IEnumerable<string> entries)
 	{
 		onEntryChosen = (s) => { };
