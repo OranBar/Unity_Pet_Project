@@ -190,7 +190,7 @@ namespace TonRan.Continuum
 					
 					autocompleteWindow.Continuum_Init();
 
-					autocompleteWindow.ChangeEntries(continuumSense.Guess(GetGuess(scriptText)));
+					autocompleteWindow.ChangeEntries(continuumSense.GuessMemberInfo(GetGuess(scriptText)));
 
 					autocompleteWindow.onEntryChosen += (str) => OnAutocompleteEntryChosen(editor, str);
 
@@ -250,7 +250,7 @@ namespace TonRan.Continuum
 					//	.ToArray());
 
 					continuumSense.ScopeDown(previousMember);
-					autocompleteWindow.ChangeEntries(continuumSense.Guess(""));
+					autocompleteWindow.ChangeEntries(continuumSense.GuessMemberInfo(""));
 					OpenAutocompleteAsync();
 				}
 			}
@@ -392,7 +392,7 @@ namespace TonRan.Continuum
 
 		private void RefreshAutoCompleteWindowGuesses(string guess)
 		{
-			var guesses = continuumSense.Guess(guess);
+			var guesses = continuumSense.GuessMemberInfo(guess);
 			if (autocompleteWindow != null)
 			{
 				autocompleteWindow.ChangeEntries(guesses);
