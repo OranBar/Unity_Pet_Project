@@ -8,6 +8,7 @@ using System.CodeDom.Compiler;
 using UnityEditor;
 using System.Collections;
 using MyNamespace;
+using Debug = TonRan.Continuum.Debug;
 /*
 * ImmediateWindow.cs
 * Copyright (c) 2012 Nick Gravelyn
@@ -44,7 +45,7 @@ namespace TonRan.Continuum
 		// script text
 		private string scriptText = string.Empty;
 		// cache of last method we compiled so repeat executions only incur a single compilation
-		private MethodInfo lastScriptMethod;
+		//private MethodInfo lastScriptMethod;
 
 		// position of scroll view
 		private Vector2 scrollPos;
@@ -53,13 +54,12 @@ namespace TonRan.Continuum
 		private bool autocompleteWindowWasDisplayed = false;
 
 		private static Continuum_ImmediateWindow continuumWindow;
+		private static bool openAutocomplete;
 
-		#region Async Temp Variables
-		private string userGuess = null;
-		//TODO: Do I neeed this?
-		//private IEnumerable<string> autocompleteSeedForNextOnGui;
-		#endregion
+		public static bool autocompletionEnabled;
 
+		private bool lastAutocompletionEnabled;
+			
 		[MenuItem("Continuum/Continuum_Immediate_"+ CONTINUUM_VERSION)]
 		static void Init()
 		{
@@ -70,6 +70,9 @@ namespace TonRan.Continuum
 
 			//TODO: If I take this out, I think i have serialization throughout closing and reopening window.
 			continuumWindow.scriptText = "";
+
+			//This line brings back the value from the last session.
+			continuumWindow.lastAutocompletionEnabled = autocompletionEnabled;
 
 			continuumWindow.Show();
 			continuumWindow.Focus();
@@ -144,8 +147,23 @@ namespace TonRan.Continuum
 				OpenAutocompleteAsync();
 			}
 
+			EditorGUILayout.EndScrollView();
 
-			var t = EditorGUIUtility.GetStateObject(typeof(TextEditor), EditorGUIUtility.keyboardControl).GetType();
+			autocompletionEnabled = GUILayout.Toggle(autocompletionEnabled, "Enable Autocomplete");
+			if(autocompletionEnabled != lastAutocompletionEnabled)
+			{
+				lastAutocompletionEnabled = autocompletionEnabled;
+				if (autocompletionEnabled)
+				{
+					OpenAutocompleteAsync();
+				}
+				else
+				{
+					CloseAutocompleteWindow();
+				}
+			}
+			
+
 
 			if (deleteKeyNextFrame > 0) { deleteKeyNextFrame--; }
 			if (deleteKeyNextFrame == 0)
@@ -159,10 +177,11 @@ namespace TonRan.Continuum
 				editor.MoveRight();
 				moveForward--;
 			}
+			Debug.Assert(moveForward >= 0);
 
 
 			// close the scroll view
-			EditorGUILayout.EndScrollView();
+			
 
 			//OpenAutocompleteWindowIfPointPressed(editor);
 
@@ -206,13 +225,11 @@ namespace TonRan.Continuum
 			{
 				autocompleteWindow.Repaint();
 			}
-
-			
 		}
 
 		private void OnTextChanged(string before, string after)
 		{
-			lastScriptMethod = null;
+			//lastScriptMethod = null;
 			autocompleteWindowWasDisplayed = false;
 
 			//This happens for example when Ctrl+A + Del
@@ -231,6 +248,14 @@ namespace TonRan.Continuum
 			
 			if (wasCharAdded)
 			{
+				if(string.IsNullOrEmpty(before))
+				{
+					if (IsValidMemberSymbol(newChar))
+					{
+						OpenAutocompleteAsync();
+					}
+				}
+
 				//Debug.Log("New Char is "+newChar);
 				if (newChar == '.')
 				{
@@ -254,7 +279,7 @@ namespace TonRan.Continuum
 					OpenAutocompleteAsync();
 				}
 
-				if (char.IsLetter(newChar) == false && newChar != '_' && newChar != '.') 
+				if (IsValidMemberSymbol(newChar) == false && newChar != '.') 
 				{
 					CloseAutocompleteWindow();
 				}
@@ -291,6 +316,11 @@ namespace TonRan.Continuum
 			{
 				//It's ok
 			}
+		}
+
+		private bool IsValidMemberSymbol(char c)
+		{
+			return char.IsLetter(c) || c == '_';
 		}
 
 		private void KeyEventHandling()
@@ -349,11 +379,27 @@ namespace TonRan.Continuum
 				+ chosenEntry;
 
 			//scriptText = scriptText.Insert(editor.cursorIndex, chosenEntry);
-			moveForward = chosenEntry.Length;
+			moveForward += chosenEntry.Length;
 
-			CloseAutocompleteWindow();
+			try
+			{
+				continuumSense.ScopeDown(chosenEntry);
+				autocompleteWindow.ChangeEntries(continuumSense.GuessMemberInfo(""));
+			}
+			catch (KeyNotFoundException)
+			{
+				continuumSense.ScopeUp();
+				CloseAutocompleteWindow();
+				//Remove last char: the point. Then go back one with cursor.
+				//scriptText = scriptText.Substring(0, scriptText.Length - 2);
+				//moveForward--;
+				return;
+			}
 
-			//continuumSense.ScopeDown(chosenEntry);
+			scriptText += ".";
+			moveForward += ".".Length;
+
+			//CloseAutocompleteWindow();
 		}
 
 		//private void OpenAutocompleteWindowIfPointPressed(TextEditor editor)
@@ -445,7 +491,7 @@ namespace TonRan.Continuum
 		//}
 		public void OpenAutocompleteAsync(IEnumerable<string> seed = null)
 		{
-			if (autocompleteWindow != null)
+			if (autocompleteWindow != null || autocompletionEnabled == false)
 			{
 				//CloseAutocompleteWindow();
 				return;
@@ -461,11 +507,8 @@ namespace TonRan.Continuum
 		}
 
 		public const int MAGIC_NUMBER = 14;
-		private static bool openAutocomplete;
-
 		private int moveForward;
 		private int deleteKeyNextFrame = -1; //-1 means do nothing
-
 		private void CompileAndRun()
 		{
 			continuumCompiler.CompileAndRun(scriptText);
