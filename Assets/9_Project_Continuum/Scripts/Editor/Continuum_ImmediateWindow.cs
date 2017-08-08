@@ -55,7 +55,9 @@ namespace TonRan.Continuum
 		private static Continuum_ImmediateWindow continuumWindow;
 
 		#region Async Temp Variables
-		private IEnumerable<string> autocompleteSeedForNextOnGui;
+		private string userGuess = null;
+		//TODO: Do I neeed this?
+		//private IEnumerable<string> autocompleteSeedForNextOnGui;
 		#endregion
 
 		[MenuItem("Continuum/Continuum_Immediate_"+ CONTINUUM_VERSION)]
@@ -68,6 +70,7 @@ namespace TonRan.Continuum
 			
 			continuumWindow.Show();
 			continuumWindow.Focus();
+			Debug.Log("Continuum Window Initialized");
 		}
 
 		private void ProcessCodeViewCommands()
@@ -145,22 +148,22 @@ namespace TonRan.Continuum
 			// close the scroll view
 			EditorGUILayout.EndScrollView();
 
-			OpenAutocompleteWindowIfPointPressed(editor);
+			//OpenAutocompleteWindowIfPointPressed(editor);
 
 			if (openAutocomplete)
 			{
-				IEnumerable<string> seed = autocompleteSeedForNextOnGui;
+				//IEnumerable<string> seed = autocompleteSeedForNextOnGui;
 
-				if (seed == null)
-				{
-					if (continuumSense.initialized == false)
-					{
-						Debug.LogError("Continuum was not initialized. Reinitializing");
-						continuumSense.Init(typeof(GameObject));
-					}
+				//if (seed == null)
+				//{
+				//	if (continuumSense.initialized == false)
+				//	{
+				//		Debug.LogError("Continuum was not initialized. Reinitializing");
+				//		continuumSense.Init(typeof(GameObject));
+				//	}
 
-					seed = continuumSense.Guess("");
-				}
+				//	seed = continuumSense.Guess("");
+				//}
 
 				Action openAutoCompletePopup = () =>
 				{
@@ -168,8 +171,8 @@ namespace TonRan.Continuum
 					var cursorPos = editor.graphicalCursorPos;
 
 					autocompleteWindow.position = new Rect(position.position + cursorPos + new Vector2(5, 18), new Vector2(350, 200));
-
-					autocompleteWindow.Continuum_Init(seed);
+					
+					autocompleteWindow.Continuum_Init();
 
 					autocompleteWindow.onEntryChosen += (str) => OnAutocompleteEntryChosen(editor, str);
 
@@ -180,12 +183,24 @@ namespace TonRan.Continuum
 
 				openAutocomplete = false;
 			}
+			Repaint();
+			if(autocompleteWindow != null)
+			{
+				autocompleteWindow.Repaint();
+			}
 		}
 
 
 		private void OnAutocompleteEntryChosen(TextEditor editor, string chosenEntry)
 		{
-			scriptText = scriptText.Insert(editor.cursorIndex, chosenEntry);
+			scriptText = new string(scriptText
+				.Reverse()
+				.SkipWhile(c => c != '.')
+				.Reverse()
+				.ToArray())
+				+ chosenEntry;
+
+			//scriptText = scriptText.Insert(editor.cursorIndex, chosenEntry);
 			moveForward = chosenEntry.Length;
 
 			CloseAutocompleteWindow();
@@ -193,27 +208,30 @@ namespace TonRan.Continuum
 			continuumSense.ScopeDown(chosenEntry);
 		}
 
-		private void OpenAutocompleteWindowIfPointPressed(TextEditor editor)
-		{
-			try
-			{
-				if (scriptText[editor.cursorIndex - 1] == '.' && autocompleteWindowWasDisplayed == false)
-				{
-					OpenAutocompleteAsync();
-				}
-			}
-			catch (IndexOutOfRangeException)
-			{
-				//It's okay
-			}
-		}
+		//private void OpenAutocompleteWindowIfPointPressed(TextEditor editor)
+		//{
+		//	try
+		//	{
+		//		if (scriptText[editor.cursorIndex - 1] == '.' && autocompleteWindowWasDisplayed == false)
+		//		{
+		//			OpenAutocompleteAsync();
+		//		}
+		//	}
+		//	catch (IndexOutOfRangeException)
+		//	{
+		//		//It's okay
+		//	}
+		//}
 
 		private void CloseAutocompleteWindow()
 		{
 			if(autocompleteWindow == null) { return; }
 
 			autocompleteWindow.Close();
-			continuumWindow?.Focus();
+			if(continuumWindow != null)
+			{
+				continuumWindow.Focus();
+			}
 		}
 
 		private void OnTextChanged(string before, string after)
@@ -221,35 +239,51 @@ namespace TonRan.Continuum
 			lastScriptMethod = null;
 			autocompleteWindowWasDisplayed = false;
 
-			if(before != after)
+			//This happens for example when Ctrl+A + Del
+			if (after.Contains('.') == false)
 			{
-				string reversedLine = new string(after.Reverse().ToArray());
-				string guess = new string(reversedLine.TakeWhile(c => c != '.').Reverse().ToArray());
-
-				var guesses = continuumSense.Guess(guess);
-				autocompleteWindow.ChangeEntries(guesses);
+				continuumSense.ScopeAllTheWayUp();
 			}
+			
+			string guess = GetGuess(line: after);
+			RefreshAutoCompleteWindowGuesses(guess);
+			
+			bool wasCharAdded = (after.Length > before.Length) == true;
+			bool wasCharRemoved = (after.Length < before.Length) == true;
 
-			if(WasCharacterAdded(before, after))
+			char newChar = GetDifferentChar(before, after);
+
+			if (wasCharAdded)
 			{
-				char newChar = after.Last();
-				for (int i = 0; i < before.Length; i++)
-				{
-					if(before[i] != after[i])
-					{
-						newChar = after[i];
-						break;
-					}
-				}
 				//Debug.Log("New Char is "+newChar);
+				if (newChar == '.')
+				{
+					guess = new string(after.Reverse().TakeWhile(c => c != '.').ToArray());
 
+					continuumSense.ScopeDown(guess);
+					OpenAutocompleteAsync();
+				}
 			}
+
+			if (wasCharRemoved)
+			{
+				if (newChar == '.')
+				{
+					continuumSense.ScopeUp();
+					Debug.Log("Current scope is " + continuumSense.CurrentScope);
+				}
+			}
+
+
+
+
+
 			try
 			{
 				//This block is to reacto to "new "
 				TextEditor editor = (TextEditor)EditorGUIUtility.GetStateObject(typeof(TextEditor), EditorGUIUtility.keyboardControl);
 				var lastFourChars = editor.text.Substring(editor.cursorIndex - 4, 4);
-				if(lastFourChars == "new " && autocompleteWindowWasDisplayed==false)
+				if (lastFourChars == "new " && autocompleteWindowWasDisplayed == false)
 				{
 					//I do my shit here
 					IEnumerable<string> allTypes = continuumSense.GetAllTypes();
@@ -258,12 +292,44 @@ namespace TonRan.Continuum
 					OpenAutocompleteAsync(allTypes);
 				}
 			}
-			catch (ArgumentOutOfRangeException){
+			catch (ArgumentOutOfRangeException)
+			{
 				//It's ok
 			}
-			
+		}
 
+		private static char GetDifferentChar(string before, string after)
+		{
+			char newChar = (after.Length > before.Length) ? after.Last() : before.Last();
+			for (int i = 0; i < ((after.Length < before.Length) ? after.Length : before.Length); i++)
+			{
+				if (before[i] != after[i])
+				{
+					newChar = after[i];
+					break;
+				}
+			}
 
+			return newChar;
+		}
+
+		private void RefreshAutoCompleteWindowGuesses(string guess)
+		{
+			var guesses = continuumSense.Guess(guess);
+			if (autocompleteWindow != null)
+			{
+				autocompleteWindow.ChangeEntries(guesses);
+			}
+		}
+
+		private string GetGuess(string line)
+		{
+			string guess = "";
+
+			string reversedLine = new string(line.Reverse().ToArray());
+			guess = new string(reversedLine.TakeWhile(c => c != '.').Reverse().ToArray());
+
+			return guess;
 		}
 
 		//public Type GetMemberType(Type scope, string memberName)
@@ -296,10 +362,7 @@ namespace TonRan.Continuum
 		//	//endIf
 		//}
 
-		private bool WasCharacterAdded(string before, string after)
-		{
-			return after.Length - before.Length == 1; 
-		}
+
 
 		private void KeyEventHandling()
 		{
@@ -332,10 +395,10 @@ namespace TonRan.Continuum
 				return;
 			}
 
-			if(seed != null)
-			{
-				autocompleteSeedForNextOnGui = seed;
-			}
+			//if(seed != null)
+			//{
+			//	autocompleteSeedForNextOnGui = seed;
+			//}
 
 			openAutocomplete = true;
 			autocompleteWindowWasDisplayed = true;
@@ -461,7 +524,16 @@ namespace TonRan.Continuum
 
 			return result;
 		}
-		
+
+		private void OnFocus()
+		{
+			if(autocompleteWindow != null)
+			{
+				var tmp = autocompleteWindow.position;
+				autocompleteWindow.position = tmp;
+			}
+		}
+
 		private void OnDestroy()
 		{
 			CloseAutocompleteWindow();

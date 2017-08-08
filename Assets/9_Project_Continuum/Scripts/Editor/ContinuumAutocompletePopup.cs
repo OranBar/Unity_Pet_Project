@@ -18,7 +18,12 @@ public class ContinuumAutocompletePopup : EditorWindow
 		ContinuumAutocompletePopup window = ScriptableObject.CreateInstance<ContinuumAutocompletePopup>();
 		window.ShowPopup();
 	}
-			
+
+	public void Continuum_Init()
+	{
+		onEntryChosen = (s) => { };
+	}
+
 	public void Continuum_Init(IEnumerable<string> entries)
 	{
 		onEntryChosen = (s) => { };
@@ -28,6 +33,7 @@ public class ContinuumAutocompletePopup : EditorWindow
 	public void ChangeEntries(IEnumerable<string> newEntries)
 	{
 		entries = new HashSet<string>(newEntries);
+		Repaint();
 	}
 			
 	private Vector2 scrollPos;
@@ -45,6 +51,7 @@ public class ContinuumAutocompletePopup : EditorWindow
 			}
 		}
 		GUILayout.EndScrollView();
+		Repaint();
 	}
 			
 }

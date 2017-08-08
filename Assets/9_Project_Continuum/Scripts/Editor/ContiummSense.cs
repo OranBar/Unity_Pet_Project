@@ -20,8 +20,14 @@ namespace TonRan.Continuum
 
 		private Stack<Type> type_scope_history;
 
-		private string currentLine;
+		private Type baseType = null;
 
+		public Type CurrentScope {
+			get {
+				if (initialized == false) { return null; }
+				else return type_scope_history.Peek();
+			}
+		}
 
 		public void Init(/*TODO: Add parameters: Namespaces to analyze*/)
 		{
@@ -63,6 +69,7 @@ namespace TonRan.Continuum
 		public void Init(Type baseType) 
 		{
 			Init();
+			this.baseType = baseType;
 			type_scope_history.Push(baseType);
 		}
 
@@ -97,6 +104,7 @@ namespace TonRan.Continuum
 
 
 			type_scope_history.Push(type);
+			Debug.Log("Scoped Down: Type is "+type);
 		}
 
 		public void ScopeDown(string memberName)
@@ -104,26 +112,9 @@ namespace TonRan.Continuum
 			if (initialized == false) { throw new ContinuumNotInitializedException(); }
 			if (type_scope_history.Peek() == null){	throw new ContinuumNotInitializedException("Current type is NULL. Please use ScopeDown at least once in the initialization");	}
 
-			Type type = null;
-			Type currentType = type_scope_history.Peek();
-			
-			var memberType = typeToMembers[currentType].FirstOrDefault(m => m.Name == memberName);
-			Debug.Assert(memberType != null);
-			if(memberType is PropertyInfo)
-			{
-				type = ((PropertyInfo)memberType).PropertyType;
-			}
-			if (memberType is FieldInfo)
-			{
-				type = ((FieldInfo)memberType).FieldType;
-			}
-			if (memberType is MethodInfo)
-			{
-				type = ((MethodInfo)memberType).ReturnType;
-			}
+			Type type = GetGuessType(memberName);
 
-			Debug.Log(type);
-			type_scope_history.Push(type);
+			ScopeDown(type);
 		}
 
 		public void ScopeUp()
@@ -133,6 +124,16 @@ namespace TonRan.Continuum
 			Debug.Assert(type_scope_history.Count >= 1, "Error! Can't scope up anymore.");
 
 			type_scope_history.Pop();
+		}
+
+		public void ScopeAllTheWayUp()
+		{
+			if (initialized == false) { throw new ContinuumNotInitializedException(); }
+
+			Debug.Assert(type_scope_history.Count >= 1, "Error! Can't scope up anymore.");
+
+			type_scope_history.Clear();
+			type_scope_history.Push(baseType);
 		}
 
 		private void DisplaySuggestionList(List<string> suggestions)
@@ -298,6 +299,38 @@ namespace TonRan.Continuum
 			return typeToMembers.Keys.Select(k => k.Name).ToList();
 		}
 
+		public Type GetGuessType(string guess)
+		{
+			if (initialized == false) { throw new ContinuumNotInitializedException(); }
+			
+			string predictedType = Guess(guess)[0];
+			Type typeScope = type_scope_history.Peek();
+			return GetGuessType(typeToMembers[typeScope].First(typeName => typeName.Name == predictedType));
+		}
+
+		public Type GetGuessType(MemberInfo guess)
+		{
+			if (initialized == false) { throw new ContinuumNotInitializedException(); }
+			Type type = null;
+			
+			Debug.Assert(guess != null);
+			if (guess is PropertyInfo)
+			{
+				type = ((PropertyInfo)guess).PropertyType;
+			}
+			if (guess is FieldInfo)
+			{
+				type = ((FieldInfo)guess).FieldType;
+			}
+			if (guess is MethodInfo)
+			{
+				type = ((MethodInfo)guess).ReturnType;
+			}
+			return type;
+		}
+
+
+
 		/// <summary>
 		/// Uses the current scope to guess the next symbol.
 		/// </summary>
@@ -307,6 +340,14 @@ namespace TonRan.Continuum
 		{
 			if (initialized == false) { throw new ContinuumNotInitializedException(); }
 
+			try
+			{
+				Debug.Log("Guessing. Scope is "+typeScope.Name);
+			}
+			catch
+			{
+				Debug.Log("Guessing. Scope is null");
+			}
 			List<string> result = new List<string>();
 
 			if(typeScope == null)
