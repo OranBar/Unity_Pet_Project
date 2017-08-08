@@ -62,7 +62,7 @@ namespace TonRan.Continuum
 
 			//////
 
-			type_scope_history.Push(null);
+			//type_scope_history.Push(null);
 			initialized = true;
 		}
 
@@ -129,9 +129,7 @@ namespace TonRan.Continuum
 		public void ScopeAllTheWayUp()
 		{
 			if (initialized == false) { throw new ContinuumNotInitializedException(); }
-
-			Debug.Assert(type_scope_history.Count >= 1, "Error! Can't scope up anymore.");
-
+			
 			type_scope_history.Clear();
 			type_scope_history.Push(baseType);
 		}

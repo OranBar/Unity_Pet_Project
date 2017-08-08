@@ -67,7 +67,10 @@ namespace TonRan.Continuum
 			continuumWindow = EditorWindow.GetWindow<Continuum_ImmediateWindow>("Continuum_Immediate_"+ CONTINUUM_VERSION, false);
 
 			continuumWindow.continuumSense.Init(typeof(GameObject));
-			
+
+			//TODO: If I take this out, I think i have serialization throughout closing and reopening window.
+			continuumWindow.scriptText = "";
+
 			continuumWindow.Show();
 			continuumWindow.Focus();
 			Debug.Log("Continuum Window Initialized");
@@ -104,10 +107,18 @@ namespace TonRan.Continuum
 			}
 		}
 
+
+
 		void OnGUI()
 		{
-			KeyEventHandling();
+			TextEditor editor = (TextEditor)EditorGUIUtility.GetStateObject(typeof(TextEditor), EditorGUIUtility.keyboardControl);
 
+			
+
+			
+
+			KeyEventHandling();
+			
 			scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
 
 			//This is the reason why we can't copy paste and select all. 
@@ -133,7 +144,6 @@ namespace TonRan.Continuum
 				OpenAutocompleteAsync();
 			}
 
-			TextEditor editor = (TextEditor)EditorGUIUtility.GetStateObject(typeof(TextEditor), EditorGUIUtility.keyboardControl);
 
 			var t = EditorGUIUtility.GetStateObject(typeof(TextEditor), EditorGUIUtility.keyboardControl).GetType();
 
@@ -173,6 +183,8 @@ namespace TonRan.Continuum
 					autocompleteWindow.position = new Rect(position.position + cursorPos + new Vector2(5, 18), new Vector2(350, 200));
 					
 					autocompleteWindow.Continuum_Init();
+
+					autocompleteWindow.ChangeEntries(continuumSense.Guess(GetGuess(scriptText)));
 
 					autocompleteWindow.onEntryChosen += (str) => OnAutocompleteEntryChosen(editor, str);
 
