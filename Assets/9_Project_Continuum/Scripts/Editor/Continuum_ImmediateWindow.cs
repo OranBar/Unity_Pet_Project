@@ -45,7 +45,7 @@ namespace TonRan.Continuum
 		// script text
 		private string scriptText = string.Empty;
 		// cache of last method we compiled so repeat executions only incur a single compilation
-		private MethodInfo lastScriptMethod;
+		//private MethodInfo lastScriptMethod;
 
 		// position of scroll view
 		private Vector2 scrollPos;
@@ -60,13 +60,6 @@ namespace TonRan.Continuum
 
 		private bool lastAutocompletionEnabled;
 			
-
-		#region Async Temp Variables
-		private string userGuess = null;
-		//TODO: Do I neeed this?
-		//private IEnumerable<string> autocompleteSeedForNextOnGui;
-		#endregion
-
 		[MenuItem("Continuum/Continuum_Immediate_"+ CONTINUUM_VERSION)]
 		static void Init()
 		{
@@ -184,6 +177,7 @@ namespace TonRan.Continuum
 				editor.MoveRight();
 				moveForward--;
 			}
+			Debug.Assert(moveForward >= 0);
 
 
 			// close the scroll view
@@ -231,13 +225,11 @@ namespace TonRan.Continuum
 			{
 				autocompleteWindow.Repaint();
 			}
-
-			
 		}
 
 		private void OnTextChanged(string before, string after)
 		{
-			lastScriptMethod = null;
+			//lastScriptMethod = null;
 			autocompleteWindowWasDisplayed = false;
 
 			//This happens for example when Ctrl+A + Del
@@ -387,11 +379,27 @@ namespace TonRan.Continuum
 				+ chosenEntry;
 
 			//scriptText = scriptText.Insert(editor.cursorIndex, chosenEntry);
-			moveForward = chosenEntry.Length;
+			moveForward += chosenEntry.Length;
 
-			CloseAutocompleteWindow();
+			try
+			{
+				continuumSense.ScopeDown(chosenEntry);
+				autocompleteWindow.ChangeEntries(continuumSense.GuessMemberInfo(""));
+			}
+			catch (KeyNotFoundException)
+			{
+				continuumSense.ScopeUp();
+				CloseAutocompleteWindow();
+				//Remove last char: the point. Then go back one with cursor.
+				//scriptText = scriptText.Substring(0, scriptText.Length - 2);
+				//moveForward--;
+				return;
+			}
 
-			//continuumSense.ScopeDown(chosenEntry);
+			scriptText += ".";
+			moveForward += ".".Length;
+
+			//CloseAutocompleteWindow();
 		}
 
 		//private void OpenAutocompleteWindowIfPointPressed(TextEditor editor)
