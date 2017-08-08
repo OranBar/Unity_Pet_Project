@@ -231,6 +231,14 @@ namespace TonRan.Continuum
 			
 			if (wasCharAdded)
 			{
+				if(string.IsNullOrEmpty(before))
+				{
+					if (IsValidMemberSymbol(newChar))
+					{
+						OpenAutocompleteAsync();
+					}
+				}
+
 				//Debug.Log("New Char is "+newChar);
 				if (newChar == '.')
 				{
@@ -254,7 +262,7 @@ namespace TonRan.Continuum
 					OpenAutocompleteAsync();
 				}
 
-				if (char.IsLetter(newChar) == false && newChar != '_' && newChar != '.') 
+				if (IsValidMemberSymbol(newChar) == false && newChar != '.') 
 				{
 					CloseAutocompleteWindow();
 				}
@@ -291,6 +299,11 @@ namespace TonRan.Continuum
 			{
 				//It's ok
 			}
+		}
+
+		private bool IsValidMemberSymbol(char c)
+		{
+			return char.IsLetter(c) || c == '_';
 		}
 
 		private void KeyEventHandling()
