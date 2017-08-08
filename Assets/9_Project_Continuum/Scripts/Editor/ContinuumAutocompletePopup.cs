@@ -53,18 +53,23 @@ public class ContinuumAutocompletePopup : EditorWindow
 			var style = new GUIStyle(GUI.skin.button);
 			//Color fontColor = style.normal.textColor;
 
+			style.fontStyle = FontStyle.Bold;
+
 			if (entry.MemberType == MemberTypes.Property)
 			{
-				style.normal.textColor = Color.magenta;
-				Debug.Log("magenta");
+				//style.normal.textColor = Color.blue;
+				style.normal.textColor = new Color(10 / 255f, 110 / 255f, 150 / 255f);
+				//Debug.Log("magenta");
 			}
 			else if (entry.MemberType == MemberTypes.Field)
 			{
-				style.normal.textColor = Color.white;
+				//style.normal.textColor = Color.white;
+				style.normal.textColor = new Color(56 / 255f, 40 / 255f, 0f / 255f);
 			}
 			else if (entry.MemberType == MemberTypes.Method)
 			{
-				style.normal.textColor = Color.blue;
+				//style.normal.textColor = Color.green;
+				style.normal.textColor = new Color(15 / 255f, 100 / 255f, 0 / 255f);
 			}
 
 			//style.normal.textColor = fontColor;
