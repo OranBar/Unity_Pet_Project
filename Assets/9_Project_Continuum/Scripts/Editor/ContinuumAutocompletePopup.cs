@@ -51,6 +51,7 @@ public class ContinuumAutocompletePopup : EditorWindow
 			//MethodInfo entry_methodInfo = entry as MethodInfo;
 
 			var style = new GUIStyle(GUI.skin.button);
+			//AssetDatabase.LoadAssetAtPath();
 			//Color fontColor = style.normal.textColor;
 
 			style.fontStyle = FontStyle.Bold;
@@ -69,7 +70,7 @@ public class ContinuumAutocompletePopup : EditorWindow
 			else if (entry.MemberType == MemberTypes.Method)
 			{
 				//style.normal.textColor = Color.green;
-				style.normal.textColor = new Color(15 / 255f, 100 / 255f, 0 / 255f);
+				style.normal.textColor = new Color(17 / 255f, 153 / 255f, 0 / 255f);
 			}
 
 			//style.normal.textColor = fontColor;
