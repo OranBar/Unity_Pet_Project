@@ -55,7 +55,8 @@ namespace TonRan.Continuum
 
 		private static Continuum_ImmediateWindow continuumWindow;
 		private static bool openAutocomplete;
-		[SerializeField] private bool autocompletionEnabled;
+
+		public static bool autocompletionEnabled;
 
 		private bool lastAutocompletionEnabled;
 			
@@ -78,7 +79,7 @@ namespace TonRan.Continuum
 			continuumWindow.scriptText = "";
 
 			//This line brings back the value from the last session.
-			continuumWindow.lastAutocompletionEnabled = continuumWindow.autocompletionEnabled;
+			continuumWindow.lastAutocompletionEnabled = autocompletionEnabled;
 
 			continuumWindow.Show();
 			continuumWindow.Focus();
