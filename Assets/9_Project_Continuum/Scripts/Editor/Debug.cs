@@ -82,6 +82,7 @@ namespace TonRan.Continuum
 	[CreateAssetMenu(fileName = "CurrStyle", menuName = "Continuum/CreateStyle", order = 1)]
 	public class DebugOptions : ScriptableObject
 	{
+		public bool enabled;
 
 		public bool enable;
 
@@ -91,6 +92,7 @@ namespace TonRan.Continuum
 	public class DebugOptionsCreator
 	{
 		[MenuItem("Assets/Create/DebugOptions")]
+		[MenuItem("Assets/Create/Continuum/DebugOptions")]
 		public static void CreateDebugOptions()
 		{
 			DebugOptions newStyle = ScriptableObject.CreateInstance<DebugOptions>();
