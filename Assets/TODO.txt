@@ -10,8 +10,21 @@ this.transform.position.
 
 - Fix autocomplete window not closing when it should.
 
+- When autocompleting methods (or constructors), try to suggest a type by looking around in your scope :D
+should be cool.
+
+- {Generic Scopedown}
+
+- Presets: GetComponent<T> Gets parsed with Regex and T is extracted as string, and passed down to the continuumSense {Subset: Generic Scopedown}
+
+- Presets: Vector3 will always map to own transform or zero {Subset: Generic Scopedown}
+
+- Presets: Quaterion will also map to own rotation or identity {Subset: Generic Scopedown}
+
+- Understand if not having a popup window fixes our problems with the text area.
+
 - General Gui
--- Coloring Methods/Fields/Properties
+-- Coloring Methods/Fields/Properties (text or backgrounds?)
 
 
 
