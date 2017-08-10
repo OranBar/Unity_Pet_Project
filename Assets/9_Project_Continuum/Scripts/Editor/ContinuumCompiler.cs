@@ -7,7 +7,8 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
+using Debug = TonRan.Continuum.Continuum_ImmediateDebug;
+
 
 public class ContinuumCompiler {
 

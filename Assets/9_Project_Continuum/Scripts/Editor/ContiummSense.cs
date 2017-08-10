@@ -4,7 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Reflection;
-using Debug = TonRan.Continuum.Debug;
+using Debug = TonRan.Continuum.Continuum_ImmediateDebug;
+
 
 namespace TonRan.Continuum
 {

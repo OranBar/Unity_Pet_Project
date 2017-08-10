@@ -2,13 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Microsoft.CSharp;
-using System.Reflection;
-using System.CodeDom.Compiler;
 using UnityEditor;
-using System.Collections;
-using MyNamespace;
-using Debug = TonRan.Continuum.Debug;
+using System.Reflection;
+using Debug = TonRan.Continuum.Continuum_ImmediateDebug;
+
 /*
 * ImmediateWindow.cs
 * Copyright (c) 2012 Nick Gravelyn
@@ -34,10 +31,102 @@ using Debug = TonRan.Continuum.Debug;
 // Modified by Oran Bar™
 namespace TonRan.Continuum
 {
+	#region Helper Classes
+	public class TonRanVersion
+	{
+		private const string _CONTINUUM_VERSION = "a1.3";
+
+		public static string CONTINUUM_VERSION {
+			get {
+				return _CONTINUUM_VERSION;
+			}
+		}
+	}
+
+	public class Continuum_ImmediateDebug
+	{
+		private UnityEngine.Debug debug;
+
+		public static bool enabled = false;
+		
+		public static void Log(object o)
+		{
+			if (enabled)
+			{
+				UnityEngine.Debug.Log(o);
+			}
+		}
+
+		public static void LogFormat(string format, params object[] args)
+		{
+			if (enabled)
+			{
+				UnityEngine.Debug.LogFormat(format, args);
+			}
+		}
+
+		public static void LogError(object o)
+		{
+			if (enabled)
+			{
+				UnityEngine.Debug.LogError(o);
+			}
+		}
+
+		public static void LogErrorFormat(string format, params object[] args)
+		{
+			if (enabled)
+			{
+				UnityEngine.Debug.LogErrorFormat(format, args);
+			}
+		}
+
+		public static void LogWarning(object o)
+		{
+			if (enabled)
+			{
+				UnityEngine.Debug.LogWarning(o);
+			}
+		}
+
+		public static void LogWarningFormat(string format, params object[] args)
+		{
+			if (enabled)
+			{
+				UnityEngine.Debug.LogErrorFormat(format, args);
+			}
+		}
+
+		public static void Assert(bool condition)
+		{
+			if (enabled)
+			{
+				UnityEngine.Debug.Assert(condition);
+			}
+		}
+
+		public static void Assert(bool condition, object message)
+		{
+			if (enabled)
+			{
+				UnityEngine.Debug.Assert(condition, message);
+			}
+		}
+
+		public static void AssertFormat(bool condition, string format, params object[] args)
+		{
+			if (enabled)
+			{
+				UnityEngine.Debug.AssertFormat(condition, format, args);
+			}
+		}
+	}
+	#endregion
+
+
 	public class Continuum_ImmediateWindow : EditorWindow
 	{
-		private const string CONTINUUM_VERSION = "a1.3";
-
+		internal bool enableLogging;
 
 		private ContinuumCompiler continuumCompiler = new ContinuumCompiler();
 		private ContinuumSense continuumSense = new ContinuumSense();
@@ -59,12 +148,15 @@ namespace TonRan.Continuum
 		public static bool autocompletionEnabled;
 
 		private bool lastAutocompletionEnabled;
-			
-		[MenuItem("Continuum/Continuum_Immediate_"+ CONTINUUM_VERSION)]
+		
+
+		[MenuItem("Continuum/Continuum_Immediate {AlphaVersion}")]
 		static void Init()
 		{
 			// get the window, show it, and hand it focus
-			continuumWindow = EditorWindow.GetWindow<Continuum_ImmediateWindow>("Continuum_Immediate_"+ CONTINUUM_VERSION, false);
+			continuumWindow = EditorWindow.GetWindow<Continuum_ImmediateWindow>("Continuum_Immediate_"+ TonRanVersion.CONTINUUM_VERSION, false);
+
+			
 
 			continuumWindow.continuumSense.Init(typeof(GameObject));
 
@@ -72,6 +164,7 @@ namespace TonRan.Continuum
 			continuumWindow.scriptText = "";
 
 			//This line brings back the value from the last session.
+			//TODO: change this to use a scriptable object like debug.
 			continuumWindow.lastAutocompletionEnabled = autocompletionEnabled;
 
 			continuumWindow.Show();
@@ -115,10 +208,11 @@ namespace TonRan.Continuum
 		void OnGUI()
 		{
 			TextEditor editor = (TextEditor)EditorGUIUtility.GetStateObject(typeof(TextEditor), EditorGUIUtility.keyboardControl);
-
 			
-
-			
+			//if(Debug.enabled != enableLogging)
+			//{
+			//	Debug.enabled = enableLogging;
+			//}
 
 			KeyEventHandling();
 			
@@ -187,19 +281,7 @@ namespace TonRan.Continuum
 
 			if (openAutocomplete)
 			{
-				//IEnumerable<string> seed = autocompleteSeedForNextOnGui;
-
-				//if (seed == null)
-				//{
-				//	if (continuumSense.initialized == false)
-				//	{
-				//		Debug.LogError("Continuum was not initialized. Reinitializing");
-				//		continuumSense.Init(typeof(GameObject));
-				//	}
-
-				//	seed = continuumSense.Guess("");
-				//}
-
+			
 				Action openAutoCompletePopup = () =>
 				{
 					autocompleteWindow = ScriptableObject.CreateInstance<ContinuumAutocompletePopup>();
@@ -209,7 +291,9 @@ namespace TonRan.Continuum
 					
 					autocompleteWindow.Continuum_Init();
 
-					autocompleteWindow.ChangeEntries(continuumSense.GuessMemberInfo(GetGuess(scriptText)));
+					string userGuess = GetGuess(scriptText);
+					List<MemberInfo> continuumSenseGuesses = continuumSense.GuessMemberInfo(userGuess);
+					autocompleteWindow.ChangeEntries(continuumSenseGuesses);
 
 					autocompleteWindow.onEntryChosen += (str) => OnAutocompleteEntryChosen(editor, str);
 
@@ -638,6 +722,7 @@ namespace TonRan.Continuum
 			CloseAutocompleteWindow();
 		}
 
+		
 	}
 
 
