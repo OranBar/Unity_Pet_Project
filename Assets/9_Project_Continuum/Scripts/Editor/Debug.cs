@@ -6,12 +6,13 @@ using UnityEditor;
 
 namespace TonRan.Continuum
 {
+	[InitializeOnLoad]
 	public class Debug {
 
 		public static bool enabled = false;
 
 		private UnityEngine.Debug debug;
-
+		
 		public static void Log(object o)
 		{
 			if (enabled)
@@ -79,19 +80,22 @@ namespace TonRan.Continuum
 
 	}
 
-	[CreateAssetMenu(fileName = "CurrStyle", menuName = "Continuum/CreateStyle", order = 1)]
 	public class DebugOptions : ScriptableObject
 	{
 		public bool enabled;
 
-		public bool enable;
-
+		void OnValidate()
+		{
+			if (Debug.enabled != enabled)
+			{
+				Debug.enabled = enabled;
+			}
+		}
 
 	}
 
 	public class DebugOptionsCreator
 	{
-		[MenuItem("Assets/Create/DebugOptions")]
 		[MenuItem("Assets/Create/Continuum/DebugOptions")]
 		public static void CreateDebugOptions()
 		{
