@@ -8,7 +8,7 @@ using System.Reflection;
 using Debug = TonRan.Continuum.Continuum_ImmediateDebug;
 
 
-public class ContinuumAutocompletePopup : EditorWindow
+public class CmAutocompletePopup : EditorWindow
 {
 	public event Action<string> onEntryChosen;
 			
@@ -18,7 +18,7 @@ public class ContinuumAutocompletePopup : EditorWindow
 
 	static void Init()
 	{
-		ContinuumAutocompletePopup window = ScriptableObject.CreateInstance<ContinuumAutocompletePopup>();
+		CmAutocompletePopup window = ScriptableObject.CreateInstance<CmAutocompletePopup>();
 		window.ShowPopup();
 	}
 
@@ -43,18 +43,12 @@ public class ContinuumAutocompletePopup : EditorWindow
 
 	void OnGUI()
 	{
-		ContinuumAutocompletePopup window = ScriptableObject.CreateInstance<ContinuumAutocompletePopup>();
+		CmAutocompletePopup window = ScriptableObject.CreateInstance<CmAutocompletePopup>();
 		scrollPos = GUILayout.BeginScrollView(scrollPos);
 				
 		foreach (MemberInfo entry in entriesMemberInfo)
 		{
-			//PropertyInfo entry_propInfo = entry as PropertyInfo;
-			//FieldInfo entry_fieldInfo = entry as FieldInfo;
-			//MethodInfo entry_methodInfo = entry as MethodInfo;
-
 			var style = new GUIStyle(GUI.skin.button);
-			//AssetDatabase.LoadAssetAtPath();
-			//Color fontColor = style.normal.textColor;
 
 			style.fontStyle = FontStyle.Bold;
 

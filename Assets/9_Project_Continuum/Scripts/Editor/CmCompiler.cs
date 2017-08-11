@@ -10,7 +10,7 @@ using UnityEngine;
 using Debug = TonRan.Continuum.Continuum_ImmediateDebug;
 
 
-public class ContinuumCompiler {
+public class CmCompiler {
 
 #region COMPILER_VARIABLES
 	// script we wrap around user entered code
@@ -61,7 +61,7 @@ public class ContinuumCompiler {
 	// cache of last method we compiled so repeat executions only incur a single compilation
 	private MethodInfo lastScriptMethod;
 
-	public ContinuumCompiler(bool logErrors = true, bool logWarnings = true, bool logNormalMessages = true)
+	public CmCompiler(bool logErrors = true, bool logWarnings = true, bool logNormalMessages = true)
 	{
 		this.logErrors = logErrors;
 		this.logWarnings = logWarnings;
@@ -132,17 +132,6 @@ public class ContinuumCompiler {
 		Debug.Log("Method run. Result was: "+result);
 		return result;
 	}
-
-	//private string Run(MethodInfo methodToInvoke)
-	//{
-	//	Debug.Assert(lastScriptMethod != null);
-	//	string result = lastScriptMethod.Invoke(null, null) as string;
-	//	if(result == null)
-	//	{
-	//		throw new ContinuumInternalError("Error Code 1: Method didn't return string");
-	//	}
-	//	return result;
-	//}
 
 	private bool HasErrors(CompilerResults compiledCode)
 	{

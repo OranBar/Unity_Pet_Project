@@ -9,7 +9,7 @@ using Debug = TonRan.Continuum.Continuum_ImmediateDebug;
 
 namespace TonRan.Continuum
 {
-	public class ContinuumSense
+	public class CmSense
 	{
 
 		public bool initialized { get; private set; }	//Starts false!

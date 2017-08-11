@@ -126,10 +126,10 @@ namespace TonRan.Continuum {
 // Modified by Oran Bar™
 namespace TonRan.Continuum
 {
-	public class Continuum_ImmediateWindow : EditorWindow
+	public class CmImmediateWindow : EditorWindow
 	{
-		private ContinuumCompiler continuumCompiler = new ContinuumCompiler();
-		private ContinuumSense continuumSense = new ContinuumSense();
+		private CmCompiler continuumCompiler = new CmCompiler();
+		private CmSense continuumSense = new CmSense();
 
 		// script text
 		private string scriptText = string.Empty;
@@ -138,11 +138,11 @@ namespace TonRan.Continuum
 
 		// position of scroll view
 		private Vector2 scrollPos;
-		private ContinuumAutocompletePopup autocompleteWindow;
+		private CmAutocompletePopup autocompleteWindow;
 
 		private bool autocompleteWindowWasDisplayed = false;
 
-		private static Continuum_ImmediateWindow continuumWindow;
+		private static CmImmediateWindow continuumWindow;
 		private static bool openAutocomplete;
 
 		public static bool autocompletionEnabled;
@@ -154,7 +154,7 @@ namespace TonRan.Continuum
 		static void Init()
 		{
 			// get the window, show it, and hand it focus
-			continuumWindow = EditorWindow.GetWindow<Continuum_ImmediateWindow>("Continuum_Immediate_"+ TonRanVersion.CONTINUUM_VERSION, false);
+			continuumWindow = EditorWindow.GetWindow<CmImmediateWindow>("Continuum_Immediate_"+ TonRanVersion.CONTINUUM_VERSION, false);
 
 			Debug.enabled = AssetDatabase.LoadAssetAtPath<DebugOptions>("Assets/9_Project_Continuum/Config/DebugOptions.asset").enabled;
 			
@@ -275,7 +275,7 @@ namespace TonRan.Continuum
 
 				Action openAutoCompletePopup = () =>
 				{
-					autocompleteWindow = ScriptableObject.CreateInstance<ContinuumAutocompletePopup>();
+					autocompleteWindow = ScriptableObject.CreateInstance<CmAutocompletePopup>();
 					var cursorPos = editor.graphicalCursorPos;
 
 					autocompleteWindow.position = new Rect(position.position + cursorPos + new Vector2(5, 18), new Vector2(350, 200));
