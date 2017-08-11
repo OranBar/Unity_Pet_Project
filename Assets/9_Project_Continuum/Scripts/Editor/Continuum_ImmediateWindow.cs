@@ -520,22 +520,22 @@ namespace UnityEditor
 
 		private void RemoveLastUserGuessFromTextArea()
 		{
-			scriptText = new string(scriptText
-				.Reverse()
-				.SkipWhile(c => c != '.')
-				.Reverse()
-				.Count());
+			//scriptText = new string(scriptText
+			//	.Reverse()
+			//	.SkipWhile(c => c != '.')
+			//	.Reverse()
+			//	.Count());
 
-			//TextEditor editor = GetTextEditor();
+			TextEditor editor = GetTextEditor();
 
-			//string currentText = editor.text;
-			//int currentIndex = editor.cursorIndex;
+			string currentText = editor.text;
+			int currentIndex = editor.cursorIndex;
 
-			//while (currentText[currentIndex] != '.')
-			//{
-			//	editor.Backspace();
-			//	currentIndex--;
-			//}
+			while (currentText.Length != 0 && currentText.Last() != '.')
+			{
+				editor.Backspace();
+				currentText = currentText.Remove(currentText.Length - 1, 1);
+			}
 
 		}
 
