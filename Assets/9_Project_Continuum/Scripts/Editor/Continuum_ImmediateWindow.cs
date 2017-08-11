@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Reflection;
 using Debug = TonRan.Continuum.Continuum_ImmediateDebug;
-
+using TonRan.Continuum;
 /*
 * ImmediateWindow.cs
 * Copyright (c) 2012 Nick Gravelyn
@@ -28,9 +28,8 @@ using Debug = TonRan.Continuum.Continuum_ImmediateDebug;
 * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-// Modified by Oran Bar™
-namespace TonRan.Continuum
-{
+namespace TonRan.Continuum {
+
 	#region Helper Classes
 	public class TonRanVersion
 	{
@@ -48,7 +47,7 @@ namespace TonRan.Continuum
 		private UnityEngine.Debug debug;
 
 		public static bool enabled = false;
-		
+
 		public static void Log(object o)
 		{
 			if (enabled)
@@ -124,10 +123,15 @@ namespace TonRan.Continuum
 	#endregion
 
 
+}
+
+// Modified by Oran Bar™
+namespace UnityEditor
+{
+	
+
 	public class Continuum_ImmediateWindow : EditorWindow
 	{
-		internal bool enableLogging;
-
 		private ContinuumCompiler continuumCompiler = new ContinuumCompiler();
 		private ContinuumSense continuumSense = new ContinuumSense();
 
@@ -156,10 +160,10 @@ namespace TonRan.Continuum
 			// get the window, show it, and hand it focus
 			continuumWindow = EditorWindow.GetWindow<Continuum_ImmediateWindow>("Continuum_Immediate_"+ TonRanVersion.CONTINUUM_VERSION, false);
 
+			Debug.enabled = AssetDatabase.LoadAssetAtPath<DebugOptions>("Assets/9_Project_Continuum/Config/DebugOptions.asset").enabled;
 			
-
 			continuumWindow.continuumSense.Init(typeof(GameObject));
-
+			
 			//TODO: If I take this out, I think i have serialization throughout closing and reopening window.
 			continuumWindow.scriptText = "";
 
@@ -203,25 +207,23 @@ namespace TonRan.Continuum
 			}
 		}
 
-
-
 		void OnGUI()
 		{
-			TextEditor editor = (TextEditor)EditorGUIUtility.GetStateObject(typeof(TextEditor), EditorGUIUtility.keyboardControl);
-			
+			TextEditor editor = GetTextEditor();
+
 			//if(Debug.enabled != enableLogging)
 			//{
 			//	Debug.enabled = enableLogging;
 			//}
 
 			KeyEventHandling();
-			
+
 			scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
 
 			//This is the reason why we can't copy paste and select all. 
 			//EditorGUILayout is said to be exactly the same, plus those features, but then (TextEditor)EditorGUIUtility.GetStateObject(typeof(TextEditor), EditorGUIUtility.keyboardControl)
 			//doesn't return the correct object, but an unitialized blank one.
-			string newScriptText = GUILayout.TextArea(scriptText, GUILayout.Height(70));
+			string newScriptText = EditorGUILayout.TextArea(scriptText, GUILayout.Height(70));
 			if (newScriptText != scriptText)
 			{
 				// if the script changed, update our cached version and null out our cached method
@@ -229,7 +231,7 @@ namespace TonRan.Continuum
 				scriptText = newScriptText;
 				OnTextChanged(tmp, scriptText);
 			}
-			
+
 			// show the execute button
 			if (GUILayout.Button("Execute"))
 			{
@@ -241,10 +243,29 @@ namespace TonRan.Continuum
 				OpenAutocompleteAsync();
 			}
 
+			//-----------------------------------------------------------------------------
+			if (GUILayout.Button("Complete!"))
+			{
+				string guess = GetGuess(scriptText);
+				string firstContinuumSensePrediction = continuumSense.Guess(guess).FirstOrDefault();
+
+				if (firstContinuumSensePrediction != null)
+				{
+					Debug.Log("adding " + firstContinuumSensePrediction);
+					RemoveLastUserGuessFromTextArea();
+					AppendTextToScript(firstContinuumSensePrediction);
+				}
+				else
+				{
+					Debug.LogWarning("I have no guesses");
+				}
+			}
+			//-----------------------------------------------------------------------------
+
 			EditorGUILayout.EndScrollView();
 
 			autocompletionEnabled = GUILayout.Toggle(autocompletionEnabled, "Enable Autocomplete");
-			if(autocompletionEnabled != lastAutocompletionEnabled)
+			if (autocompletionEnabled != lastAutocompletionEnabled)
 			{
 				lastAutocompletionEnabled = autocompletionEnabled;
 				if (autocompletionEnabled)
@@ -256,15 +277,15 @@ namespace TonRan.Continuum
 					CloseAutocompleteWindow();
 				}
 			}
-			
 
 
-			if (deleteKeyNextFrame > 0) { deleteKeyNextFrame--; }
-			if (deleteKeyNextFrame == 0)
-			{
-				editor.Backspace();
-				deleteKeyNextFrame--;
-			}
+
+			//if (deleteKeyNextFrame > 0) { deleteKeyNextFrame--; }
+			//if (deleteKeyNextFrame == 0)
+			//{
+			//	editor.Backspace();
+			//	deleteKeyNextFrame--;
+			//}
 
 			while (moveForward > 0)
 			{
@@ -275,27 +296,27 @@ namespace TonRan.Continuum
 
 
 			// close the scroll view
-			
+
 
 			//OpenAutocompleteWindowIfPointPressed(editor);
 
 			if (openAutocomplete)
 			{
-			
+
 				Action openAutoCompletePopup = () =>
 				{
 					autocompleteWindow = ScriptableObject.CreateInstance<ContinuumAutocompletePopup>();
 					var cursorPos = editor.graphicalCursorPos;
 
 					autocompleteWindow.position = new Rect(position.position + cursorPos + new Vector2(5, 18), new Vector2(350, 200));
-					
+
 					autocompleteWindow.Continuum_Init();
 
 					string userGuess = GetGuess(scriptText);
 					List<MemberInfo> continuumSenseGuesses = continuumSense.GuessMemberInfo(userGuess);
 					autocompleteWindow.ChangeEntries(continuumSenseGuesses);
 
-					autocompleteWindow.onEntryChosen += (str) => OnAutocompleteEntryChosen(editor, str);
+					autocompleteWindow.onEntryChosen += (str) => OnAutocompleteEntryChosen(str);
 
 					autocompleteWindow.ShowPopup();
 				};
@@ -305,15 +326,23 @@ namespace TonRan.Continuum
 				openAutocomplete = false;
 			}
 			Repaint();
-			if(autocompleteWindow != null)
+			if (autocompleteWindow != null)
 			{
 				autocompleteWindow.Repaint();
 			}
 		}
 
+		private TextEditor GetTextEditor()
+		{
+			TextEditor tEditor = typeof(EditorGUI)
+				.GetField("activeEditor", BindingFlags.Static | BindingFlags.NonPublic)
+				.GetValue(null) as TextEditor;
+
+			return tEditor;
+		}
+
 		private void OnTextChanged(string before, string after)
 		{
-			//lastScriptMethod = null;
 			autocompleteWindowWasDisplayed = false;
 
 			//This happens for example when Ctrl+A + Del
@@ -359,7 +388,10 @@ namespace TonRan.Continuum
 					//	.ToArray());
 
 					continuumSense.ScopeDown(previousMember);
-					autocompleteWindow.ChangeEntries(continuumSense.GuessMemberInfo(""));
+					if(autocompleteWindow != null)
+					{
+						autocompleteWindow.ChangeEntries(continuumSense.GuessMemberInfo(""));
+					}
 					OpenAutocompleteAsync();
 				}
 
@@ -385,7 +417,9 @@ namespace TonRan.Continuum
 			try
 			{
 				//This block is to reacto to "new "
-				TextEditor editor = (TextEditor)EditorGUIUtility.GetStateObject(typeof(TextEditor), EditorGUIUtility.keyboardControl);
+				//TextEditor editor = (TextEditor)EditorGUIUtility.GetStateObject(typeof(TextEditor), EditorGUIUtility.keyboardControl);
+				TextEditor editor = GetTextEditor();
+
 				var lastFourChars = editor.text.Substring(editor.cursorIndex - 4, 4);
 				if (lastFourChars == "new " && autocompleteWindowWasDisplayed == false)
 				{
@@ -453,17 +487,16 @@ namespace TonRan.Continuum
 			}
 		}
 
-		private void OnAutocompleteEntryChosen(TextEditor editor, string chosenEntry)
+		private void OnAutocompleteEntryChosen(string chosenEntry)
 		{
-			scriptText = new string(scriptText
-				.Reverse()
-				.SkipWhile(c => c != '.')
-				.Reverse()
-				.ToArray())
-				+ chosenEntry;
+			TextEditor editor = GetTextEditor();
+
+			RemoveLastUserGuessFromTextArea();
+
+			AppendTextToScript(chosenEntry);
 
 			//scriptText = scriptText.Insert(editor.cursorIndex, chosenEntry);
-			moveForward += chosenEntry.Length;
+			//moveForward += chosenEntry.Length;
 
 			try
 			{
@@ -479,11 +512,40 @@ namespace TonRan.Continuum
 				//moveForward--;
 				return;
 			}
-
-			scriptText += ".";
-			moveForward += ".".Length;
+						
+			AppendTextToScript(".");
 
 			//CloseAutocompleteWindow();
+		}
+
+		private void RemoveLastUserGuessFromTextArea()
+		{
+			//scriptText = new string(scriptText
+			//	.Reverse()
+			//	.SkipWhile(c => c != '.')
+			//	.Reverse()
+			//	.Count());
+
+			TextEditor editor = GetTextEditor();
+
+			string currentText = editor.text;
+			int currentIndex = editor.cursorIndex;
+
+			while (currentText.Length != 0 && currentText.Last() != '.')
+			{
+				editor.Backspace();
+				currentText = currentText.Remove(currentText.Length - 1, 1);
+			}
+
+		}
+
+		private void AppendTextToScript(string textToAppend)
+		{
+			TextEditor editor = GetTextEditor();
+			for (int i = 0; i < textToAppend.Length; i++)
+			{
+				editor.Insert(textToAppend[i]);
+			}
 		}
 
 		//private void OpenAutocompleteWindowIfPointPressed(TextEditor editor)
