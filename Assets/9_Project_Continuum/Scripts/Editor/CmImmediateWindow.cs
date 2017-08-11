@@ -203,9 +203,17 @@ namespace TonRan.Continuum
 			}
 		}
 
+		private int flag = -1;
+
 		void OnGUI()
 		{
+
 			TextEditor editor = GetTextEditor();
+			if(flag >= 0) { flag--; }
+			if(flag == 0){
+				editor.Backspace();
+				flag--;
+			}
 
 			KeyEventHandling();
 
@@ -244,7 +252,7 @@ namespace TonRan.Continuum
 				{
 					Debug.Log("adding " + firstContinuumSensePrediction);
 					RemoveLastUserGuessFromTextArea();
-					AppendTextToScript(firstContinuumSensePrediction);
+					InsertTextInScriptAtCursorPosition(firstContinuumSensePrediction);
 				}
 				else
 				{
@@ -286,7 +294,7 @@ namespace TonRan.Continuum
 					List<MemberInfo> continuumSenseGuesses = continuumSense.GuessMemberInfo(userGuess);
 					autocompleteWindow.ChangeEntries(continuumSenseGuesses);
 
-					autocompleteWindow.onEntryChosen += (str) => OnAutocompleteEntryChosen(str);
+					autocompleteWindow.onEntryChosen += (str) => OnSuggestionChosen(str);
 
 					autocompleteWindow.ShowPopup();
 				};
@@ -421,15 +429,40 @@ namespace TonRan.Continuum
 							Event.current.Use();
 						}
 
-						//if (Event.current.keyCode == (KeyCode.Return))
-						//{
-						//	if (autocompleteWindow == null) { return; }
+						if (Event.current.keyCode == (KeyCode.Return))
+						{
+							//if (autocompleteWindow == null) { return; }
 
-						//	autocompleteWindow.SimulateSelectFirstEntry();
-						//	CloseAutocompleteWindow();
+							//autocompleteWindow.SimulateSelectFirstEntry();
+							//CloseAutocompleteWindow();
+							
+							Event.current.Use();
 
-						//	Event.current.Use();
-						//}
+							TextEditor txtEditor = GetTextEditor();
+							string userGuess = GetGuess();
+							string suggestion = continuumSense.Guess(userGuess).FirstOrDefault();
+							if(suggestion == null)
+							{
+								Debug.LogWarning("Ehm... No guesses");
+							}
+							else
+							{
+								Event.current.Use();
+
+								//Debug.Log("Text was /n"+txtEditor.text);
+								//GetTextEditor().Backspace();    //Remove the return
+								//Debug.Log("Return removed. Text is /n" + txtEditor.text);
+
+								Debug.Log("Suggestion chosen: " + suggestion);
+
+								OnSuggestionChosen(suggestion);
+								flag = 5;
+								Debug.Log("Flag true");
+
+							}
+
+						}
+
 						////TODO: I can't figure out how to ignore the space.
 						//if (Event.current.keyCode == (KeyCode.Space) && Event.current.shift)
 						//{
@@ -443,18 +476,23 @@ namespace TonRan.Continuum
 			}
 		}
 
-		private void OnAutocompleteEntryChosen(string chosenEntry)
+		
+
+		private void OnSuggestionChosen(string chosenEntry)
 		{
 			TextEditor editor = GetTextEditor();
 
 			RemoveLastUserGuessFromTextArea();
 
-			AppendTextToScript(chosenEntry);
+			InsertTextInScriptAtCursorPosition(chosenEntry);
 
 			try
 			{
 				continuumSense.ScopeDown(chosenEntry);
-				autocompleteWindow.ChangeEntries(continuumSense.GuessMemberInfo(""));
+				if(autocompleteWindow != null)
+				{
+					autocompleteWindow.ChangeEntries(continuumSense.GuessMemberInfo(""));
+				}
 			}
 			catch (KeyNotFoundException)
 			{
@@ -463,7 +501,7 @@ namespace TonRan.Continuum
 				return;
 			}
 						
-			AppendTextToScript(".");
+			InsertTextInScriptAtCursorPosition(".");
 			
 		}
 
@@ -484,7 +522,7 @@ namespace TonRan.Continuum
 
 		}
 
-		private void AppendTextToScript(string textToAppend)
+		private void InsertTextInScriptAtCursorPosition(string textToAppend)
 		{
 			TextEditor editor = GetTextEditor();
 			for (int i = 0; i < textToAppend.Length; i++)
@@ -537,7 +575,13 @@ namespace TonRan.Continuum
 
 			return guess;
 		}
-		
+
+		private string GetGuess()
+		{
+			TextEditor txtEditor = GetTextEditor();
+			return GetGuess(txtEditor.text.Substring(0, txtEditor.cursorIndex));
+		}
+
 		public void OpenAutocompleteAsync(IEnumerable<string> seed = null)
 		{
 			if (autocompleteWindow != null || autocompletionEnabled == false)
