@@ -121,15 +121,11 @@ namespace TonRan.Continuum {
 		}
 	}
 	#endregion
-
-
 }
 
 // Modified by Oran Bar™
-namespace UnityEditor
+namespace TonRan.Continuum
 {
-	
-
 	public class Continuum_ImmediateWindow : EditorWindow
 	{
 		private ContinuumCompiler continuumCompiler = new ContinuumCompiler();
@@ -211,11 +207,6 @@ namespace UnityEditor
 		{
 			TextEditor editor = GetTextEditor();
 
-			//if(Debug.enabled != enableLogging)
-			//{
-			//	Debug.enabled = enableLogging;
-			//}
-
 			KeyEventHandling();
 
 			scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
@@ -277,28 +268,7 @@ namespace UnityEditor
 					CloseAutocompleteWindow();
 				}
 			}
-
-
-
-			//if (deleteKeyNextFrame > 0) { deleteKeyNextFrame--; }
-			//if (deleteKeyNextFrame == 0)
-			//{
-			//	editor.Backspace();
-			//	deleteKeyNextFrame--;
-			//}
-
-			while (moveForward > 0)
-			{
-				editor.MoveRight();
-				moveForward--;
-			}
-			Debug.Assert(moveForward >= 0);
-
-
-			// close the scroll view
-
-
-			//OpenAutocompleteWindowIfPointPressed(editor);
+			
 
 			if (openAutocomplete)
 			{
@@ -379,14 +349,7 @@ namespace UnityEditor
 						.TakeWhile(c => c != '.')
 						.Reverse()
 						.ToArray());
-
-					//var previousMember = new string(after
-					//	.Reverse()
-					//	.Skip(1)
-					//	.TakeWhile(c => c != '.')
-					//	.Reverse()
-					//	.ToArray());
-
+					
 					continuumSense.ScopeDown(previousMember);
 					if(autocompleteWindow != null)
 					{
@@ -411,13 +374,9 @@ namespace UnityEditor
 			}
 
 
-
-
-
 			try
 			{
-				//This block is to reacto to "new "
-				//TextEditor editor = (TextEditor)EditorGUIUtility.GetStateObject(typeof(TextEditor), EditorGUIUtility.keyboardControl);
+				//This block is to react to "new "
 				TextEditor editor = GetTextEditor();
 
 				var lastFourChars = editor.text.Substring(editor.cursorIndex - 4, 4);
@@ -460,7 +419,6 @@ namespace UnityEditor
 							CloseAutocompleteWindow();
 
 							Event.current.Use();
-							//deleteKeyNextFrame = 1;
 						}
 
 						//if (Event.current.keyCode == (KeyCode.Return))
@@ -471,7 +429,6 @@ namespace UnityEditor
 						//	CloseAutocompleteWindow();
 
 						//	Event.current.Use();
-						//	//deleteKeyNextFrame = 1;
 						//}
 						////TODO: I can't figure out how to ignore the space.
 						//if (Event.current.keyCode == (KeyCode.Space) && Event.current.shift)
@@ -479,7 +436,6 @@ namespace UnityEditor
 						//	OpenAutocompleteAsync();
 
 						//	Event.current.Use();
-						//	//deleteKeyNextFrame = 1;
 						//}
 						break;
 					}
@@ -495,9 +451,6 @@ namespace UnityEditor
 
 			AppendTextToScript(chosenEntry);
 
-			//scriptText = scriptText.Insert(editor.cursorIndex, chosenEntry);
-			//moveForward += chosenEntry.Length;
-
 			try
 			{
 				continuumSense.ScopeDown(chosenEntry);
@@ -507,24 +460,16 @@ namespace UnityEditor
 			{
 				continuumSense.ScopeUp();
 				CloseAutocompleteWindow();
-				//Remove last char: the point. Then go back one with cursor.
-				//scriptText = scriptText.Substring(0, scriptText.Length - 2);
-				//moveForward--;
 				return;
 			}
 						
 			AppendTextToScript(".");
-
-			//CloseAutocompleteWindow();
+			
 		}
 
 		private void RemoveLastUserGuessFromTextArea()
 		{
-			//scriptText = new string(scriptText
-			//	.Reverse()
-			//	.SkipWhile(c => c != '.')
-			//	.Reverse()
-			//	.Count());
+			
 
 			TextEditor editor = GetTextEditor();
 
@@ -547,21 +492,7 @@ namespace UnityEditor
 				editor.Insert(textToAppend[i]);
 			}
 		}
-
-		//private void OpenAutocompleteWindowIfPointPressed(TextEditor editor)
-		//{
-		//	try
-		//	{
-		//		if (scriptText[editor.cursorIndex - 1] == '.' && autocompleteWindowWasDisplayed == false)
-		//		{
-		//			OpenAutocompleteAsync();
-		//		}
-		//	}
-		//	catch (IndexOutOfRangeException)
-		//	{
-		//		//It's okay
-		//	}
-		//}
+		
 		private void CloseAutocompleteWindow()
 		{
 			if(autocompleteWindow == null) { return; }
@@ -572,6 +503,7 @@ namespace UnityEditor
 				continuumWindow.Focus();
 			}
 		}
+
 		private static char GetDifferentChar(string before, string after)
 		{
 			char newChar = (after.Length > before.Length) ? after.Last() : before.Last();
@@ -605,62 +537,24 @@ namespace UnityEditor
 
 			return guess;
 		}
-
-		//public Type GetMemberType(Type scope, string memberName)
-		//{
-		//	//TODO: returns the type from a string, and a scope.
-		//}
-
-		//private void CurrentLineChanged(string previous, string current)
-		//{
-
-		//	if (initialized == false) { throw new ContinuumNotInitializedException(); }
-
-		//	//TODO: this
-		//	//If point was pressed
-		//	//set current line
-		//	if (current.Contains('.') == false)
-		//	{
-		//		var allMembersAndMethods = Guess(type_scope_history.Peek(), "");
-		//		//TODO: display suggestions
-		//		DisplaySuggestionList(allMembersAndMethods);
-		//		return;
-		//	}
-
-		//	string reversedLine = new string(current.Reverse().ToArray());
-		//	string guess = new string(reversedLine.TakeWhile(c => c != '.').Reverse().ToArray());
-		//	//string caller = new string(reversedLine.SkipWhile(c => c == '.').TakeWhile(c1 => c1 != '.').Reverse().ToArray());
-
-		//	var suggestions = Guess(type_scope_history.Peek(), guess);
-		//	DisplaySuggestionList(suggestions);
-		//	//endIf
-		//}
+		
 		public void OpenAutocompleteAsync(IEnumerable<string> seed = null)
 		{
 			if (autocompleteWindow != null || autocompletionEnabled == false)
 			{
-				//CloseAutocompleteWindow();
 				return;
 			}
-
-			//if(seed != null)
-			//{
-			//	autocompleteSeedForNextOnGui = seed;
-			//}
 
 			openAutocomplete = true;
 			autocompleteWindowWasDisplayed = true;
 		}
 
-		public const int MAGIC_NUMBER = 14;
-		private int moveForward;
-		private int deleteKeyNextFrame = -1; //-1 means do nothing
+		
 		private void CompileAndRun()
 		{
 			continuumCompiler.CompileAndRun(scriptText);
 		}
 		
-
 
 		public static string ConvertPrivateInvocations_ToReflectionInvokes(string source)
 		{
