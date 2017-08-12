@@ -221,8 +221,8 @@ namespace TonRan.Continuum
 
 		private void ScanAllAssembly(bool includePrivateVariables)
 		{
-			var allAssemblyTypes = from t in Assembly.GetExecutingAssembly().GetTypes()
-									 where t.IsClass
+			var allAssemblyTypes = from t in Assembly.GetExecutingAssembly().GetExportedTypes()
+								   where t.IsClass
 									 select t;
 
 			ScanTypes(allAssemblyTypes, includePrivateVariables);
@@ -273,12 +273,18 @@ namespace TonRan.Continuum
 
 		private void ScanAssembly(Assembly a, bool includePrivateVariables) 
 		{
-			ScanTypes(a.GetTypes(), includePrivateVariables);
+			Debug.Log(a.GetTypes().Length + " GetTypes");
+			Debug.Log(a.GetExportedTypes().Length + " GetExportedTypes");
+
+			ScanTypes(a.GetExportedTypes(), includePrivateVariables);
 		}
 
 		private void ScanNamespace(string @namespace, bool includePrivateVariables)
 		{
-			var namespaceTypes = from t in Assembly.GetExecutingAssembly().GetTypes()
+			//Debug.Log(Assembly.GetExecutingAssembly().GetTypes().Length+ " GetTypes");
+			//Debug.Log(Assembly.GetExecutingAssembly().GetExportedTypes().Length + " GetExportedTypes");
+
+			var namespaceTypes = from t in Assembly.GetExecutingAssembly().GetExportedTypes()
 								 where t.IsClass && t.Namespace == @namespace
 								 select t;
 			
