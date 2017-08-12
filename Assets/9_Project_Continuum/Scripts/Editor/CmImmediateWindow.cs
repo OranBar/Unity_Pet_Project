@@ -461,7 +461,6 @@ namespace TonRan.Continuum
 						int newCharIndex = after.Length - guess.Length; //For now it'll do
 						var previousMember = new string(after.Substring(0, newCharIndex - 1)    //We want the char before the point
 							.Reverse()
-							.Skip(1)
 							.TakeWhile(c => c != '.')
 							.Reverse()
 							.ToArray());
@@ -476,6 +475,10 @@ namespace TonRan.Continuum
 						//	autocompleteWindow.ChangeEntries(continuumSense.GuessMemberInfo(""));
 						//}
 					}
+					else if (newChar == ';')
+					{
+						continuumSense.ScopeDown(CmSense.AllClasses);
+					}
 
 					if (IsValidMemberSymbol(newChar) == false && newChar != '.')
 					{
@@ -485,7 +488,7 @@ namespace TonRan.Continuum
 
 				if (wasCharRemoved)
 				{
-					if (newChar == '.')
+					if (newChar == '.' || newChar == ';')
 					{
 						continuumSense.ScopeUp();
 						//Debug.Log("Current scope is " + continuumSense.CurrentScope);
@@ -558,7 +561,7 @@ namespace TonRan.Continuum
 							Event.current.Use();
 						}
 
-						if (Event.current.keyCode == (KeyCode.Return))
+						if (Event.current.keyCode == (KeyCode.Return) && showAutocomplete)
 						{
 							//if (autocompleteWindow == null) { return; }
 
@@ -656,7 +659,9 @@ namespace TonRan.Continuum
 			string currentText = editor.text;
 			int currentIndex = editor.cursorIndex;
 
-			while (currentText.Length != 0 && currentText.Last() != '.' && currentText.Last() != ' ')
+			//TODO: maybe check if validsymbol == false
+			//while (currentText.Length != 0 && currentText.Last() != '.' && currentText.Last() != ' ' && currentText.Last() != ';')
+			while (currentText.Length != 0 && IsValidMemberSymbol(currentText.Last()))
 			{
 				editor.Backspace();
 				currentText = currentText.Remove(currentText.Length - 1, 1);
@@ -717,9 +722,9 @@ namespace TonRan.Continuum
 			string guess = "";
 
 			string reversedLine = new string(line.Reverse().ToArray());
-			guess = new string(reversedLine.TakeWhile(c => c != '.' && c !=' ').Reverse().ToArray());
+			guess = new string(reversedLine.TakeWhile(c => c != '.' && c !=' ' && c != ';').Reverse().ToArray());
 
-			return guess;
+			return guess.Replace("\n", "");
 		}
 
 		private string GetGuess()

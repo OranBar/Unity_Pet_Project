@@ -40,7 +40,7 @@ namespace TonRan.Continuum
 
 		private Stack<Type> type_scope_history = new Stack<Type>();
 
-		private Type baseType = null;
+		private Type baseType;
 
 		public Type CurrentScope {
 			get {
@@ -49,6 +49,13 @@ namespace TonRan.Continuum
 			}
 		}
 
+		public Type BaseType {
+			get {
+				return this.baseType;
+			}
+		}
+
+		[Obsolete("Use version with Type parameter")]
 		public void Init(/*TODO: Add parameters: Namespaces to analyze*/)
 		{
 			//type_scope_history = new Stack<Type>();
@@ -91,6 +98,8 @@ namespace TonRan.Continuum
 				.Select(k => new CmEntry(k.Name, MemberTypes.TypeInfo, k))
 				.ToList();
 
+			typeToMembers_Cache[CmSense.AllClasses].Insert(0, new CmEntry("this", MemberTypes.Custom, baseType));
+
 			type_scope_history.Push(CmSense.AllClasses);
 			initialized = true;
 		}
@@ -100,7 +109,7 @@ namespace TonRan.Continuum
 			Init();
 			this.baseType = baseType;
 			type_scope_history.Push(CmSense.AllClasses);
-			type_scope_history.Push(baseType);
+			//type_scope_history.Push(baseType);
 		}
 
 		public List<string> GetAllTypes()
@@ -145,9 +154,16 @@ namespace TonRan.Continuum
 		public void ScopeDown(string memberName)
 		{
 			if (initialized == false) { throw new ContinuumNotInitializedException(); }
-			if (type_scope_history.Peek() == null){	throw new ContinuumNotInitializedException("Current type is NULL. Please use ScopeDown at least once in the initialization");	}
+			if (type_scope_history.Peek() == null) { throw new ContinuumNotInitializedException("Current type is NULL. Please use ScopeDown at least once in the initialization"); }
 
-			Type type = GetGuessType(memberName);
+			Type type;
+			if (memberName == "this")
+			{
+				type = baseType;
+			}
+			else { 
+				type = GetGuessType(memberName);
+			}
 
 			ScopeDown(type);
 		}
@@ -318,8 +334,8 @@ namespace TonRan.Continuum
 			//{
 			if(typeToMembers_Cache.ContainsKey(typeScope))
 			{
-				Debug.Log("Logging current gueses");
-				typeToMembers_Cache[typeScope].Take(Mathf.Min(50, typeToMembers_Cache[typeScope].Count)).Select(entry => entry.name).ToList().ForEach(Debug.Log);
+				//Debug.Log("Logging current gueses");
+				//typeToMembers_Cache[typeScope].Take(Mathf.Min(50, typeToMembers_Cache[typeScope].Count)).Select(entry => entry.name).ToList().ForEach(Debug.Log);
 
 				result.AddRange(typeToMembers_Cache[typeScope]);
 			}
