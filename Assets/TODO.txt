@@ -24,7 +24,7 @@ should be cool.
 - General Gui
 -- Coloring Methods/Fields/Properties (text or backgrounds?)
 
-
+- Work on Performance
 
 Resolved:
 

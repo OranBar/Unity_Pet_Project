@@ -7,14 +7,32 @@ using System.Reflection;
 using Debug = TonRan.Continuum.Continuum_ImmediateDebug;
 
 
+
 namespace TonRan.Continuum
 {
+	public class CmEntry
+	{
+		public readonly string name;
+		public readonly MemberTypes memberType; //{ Field, Property, Method, TypeInfo }: are the one we will be borrowing
+		public readonly Type type;
+
+		public CmEntry(string name, MemberTypes entryType, Type type)
+		{
+			this.name = name;
+			this.memberType = entryType;
+			this.type = type;
+		}
+	}
+
+	internal class NoType { }
+
 	public class CmSense
 	{
+		public static Type AllClasses = typeof(NoType);
 
 		public bool initialized { get; private set; }	//Starts false!
 
-		private Dictionary<Type, List<MemberInfo>> typeToMembers_Cache;
+		private Dictionary<Type, List<CmEntry>> typeToMembers_Cache;
 		
 		//private Dictionary<Type, List<string>> typeToFields;
 		//private Dictionary<Type, List<string>> typeToProperties;
@@ -37,7 +55,7 @@ namespace TonRan.Continuum
 			//typeToFields = new Dictionary<Type, List<string>>();
 			//typeToProperties = new Dictionary<Type, List<string>>();
 			//typeToMethods = new Dictionary<Type, List<string>>();
-			typeToMembers_Cache = new Dictionary<Type, List<MemberInfo>>();
+			typeToMembers_Cache = new Dictionary<Type, List<CmEntry>>();
 
 			/*
 			 * using UnityEngine; //0
@@ -58,6 +76,9 @@ namespace TonRan.Continuum
 			ScanNamespace("System.Linq", false);
 			ScanNamespace("MyNamespace", false);
 
+			//typeToMembers_Cache[null] = typeToMembers_Cache.Keys.ToList();
+
+
 			//ScanType(typeof(UnityEngine.GameObject), false);
 			//ScanAllAssembly(false);
 			//Register to new input event
@@ -65,6 +86,12 @@ namespace TonRan.Continuum
 			//////
 
 			//type_scope_history.Push(null);
+			typeToMembers_Cache[CmSense.AllClasses] = typeToMembers_Cache
+				.Keys
+				.Select(k => new CmEntry(k.Name, MemberTypes.TypeInfo, k))
+				.ToList();
+
+			type_scope_history.Push(CmSense.AllClasses);
 			initialized = true;
 		}
 
@@ -72,7 +99,13 @@ namespace TonRan.Continuum
 		{
 			Init();
 			this.baseType = baseType;
+			type_scope_history.Push(CmSense.AllClasses);
 			type_scope_history.Push(baseType);
+		}
+
+		public List<string> GetAllTypes()
+		{
+			return typeToMembers_Cache.Keys.Select(k => k.Name).ToList();
 		}
 
 		private void CurrentLineChanged(string previous, string current)
@@ -138,9 +171,12 @@ namespace TonRan.Continuum
 			if (initialized == false) { throw new ContinuumNotInitializedException(); }
 			
 			type_scope_history.Clear();
-			ScopeDown(baseType);
+			type_scope_history.Push(AllClasses);
 
-			//type_scope_history.Push(baseType);
+			if (baseType != null)
+			{
+				type_scope_history.Push(baseType);
+			}
 
 		}
 
@@ -176,24 +212,27 @@ namespace TonRan.Continuum
 
 			foreach (var type in types)
 			{
-				typeToMembers_Cache[type] = new List<MemberInfo>();
+				typeToMembers_Cache[type] = new List<CmEntry>();
 
 				typeToMembers_Cache[type].AddRange((type.GetFields(reflectionOptions)
 					.Where(f => f.Name.Contains("k__BackingField") == false)
 					.Cast<MemberInfo>()
+					.Select(mi => new CmEntry(mi.Name, mi.MemberType, GetGuessType(mi)))
 					.ToList()
 				));
 
 				typeToMembers_Cache[type].AddRange((type.GetProperties(reflectionOptions)
 					.Cast<MemberInfo>()
+					.Select(mi => new CmEntry(mi.Name, mi.MemberType, GetGuessType(mi)))
 					.ToList()
 				));
 
 				typeToMembers_Cache[type].AddRange((type.GetMethods(reflectionOptions)
 					.Where(method => method.Name != "Finalize" && method.Name != "obj_address" && method.Name != "MemberwiseClone")
 					//Discard methods such as get_propertyName and set_propertyName
-					.Where(m => (m.Name.StartsWith("get_") == false && m.Name.StartsWith("set_") == false) || typeToMembers_Cache[type].Select(mi => mi.Name).Contains(m.Name.Substring(4)) == false)
+					.Where(m => (m.Name.StartsWith("get_") == false && m.Name.StartsWith("set_") == false) || typeToMembers_Cache[type].Select(mi => mi.name).Contains(m.Name.Substring(4)) == false)
 					.Cast<MemberInfo>()
+					.Select(mi => new CmEntry(mi.Name, mi.MemberType, GetGuessType(mi)))
 					.ToList()
 				));
 
@@ -210,102 +249,11 @@ namespace TonRan.Continuum
 			var namespaceTypes = from t in Assembly.GetExecutingAssembly().GetTypes()
 								 where t.IsClass && t.Namespace == @namespace
 								 select t;
-
-			//var namespaceTypes = AppDomain.CurrentDomain.GetAssemblies()
-			//		   .SelectMany(t => t.GetTypes())
-			//		   .Where(t => t.IsClass && t.Namespace == @namespace);
-
+			
 			ScanTypes(namespaceTypes, includePrivateVariables);
-
-
-			//Scan object, but don't allow access to its nonpublic members
-			//typeToMembers[typeof(UnityEngine.Object)] = (typeof(UnityEngine.Object).GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)
-			//	.Where(f => f.Name.Contains("k__BackingField") == false)
-			//	.Cast<MemberInfo>()
-			//	.ToList()
-			//);
-
-			//typeToMembers[typeof(UnityEngine.Object)] = (typeof(UnityEngine.Object).GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)
-			//	.Cast<MemberInfo>()
-			//	.ToList()
-			//);
-
-			//typeToMembers[typeof(UnityEngine.Object)] = (typeof(UnityEngine.Object).GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static)
-			//	.Cast<MemberInfo>()
-			//	.ToList()
-			//);
-			//-----------------------------------------------------------------
-
+			
 		}
-
-		/*
-		public List<MemberInfo> GuessMember(Type typeScope, string guess)
-		{
-			if (initialized == false) { throw new ContinuumNotInitializedException(); }
-
-			List<MemberInfo> result = new List<MemberInfo>();
-
-			if (typeScope == null)
-			{
-				foreach (var membersList in typeToMembers.Values)
-				{
-					result.AddRange(membersList);
-				}
-			}
-			else
-			{
-				result.AddRange(typeToMembers[typeScope]);
-			}
-
-
-			//Special Case: We list everything we got. If this happens, the programmer needs all the help he can get.
-			if (string.IsNullOrEmpty(guess))
-			{
-				return result;
-			}
-
-			//Filter all symbols SHORTER than the guess. 
-			result = result
-				.Where(symbol => symbol.Name.Length >= guess.Length)
-				.ToList();
-
-			outer: for (int i = result.Count - 1; i >= 0; i--)
-			{
-				string field = result[i].Name.ToLower(); //Let's be case insensitive.
-				string inputCopy = "" + guess.ToLower();
-
-				//Loop InputCopy (reversed). For each character, either delete that character in field, or continue to next field if that character isn't contained in the field
-				for (int k = inputCopy.Length - 1; k >= 0; k--)
-				{
-					char currChar = inputCopy[k];
-
-					if (field.Contains(currChar) == false)
-					{
-						//This is the only place where we modify result. So, it starts with all options, and then we remove the ones that don't match. The rest stays.
-						result.RemoveAt(i);
-						goto outer;
-					}
-
-					//If we skipped the previous if, we can proceed to remove the currChar from both field and inputcopy (ordering is important, we take out the last one)
-					field = field.Remove(
-						field.LastIndexOf(currChar),
-						1
-					);
-
-					inputCopy = inputCopy.Remove(k, 1);
-				}
-			}
-
-			result = SortResult(result);
-
-			return result;
-		}
-		*/
-
-		public List<string> GetAllTypes()
-		{
-			return typeToMembers_Cache.Keys.Select(k => k.Name).ToList();
-		}
+		
 
 		public Type GetGuessType(string guess)
 		{
@@ -313,12 +261,11 @@ namespace TonRan.Continuum
 			
 			string predictedType = Guess(guess)[0];
 			Type typeScope = type_scope_history.Peek();
-			return GetGuessType(typeToMembers_Cache[typeScope].First(typeName => typeName.Name == predictedType));
+			return typeToMembers_Cache[typeScope].First(cmEntry => cmEntry.name == predictedType).type;
 		}
 
 		public Type GetGuessType(MemberInfo guess)
 		{
-			if (initialized == false) { throw new ContinuumNotInitializedException(); }
 			Type type = null;
 			
 			Debug.Assert(guess != null);
@@ -337,16 +284,16 @@ namespace TonRan.Continuum
 			return type;
 		}
 
-		public List<MemberInfo> GuessMemberInfo(string guess)
+		public List<CmEntry> GuessCmEntry(string guess)
 		{
 			if (initialized == false) { throw new ContinuumNotInitializedException(); }
 
 			Debug.Assert(type_scope_history.Count >= 1, "No elements in the stack... Can't Peek scope!");
 
-			return GuessMemberInfo(type_scope_history.Peek(), guess);
+			return GuessCmEntry(type_scope_history.Peek(), guess);
 		}
 
-		public List<MemberInfo> GuessMemberInfo(Type typeScope, string guess)
+		public List<CmEntry> GuessCmEntry(Type typeScope, string guess)
 		{
 			if (initialized == false) { throw new ContinuumNotInitializedException(); }
 
@@ -358,26 +305,29 @@ namespace TonRan.Continuum
 			//{
 			//	Debug.Log("Guessing. Scope is null");
 			//}
-			List<MemberInfo> result = new List<MemberInfo>();
+			List<CmEntry> result = new List<CmEntry>();
 
-			if (typeScope == null)
+			////if (typeScope == null)
+			////{
+			////	foreach (var membersList in typeToMembers_Cache.Values)
+			////	{
+			////		result.AddRange(membersList);
+			////	}
+			////}
+			//else
+			//{
+			if(typeToMembers_Cache.ContainsKey(typeScope))
 			{
-				foreach (var membersList in typeToMembers_Cache.Values)
-				{
-					result.AddRange(membersList);
-				}
+				Debug.Log("Logging current gueses");
+				typeToMembers_Cache[typeScope].Take(Mathf.Min(50, typeToMembers_Cache[typeScope].Count)).Select(entry => entry.name).ToList().ForEach(Debug.Log);
+
+				result.AddRange(typeToMembers_Cache[typeScope]);
 			}
 			else
 			{
-				if(typeToMembers_Cache.ContainsKey(typeScope))
-				{
-					result.AddRange(typeToMembers_Cache[typeScope]);
-				}
-				else
-				{
-					Debug.LogWarning("Couldn't find type "+typeScope.Name+" in the Cache");
-				}
+				Debug.LogWarning("Couldn't find type "+typeScope.Name+" in the Cache");
 			}
+			//}
 			
 			//Special Case: We list everything we got. If this happens, the programmer needs all the help he can get.
 			if (string.IsNullOrEmpty(guess))
@@ -386,12 +336,12 @@ namespace TonRan.Continuum
 			}
 
 			//Filter all symbols SHORTER than the guess. 
-			result = result.Where(symbol => symbol.Name.Length >= guess.Length).ToList();
+			result = result.Where(symbol => symbol.name.Length >= guess.Length).ToList();
 
 
 			outer: for (int i = result.Count - 1; i >= 0; i--)
 			{
-				string field = result[i].Name.ToLower(); //Let's be case insensitive.
+				string field = result[i].name.ToLower(); //Let's be case insensitive.
 				string inputCopy = "" + guess.ToLower();
 
 				int fuzzyMinIndex = field.Length - 1;
@@ -431,7 +381,7 @@ namespace TonRan.Continuum
 				}
 			}
 
-			result = SortResult(result);
+			//result = SortResult(result);
 
 			return result;
 		}
@@ -445,7 +395,7 @@ namespace TonRan.Continuum
 		{
 			if (initialized == false) { throw new ContinuumNotInitializedException(); }
 
-			return GuessMemberInfo(typeScope, guess).Select(m => m.Name).ToList();
+			return GuessCmEntry(typeScope, guess).Select(m => m.name).ToList();
 		}
 
 		/// <summary>

@@ -282,8 +282,8 @@ namespace TonRan.Continuum
 				windowRect = GUILayout.Window(137, windowRect, DoWindow, "ContinuumSense");
 
 				string userGuess = GetGuess(scriptText);
-				List<MemberInfo> continuumSenseGuesses = continuumSense.GuessMemberInfo(userGuess);
-				ChangeEntries(continuumSenseGuesses);
+				//List<CmEntry> continuumSenseGuesses = continuumSense.GuessCmEntry(userGuess);
+				//ChangeEntries(continuumSenseGuesses);
 
 				//openAutocomplete = false;
 
@@ -360,31 +360,31 @@ namespace TonRan.Continuum
 
 		//I'm gonna make it a hashset for now to ignore duplicates. Those duplicates, though, are important: They are overloaded methods. We need to consider those.
 		private HashSet<string> entries = new HashSet<string>();
-		private HashSet<MemberInfo> entriesMemberInfo = new HashSet<MemberInfo>();
+		private HashSet<CmEntry> entriesMemberInfo = new HashSet<CmEntry>();
 
 		private void DoWindow(int id)
 		{
 			
 			scrollPos = GUILayout.BeginScrollView(scrollPos);
 
-			foreach (MemberInfo entry in entriesMemberInfo)
+			foreach (CmEntry entry in entriesMemberInfo)
 			{
 				var style = new GUIStyle(GUI.skin.button);
 
 				style.fontStyle = FontStyle.Bold;
 
-				if (entry.MemberType == MemberTypes.Property)
+				if (entry.memberType == MemberTypes.Property)
 				{
 					//style.normal.textColor = Color.blue;
 					style.normal.textColor = new Color(10 / 255f, 110 / 255f, 150 / 255f);
 					//Debug.Log("magenta");
 				}
-				else if (entry.MemberType == MemberTypes.Field)
+				else if (entry.memberType == MemberTypes.Field)
 				{
 					//style.normal.textColor = Color.white;
 					style.normal.textColor = new Color(56 / 255f, 40 / 255f, 0f / 255f);
 				}
-				else if (entry.MemberType == MemberTypes.Method)
+				else if (entry.memberType == MemberTypes.Method)
 				{
 					//style.normal.textColor = Color.green;
 					style.normal.textColor = new Color(17 / 255f, 153 / 255f, 0 / 255f);
@@ -392,30 +392,31 @@ namespace TonRan.Continuum
 
 				//style.normal.textColor = fontColor;
 
-				if (GUILayout.Button(entry.Name, style))
+				if (GUILayout.Button(entry.name, style))
 				{
 					//onEntryChosen(entry.Name);
-					OnSuggestionChosen(entry.Name, false);
+					OnSuggestionChosen(entry.name, false);
 				}
 			}
 			GUILayout.EndScrollView();
 			Repaint();
 		}
 
-		public void ChangeEntries(IEnumerable<MemberInfo> newEntries)
+		public void ChangeEntries(IEnumerable<CmEntry> newEntries)
 		{
-			entriesMemberInfo = new HashSet<MemberInfo>(newEntries);
+			entriesMemberInfo = new HashSet<CmEntry>(newEntries);
 			//Repaint();
 		}
 
 		internal void SimulateSelectFirstEntry()
 		{
 			//onEntryChosen(entries.First());
-			string suggestion = entries.FirstOrDefault();
+			CmEntry suggestion = entriesMemberInfo.FirstOrDefault();
+			//string suggestion = entries.FirstOrDefault();
 
 			if (suggestion == null) { Debug.LogWarning("Null Suggestion :D"); return; }
 
-			OnSuggestionChosen(suggestion, false);
+			OnSuggestionChosen(suggestion.name, false);
 		}
 
 		#endregion
@@ -433,85 +434,109 @@ namespace TonRan.Continuum
 		{
 			autocompleteWindowWasDisplayed = false;
 
-			//This happens for example when Ctrl+A + Del
-			if (after.Contains('.') == false)
-			{
-				//We're gonna have to implement scoping up in a different manner.....
-				//continuumSense.ScopeAllTheWayUp();
-			}
-
 			string guess = GetGuess(line: after);
 			RefreshAutoCompleteWindowGuesses(guess);
 
-			bool wasCharAdded = (after.Length > before.Length) == true;
-			bool wasCharRemoved = (after.Length < before.Length) == true;
-
-			char newChar = GetDifferentChar(before, after);
-			
-			if (wasCharAdded)
+			//A single character was added
+			if(Mathf.Abs(after.Length - before.Length) == 1)
 			{
-				if(string.IsNullOrEmpty(before))
+				bool wasCharAdded = (after.Length > before.Length) == true;
+				bool wasCharRemoved = (after.Length < before.Length) == true;
+
+				char newChar = GetDifferentChar(before, after);
+
+				if (wasCharAdded)
 				{
-					if (IsValidMemberSymbol(newChar))
+					if (string.IsNullOrEmpty(before))
 					{
+						if (IsValidMemberSymbol(newChar))
+						{
+							OpenAutocompleteAsync();
+						}
+					}
+
+					//Debug.Log("New Char is "+newChar);
+					if (newChar == '.')
+					{
+						int newCharIndex = after.Length - guess.Length; //For now it'll do
+						var previousMember = new string(after.Substring(0, newCharIndex - 1)    //We want the char before the point
+							.Reverse()
+							.Skip(1)
+							.TakeWhile(c => c != '.')
+							.Reverse()
+							.ToArray());
+
+						continuumSense.ScopeDown(previousMember);
 						OpenAutocompleteAsync();
-					}
-				}
 
-				//Debug.Log("New Char is "+newChar);
-				if (newChar == '.')
-				{
-					int newCharIndex = after.Length - guess.Length; //For now it'll do
-					var previousMember = new string(after.Substring(0, newCharIndex-1)	//We want the char before the point
-						.Reverse()
-						.Skip(1)
-						.TakeWhile(c => c != '.')
-						.Reverse()
-						.ToArray());
-					
-					continuumSense.ScopeDown(previousMember);
-					if(autocompleteWindow != null)
+						////ChangeEntries(continuumSense.GuessCmEntry(""));
+
+						//if(autocompleteWindow != null)
+						//{
+						//	autocompleteWindow.ChangeEntries(continuumSense.GuessMemberInfo(""));
+						//}
+					}
+
+					if (IsValidMemberSymbol(newChar) == false && newChar != '.')
 					{
-						autocompleteWindow.ChangeEntries(continuumSense.GuessMemberInfo(""));
+						CloseAutocompleteWindow();
 					}
-					OpenAutocompleteAsync();
 				}
 
-				if (IsValidMemberSymbol(newChar) == false && newChar != '.') 
+				if (wasCharRemoved)
 				{
-					CloseAutocompleteWindow();
+					if (newChar == '.')
+					{
+						continuumSense.ScopeUp();
+						//Debug.Log("Current scope is " + continuumSense.CurrentScope);
+					}
+				}
+
+				TextEditor editor = GetTextEditor();
+				if (editor.cursorIndex >= 4)
+				{
+					//This block is to react to "new "
+
+					var lastFourChars = editor.text.Substring(editor.cursorIndex - 4, 4);
+					if (lastFourChars == "new " && autocompleteWindowWasDisplayed == false)
+					{
+						//This will bring up all Classes available in namespace
+						continuumSense.ScopeDown(CmSense.AllClasses);
+						OpenAutocompleteAsync();
+
+						////I do my shit here
+						//IEnumerable<string> allTypes = continuumSense.GetAllTypes();
+						//Debug.Assert(allTypes.Contains("Vector3"));
+						//allTypes = new string[] { "Vector3" }.Concat(allTypes);
+						//OpenAutocompleteAsync(allTypes);
+					}
 				}
 			}
-
-			if (wasCharRemoved)
+			else
 			{
-				if (newChar == '.')
+				//This happens for example when Ctrl+A + Del
+				if (GetTextEditor().text == "")
 				{
-					continuumSense.ScopeUp();
-					//Debug.Log("Current scope is " + continuumSense.CurrentScope);
+					Debug.Log("ScopeAllTheWayUp");
+					continuumSense.ScopeAllTheWayUp();
+					RefreshAutoCompleteWindowGuesses("");
 				}
+
+
+				if (after.Contains('.') == false)
+				{
+					//We're gonna have to implement scoping up in a different manner.....
+					//continuumSense.ScopeAllTheWayUp();
+				}
+
 			}
 
 
-			TextEditor editor = GetTextEditor();
-			if(editor.cursorIndex >= 4) { 
-				//This block is to react to "new "
-
-				var lastFourChars = editor.text.Substring(editor.cursorIndex - 4, 4);
-				if (lastFourChars == "new " && autocompleteWindowWasDisplayed == false)
-				{
-					//I do my shit here
-					IEnumerable<string> allTypes = continuumSense.GetAllTypes();
-					Debug.Assert(allTypes.Contains("Vector3"));
-					allTypes = new string[] { "Vector3" }.Concat(allTypes);
-					OpenAutocompleteAsync(allTypes);
-				}
-			}
 		}
 
 		private bool IsValidMemberSymbol(char c)
 		{
-			return char.IsLetter(c) || c == '_';
+			return char.IsLetter(c) || c == '_' || char.IsNumber(c);
 		}
 
 		private void KeyEventHandling()
@@ -602,10 +627,11 @@ namespace TonRan.Continuum
 			try
 			{
 				continuumSense.ScopeDown(chosenEntry);
-				if(autocompleteWindow != null)
-				{
-					autocompleteWindow.ChangeEntries(continuumSense.GuessMemberInfo(""));
-				}
+				ChangeEntries(continuumSense.GuessCmEntry(""));
+				//if(autocompleteWindow != null)
+				//{
+				//	autocompleteWindow.ChangeEntries(continuumSense.GuessMemberInfo(""));
+				//}
 			}
 			catch (KeyNotFoundException)
 			{
@@ -630,7 +656,7 @@ namespace TonRan.Continuum
 			string currentText = editor.text;
 			int currentIndex = editor.cursorIndex;
 
-			while (currentText.Length != 0 && currentText.Last() != '.')
+			while (currentText.Length != 0 && currentText.Last() != '.' && currentText.Last() != ' ')
 			{
 				editor.Backspace();
 				currentText = currentText.Remove(currentText.Length - 1, 1);
@@ -677,11 +703,13 @@ namespace TonRan.Continuum
 
 		private void RefreshAutoCompleteWindowGuesses(string guess)
 		{
-			var guesses = continuumSense.GuessMemberInfo(guess);
-			if (autocompleteWindow != null)
-			{
-				autocompleteWindow.ChangeEntries(guesses);
-			}
+			var guesses = continuumSense.GuessCmEntry(guess);
+			ChangeEntries(guesses);
+			
+			//if (autocompleteWindow != null)
+			//{
+			//	//autocompleteWindow.ChangeEntries(guesses);
+			//}
 		}
 
 		private string GetGuess(string line)
@@ -689,7 +717,7 @@ namespace TonRan.Continuum
 			string guess = "";
 
 			string reversedLine = new string(line.Reverse().ToArray());
-			guess = new string(reversedLine.TakeWhile(c => c != '.').Reverse().ToArray());
+			guess = new string(reversedLine.TakeWhile(c => c != '.' && c !=' ').Reverse().ToArray());
 
 			return guess;
 		}
@@ -700,7 +728,7 @@ namespace TonRan.Continuum
 			return GetGuess(txtEditor.text.Substring(0, txtEditor.cursorIndex));
 		}
 
-		public void OpenAutocompleteAsync(IEnumerable<string> seed = null)
+		public void OpenAutocompleteAsync()
 		{
 			//if (autocompleteWindow != null || autocompletionEnabled == false)
 			//{
@@ -709,10 +737,13 @@ namespace TonRan.Continuum
 
 			if(autocompletionEnabled == false) { return; }
 
+			//string userGuess = GetGuess(scriptText);
+			//List<CmEntry> continuumSenseGuesses = continuumSense.GuessCmEntry(userGuess);
+			//ChangeEntries(continuumSenseGuesses);
+
 			showAutocomplete = true;
 			autocompleteWindowWasDisplayed = true;
 		}
-
 		
 		private void CompileAndRun()
 		{
