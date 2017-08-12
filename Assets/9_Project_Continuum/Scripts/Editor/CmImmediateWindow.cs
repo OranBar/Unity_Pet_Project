@@ -92,7 +92,7 @@ namespace TonRan.Continuum {
 		{
 			if (enabled)
 			{
-				UnityEngine.Debug.LogErrorFormat(format, args);
+				UnityEngine.Debug.LogWarningFormat(format, args);
 			}
 		}
 
@@ -132,7 +132,7 @@ namespace TonRan.Continuum
 		private CmSense continuumSense = new CmSense();
 
 
-		private int maxEntries = -1;
+		//private int maxEntries = 100;
 
 		private bool lastAutocompletionEnabled;
 		public static bool autocompletionEnabled;
@@ -163,7 +163,7 @@ namespace TonRan.Continuum
 			Debug.enabled = AssetDatabase.LoadAssetAtPath<DebugOptions>("Assets/9_Project_Continuum/Config/DebugOptions.asset").enabled;
 			
 			continuumWindow.continuumSense.Init(typeof(GameObject));
-			continuumWindow.continuumSense.MaxEntries = continuumWindow.maxEntries;
+			//continuumWindow.continuumSense.MaxEntries = continuumWindow.maxEntries;
 
 			//TODO: If I take this out, I think i have serialization throughout closing and reopening window.
 			continuumWindow.scriptText = "";
@@ -342,8 +342,16 @@ namespace TonRan.Continuum
 				//openAutoCompletePopup();
 			}
 			EndWindows();
+
 			EditorGUILayout.EndScrollView();
 
+			EditorGUILayout.LabelField("Esc: Close Autocomplete");
+			EditorGUILayout.LabelField("Shift+Space (spammed): Open Autocomplete");
+			EditorGUILayout.LabelField("Enter (while autocomplete open): Choose first suggestion");
+			EditorGUILayout.LabelField("If things go wrong, Select all and delete. The Console Log Message \"ScopeAllTheWayUp\" means the state was reset to blank.");
+			EditorGUILayout.LabelField("Thanks for contributing in the Alpha");
+
+			EditorGUILayout.Space();
 
 			EditorGUILayout.BeginHorizontal();
 
@@ -363,19 +371,19 @@ namespace TonRan.Continuum
 				}
 			}
 
-			var tmpEntries = maxEntries;
+			//var tmpEntries = maxEntries;
 			
-			EditorGUILayout.LabelField("MaxEntries {-1 => No Limits} :");
-			this.maxEntries = EditorGUILayout.IntField(maxEntries, GUILayout.MaxWidth(50));
-			if(maxEntries != tmpEntries)
-			{
-				continuumSense.MaxEntries = maxEntries;
-			}
+			//EditorGUILayout.LabelField("MaxEntries {-1 => No Limits} :");
+			//this.maxEntries = EditorGUILayout.IntField(maxEntries, GUILayout.MaxWidth(50));
+			//if(maxEntries != tmpEntries)
+			//{
+			//	continuumSense.MaxEntries = maxEntries;
+			//}
 			
 
 			if (GUILayout.Button("Info"))
 			{
-				throw new NotImplementedException();
+				Debug.Log("Coming soon");
 			}
 			
 
@@ -478,7 +486,7 @@ namespace TonRan.Continuum
 
 			string guess = GetGuess(line: after);
 			RefreshAutoCompleteWindowGuesses(guess);
-
+			
 			//A single character was added
 			if (Mathf.Abs(after.Length - before.Length) == 1)
 			{
@@ -507,7 +515,7 @@ namespace TonRan.Continuum
 							.Reverse()
 							.ToArray());
 
-						continuumSense.ScopeDown(previousMember);
+						ScopeDown(previousMember);
 						OpenAutocompleteAsync();
 
 						////ChangeEntries(continuumSense.GuessCmEntry(""));
@@ -530,16 +538,18 @@ namespace TonRan.Continuum
 
 				if (wasCharRemoved)
 				{
-					if (scopeUpIfNextRemovalAtThisIndex == GetTextEditor().cursorIndex)
-					{
-						continuumSense.ScopeUp();
-						scopeUpIfNextRemovalAtThisIndex = -2;
-					}
+					//if (scopeUpIfNextRemovalAtThisIndex == GetTextEditor().cursorIndex)
+					//{
+					//	continuumSense.ScopeUp();
+					//	scopeUpIfNextRemovalAtThisIndex = -2;
+					//}
 					
 					if (newChar == '.' || newChar == ';')
 					{
-						scopeUpIfNextRemovalAtThisIndex = GetTextEditor().cursorIndex -1;
-						Debug.LogFormat("Scope up if next removal is {0}, at index {1}", GetTextEditor().text[GetTextEditor().cursorIndex], GetTextEditor().cursorIndex);
+						continuumSense.ScopeUp();
+						
+						//scopeUpIfNextRemovalAtThisIndex = GetTextEditor().cursorIndex -1;
+						//Debug.LogFormat("Scope up if next removal is {0}, at index {1}", GetTextEditor().text[GetTextEditor().cursorIndex], GetTextEditor().cursorIndex);
 						//Debug.Log("Current scope is " + continuumSense.CurrentScope);
 					}
 				}
@@ -553,7 +563,7 @@ namespace TonRan.Continuum
 					if (lastFourChars == "new " && autocompleteWindowWasDisplayed == false)
 					{
 						//This will bring up all Classes available in namespace
-						continuumSense.ScopeDown(CmSense.AllClasses);
+						ScopeDown(CmSense.AllClasses);
 						OpenAutocompleteAsync();
 
 						////I do my shit here
@@ -582,8 +592,19 @@ namespace TonRan.Continuum
 				}
 
 			}
+			
+		}		
 
+		private void ScopeDown(string previousMember)
+		{
+			continuumSense.ScopeDown(previousMember);
+			ChangeEntries(continuumSense.GuessCmEntries(""));
+		}
 
+		private void ScopeDown(Type previousType)
+		{
+			continuumSense.ScopeDown(previousType);
+			ChangeEntries(continuumSense.GuessCmEntries(""));
 		}
 
 		private bool IsValidMemberSymbol(char c)
@@ -682,7 +703,7 @@ namespace TonRan.Continuum
 			{
 				//continuumSense.ScopeDown(chosenEntry);
 
-				ChangeEntries(continuumSense.GuessCmEntry(""));
+				ChangeEntries(continuumSense.GuessCmEntries(""));
 				//if(autocompleteWindow != null)
 				//{
 				//	autocompleteWindow.ChangeEntries(continuumSense.GuessMemberInfo(""));
@@ -760,7 +781,7 @@ namespace TonRan.Continuum
 
 		private void RefreshAutoCompleteWindowGuesses(string guess)
 		{
-			var guesses = continuumSense.GuessCmEntry(guess);
+			var guesses = continuumSense.GuessCmEntries(guess);
 			ChangeEntries(guesses);
 			
 			//if (autocompleteWindow != null)

@@ -41,20 +41,20 @@ namespace TonRan.Continuum
 		private Stack<Type> type_scope_history = new Stack<Type>();
 
 		private Type baseType;
-		private int maxEntries = -1;
+		//private int maxEntries = -1;
 
 		/// <summary>
 		/// Set Effect starts on next guess
 		/// </summary>
-		public int MaxEntries {
-			get {
-				return this.maxEntries;
-			}
+		//public int MaxEntries {
+		//	get {
+		//		return this.maxEntries;
+		//	}
 			
-			set {
-				this.maxEntries = value;
-			}
-		}
+		//	set {
+		//		this.maxEntries = value;
+		//	}
+		//}
 
 		public Type CurrentScope {
 			get {
@@ -316,7 +316,7 @@ namespace TonRan.Continuum
 			return type;
 		}
 
-		public List<CmEntry> GuessCmEntry(string guess)
+		public List<CmEntry> GuessCmEntries(string guess)
 		{
 			if (initialized == false) { throw new ContinuumNotInitializedException(); }
 
@@ -369,12 +369,12 @@ namespace TonRan.Continuum
 
 
 			//TODO: Remove this Performance hack-a-roo ---------------
-			if (MaxEntries != -1 && result.Count > MaxEntries)
-			{
-				var resultCount = result.Count;
-				result = result.Take(MaxEntries).ToList();
-				Debug.LogWarningFormat("Displaying {0}/{1} results (To disable, increase MaxEntries)", MaxEntries, resultCount);
-			}
+			//if (MaxEntries != -1 && result.Count > MaxEntries)
+			//{
+			//	var resultCount = result.Count;
+			//	result = result.Take(MaxEntries).ToList();
+			//	Debug.LogWarningFormat("Displaying {0}/{1} results (To disable, increase MaxEntries)", MaxEntries, resultCount);
+			//}
 			//----------------------------------------------
 
 
