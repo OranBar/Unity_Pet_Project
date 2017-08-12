@@ -282,8 +282,8 @@ namespace TonRan.Continuum
 				windowRect = GUILayout.Window(137, windowRect, DoWindow, "ContinuumSense");
 
 				string userGuess = GetGuess(scriptText);
-				List<CmEntry> continuumSenseGuesses = continuumSense.GuessMemberInfo(userGuess);
-				ChangeEntries(continuumSenseGuesses);
+				//List<CmEntry> continuumSenseGuesses = continuumSense.GuessCmEntry(userGuess);
+				//ChangeEntries(continuumSenseGuesses);
 
 				//openAutocomplete = false;
 
@@ -411,11 +411,12 @@ namespace TonRan.Continuum
 		internal void SimulateSelectFirstEntry()
 		{
 			//onEntryChosen(entries.First());
-			string suggestion = entries.FirstOrDefault();
+			CmEntry suggestion = entriesMemberInfo.FirstOrDefault();
+			//string suggestion = entries.FirstOrDefault();
 
 			if (suggestion == null) { Debug.LogWarning("Null Suggestion :D"); return; }
 
-			OnSuggestionChosen(suggestion, false);
+			OnSuggestionChosen(suggestion.name, false);
 		}
 
 		#endregion
@@ -470,12 +471,14 @@ namespace TonRan.Continuum
 						.ToArray());
 					
 					continuumSense.ScopeDown(previousMember);
-					ChangeEntries(continuumSense.GuessMemberInfo(""));
+					OpenAutocompleteAsync();
+					
+					////ChangeEntries(continuumSense.GuessCmEntry(""));
+
 					//if(autocompleteWindow != null)
 					//{
 					//	autocompleteWindow.ChangeEntries(continuumSense.GuessMemberInfo(""));
 					//}
-					OpenAutocompleteAsync();
 				}
 
 				if (IsValidMemberSymbol(newChar) == false && newChar != '.') 
@@ -501,19 +504,22 @@ namespace TonRan.Continuum
 				var lastFourChars = editor.text.Substring(editor.cursorIndex - 4, 4);
 				if (lastFourChars == "new " && autocompleteWindowWasDisplayed == false)
 				{
+					//This will bring up all Classes available in namespace
+					continuumSense.ScopeDown(CmSense.AllClasses);
+					OpenAutocompleteAsync();
 					
-					//I do my shit here
-					IEnumerable<string> allTypes = continuumSense.GetAllTypes();
-					Debug.Assert(allTypes.Contains("Vector3"));
-					allTypes = new string[] { "Vector3" }.Concat(allTypes);
-					OpenAutocompleteAsync(allTypes);
+					////I do my shit here
+					//IEnumerable<string> allTypes = continuumSense.GetAllTypes();
+					//Debug.Assert(allTypes.Contains("Vector3"));
+					//allTypes = new string[] { "Vector3" }.Concat(allTypes);
+					//OpenAutocompleteAsync(allTypes);
 				}
 			}
 		}
 
 		private bool IsValidMemberSymbol(char c)
 		{
-			return char.IsLetter(c) || c == '_';
+			return char.IsLetter(c) || c == '_' || char.IsNumber(c);
 		}
 
 		private void KeyEventHandling()
@@ -604,7 +610,7 @@ namespace TonRan.Continuum
 			try
 			{
 				continuumSense.ScopeDown(chosenEntry);
-				ChangeEntries(continuumSense.GuessMemberInfo(""));
+				ChangeEntries(continuumSense.GuessCmEntry(""));
 				//if(autocompleteWindow != null)
 				//{
 				//	autocompleteWindow.ChangeEntries(continuumSense.GuessMemberInfo(""));
@@ -680,12 +686,13 @@ namespace TonRan.Continuum
 
 		private void RefreshAutoCompleteWindowGuesses(string guess)
 		{
-			var guesses = continuumSense.GuessMemberInfo(guess);
-			if (autocompleteWindow != null)
-			{
-				//autocompleteWindow.ChangeEntries(guesses);
-				ChangeEntries(guesses);
-			}
+			var guesses = continuumSense.GuessCmEntry(guess);
+			ChangeEntries(guesses);
+			
+			//if (autocompleteWindow != null)
+			//{
+			//	//autocompleteWindow.ChangeEntries(guesses);
+			//}
 		}
 
 		private string GetGuess(string line)
@@ -693,7 +700,7 @@ namespace TonRan.Continuum
 			string guess = "";
 
 			string reversedLine = new string(line.Reverse().ToArray());
-			guess = new string(reversedLine.TakeWhile(c => c != '.').Reverse().ToArray());
+			guess = new string(reversedLine.TakeWhile(c => c != '.' && c !=' ').Reverse().ToArray());
 
 			return guess;
 		}
@@ -704,7 +711,7 @@ namespace TonRan.Continuum
 			return GetGuess(txtEditor.text.Substring(0, txtEditor.cursorIndex));
 		}
 
-		public void OpenAutocompleteAsync(IEnumerable<string> seed = null)
+		public void OpenAutocompleteAsync()
 		{
 			//if (autocompleteWindow != null || autocompletionEnabled == false)
 			//{
@@ -713,10 +720,13 @@ namespace TonRan.Continuum
 
 			if(autocompletionEnabled == false) { return; }
 
+			//string userGuess = GetGuess(scriptText);
+			//List<CmEntry> continuumSenseGuesses = continuumSense.GuessCmEntry(userGuess);
+			//ChangeEntries(continuumSenseGuesses);
+
 			showAutocomplete = true;
 			autocompleteWindowWasDisplayed = true;
 		}
-
 		
 		private void CompileAndRun()
 		{
