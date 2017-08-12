@@ -41,6 +41,17 @@ namespace TonRan.Continuum
 		private Stack<Type> type_scope_history = new Stack<Type>();
 
 		private Type baseType;
+		private bool dontSuggestTypes;
+
+		public bool DontSuggestTypes {
+			get {
+				return this.dontSuggestTypes;
+			}
+
+			set {
+				this.dontSuggestTypes = value;
+			}
+		}
 		//private int maxEntries = -1;
 
 		/// <summary>
@@ -50,7 +61,7 @@ namespace TonRan.Continuum
 		//	get {
 		//		return this.maxEntries;
 		//	}
-			
+
 		//	set {
 		//		this.maxEntries = value;
 		//	}
@@ -273,8 +284,8 @@ namespace TonRan.Continuum
 
 		private void ScanAssembly(Assembly a, bool includePrivateVariables) 
 		{
-			Debug.Log(a.GetTypes().Length + " GetTypes");
-			Debug.Log(a.GetExportedTypes().Length + " GetExportedTypes");
+			//Debug.Log(a.GetTypes().Length + " GetTypes");
+			//Debug.Log(a.GetExportedTypes().Length + " GetExportedTypes");
 
 			ScanTypes(a.GetExportedTypes(), includePrivateVariables);
 		}
@@ -328,38 +339,30 @@ namespace TonRan.Continuum
 
 			Debug.Assert(type_scope_history.Count >= 1, "No elements in the stack... Can't Peek scope!");
 
-			return GuessCmEntry(type_scope_history.Peek(), guess);
+			return GuessCmEntries(type_scope_history.Peek(), guess);
 		}
 
-		public List<CmEntry> GuessCmEntry(Type typeScope, string guess)
+		public List<CmEntry> GuessCmEntries(Type typeScope, string guess)
 		{
 			if (initialized == false) { throw new ContinuumNotInitializedException(); }
 
-			//try
-			//{
-			//	Debug.Log("Guessing. Scope is " + typeScope.Name);
-			//}
-			//catch
-			//{
-			//	Debug.Log("Guessing. Scope is null");
-			//}
+			
+
 			List<CmEntry> result = new List<CmEntry>();
 
-			////if (typeScope == null)
-			////{
-			////	foreach (var membersList in typeToMembers_Cache.Values)
-			////	{
-			////		result.AddRange(membersList);
-			////	}
-			////}
-			//else
-			//{
 			if(typeToMembers_Cache.ContainsKey(typeScope))
 			{
 				//Debug.Log("Logging current gueses");
 				//typeToMembers_Cache[typeScope].Take(Mathf.Min(50, typeToMembers_Cache[typeScope].Count)).Select(entry => entry.name).ToList().ForEach(Debug.Log);
 
 				result.AddRange(typeToMembers_Cache[typeScope]);
+
+				if (result.Count > 600 && guess.Length <= 1)
+				{
+					//Debug.LogWarningFormat("[Performance Hack-a-roo] Too many possibilities ({0}): Add more letters to trigger ContinuumSense", result.Count);
+					return result;
+				}
+
 			}
 			else
 			{
@@ -383,6 +386,7 @@ namespace TonRan.Continuum
 			//}
 			//----------------------------------------------
 
+			
 
 			//Filter all symbols SHORTER than the guess. 
 			result = result.Where(symbol => symbol.name.Length >= guess.Length).ToList();
@@ -444,7 +448,7 @@ namespace TonRan.Continuum
 		{
 			if (initialized == false) { throw new ContinuumNotInitializedException(); }
 
-			return GuessCmEntry(typeScope, guess).Select(m => m.name).ToList();
+			return GuessCmEntries(typeScope, guess).Select(m => m.name).ToList();
 		}
 
 		/// <summary>

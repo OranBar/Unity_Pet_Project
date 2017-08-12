@@ -136,7 +136,7 @@ namespace TonRan.Continuum
 
 		private bool lastAutocompletionEnabled;
 		public static bool autocompletionEnabled;
-
+		
 		// script text
 		private string scriptText = string.Empty;
 		// cache of last method we compiled so repeat executions only incur a single compilation
