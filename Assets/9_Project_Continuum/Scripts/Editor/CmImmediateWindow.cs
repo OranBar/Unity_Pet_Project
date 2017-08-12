@@ -131,6 +131,12 @@ namespace TonRan.Continuum
 		private CmCompiler continuumCompiler = new CmCompiler();
 		private CmSense continuumSense = new CmSense();
 
+
+		private int maxEntries = -1;
+
+		private bool lastAutocompletionEnabled;
+		public static bool autocompletionEnabled;
+
 		// script text
 		private string scriptText = string.Empty;
 		// cache of last method we compiled so repeat executions only incur a single compilation
@@ -145,9 +151,7 @@ namespace TonRan.Continuum
 
 		private static CmImmediateWindow continuumWindow;
 
-		public static bool autocompletionEnabled;
 
-		private bool lastAutocompletionEnabled;
 		
 
 		[MenuItem("Continuum/Continuum_Immediate {AlphaVersion}")]
@@ -159,7 +163,8 @@ namespace TonRan.Continuum
 			Debug.enabled = AssetDatabase.LoadAssetAtPath<DebugOptions>("Assets/9_Project_Continuum/Config/DebugOptions.asset").enabled;
 			
 			continuumWindow.continuumSense.Init(typeof(GameObject));
-			
+			continuumWindow.continuumSense.MaxEntries = continuumWindow.maxEntries;
+
 			//TODO: If I take this out, I think i have serialization throughout closing and reopening window.
 			continuumWindow.scriptText = "";
 
@@ -203,11 +208,13 @@ namespace TonRan.Continuum
 			}
 		}
 
-		private int removeKeyFlag = -1;
+		private int removeKeyFlag = 0;
+		//int skipNextTextChange;
 
 		void OnGUI()
 		{
-			KeyEventHandling();
+			var skipNextTextChange = KeyEventHandling();
+			//if (skipNextTextChange > 0) { skipNextTextChange--; }
 
 			scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
 			//This is the reason why we can't copy paste and select all. 
@@ -219,21 +226,31 @@ namespace TonRan.Continuum
 
 			if (editor == null) { EditorGUILayout.EndScrollView(); return; }
 
-			if(removeKeyFlag >= 0) { removeKeyFlag--; }
+			//Debug.Log(editor.text.ToCharArray().Aggregate("", (agg, c) => agg = agg + (int)c+" "));
+
+
+			if (removeKeyFlag >= 0) { removeKeyFlag--; }
 			if(removeKeyFlag == 0){
 				editor.Backspace();
 				removeKeyFlag--;
 			}
 
+			
 
 			// if the script changed, update our cached version and null out our cached method
 			if (newScriptText != scriptText)
 			{
+				//if (skipNextTextChange > 0)
+				//{
+				//	goto skip;
+				//}
+
 				var tmp = scriptText;
 				scriptText = newScriptText;
 				OnTextChanged(tmp, scriptText);
 			}
 
+			skip:
 
 
 
@@ -248,24 +265,26 @@ namespace TonRan.Continuum
 				OpenAutocompleteAsync();
 			}
 
+			/*
 			//-----------------------------------------------------------------------------
-			if (GUILayout.Button("Complete!"))
-			{
-				string guess = GetGuess(scriptText);
-				string firstContinuumSensePrediction = continuumSense.Guess(guess).FirstOrDefault();
+			//if (GUILayout.Button("Complete!"))
+			//{
+			//	string guess = GetGuess(scriptText);
+			//	string firstContinuumSensePrediction = continuumSense.Guess(guess).FirstOrDefault();
 
-				if (firstContinuumSensePrediction != null)
-				{
-					Debug.Log("adding " + firstContinuumSensePrediction);
-					RemoveLastUserGuessFromTextArea();
-					InsertTextInScriptAtCursorPosition(firstContinuumSensePrediction);
-				}
-				else
-				{
-					Debug.LogWarning("I have no guesses");
-				}
-			}
+			//	if (firstContinuumSensePrediction != null)
+			//	{
+			//		Debug.Log("adding " + firstContinuumSensePrediction);
+			//		RemoveLastUserGuessFromTextArea();
+			//		InsertTextInScriptAtCursorPosition(firstContinuumSensePrediction);
+			//	}
+			//	else
+			//	{
+			//		Debug.LogWarning("I have no guesses");
+			//	}
+			//}
 			//-----------------------------------------------------------------------------
+			*/
 
 			BeginWindows();
 			//Debug.Log(showAutocomplete);
@@ -326,6 +345,7 @@ namespace TonRan.Continuum
 			EditorGUILayout.EndScrollView();
 
 
+			EditorGUILayout.BeginHorizontal();
 
 			autocompletionEnabled = GUILayout.Toggle(autocompletionEnabled, "Enable Autocomplete");
 			if (autocompletionEnabled != lastAutocompletionEnabled)
@@ -343,7 +363,25 @@ namespace TonRan.Continuum
 				}
 			}
 
+			var tmpEntries = maxEntries;
 			
+			EditorGUILayout.LabelField("MaxEntries {-1 => No Limits} :");
+			this.maxEntries = EditorGUILayout.IntField(maxEntries, GUILayout.MaxWidth(50));
+			if(maxEntries != tmpEntries)
+			{
+				continuumSense.MaxEntries = maxEntries;
+			}
+			
+
+			if (GUILayout.Button("Info"))
+			{
+				throw new NotImplementedException();
+			}
+			
+
+
+			EditorGUILayout.EndHorizontal();
+
 
 			//Repaint();
 			//if (autocompleteWindow != null)
@@ -361,6 +399,7 @@ namespace TonRan.Continuum
 		//I'm gonna make it a hashset for now to ignore duplicates. Those duplicates, though, are important: They are overloaded methods. We need to consider those.
 		private HashSet<string> entries = new HashSet<string>();
 		private HashSet<CmEntry> entriesMemberInfo = new HashSet<CmEntry>();
+		private int scopeUpIfNextRemovalAtThisIndex = -2;
 
 		private void DoWindow(int id)
 		{
@@ -432,13 +471,16 @@ namespace TonRan.Continuum
 
 		private void OnTextChanged(string before, string after)
 		{
+			after = after.Replace("\n", "");
+			before = before.Replace("\n", "");
+
 			autocompleteWindowWasDisplayed = false;
 
 			string guess = GetGuess(line: after);
 			RefreshAutoCompleteWindowGuesses(guess);
 
 			//A single character was added
-			if(Mathf.Abs(after.Length - before.Length) == 1)
+			if (Mathf.Abs(after.Length - before.Length) == 1)
 			{
 				bool wasCharAdded = (after.Length > before.Length) == true;
 				bool wasCharRemoved = (after.Length < before.Length) == true;
@@ -488,9 +530,16 @@ namespace TonRan.Continuum
 
 				if (wasCharRemoved)
 				{
-					if (newChar == '.' || newChar == ';')
+					if (scopeUpIfNextRemovalAtThisIndex == GetTextEditor().cursorIndex)
 					{
 						continuumSense.ScopeUp();
+						scopeUpIfNextRemovalAtThisIndex = -2;
+					}
+					
+					if (newChar == '.' || newChar == ';')
+					{
+						scopeUpIfNextRemovalAtThisIndex = GetTextEditor().cursorIndex -1;
+						Debug.LogFormat("Scope up if next removal is {0}, at index {1}", GetTextEditor().text[GetTextEditor().cursorIndex], GetTextEditor().cursorIndex);
 						//Debug.Log("Current scope is " + continuumSense.CurrentScope);
 					}
 				}
@@ -542,7 +591,7 @@ namespace TonRan.Continuum
 			return char.IsLetter(c) || c == '_' || char.IsNumber(c);
 		}
 
-		private void KeyEventHandling()
+		private int KeyEventHandling()
 		{
 			switch (Event.current.type)
 			{
@@ -590,6 +639,7 @@ namespace TonRan.Continuum
 								OnSuggestionChosen(suggestion);
 								RemoveLastKeyAsync();
 							}
+							return 3;
 
 						}
 
@@ -606,6 +656,7 @@ namespace TonRan.Continuum
 					}
 
 			}
+			return 0;
 		}
 
 		/// <summary>
@@ -629,7 +680,8 @@ namespace TonRan.Continuum
 
 			try
 			{
-				continuumSense.ScopeDown(chosenEntry);
+				//continuumSense.ScopeDown(chosenEntry);
+
 				ChangeEntries(continuumSense.GuessCmEntry(""));
 				//if(autocompleteWindow != null)
 				//{

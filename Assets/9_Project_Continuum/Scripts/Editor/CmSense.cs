@@ -41,6 +41,20 @@ namespace TonRan.Continuum
 		private Stack<Type> type_scope_history = new Stack<Type>();
 
 		private Type baseType;
+		private int maxEntries = -1;
+
+		/// <summary>
+		/// Set Effect starts on next guess
+		/// </summary>
+		public int MaxEntries {
+			get {
+				return this.maxEntries;
+			}
+			
+			set {
+				this.maxEntries = value;
+			}
+		}
 
 		public Type CurrentScope {
 			get {
@@ -54,6 +68,8 @@ namespace TonRan.Continuum
 				return this.baseType;
 			}
 		}
+
+		
 
 		[Obsolete("Use version with Type parameter")]
 		public void Init(/*TODO: Add parameters: Namespaces to analyze*/)
@@ -189,10 +205,10 @@ namespace TonRan.Continuum
 			type_scope_history.Clear();
 			type_scope_history.Push(AllClasses);
 
-			if (baseType != null)
-			{
-				type_scope_history.Push(baseType);
-			}
+			//if (baseType != null)
+			//{
+			//	type_scope_history.Push(baseType);
+			//}
 
 		}
 
@@ -350,6 +366,17 @@ namespace TonRan.Continuum
 			{
 				return result;
 			}
+
+
+			//TODO: Remove this Performance hack-a-roo ---------------
+			if (MaxEntries != -1 && result.Count > MaxEntries)
+			{
+				var resultCount = result.Count;
+				result = result.Take(MaxEntries).ToList();
+				Debug.LogWarningFormat("Displaying {0}/{1} results (To disable, increase MaxEntries)", MaxEntries, resultCount);
+			}
+			//----------------------------------------------
+
 
 			//Filter all symbols SHORTER than the guess. 
 			result = result.Where(symbol => symbol.name.Length >= guess.Length).ToList();
