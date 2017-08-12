@@ -434,87 +434,104 @@ namespace TonRan.Continuum
 		{
 			autocompleteWindowWasDisplayed = false;
 
-			//This happens for example when Ctrl+A + Del
-			if (after.Contains('.') == false)
-			{
-				//We're gonna have to implement scoping up in a different manner.....
-				//continuumSense.ScopeAllTheWayUp();
-			}
-
 			string guess = GetGuess(line: after);
 			RefreshAutoCompleteWindowGuesses(guess);
 
-			bool wasCharAdded = (after.Length > before.Length) == true;
-			bool wasCharRemoved = (after.Length < before.Length) == true;
-
-			char newChar = GetDifferentChar(before, after);
-			
-			if (wasCharAdded)
+			//A single character was added
+			if(Mathf.Abs(after.Length - before.Length) == 1)
 			{
-				if(string.IsNullOrEmpty(before))
+				bool wasCharAdded = (after.Length > before.Length) == true;
+				bool wasCharRemoved = (after.Length < before.Length) == true;
+
+				char newChar = GetDifferentChar(before, after);
+
+				if (wasCharAdded)
 				{
-					if (IsValidMemberSymbol(newChar))
+					if (string.IsNullOrEmpty(before))
 					{
+						if (IsValidMemberSymbol(newChar))
+						{
+							OpenAutocompleteAsync();
+						}
+					}
+
+					//Debug.Log("New Char is "+newChar);
+					if (newChar == '.')
+					{
+						int newCharIndex = after.Length - guess.Length; //For now it'll do
+						var previousMember = new string(after.Substring(0, newCharIndex - 1)    //We want the char before the point
+							.Reverse()
+							.Skip(1)
+							.TakeWhile(c => c != '.')
+							.Reverse()
+							.ToArray());
+
+						continuumSense.ScopeDown(previousMember);
 						OpenAutocompleteAsync();
+
+						////ChangeEntries(continuumSense.GuessCmEntry(""));
+
+						//if(autocompleteWindow != null)
+						//{
+						//	autocompleteWindow.ChangeEntries(continuumSense.GuessMemberInfo(""));
+						//}
+					}
+
+					if (IsValidMemberSymbol(newChar) == false && newChar != '.')
+					{
+						CloseAutocompleteWindow();
 					}
 				}
 
-				//Debug.Log("New Char is "+newChar);
-				if (newChar == '.')
+				if (wasCharRemoved)
 				{
-					int newCharIndex = after.Length - guess.Length; //For now it'll do
-					var previousMember = new string(after.Substring(0, newCharIndex-1)	//We want the char before the point
-						.Reverse()
-						.Skip(1)
-						.TakeWhile(c => c != '.')
-						.Reverse()
-						.ToArray());
-					
-					continuumSense.ScopeDown(previousMember);
-					OpenAutocompleteAsync();
-					
-					////ChangeEntries(continuumSense.GuessCmEntry(""));
-
-					//if(autocompleteWindow != null)
-					//{
-					//	autocompleteWindow.ChangeEntries(continuumSense.GuessMemberInfo(""));
-					//}
+					if (newChar == '.')
+					{
+						continuumSense.ScopeUp();
+						//Debug.Log("Current scope is " + continuumSense.CurrentScope);
+					}
 				}
 
-				if (IsValidMemberSymbol(newChar) == false && newChar != '.') 
+				TextEditor editor = GetTextEditor();
+				if (editor.cursorIndex >= 4)
 				{
-					CloseAutocompleteWindow();
+					//This block is to react to "new "
+
+					var lastFourChars = editor.text.Substring(editor.cursorIndex - 4, 4);
+					if (lastFourChars == "new " && autocompleteWindowWasDisplayed == false)
+					{
+						//This will bring up all Classes available in namespace
+						continuumSense.ScopeDown(CmSense.AllClasses);
+						OpenAutocompleteAsync();
+
+						////I do my shit here
+						//IEnumerable<string> allTypes = continuumSense.GetAllTypes();
+						//Debug.Assert(allTypes.Contains("Vector3"));
+						//allTypes = new string[] { "Vector3" }.Concat(allTypes);
+						//OpenAutocompleteAsync(allTypes);
+					}
 				}
 			}
-
-			if (wasCharRemoved)
+			else
 			{
-				if (newChar == '.')
+				//This happens for example when Ctrl+A + Del
+				if (GetTextEditor().text == "")
 				{
-					continuumSense.ScopeUp();
-					//Debug.Log("Current scope is " + continuumSense.CurrentScope);
+					Debug.Log("ScopeAllTheWayUp");
+					continuumSense.ScopeAllTheWayUp();
+					RefreshAutoCompleteWindowGuesses("");
 				}
+
+
+				if (after.Contains('.') == false)
+				{
+					//We're gonna have to implement scoping up in a different manner.....
+					//continuumSense.ScopeAllTheWayUp();
+				}
+
 			}
 
 
-			TextEditor editor = GetTextEditor();
-			if(editor.cursorIndex >= 4) { 
-				//This block is to react to "new "
-
-				var lastFourChars = editor.text.Substring(editor.cursorIndex - 4, 4);
-				if (lastFourChars == "new " && autocompleteWindowWasDisplayed == false)
-				{
-					//This will bring up all Classes available in namespace
-					continuumSense.ScopeDown(CmSense.AllClasses);
-					OpenAutocompleteAsync();
-					
-					////I do my shit here
-					//IEnumerable<string> allTypes = continuumSense.GetAllTypes();
-					//Debug.Assert(allTypes.Contains("Vector3"));
-					//allTypes = new string[] { "Vector3" }.Concat(allTypes);
-					//OpenAutocompleteAsync(allTypes);
-				}
-			}
 		}
 
 		private bool IsValidMemberSymbol(char c)

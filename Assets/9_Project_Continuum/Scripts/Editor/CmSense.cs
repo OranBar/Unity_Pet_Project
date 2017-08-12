@@ -171,9 +171,12 @@ namespace TonRan.Continuum
 			if (initialized == false) { throw new ContinuumNotInitializedException(); }
 			
 			type_scope_history.Clear();
-			ScopeDown(baseType);
+			type_scope_history.Push(AllClasses);
 
-			//type_scope_history.Push(baseType);
+			if (baseType != null)
+			{
+				type_scope_history.Push(baseType);
+			}
 
 		}
 
