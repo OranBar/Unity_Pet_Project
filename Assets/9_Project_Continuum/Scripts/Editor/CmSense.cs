@@ -40,12 +40,18 @@ namespace TonRan.Continuum
 
 		private Stack<Type> type_scope_history = new Stack<Type>();
 
-		private Type baseType = null;
+		private Type baseType;
 
 		public Type CurrentScope {
 			get {
 				if (initialized == false) { return null; }
 				else return type_scope_history.Peek();
+			}
+		}
+
+		public Type BaseType {
+			get {
+				return this.baseType;
 			}
 		}
 
@@ -318,8 +324,8 @@ namespace TonRan.Continuum
 			//{
 			if(typeToMembers_Cache.ContainsKey(typeScope))
 			{
-				Debug.Log("Logging current gueses");
-				typeToMembers_Cache[typeScope].Take(Mathf.Min(50, typeToMembers_Cache[typeScope].Count)).Select(entry => entry.name).ToList().ForEach(Debug.Log);
+				//Debug.Log("Logging current gueses");
+				//typeToMembers_Cache[typeScope].Take(Mathf.Min(50, typeToMembers_Cache[typeScope].Count)).Select(entry => entry.name).ToList().ForEach(Debug.Log);
 
 				result.AddRange(typeToMembers_Cache[typeScope]);
 			}
