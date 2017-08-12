@@ -282,7 +282,7 @@ namespace TonRan.Continuum
 				windowRect = GUILayout.Window(137, windowRect, DoWindow, "ContinuumSense");
 
 				string userGuess = GetGuess(scriptText);
-				List<MemberInfo> continuumSenseGuesses = continuumSense.GuessMemberInfo(userGuess);
+				List<CmEntry> continuumSenseGuesses = continuumSense.GuessMemberInfo(userGuess);
 				ChangeEntries(continuumSenseGuesses);
 
 				//openAutocomplete = false;
@@ -360,31 +360,31 @@ namespace TonRan.Continuum
 
 		//I'm gonna make it a hashset for now to ignore duplicates. Those duplicates, though, are important: They are overloaded methods. We need to consider those.
 		private HashSet<string> entries = new HashSet<string>();
-		private HashSet<MemberInfo> entriesMemberInfo = new HashSet<MemberInfo>();
+		private HashSet<CmEntry> entriesMemberInfo = new HashSet<CmEntry>();
 
 		private void DoWindow(int id)
 		{
 			
 			scrollPos = GUILayout.BeginScrollView(scrollPos);
 
-			foreach (MemberInfo entry in entriesMemberInfo)
+			foreach (CmEntry entry in entriesMemberInfo)
 			{
 				var style = new GUIStyle(GUI.skin.button);
 
 				style.fontStyle = FontStyle.Bold;
 
-				if (entry.MemberType == MemberTypes.Property)
+				if (entry.memberType == MemberTypes.Property)
 				{
 					//style.normal.textColor = Color.blue;
 					style.normal.textColor = new Color(10 / 255f, 110 / 255f, 150 / 255f);
 					//Debug.Log("magenta");
 				}
-				else if (entry.MemberType == MemberTypes.Field)
+				else if (entry.memberType == MemberTypes.Field)
 				{
 					//style.normal.textColor = Color.white;
 					style.normal.textColor = new Color(56 / 255f, 40 / 255f, 0f / 255f);
 				}
-				else if (entry.MemberType == MemberTypes.Method)
+				else if (entry.memberType == MemberTypes.Method)
 				{
 					//style.normal.textColor = Color.green;
 					style.normal.textColor = new Color(17 / 255f, 153 / 255f, 0 / 255f);
@@ -392,19 +392,19 @@ namespace TonRan.Continuum
 
 				//style.normal.textColor = fontColor;
 
-				if (GUILayout.Button(entry.Name, style))
+				if (GUILayout.Button(entry.name, style))
 				{
 					//onEntryChosen(entry.Name);
-					OnSuggestionChosen(entry.Name, false);
+					OnSuggestionChosen(entry.name, false);
 				}
 			}
 			GUILayout.EndScrollView();
 			Repaint();
 		}
 
-		public void ChangeEntries(IEnumerable<MemberInfo> newEntries)
+		public void ChangeEntries(IEnumerable<CmEntry> newEntries)
 		{
-			entriesMemberInfo = new HashSet<MemberInfo>(newEntries);
+			entriesMemberInfo = new HashSet<CmEntry>(newEntries);
 			//Repaint();
 		}
 
@@ -470,10 +470,11 @@ namespace TonRan.Continuum
 						.ToArray());
 					
 					continuumSense.ScopeDown(previousMember);
-					if(autocompleteWindow != null)
-					{
-						autocompleteWindow.ChangeEntries(continuumSense.GuessMemberInfo(""));
-					}
+					ChangeEntries(continuumSense.GuessMemberInfo(""));
+					//if(autocompleteWindow != null)
+					//{
+					//	autocompleteWindow.ChangeEntries(continuumSense.GuessMemberInfo(""));
+					//}
 					OpenAutocompleteAsync();
 				}
 
@@ -500,6 +501,7 @@ namespace TonRan.Continuum
 				var lastFourChars = editor.text.Substring(editor.cursorIndex - 4, 4);
 				if (lastFourChars == "new " && autocompleteWindowWasDisplayed == false)
 				{
+					
 					//I do my shit here
 					IEnumerable<string> allTypes = continuumSense.GetAllTypes();
 					Debug.Assert(allTypes.Contains("Vector3"));
@@ -602,10 +604,11 @@ namespace TonRan.Continuum
 			try
 			{
 				continuumSense.ScopeDown(chosenEntry);
-				if(autocompleteWindow != null)
-				{
-					autocompleteWindow.ChangeEntries(continuumSense.GuessMemberInfo(""));
-				}
+				ChangeEntries(continuumSense.GuessMemberInfo(""));
+				//if(autocompleteWindow != null)
+				//{
+				//	autocompleteWindow.ChangeEntries(continuumSense.GuessMemberInfo(""));
+				//}
 			}
 			catch (KeyNotFoundException)
 			{
@@ -680,7 +683,8 @@ namespace TonRan.Continuum
 			var guesses = continuumSense.GuessMemberInfo(guess);
 			if (autocompleteWindow != null)
 			{
-				autocompleteWindow.ChangeEntries(guesses);
+				//autocompleteWindow.ChangeEntries(guesses);
+				ChangeEntries(guesses);
 			}
 		}
 

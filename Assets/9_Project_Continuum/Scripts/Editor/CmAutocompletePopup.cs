@@ -63,7 +63,7 @@ public class CmAutocompletePopup : EditorWindow
 				//style.normal.textColor = Color.white;
 				style.normal.textColor = new Color(56 / 255f, 40 / 255f, 0f / 255f);
 			}
-			else if (entry.MemberType == MemberTypes.Method)
+			else if (entry.MemberType == MemberTypes.Method )
 			{
 				//style.normal.textColor = Color.green;
 				style.normal.textColor = new Color(17 / 255f, 153 / 255f, 0 / 255f);
