@@ -18,8 +18,8 @@ public class CmAutocompletePopup : EditorWindow
 
 	static void Init()
 	{
-		CmAutocompletePopup window = ScriptableObject.CreateInstance<CmAutocompletePopup>();
-		window.ShowPopup();
+		//CmAutocompletePopup window = ScriptableObject.CreateInstance<CmAutocompletePopup>();
+		//window.ShowPopup();
 	}
 
 	public void Continuum_Init()

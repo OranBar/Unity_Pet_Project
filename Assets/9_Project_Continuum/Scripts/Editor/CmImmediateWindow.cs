@@ -143,7 +143,7 @@ namespace TonRan.Continuum
 		private bool autocompleteWindowWasDisplayed = false;
 
 		private static CmImmediateWindow continuumWindow;
-		private static bool openAutocomplete;
+		private static bool showAutocomplete;
 
 		public static bool autocompletionEnabled;
 
@@ -203,16 +203,16 @@ namespace TonRan.Continuum
 			}
 		}
 
-		private int flag = -1;
+		private int removeKeyFlag = -1;
 
 		void OnGUI()
 		{
 
 			TextEditor editor = GetTextEditor();
-			if(flag >= 0) { flag--; }
-			if(flag == 0){
+			if(removeKeyFlag >= 0) { removeKeyFlag--; }
+			if(removeKeyFlag == 0){
 				editor.Backspace();
-				flag--;
+				removeKeyFlag--;
 			}
 
 			KeyEventHandling();
@@ -261,7 +261,64 @@ namespace TonRan.Continuum
 			}
 			//-----------------------------------------------------------------------------
 
+			BeginWindows();
+			if (showAutocomplete && editor != null)
+			{
+				//Debug.Log("OpenAutocomplete");
+
+				var cursorPos = editor.graphicalCursorPos;
+
+
+
+				windowRect = new Rect(/*position.position + */cursorPos + new Vector2(5, 18), new Vector2(350, 200));
+				//windowRect = new Rect(100, 100, 300, 200);
+				windowRect = GUILayout.Window(137, windowRect, DoWindow, "ContinuumSense");
+
+				string userGuess = GetGuess(scriptText);
+				List<MemberInfo> continuumSenseGuesses = continuumSense.GuessMemberInfo(userGuess);
+				ChangeEntries(continuumSenseGuesses);
+
+				//openAutocomplete = false;
+
+
+
+				//autocompleteWindow = ScriptableObject.CreateInstance<CmAutocompletePopup>();
+
+				//autocompleteWindow.position = new Rect(position.position + cursorPos + new Vector2(5, 18), new Vector2(350, 200));
+
+				//autocompleteWindow.Continuum_Init();
+
+
+				//autocompleteWindow.ChangeEntries(continuumSenseGuesses);
+
+				//autocompleteWindow.onEntryChosen += (str) => OnSuggestionChosen(str, true);
+
+				//autocompleteWindow.ShowPopup();
+				//Action openAutoCompletePopup = () =>
+				//{
+				//	autocompleteWindow = ScriptableObject.CreateInstance<CmAutocompletePopup>();
+				//	var cursorPos = editor.graphicalCursorPos;
+
+				//	autocompleteWindow.position = new Rect(position.position + cursorPos + new Vector2(5, 18), new Vector2(350, 200));
+
+				//	autocompleteWindow.Continuum_Init();
+
+				//	string userGuess = GetGuess(scriptText);
+				//	List<MemberInfo> continuumSenseGuesses = continuumSense.GuessMemberInfo(userGuess);
+				//	autocompleteWindow.ChangeEntries(continuumSenseGuesses);
+
+				//	autocompleteWindow.onEntryChosen += (str) => OnSuggestionChosen(str, true);
+
+				//	//autocompleteWindow.;
+				//	//autocompleteWindow.ShowPopup();
+				//};
+
+				//openAutoCompletePopup();
+			}
+			EndWindows();
 			EditorGUILayout.EndScrollView();
+
+
 
 			autocompletionEnabled = GUILayout.Toggle(autocompletionEnabled, "Enable Autocomplete");
 			if (autocompletionEnabled != lastAutocompletionEnabled)
@@ -269,46 +326,92 @@ namespace TonRan.Continuum
 				lastAutocompletionEnabled = autocompletionEnabled;
 				if (autocompletionEnabled)
 				{
+					//Debug.Log("1");
 					OpenAutocompleteAsync();
 				}
 				else
 				{
 					CloseAutocompleteWindow();
+					//Debug.Log("2");
 				}
 			}
+
 			
 
-			if (openAutocomplete)
-			{
-
-				Action openAutoCompletePopup = () =>
-				{
-					autocompleteWindow = ScriptableObject.CreateInstance<CmAutocompletePopup>();
-					var cursorPos = editor.graphicalCursorPos;
-
-					autocompleteWindow.position = new Rect(position.position + cursorPos + new Vector2(5, 18), new Vector2(350, 200));
-
-					autocompleteWindow.Continuum_Init();
-
-					string userGuess = GetGuess(scriptText);
-					List<MemberInfo> continuumSenseGuesses = continuumSense.GuessMemberInfo(userGuess);
-					autocompleteWindow.ChangeEntries(continuumSenseGuesses);
-
-					autocompleteWindow.onEntryChosen += (str) => OnSuggestionChosen(str);
-
-					autocompleteWindow.ShowPopup();
-				};
-
-				openAutoCompletePopup();
-
-				openAutocomplete = false;
-			}
-			Repaint();
-			if (autocompleteWindow != null)
-			{
-				autocompleteWindow.Repaint();
-			}
+			//Repaint();
+			//if (autocompleteWindow != null)
+			//{
+			//	autocompleteWindow.Repaint();
+			//}
 		}
+
+		#region AutocompleteWindow
+
+		Rect windowRect = new Rect(100, 100, 300, 200);
+
+		//public event Action<string> onEntryChosen;
+
+		//I'm gonna make it a hashset for now to ignore duplicates. Those duplicates, though, are important: They are overloaded methods. We need to consider those.
+		private HashSet<string> entries = new HashSet<string>();
+		private HashSet<MemberInfo> entriesMemberInfo = new HashSet<MemberInfo>();
+
+		private void DoWindow(int id)
+		{
+			
+			scrollPos = GUILayout.BeginScrollView(scrollPos);
+
+			foreach (MemberInfo entry in entriesMemberInfo)
+			{
+				var style = new GUIStyle(GUI.skin.button);
+
+				style.fontStyle = FontStyle.Bold;
+
+				if (entry.MemberType == MemberTypes.Property)
+				{
+					//style.normal.textColor = Color.blue;
+					style.normal.textColor = new Color(10 / 255f, 110 / 255f, 150 / 255f);
+					//Debug.Log("magenta");
+				}
+				else if (entry.MemberType == MemberTypes.Field)
+				{
+					//style.normal.textColor = Color.white;
+					style.normal.textColor = new Color(56 / 255f, 40 / 255f, 0f / 255f);
+				}
+				else if (entry.MemberType == MemberTypes.Method)
+				{
+					//style.normal.textColor = Color.green;
+					style.normal.textColor = new Color(17 / 255f, 153 / 255f, 0 / 255f);
+				}
+
+				//style.normal.textColor = fontColor;
+
+				if (GUILayout.Button(entry.Name, style))
+				{
+					//onEntryChosen(entry.Name);
+					OnSuggestionChosen(entry.Name, false);
+				}
+			}
+			GUILayout.EndScrollView();
+			Repaint();
+		}
+
+		public void ChangeEntries(IEnumerable<MemberInfo> newEntries)
+		{
+			entriesMemberInfo = new HashSet<MemberInfo>(newEntries);
+			//Repaint();
+		}
+
+		internal void SimulateSelectFirstEntry()
+		{
+			//onEntryChosen(entries.First());
+			string suggestion = entries.FirstOrDefault();
+
+			if (suggestion == null) { Debug.LogWarning("Null Suggestion :D"); return; }
+
+			OnSuggestionChosen(suggestion, false);
+		}
+
+		#endregion
 
 		private TextEditor GetTextEditor()
 		{
@@ -326,7 +429,8 @@ namespace TonRan.Continuum
 			//This happens for example when Ctrl+A + Del
 			if (after.Contains('.') == false)
 			{
-				continuumSense.ScopeAllTheWayUp();
+				//We're gonna have to implement scoping up in a different manner.....
+				//continuumSense.ScopeAllTheWayUp();
 			}
 
 			string guess = GetGuess(line: after);
@@ -382,10 +486,9 @@ namespace TonRan.Continuum
 			}
 
 
-			try
-			{
+			TextEditor editor = GetTextEditor();
+			if(editor != null && editor.cursorIndex >= 4) { 
 				//This block is to react to "new "
-				TextEditor editor = GetTextEditor();
 
 				var lastFourChars = editor.text.Substring(editor.cursorIndex - 4, 4);
 				if (lastFourChars == "new " && autocompleteWindowWasDisplayed == false)
@@ -396,10 +499,6 @@ namespace TonRan.Continuum
 					allTypes = new string[] { "Vector3" }.Concat(allTypes);
 					OpenAutocompleteAsync(allTypes);
 				}
-			}
-			catch (ArgumentOutOfRangeException)
-			{
-				//It's ok
 			}
 		}
 
@@ -421,9 +520,7 @@ namespace TonRan.Continuum
 						}
 						if (Event.current.keyCode == (KeyCode.Escape))
 						{
-							if (autocompleteWindow == null) { return; }
-
-							//autocompleteWindow.SimulateSelectFirstEntry();
+							
 							CloseAutocompleteWindow();
 
 							Event.current.Use();
@@ -435,7 +532,7 @@ namespace TonRan.Continuum
 
 							//autocompleteWindow.SimulateSelectFirstEntry();
 							//CloseAutocompleteWindow();
-							
+
 							Event.current.Use();
 
 							TextEditor txtEditor = GetTextEditor();
@@ -456,29 +553,38 @@ namespace TonRan.Continuum
 								Debug.Log("Suggestion chosen: " + suggestion);
 
 								OnSuggestionChosen(suggestion);
-								flag = 5;
-								Debug.Log("Flag true");
-
+								RemoveLastKeyAsync();
 							}
 
 						}
 
 						////TODO: I can't figure out how to ignore the space.
-						//if (Event.current.keyCode == (KeyCode.Space) && Event.current.shift)
-						//{
-						//	OpenAutocompleteAsync();
+						if (Event.current.keyCode == (KeyCode.Space) && Event.current.shift)
+						{
+							Debug.Log("Shit+Space");
+							OpenAutocompleteAsync();
+							RemoveLastKeyAsync();
 
-						//	Event.current.Use();
-						//}
+							Event.current.Use();
+						}
 						break;
 					}
 
 			}
 		}
 
-		
+		/// <summary>
+		/// waits for 3 OnGui with a custom hooked in system, then deletes (Deletion code is in OnGui)
+		/// </summary>
+		private void RemoveLastKeyAsync()
+		{
+			//This usually happens.
+			if (removeKeyFlag < 0) { removeKeyFlag = 3; }
+			else { removeKeyFlag += 3; }	//This means we need to do it twice... I don't know if it will ever happen, but I'll cover my ass right here and now.
+		}
 
-		private void OnSuggestionChosen(string chosenEntry)
+
+		private void OnSuggestionChosen(string chosenEntry, bool addPointAtEnd=false)
 		{
 			TextEditor editor = GetTextEditor();
 
@@ -500,8 +606,11 @@ namespace TonRan.Continuum
 				CloseAutocompleteWindow();
 				return;
 			}
-						
-			InsertTextInScriptAtCursorPosition(".");
+
+			if (addPointAtEnd)
+			{
+				InsertTextInScriptAtCursorPosition("."); 
+			}
 			
 		}
 
@@ -535,11 +644,12 @@ namespace TonRan.Continuum
 		{
 			if(autocompleteWindow == null) { return; }
 
-			autocompleteWindow.Close();
-			if(continuumWindow != null)
-			{
-				continuumWindow.Focus();
-			}
+			showAutocomplete = false;
+			//autocompleteWindow.Close();
+			//if(continuumWindow != null)
+			//{
+			//	continuumWindow.Focus();
+			//}
 		}
 
 		private static char GetDifferentChar(string before, string after)
@@ -589,7 +699,7 @@ namespace TonRan.Continuum
 				return;
 			}
 
-			openAutocomplete = true;
+			showAutocomplete = true;
 			autocompleteWindowWasDisplayed = true;
 		}
 
