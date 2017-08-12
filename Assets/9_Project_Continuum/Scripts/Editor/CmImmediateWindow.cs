@@ -639,7 +639,7 @@ namespace TonRan.Continuum
 			string currentText = editor.text;
 			int currentIndex = editor.cursorIndex;
 
-			while (currentText.Length != 0 && currentText.Last() != '.')
+			while (currentText.Length != 0 && currentText.Last() != '.' && currentText.Last() != ' ')
 			{
 				editor.Backspace();
 				currentText = currentText.Remove(currentText.Length - 1, 1);
