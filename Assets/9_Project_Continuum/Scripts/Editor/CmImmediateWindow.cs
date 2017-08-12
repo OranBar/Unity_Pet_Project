@@ -140,10 +140,10 @@ namespace TonRan.Continuum
 		private Vector2 scrollPos;
 		private CmAutocompletePopup autocompleteWindow;
 
+		private bool showAutocomplete;
 		private bool autocompleteWindowWasDisplayed = false;
 
 		private static CmImmediateWindow continuumWindow;
-		private static bool showAutocomplete;
 
 		public static bool autocompletionEnabled;
 
@@ -207,29 +207,35 @@ namespace TonRan.Continuum
 
 		void OnGUI()
 		{
+			KeyEventHandling();
 
+			scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+			//This is the reason why we can't copy paste and select all. 
+			//EditorGUILayout is said to be exactly the same, plus those features, but then (TextEditor)EditorGUIUtility.GetStateObject(typeof(TextEditor), EditorGUIUtility.keyboardControl)
+			//doesn't return the correct object, but an unitialized blank one.
+			
+			string newScriptText = EditorGUILayout.TextArea(scriptText, GUILayout.Height(70));
 			TextEditor editor = GetTextEditor();
+
+			if (editor == null) { EditorGUILayout.EndScrollView(); return; }
+
 			if(removeKeyFlag >= 0) { removeKeyFlag--; }
 			if(removeKeyFlag == 0){
 				editor.Backspace();
 				removeKeyFlag--;
 			}
 
-			KeyEventHandling();
 
-			scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
-
-			//This is the reason why we can't copy paste and select all. 
-			//EditorGUILayout is said to be exactly the same, plus those features, but then (TextEditor)EditorGUIUtility.GetStateObject(typeof(TextEditor), EditorGUIUtility.keyboardControl)
-			//doesn't return the correct object, but an unitialized blank one.
-			string newScriptText = EditorGUILayout.TextArea(scriptText, GUILayout.Height(70));
+			// if the script changed, update our cached version and null out our cached method
 			if (newScriptText != scriptText)
 			{
-				// if the script changed, update our cached version and null out our cached method
 				var tmp = scriptText;
 				scriptText = newScriptText;
 				OnTextChanged(tmp, scriptText);
 			}
+
+
+
 
 			// show the execute button
 			if (GUILayout.Button("Execute"))
@@ -262,7 +268,8 @@ namespace TonRan.Continuum
 			//-----------------------------------------------------------------------------
 
 			BeginWindows();
-			if (showAutocomplete && editor != null)
+			Debug.Log(showAutocomplete);
+			if (showAutocomplete)
 			{
 				//Debug.Log("OpenAutocomplete");
 
@@ -270,7 +277,7 @@ namespace TonRan.Continuum
 
 
 
-				windowRect = new Rect(/*position.position + */cursorPos + new Vector2(5, 18), new Vector2(350, 200));
+				windowRect = new Rect(cursorPos + new Vector2(5, 18), new Vector2(350, 200));
 				//windowRect = new Rect(100, 100, 300, 200);
 				windowRect = GUILayout.Window(137, windowRect, DoWindow, "ContinuumSense");
 
@@ -487,7 +494,7 @@ namespace TonRan.Continuum
 
 
 			TextEditor editor = GetTextEditor();
-			if(editor != null && editor.cursorIndex >= 4) { 
+			if(editor.cursorIndex >= 4) { 
 				//This block is to react to "new "
 
 				var lastFourChars = editor.text.Substring(editor.cursorIndex - 4, 4);
@@ -642,9 +649,10 @@ namespace TonRan.Continuum
 		
 		private void CloseAutocompleteWindow()
 		{
-			if(autocompleteWindow == null) { return; }
-
 			showAutocomplete = false;
+
+			//if (autocompleteWindow == null) { return; }
+
 			//autocompleteWindow.Close();
 			//if(continuumWindow != null)
 			//{
@@ -694,10 +702,12 @@ namespace TonRan.Continuum
 
 		public void OpenAutocompleteAsync(IEnumerable<string> seed = null)
 		{
-			if (autocompleteWindow != null || autocompletionEnabled == false)
-			{
-				return;
-			}
+			//if (autocompleteWindow != null || autocompletionEnabled == false)
+			//{
+			//	return;
+			//}
+
+			if(autocompletionEnabled == false) { return; }
 
 			showAutocomplete = true;
 			autocompleteWindowWasDisplayed = true;
