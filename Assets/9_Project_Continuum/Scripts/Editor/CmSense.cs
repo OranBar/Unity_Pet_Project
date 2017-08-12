@@ -14,13 +14,13 @@ namespace TonRan.Continuum
 
 		public bool initialized { get; private set; }	//Starts false!
 
-		private Dictionary<Type, List<MemberInfo>> typeToMembers;
+		private Dictionary<Type, List<MemberInfo>> typeToMembers_Cache;
 		
 		//private Dictionary<Type, List<string>> typeToFields;
 		//private Dictionary<Type, List<string>> typeToProperties;
 		//private Dictionary<Type, List<string>> typeToMethods;
 
-		private Stack<Type> type_scope_history;
+		private Stack<Type> type_scope_history = new Stack<Type>();
 
 		private Type baseType = null;
 
@@ -33,11 +33,11 @@ namespace TonRan.Continuum
 
 		public void Init(/*TODO: Add parameters: Namespaces to analyze*/)
 		{
-			type_scope_history = new Stack<Type>();
+			//type_scope_history = new Stack<Type>();
 			//typeToFields = new Dictionary<Type, List<string>>();
 			//typeToProperties = new Dictionary<Type, List<string>>();
 			//typeToMethods = new Dictionary<Type, List<string>>();
-			typeToMembers = new Dictionary<Type, List<MemberInfo>>();
+			typeToMembers_Cache = new Dictionary<Type, List<MemberInfo>>();
 
 			/*
 			 * using UnityEngine; //0
@@ -129,7 +129,8 @@ namespace TonRan.Continuum
 
 			var result = type_scope_history.Pop();
 
-			Debug.Log("Scoping Up to " + result);
+			//Debug.Log("Scoping Up: Removed " + result);
+			Debug.Log("Scoping Up: Current Type " + type_scope_history.Peek());
 		}
 
 		public void ScopeAllTheWayUp()
@@ -137,7 +138,10 @@ namespace TonRan.Continuum
 			if (initialized == false) { throw new ContinuumNotInitializedException(); }
 			
 			type_scope_history.Clear();
-			type_scope_history.Push(baseType);
+			ScopeDown(baseType);
+
+			//type_scope_history.Push(baseType);
+
 		}
 
 		private void DisplaySuggestionList(List<string> suggestions)
@@ -172,23 +176,23 @@ namespace TonRan.Continuum
 
 			foreach (var type in types)
 			{
-				typeToMembers[type] = new List<MemberInfo>();
+				typeToMembers_Cache[type] = new List<MemberInfo>();
 
-				typeToMembers[type].AddRange((type.GetFields(reflectionOptions)
+				typeToMembers_Cache[type].AddRange((type.GetFields(reflectionOptions)
 					.Where(f => f.Name.Contains("k__BackingField") == false)
 					.Cast<MemberInfo>()
 					.ToList()
 				));
 
-				typeToMembers[type].AddRange((type.GetProperties(reflectionOptions)
+				typeToMembers_Cache[type].AddRange((type.GetProperties(reflectionOptions)
 					.Cast<MemberInfo>()
 					.ToList()
 				));
 
-				typeToMembers[type].AddRange((type.GetMethods(reflectionOptions)
+				typeToMembers_Cache[type].AddRange((type.GetMethods(reflectionOptions)
 					.Where(method => method.Name != "Finalize" && method.Name != "obj_address" && method.Name != "MemberwiseClone")
 					//Discard methods such as get_propertyName and set_propertyName
-					.Where(m => (m.Name.StartsWith("get_") == false && m.Name.StartsWith("set_") == false) || typeToMembers[type].Select(mi => mi.Name).Contains(m.Name.Substring(4)) == false)
+					.Where(m => (m.Name.StartsWith("get_") == false && m.Name.StartsWith("set_") == false) || typeToMembers_Cache[type].Select(mi => mi.Name).Contains(m.Name.Substring(4)) == false)
 					.Cast<MemberInfo>()
 					.ToList()
 				));
@@ -300,7 +304,7 @@ namespace TonRan.Continuum
 
 		public List<string> GetAllTypes()
 		{
-			return typeToMembers.Keys.Select(k => k.Name).ToList();
+			return typeToMembers_Cache.Keys.Select(k => k.Name).ToList();
 		}
 
 		public Type GetGuessType(string guess)
@@ -309,7 +313,7 @@ namespace TonRan.Continuum
 			
 			string predictedType = Guess(guess)[0];
 			Type typeScope = type_scope_history.Peek();
-			return GetGuessType(typeToMembers[typeScope].First(typeName => typeName.Name == predictedType));
+			return GetGuessType(typeToMembers_Cache[typeScope].First(typeName => typeName.Name == predictedType));
 		}
 
 		public Type GetGuessType(MemberInfo guess)
@@ -337,6 +341,8 @@ namespace TonRan.Continuum
 		{
 			if (initialized == false) { throw new ContinuumNotInitializedException(); }
 
+			Debug.Assert(type_scope_history.Count >= 1, "No elements in the stack... Can't Peek scope!");
+
 			return GuessMemberInfo(type_scope_history.Peek(), guess);
 		}
 
@@ -344,29 +350,35 @@ namespace TonRan.Continuum
 		{
 			if (initialized == false) { throw new ContinuumNotInitializedException(); }
 
-			try
-			{
-				Debug.Log("Guessing. Scope is " + typeScope.Name);
-			}
-			catch
-			{
-				Debug.Log("Guessing. Scope is null");
-			}
+			//try
+			//{
+			//	Debug.Log("Guessing. Scope is " + typeScope.Name);
+			//}
+			//catch
+			//{
+			//	Debug.Log("Guessing. Scope is null");
+			//}
 			List<MemberInfo> result = new List<MemberInfo>();
 
 			if (typeScope == null)
 			{
-				foreach (var membersList in typeToMembers.Values)
+				foreach (var membersList in typeToMembers_Cache.Values)
 				{
 					result.AddRange(membersList);
 				}
 			}
 			else
 			{
-				result.AddRange(typeToMembers[typeScope]);
+				if(typeToMembers_Cache.ContainsKey(typeScope))
+				{
+					result.AddRange(typeToMembers_Cache[typeScope]);
+				}
+				else
+				{
+					Debug.LogWarning("Couldn't find type "+typeScope.Name+" in the Cache");
+				}
 			}
-
-
+			
 			//Special Case: We list everything we got. If this happens, the programmer needs all the help he can get.
 			if (string.IsNullOrEmpty(guess))
 			{

@@ -8,10 +8,8 @@ this.transform.position.
 
 - Enable FlowMode: Mouse Click Debugging. Every press brings up a new automcomplete window, and inserts automatically a doy. Maybe bind FlowMode to mouse right, or have a shortcut to enable/disable.
 
-- Fix autocomplete window not closing when it should.
-
 - When autocompleting methods (or constructors), try to suggest a type by looking around in your scope :D
-should be cool.
+should be cool. 
 
 - {Generic Scopedown}
 
@@ -21,11 +19,15 @@ should be cool.
 
 - Presets: Quaterion will also map to own rotation or identity {Subset: Generic Scopedown}
 
-- Understand if not having a popup window fixes our problems with the text area.
+- Similar to ArsClip: Select suggestion with Ctrl+Number or a different interesting combination. I think numbers are good, because none of the shift+number symbols can stay in a variable name.
 
 - General Gui
 -- Coloring Methods/Fields/Properties (text or backgrounds?)
 
 
 
+Resolved:
 
+- Fix autocomplete window not closing when it should. (Fixed?)
+
+- Understand if not having a popup window fixes our problems with the text area. (It Did!!)
