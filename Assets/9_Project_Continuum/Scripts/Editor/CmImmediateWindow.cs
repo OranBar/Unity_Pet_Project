@@ -268,7 +268,7 @@ namespace TonRan.Continuum
 			//-----------------------------------------------------------------------------
 
 			BeginWindows();
-			Debug.Log(showAutocomplete);
+			//Debug.Log(showAutocomplete);
 			if (showAutocomplete)
 			{
 				//Debug.Log("OpenAutocomplete");
