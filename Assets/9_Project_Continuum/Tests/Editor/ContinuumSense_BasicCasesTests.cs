@@ -11,13 +11,13 @@ namespace TonRan.Continuum
 	public class ContinuumSense_BasicCasesTests
 	{
 
-		ContinuumSense cs;
+		CmSense cs;
 
 
 		[SetUp]
 		public void Init()
 		{
-			cs = new ContinuumSense();
+			cs = new CmSense();
 			cs.Init();
 			cs.ScopeDown(typeof(FooNamespace.Foo1));
 		}

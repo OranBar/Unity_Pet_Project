@@ -1,4 +1,5 @@
 ﻿using System;
+using Debug = TonRan.Continuum.Continuum_ImmediateDebug;
 
 namespace TonRan.Continuum
 {
