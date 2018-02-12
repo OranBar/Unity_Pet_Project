@@ -7,7 +7,7 @@ namespace TonRan.Continuum
 {
 	public class DebugOptions : ScriptableObject
 	{
-		public bool enabled;
+		public bool enabled = true;
 
 		void OnValidate()
 		{
@@ -22,6 +22,17 @@ namespace TonRan.Continuum
 			}
 			//int x = 5;
 			//Debug.Log("Validate");
+		}
+
+		public static void CreateDebugOptions(string targetPath)
+		{
+			DebugOptions newStyle = ScriptableObject.CreateInstance<DebugOptions>();
+
+			AssetDatabase.CreateAsset(newStyle, targetPath);
+			AssetDatabase.SaveAssets();
+
+			EditorUtility.FocusProjectWindow();
+			Selection.activeObject = newStyle;
 		}
 
 	}
@@ -39,5 +50,6 @@ namespace TonRan.Continuum
 			EditorUtility.FocusProjectWindow();
 			Selection.activeObject = newStyle;
 		}
+
 	}
 }

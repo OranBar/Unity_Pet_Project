@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -33,7 +34,7 @@ namespace TonRan.Continuum {
 	#region Helper Classes
 	public class TonRanVersion
 	{
-		private const string _CONTINUUM_VERSION = "a1.3";
+		private const string _CONTINUUM_VERSION = "a2.0";
 
 		public static string CONTINUUM_VERSION {
 			get {
@@ -153,14 +154,27 @@ namespace TonRan.Continuum
 
 
 		
-
-		[MenuItem("Continuum/Continuum_Immediate {AlphaVersion}")]
+		[MenuItem("Continuum/Open Continuum Window {Alpha}")]
 		static void Init()
 		{
-			// get the window, show it, and hand it focus
+			// Get the window
 			continuumWindow = EditorWindow.GetWindow<CmImmediateWindow>("Continuum_Immediate_"+ TonRanVersion.CONTINUUM_VERSION, false);
 
-			Debug.enabled = AssetDatabase.LoadAssetAtPath<DebugOptions>("Assets/9_Project_Continuum/Config/DebugOptions.asset").enabled;
+			continuumWindow.continuumCompiler = new CmCompiler();
+			continuumWindow.continuumSense = new CmSense();
+			
+			//Create folder if doesn't exist: Assets/9_Project_Continuum/Config/DebugOptions.asset
+			string relativeDebugOptionsPath = "Assets/9_Project_Continuum/Config";
+			string debugOptionsRoot = Application.dataPath + relativeDebugOptionsPath;
+			string debugOptionsPath = relativeDebugOptionsPath+"/DebugOptions.asset";
+			if (Directory.Exists(debugOptionsPath) == false)
+			{
+				Directory.CreateDirectory(debugOptionsRoot);
+				DebugOptions.CreateDebugOptions(debugOptionsPath);
+			}
+
+			Debug.enabled = AssetDatabase.LoadAssetAtPath<DebugOptions>(debugOptionsPath).enabled;
+
 			
 			continuumWindow.continuumSense.Init(typeof(GameObject));
 			//continuumWindow.continuumSense.MaxEntries = continuumWindow.maxEntries;
@@ -950,24 +964,6 @@ namespace TonRan.Continuum
 		{
 			CloseAutocompleteWindow();
 		}
-
 		
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
