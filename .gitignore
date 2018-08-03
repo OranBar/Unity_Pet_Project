@@ -29,3 +29,9 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+\.vs/
+.vscode/
+.idea/
+UETools/
+Assets/WebPlayerTemplates/7_AutoGetComponent_Attribute.meta
+Assets/WebPlayerTemplates/
