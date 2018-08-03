@@ -1,17 +1,25 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ConstantRotation : MonoBehaviour {
+namespace MergerFractal
+{
 
-	public Vector3 rotation = new Vector3(1f,1f,1f);
+	public class ConstantRotation : MonoBehaviour
+	{
 
-	// Use this for initialization
-	void Start () {
-	
+		public Vector3 rotation = new Vector3(1f, 1f, 1f);
+
+		// Use this for initialization
+		void Start()
+		{
+
+		}
+
+		// Update is called once per frame
+		void Update()
+		{
+			this.transform.Rotate(rotation);
+		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		this.transform.Rotate(rotation);
-	}
+
 }
