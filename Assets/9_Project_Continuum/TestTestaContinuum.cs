@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System;
 using Debug = UnityEngine.Debug;
 
-public class TestTesta : MonoBehaviour
+public class TestTestaContinuum : MonoBehaviour
 {
 	[ContextMenu("Foo")]
 	public void Foo()
