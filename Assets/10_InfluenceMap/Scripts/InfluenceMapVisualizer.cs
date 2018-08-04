@@ -14,6 +14,7 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 		get {
 			return this._influenceMap;
 		}
+		set { _influenceMap = value; }
 	}
 	[SerializeField] private InfluenceMap _influenceMap;
 
@@ -93,7 +94,8 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 
 		GameObject newTile = Instantiate(cellPrefab, position, Quaternion.identity) as GameObject;
 		newTile.name = newTile.name.Replace("Clone", x + " ," + y);
-
+		
+		newTile.GetComponent<Renderer>().sharedMaterial = cellPrefab.GetComponent<Renderer>().sharedMaterial;
 		newTile.GetComponent<InfluenceMapCell>().Init(x, y);
 
 		return newTile;

@@ -17,6 +17,7 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.Schema;
+using UnityEngine;
 
 /**
  * Auto-generated code below aims at helping you parse
@@ -828,9 +829,10 @@ public class LaPulzellaD_Orleans
         //Enemy units influence
         foreach (var enemy in enemyUnits)
         {
-            Position enemyPos = enemy.pos;
+            int enemyPosX = (int) Math.Ceiling(enemy.pos.x / squareLength);
+            int enemyPosY = (int) Math.Ceiling(enemy.pos.y / squareLength);
             double enemyInfluence = GetEnemyInfluence(enemy);
-            map.applyInfluence(enemyPos.x, enemyPos.y, enemyInfluence, GetEnemyInfluenceRadius(enemy), 0, 0);
+            map.applyInfluence(enemyPosX, enemyPosY, enemyInfluence, GetEnemyInfluenceRadius(enemy), 0, 0);
         }
 
         return map;
@@ -844,7 +846,7 @@ public class LaPulzellaD_Orleans
             case UnitType.Queen:
                 return 0;
             case UnitType.Knight:
-                return 5;
+                return -5;
             case UnitType.Archer:
                 return 0;
             case UnitType.Giant:
