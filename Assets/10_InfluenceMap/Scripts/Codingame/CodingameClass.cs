@@ -532,8 +532,10 @@ public class Site
     public StructureType structureType = StructureType.None;
     public Owner owner;
     public int param1;
-    public UnitType creepsType;
+    public int param2;
     public bool isMinedOut;
+
+    public UnitType CreepsType => (UnitType) param2;
 
     public Position pos;
 
@@ -550,12 +552,12 @@ public class Site
         this.structureType = (StructureType) structureType;
         this.owner = (Owner) owner;
         this.param1 = param1;
-        this.creepsType = (UnitType) param2;
+        this.param2 = param2;
     }
     
     public override string ToString()
     {
-        return $"Site {siteId} - gold: {gold} - maxMineSize: {maxMineSize} - structureType: {structureType} - owner: {owner} - param1: {param1} - creepsType: {creepsType}";
+        return $"Site {siteId} - gold: {gold} - maxMineSize: {maxMineSize} - structureType: {structureType} - owner: {owner} - param1: {param1} - creepsType: {CreepsType} - param2: {param2}";
     }
 
     public string Encode()
@@ -566,8 +568,8 @@ public class Site
         result.Append(maxMineSize);
         result.Append((int) structureType);
         result.Append((int) owner);
-        result.Append((param1));
-        result.Append((int) creepsType);
+        result.Append(param1);
+        result.Append(param2);
         result.Append(isMinedOut);
         return result.Build();
     }
@@ -582,9 +584,10 @@ public class Site
         structureType = (StructureType)(int.Parse(values[3]));
         owner = (Owner)(int.Parse(values[4]));
         param1 = int.Parse(values[5]);
-        creepsType = (UnitType)(int.Parse(values[6]));
+        param2 = int.Parse(values[6]);
         isMinedOut = values[7] == "1";
     }
+
 }
 
 public class StringEncoderBuilder
@@ -688,9 +691,9 @@ public class LaPulzellaD_Orleans
             .Where(s => s.structureType == StructureType.None && s.owner == Owner.Neutral && IsSiteMinedOut(s.siteId) == false)
             .ToList();
         
-        int owned_knight_barrackses = mySites.Count(ob => ob.structureType == StructureType.Barracks && ob.creepsType == UnitType.Knight);
-        int owned_archer_barrackses = mySites.Count(ob => ob.structureType == StructureType.Barracks && ob.creepsType == UnitType.Archer);
-        int owned_giant_barrackses = mySites.Count(ob => ob.structureType == StructureType.Barracks && ob.creepsType == UnitType.Giant);
+        int owned_knight_barrackses = mySites.Count(ob => ob.structureType == StructureType.Barracks && ob.CreepsType == UnitType.Knight);
+        int owned_archer_barrackses = mySites.Count(ob => ob.structureType == StructureType.Barracks && ob.CreepsType == UnitType.Archer);
+        int owned_giant_barrackses = mySites.Count(ob => ob.structureType == StructureType.Barracks && ob.CreepsType == UnitType.Giant);
         int owned_mines = mySites.Count(ob => ob.structureType == StructureType.Mine && ob.gold > 0);
         int owned_towers = mySites.Count(ob => ob.structureType == StructureType.Tower && ob.owner == Owner.Friendly);
         
@@ -778,7 +781,7 @@ public class LaPulzellaD_Orleans
             foreach (var barraks in myIdleBarracses)
             {
                 int cost = 0;
-                switch (barraks.creepsType)
+                switch (barraks.CreepsType)
                 {
                     case UnitType.Knight:
                         cost += KNIGHT_COST;
@@ -843,7 +846,9 @@ public class LaPulzellaD_Orleans
             int towerPosX = (int) Math.Ceiling(tower.pos.x / squareLength);
             int towerPosY = (int) Math.Ceiling(tower.pos.y / squareLength);
             double towerInfluence = 10;
-            map.applyInfluence(towerPosX, towerPosY, towerInfluence, 0, 0, 0);
+            var decayedDistance = (int)Math.Ceiling(tower.param2 / squareLength);
+            
+            map.applyInfluence(towerPosX, towerPosY, towerInfluence, 0, 0, 0.7);
         }
         
 //        //My Queen
@@ -878,7 +883,7 @@ public class LaPulzellaD_Orleans
     private int GetEnemyInfluenceRadius(Unit enemy)
     {
         double squareLength = INFLUENCEMAP_SQUARELENGTH; //Maximum common divisor between 60, 100, 75, 50 (movement speeds)
-        return 1;
+        return 0;
         switch (enemy.unitType)
         {
             case UnitType.Queen:
@@ -907,15 +912,15 @@ public class LaPulzellaD_Orleans
         Func<double, double, double, double> knightsEvaluation = (knights, enemyArchers, enemyTowers) => ((knights / 4)- enemyArchers)/2 + (knights - enemyTowers)/2;
 
         List<Site> sitesThatCanTrainGiants = gameState.sites.Where(s =>
-            s.owner == Owner.Friendly && s.structureType == StructureType.Barracks && s.creepsType == UnitType.Giant)
+            s.owner == Owner.Friendly && s.structureType == StructureType.Barracks && s.CreepsType == UnitType.Giant)
             .ToList();
         
         List<Site> sitesThatCanTrainKnights = gameState.sites.Where(s =>
-                s.owner == Owner.Friendly && s.structureType == StructureType.Barracks && s.creepsType == UnitType.Knight)
+                s.owner == Owner.Friendly && s.structureType == StructureType.Barracks && s.CreepsType == UnitType.Knight)
             .ToList();
 
         List<Site> sitesThatCanTrainArchers = gameState.sites.Where(s =>
-                s.owner == Owner.Friendly && s.structureType == StructureType.Barracks && s.creepsType == UnitType.Archer)
+                s.owner == Owner.Friendly && s.structureType == StructureType.Barracks && s.CreepsType == UnitType.Archer)
             .ToList();
         
         double deltaMoreGiants = 0, deltaMoreKnights = 0, deltaMoreArchers = 0;
