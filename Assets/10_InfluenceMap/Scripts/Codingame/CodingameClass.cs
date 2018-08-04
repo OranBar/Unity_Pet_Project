@@ -650,7 +650,7 @@ public class LaPulzellaD_Orleans
     public static int MAX_CONCURRENT_MINES = 3, MAX_BARRACKSES_KNIGHTS = 0, MAX_BARRACKSES_ARCER = 0, MAX_BARRACKSES_GIANT = 1, MAX_TOWERS = 4;
     public static int GIANT_COST = 140, KNIGHT_COST = 80, ARCHER_COST = 100;
     public static int ENEMY_CHECK_RANGE = 200, TOO_MANY_UNITS_NEARBY = 2;
-    public static int INFLUENCEMAP_SQUARELENGTH = 10;
+    public static int INFLUENCEMAP_SQUARELENGTH = 25;
     
     public GameInfo game;
 
@@ -817,10 +817,10 @@ public class LaPulzellaD_Orleans
 //        double squareLength = (60 * 0.4);
         double squareLength = INFLUENCEMAP_SQUARELENGTH; //Maximum common divisor between 60, 100, 75, 50 (movement speeds)
 
-        int mapWidth = (int) Math.Ceiling(1980 / squareLength);
-        int mapHeight = (int) Math.Ceiling(1020 / squareLength);
-        double minInfluence = -100;
-        double maxInfluence = 100;
+        int mapWidth = (int) Math.Ceiling(1920 / squareLength);
+        int mapHeight = (int) Math.Ceiling(1000 / squareLength);
+        double minInfluence = -20;
+        double maxInfluence = 20;
         InfluenceMap map = new InfluenceMap(mapWidth, mapHeight, minInfluence, maxInfluence, new EuclideanDistanceSqr());
 
         var enemyUnits = currGameState.units
@@ -832,9 +832,28 @@ public class LaPulzellaD_Orleans
             int enemyPosX = (int) Math.Ceiling(enemy.pos.x / squareLength);
             int enemyPosY = (int) Math.Ceiling(enemy.pos.y / squareLength);
             double enemyInfluence = GetEnemyInfluence(enemy);
-            map.applyInfluence(enemyPosX, enemyPosY, enemyInfluence, GetEnemyInfluenceRadius(enemy), 0, 0);
+            map.applyInfluence(enemyPosX, enemyPosY, enemyInfluence, 0, GetEnemyInfluenceRadius(enemy), 0.5);
         }
+        
+        var myTowers = currGameState.sites
+            .Where(u => u.owner == Owner.Friendly && u.structureType == StructureType.Tower);
+        
+        foreach (var tower in myTowers)
+        {
+            int towerPosX = (int) Math.Ceiling(tower.pos.x / squareLength);
+            int towerPosY = (int) Math.Ceiling(tower.pos.y / squareLength);
+            double towerInfluence = 10;
+            map.applyInfluence(towerPosX, towerPosY, towerInfluence, 0, 0, 0);
+        }
+        
+//        //My Queen
+//        Unit myQueen = currGameState.MyQueen;
+//        int myQueenPosX = (int) Math.Ceiling(myQueen.pos.x / squareLength);
+//        int myQueenPosY = (int) Math.Ceiling(myQueen.pos.y / squareLength);
 
+//        map.applyInfluence(myQueenPosX, myQueenPosY, 10.0, 0, 0, 0.0);
+
+        
         return map;
 
     }
@@ -846,7 +865,7 @@ public class LaPulzellaD_Orleans
             case UnitType.Queen:
                 return 0;
             case UnitType.Knight:
-                return -5;
+                return -8;
             case UnitType.Archer:
                 return 0;
             case UnitType.Giant:
@@ -859,6 +878,7 @@ public class LaPulzellaD_Orleans
     private int GetEnemyInfluenceRadius(Unit enemy)
     {
         double squareLength = INFLUENCEMAP_SQUARELENGTH; //Maximum common divisor between 60, 100, 75, 50 (movement speeds)
+        return 1;
         switch (enemy.unitType)
         {
             case UnitType.Queen:

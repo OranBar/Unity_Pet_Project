@@ -95,7 +95,7 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 		GameObject newTile = Instantiate(cellPrefab, position, Quaternion.identity) as GameObject;
 		newTile.name = newTile.name.Replace("Clone", x + " ," + y);
 		
-		newTile.GetComponent<Renderer>().sharedMaterial = cellPrefab.GetComponent<Renderer>().sharedMaterial;
+//		newTile.GetComponent<Renderer>().sharedMaterial = cellPrefab.GetComponent<Renderer>().sharedMaterial;
 		newTile.GetComponent<InfluenceMapCell>().Init(x, y);
 
 		return newTile;

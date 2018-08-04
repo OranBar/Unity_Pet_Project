@@ -92,6 +92,21 @@ public class InfluenceMap
 
 		return 0;
 	}
+	
+	/**
+	 * Returns 1 if the amount was correctly set, 0 if the x,y were out of the map's bounds. 
+	 */
+	private int AddAmount_IfInBounds(int x, int y, double amount)
+	{
+		if (isInBounds(x, y))
+		{
+			var currAmount = this[x, y];
+			this[x, y] = currAmount + amount;
+			return 1;
+		}
+
+		return 0;
+	}
 
 	public double get(int x, int y)
 	{
@@ -166,7 +181,7 @@ public class InfluenceMap
 
 	public void applyInfluence(int x, int y, double amount, int fullDistance, int decayedDistance, double distanceDecay)
 	{
-		SetAmount_IfInBounds(x, y, amount);
+		AddAmount_IfInBounds(x, y, amount);
 
 		for (int range = 1; range <= fullDistance + decayedDistance; range++)
 		{
@@ -174,21 +189,21 @@ public class InfluenceMap
 			{
 				amount *= distanceDecay;
 			}
-			SetAmount_IfInBounds(x + range, y + 0, amount);
-			SetAmount_IfInBounds(x - range, y + 0, amount);
+			AddAmount_IfInBounds(x + range, y + 0, amount);
+			AddAmount_IfInBounds(x - range, y + 0, amount);
 			
-			SetAmount_IfInBounds(x + 0, y + range, amount);
-			SetAmount_IfInBounds(x + 0, y - range, amount);
+			AddAmount_IfInBounds(x + 0, y + range, amount);
+			AddAmount_IfInBounds(x + 0, y - range, amount);
 
 			for (int diagonal = 1; diagonal < range; diagonal++)
 			{
 				double influenceToApply = amount;
 				//we fill the rombo by mirroring 1/4 of the shape. (an edge connected to the center)
 				int fails = 0;
-				fails += SetAmount_IfInBounds(x + range - diagonal, y - diagonal, amount);
-				fails += SetAmount_IfInBounds(x + range - diagonal, y + diagonal, amount);
-				fails += SetAmount_IfInBounds(x - range + diagonal, y + diagonal, amount);
-				fails += SetAmount_IfInBounds(x - range + diagonal, y - diagonal, amount);
+				fails += AddAmount_IfInBounds(x + range - diagonal, y - diagonal, amount);
+				fails += AddAmount_IfInBounds(x + range - diagonal, y + diagonal, amount);
+				fails += AddAmount_IfInBounds(x - range + diagonal, y + diagonal, amount);
+				fails += AddAmount_IfInBounds(x - range + diagonal, y - diagonal, amount);
 				//if(fails == 4) { break; }
 				//_influenceMap[x + range - diagonal][y - diagonal] = amount;
 				//_influenceMap[x + range - diagonal][y + diagonal] = amount;
@@ -200,7 +215,7 @@ public class InfluenceMap
 
 	public void applyInfluenceStars(int x, int y, double amount, int fullDistance, int decayedDistance, double distanceDecay)
 	{
-		SetAmount_IfInBounds(x, y, amount);
+		AddAmount_IfInBounds(x, y, amount);
 
 		for (int range = 1; range < fullDistance + decayedDistance; range++)
 		{
@@ -208,10 +223,10 @@ public class InfluenceMap
 			{
 				amount *= distanceDecay;
 			}
-			SetAmount_IfInBounds(x + range, y + 0, amount);
-			SetAmount_IfInBounds(x + 0, y + range, amount);
-			SetAmount_IfInBounds(x - range, y + 0, amount);
-			SetAmount_IfInBounds(x + 0, y - range, amount);
+			AddAmount_IfInBounds(x + range, y + 0, amount);
+			AddAmount_IfInBounds(x + 0, y + range, amount);
+			AddAmount_IfInBounds(x - range, y + 0, amount);
+			AddAmount_IfInBounds(x + 0, y - range, amount);
 		}
 	}
 
