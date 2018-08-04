@@ -25,50 +25,6 @@ using System.Xml.Schema;
 
 class Player
 {
-    private static string GAMESTATE_ENC =
-            "24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.xx0.1.xx0.|5.188.3.0.0.3.x0.|6.xxxxxx0.|7.xxxxxx0.|8.xxxxxx0.|9.xxxxxx0.|10.240.3.0.0.3.x0.|11.xx0.1.xx0.|12.xxxxxx0.|13.xxxxxx0.|14.xxxxxx0.|15.xxxxxx0.|16.xx0.1.xx0.|17.185.3.0.0.3.x0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.xxxxxx0.|23.xxxxxx0.|2|412.315.0.x60.|1404.519.1.x60.|169|10|";
-    
-    private static string GAMEINFO_ENC = 
-        "24|0.1769.151.61.|1.151.849.61.|2.744.169.79.|3.1176.831.79.|4.1680.845.65.|5.240.155.65.|6.1092.589.74.|7.828.411.74.|8.168.578.78.|9.1752.422.78.|10.495.245.78.|11.1425.755.78.|12.1544.256.81.|13.376.744.81.|14.997.157.67.|15.923.843.67.|16.1529.541.65.|17.391.459.65.|18.823.641.63.|19.1097.359.63.|20.1280.180.90.|21.640.820.90.|22.1340.419.62.|23.580.581.62.|";
-
-        
-
-//#if RUNLOCAL
-    public static InfluenceMap RunTurn()
-    {
-        LaPulzellaD_Orleans giovannaD_Arco = new LaPulzellaD_Orleans();
-        giovannaD_Arco.currGameState = new GameState();
-        giovannaD_Arco.currGameState.Decode(GAMESTATE_ENC);
-        giovannaD_Arco.game = new GameInfo();
-        giovannaD_Arco.game.Decode(GAMEINFO_ENC);
-
-        foreach (var site in giovannaD_Arco.currGameState.sites)
-        {
-            site.pos = giovannaD_Arco.game.sites[site.siteId].pos;
-        }
-
-        InfluenceMap map = new InfluenceMap();
-        giovannaD_Arco.think(out map);
-        return map;
-    }
-    
-    public static void RunTurn(string gameState_Enc, string gameInfo_Enc)
-    {
-        LaPulzellaD_Orleans giovannaD_Arco = new LaPulzellaD_Orleans();
-        giovannaD_Arco.currGameState = new GameState();
-        giovannaD_Arco.currGameState.Decode(gameState_Enc);
-        giovannaD_Arco.game = new GameInfo();
-        giovannaD_Arco.game.Decode(gameInfo_Enc);
-
-        foreach (var site in giovannaD_Arco.currGameState.sites)
-        {
-            site.pos = giovannaD_Arco.game.sites[site.siteId].pos;
-        }
-        
-        InfluenceMap map = new InfluenceMap();
-        giovannaD_Arco.think(out map);
-    }
-//#else
     static void Main(string[] args)
     {
         LaPulzellaD_Orleans giovannaD_Arco = new LaPulzellaD_Orleans();
@@ -92,7 +48,6 @@ class Player
             move.PrintMove();
         }
     }
-//#endif
 }
 
 public class Position

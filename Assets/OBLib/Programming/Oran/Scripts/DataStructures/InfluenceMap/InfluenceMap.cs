@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public interface DistanceFunc
 {
@@ -11,7 +10,7 @@ public class EuclideanDistanceSqr : DistanceFunc {
 
 	public double computeDistance(int x1, int y1, int x2, int y2)
 	{
-		return Mathf.Pow(x2 - x1, 2) + Mathf.Pow(y2 - y1, 2);
+		return Math.Pow(x2 - x1, 2) + Math.Pow(y2 - y1, 2);
 	}
 }
 
@@ -97,9 +96,14 @@ public class InfluenceMap
 	public double get(int x, int y)
 	{
 		var amount = _influenceMap[x][y];
-		var clampedAmount = Mathf.Clamp((float)amount, (float)minInfluence, (float)maxInfluence);
+		var clampedAmount = Clamp(amount, minInfluence, maxInfluence);
 		return clampedAmount;
 	}
+	
+	public double Clamp(double value, double min, double max)  
+    {  
+        return (value < min) ? min : (value > max) ? max : value;  
+    }
 
 	public List<XAndY> getNeighbours(int x, int y)
 	{
@@ -230,7 +234,7 @@ public class InfluenceMap
 	//}
 	public void applyInfluenceRecursive(int x, int y, double amount, int fullAmountDistance, int reducedAmountDistance, double distanceDecay, List<XAndY> alreadyExplored)
 	{
-		if (fullAmountDistance < 0 && reducedAmountDistance < 0) { Debug.LogError("Error!"); }
+		if (fullAmountDistance < 0 && reducedAmountDistance < 0) { throw new Exception("Error"); }
 
 		try
 		{
@@ -275,7 +279,11 @@ public class InfluenceMap
 			alreadyExplored.Add(new XAndY(x,y));
 		}
 		myHashset = new HashSet<XAndY>();
-		myHashset.AddRange(getNeighbours(x, y));
+		foreach (var neighbour in getNeighbours(x,y))
+		{
+			myHashset.Add(neighbour);
+		}
+//		myHashset.AddRange(getNeighbours(x, y));
 		myHashset.ExceptWith(alreadyExplored);
 		
 
@@ -298,7 +306,7 @@ public class InfluenceMap
 	{
 		if (points.Length % 2 == 1)
 		{
-			Debug.LogError("invalid number of points args");
+		    throw new Exception("invalid number of points args");
 		}
 
 		int noOfPoints = points.Length / 2;
@@ -338,17 +346,4 @@ public class InfluenceMap
 
 
 
-}
-
-public static class Extensions
-{
-	public static bool AddRange<T>(this HashSet<T> @this, IEnumerable<T> items)
-	{
-		bool allAdded = true;
-		foreach (T item in items)
-		{
-			allAdded &= @this.Add(item);
-		}
-		return allAdded;
-	}
 }
