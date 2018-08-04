@@ -49,7 +49,7 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 	private void Start()
 	{
 
-		UpdateInfluence();
+		UpdateInfluenceColor();
 	}
 
 	#region Map Generation
@@ -108,7 +108,7 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 	#endregion
 	
 	//Alligns the unity 3d objects with the InfluenceMap's current state
-	public void UpdateInfluence()
+	public void UpdateInfluenceColor()
 	{
 		for (int y = 0; y < heigth; y++)
 		{

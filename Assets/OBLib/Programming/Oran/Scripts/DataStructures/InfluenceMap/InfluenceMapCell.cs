@@ -45,7 +45,7 @@ public class InfluenceMapCell : MonoBehaviour {
 			newInfluence *= -1;
 		}
 		influenceMapVisualizer.applyInfluence(x,y, fullDistance, reducedDistance, distanceDecay, newInfluence);
-		influenceMapVisualizer.UpdateInfluence();
+		influenceMapVisualizer.UpdateInfluenceColor();
 	}
 
 	public void ChangeColor(Color color)

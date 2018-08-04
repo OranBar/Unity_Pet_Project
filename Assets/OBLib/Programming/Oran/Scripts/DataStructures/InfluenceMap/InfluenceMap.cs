@@ -55,6 +55,11 @@ public class InfluenceMap
 		}
 	}
 
+	public InfluenceMap()
+	{
+			
+	}
+	
 	public InfluenceMap(int width, int height, double minInfluence, double maxInfluence, DistanceFunc computeDistanceFunc)
 	{
 		this.width = width;
@@ -87,16 +92,6 @@ public class InfluenceMap
 		}
 
 		return 0;
-	}
-
-	public double getHeightUnit()
-	{
-		return 7001 / height;
-	}
-
-	public double getWidthUnit()
-	{
-		return 16001 / width;
 	}
 
 	public double get(int x, int y)
