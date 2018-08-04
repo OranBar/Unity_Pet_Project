@@ -50,7 +50,7 @@ public class InfluenceMap
 			return get(x, y);
 		}
 		set {
-			_influenceMap[x][y] = value;
+			_influenceMap[x][height-y] = value;
 		}
 	}
 
