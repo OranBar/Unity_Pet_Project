@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class InfluenceMapVisualizer : MonoBehaviour {
 
-	public int width, heigth;
+	public int width, height;
 	public GameObject cellPrefab;
 
 	public Gradient influenceColorGradient;
@@ -35,10 +35,10 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 
 	private void Awake()
 	{
-		_influenceMap = new InfluenceMap(width, heigth, minInfluence, maxInfluence, new EuclideanDistanceSqr());
+		_influenceMap = new InfluenceMap(width, height, minInfluence, maxInfluence, new EuclideanDistanceSqr());
 		cellsContainer = transform.Find("Cells Container").gameObject;
 
-		influenceMapCells = new InfluenceMapCell[width, heigth];
+		influenceMapCells = new InfluenceMapCell[width, height];
 
 		foreach (InfluenceMapCell cell in cellsContainer.GetComponentsInChildren<InfluenceMapCell>())
 		{
@@ -59,12 +59,12 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 	{
 		this.Assert(cellPrefab.GetComponent<InfluenceMapCell>() != null);
 
-		influenceMapCells = new InfluenceMapCell[width, heigth];
+		influenceMapCells = new InfluenceMapCell[width, height];
 		
 		cellsContainer = new GameObject("Cells Container");
 		cellsContainer.transform.parent = this.transform;
 
-		for (int y = 0; y < heigth; y++)
+		for (int y = 0; y < height; y++)
 		{
 			for (int x = 0; x < width; x++)
 			{
@@ -90,7 +90,7 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 	{
 		Vector3 position = Vector3.zero;
 		position.x = xOffset * x;
-		position.z = zOffset * y;
+		position.z = zOffset * y *-1;
 
 		GameObject newTile = Instantiate(cellPrefab, position, Quaternion.identity) as GameObject;
 		newTile.name = newTile.name.Replace("Clone", x + " ," + y);
@@ -112,7 +112,7 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 	//Alligns the unity 3d objects with the InfluenceMap's current state
 	public void UpdateInfluenceColor()
 	{
-		for (int y = 0; y < heigth; y++)
+		for (int y = 0; y < height; y++)
 		{
 			for (int x = 0; x < width; x++)
 			{

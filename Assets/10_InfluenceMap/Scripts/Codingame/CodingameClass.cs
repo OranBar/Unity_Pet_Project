@@ -883,7 +883,7 @@ public class LaPulzellaD_Orleans
     private int GetEnemyInfluenceRadius(Unit enemy)
     {
         double squareLength = INFLUENCEMAP_SQUARELENGTH; //Maximum common divisor between 60, 100, 75, 50 (movement speeds)
-        return 0;
+        return 2;
         switch (enemy.unitType)
         {
             case UnitType.Queen:
