@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
+namespace InfluenceMapOriginal
+{
+	
+
 public interface DistanceFunc
 {
 	double computeDistance(int x1, int y1, int x2, int y2);
@@ -359,6 +363,9 @@ public class InfluenceMap
 		return currBest;
 	}
 
+
+
+}
 
 
 }
