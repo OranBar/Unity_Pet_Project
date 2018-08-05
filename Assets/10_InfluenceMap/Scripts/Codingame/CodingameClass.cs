@@ -791,7 +791,7 @@ public class LaPulzellaD_Orleans
             double maxInfluence = 40;
             buildInfluenceMap = new InfluenceMap(mapWidth, mapHeight, minInfluence, maxInfluence, new EuclideanDistanceSqr());
             
-            
+//            ScaleAndApplyInfluence(myQueen, 15, QUEEN_MOVEMENT/INFLUENCEMAP_SQUARELENGTH, 0,0,ref buildInfluenceMap);
             
             foreach (var site in currGameState.sites.Where(s => s.owner == Owner.Neutral))
             {
@@ -799,20 +799,25 @@ public class LaPulzellaD_Orleans
                 int sitePosY = (int) Math.Ceiling(site.pos.y / squareLength);
 
 
-                double influenceValue = 1;// + (site.pos.Distance(myQueen.pos) / 500);  
-//                if (owned_mines < MAX_CONCURRENT_MINES)
-//                {
-//                    influenceValue = influenceValue + (site.pos.Distance(new Position(960, 500)) / 200);
-//                }
-//                else
-//                {
-//                    influenceValue = influenceValue - (site.pos.Distance(new Position(960, 500)) / 400);
-//                }
+                double influenceValue = site.maxMineSize * 3;// + (site.pos.Distance(myQueen.pos) / 500);  
+                if (owned_mines < MAX_CONCURRENT_MINES)
+                {
+//                    influenceValue = influenceValue /*+ (site.pos.DistanceTo(new Position(960, 500)) / 200)*/;
+                }
+                else
+                {
+                    //Bonus for being closer to center
+                    influenceValue = 6 * 3;
+                    //70 should cover most of the map
+                    buildInfluenceMap.applyInfluence(960,500 , influenceValue, 0, 70, 0.998);
+                }
+                
                 
                 int siteRadius = (int) Math.Floor(GetSiteInfo(site).radius / squareLength);
+                int distanceDecay = 3;
                 
                 
-                buildInfluenceMap.applyInfluence(sitePosX, sitePosY, influenceValue, siteRadius+1, 0, 0);
+                buildInfluenceMap.applyInfluence(sitePosX, sitePosY, influenceValue, siteRadius+1, distanceDecay, 0.4);
                 buildInfluenceMap.applyInfluence(sitePosX, sitePosY, -influenceValue, siteRadius, 0, 0);
             }
 
@@ -993,15 +998,15 @@ public class LaPulzellaD_Orleans
         
         var enemyTowers = currGameState.sites
             .Where(u => u.owner == Owner.Enemy && u.structureType == StructureType.Tower);
-        /*
+        
         foreach (var tower in myTowers)
         {
             double towerInfluence = 40;
-//            int decayedDistance = (int)Math.Floor((int)Math.Ceiling(tower.param2 / squareLength) * 1.6);
+            //int decayedDistance = (int)Math.Floor((int)Math.Ceiling(tower.param2 / squareLength) * 1.6);
+            int decayedDistance = (int)Math.Ceiling(tower.param2 / squareLength);
 //            int decayedDistance = 3;
-            int decayedDistance = (int) Math.Ceiling((tower.param2 - 4) / squareLength);
-
-            ScaleAndApplyInfluence(tower, towerInfluence, 3, decayedDistance, 0.7, ref map);
+            
+            ScaleAndApplyInfluence(tower, towerInfluence, 1, decayedDistance, 0.96, ref map);
             ScaleAndApplyInfluence(tower, -towerInfluence, 1, 0, 0, ref map);
             
         }
@@ -1015,61 +1020,14 @@ public class LaPulzellaD_Orleans
             ScaleAndApplyInfluence(tower, -towerInfluence, 3, decayedDistance, 0.7, ref map);
             ScaleAndApplyInfluence(tower, towerInfluence, 1, 0, 0, ref map);
         }
-*/
-        if (enemyUnits.Any())
+        
+        //Enemy units influence
+        foreach (var enemy in enemyUnits)
         {
-            Unit enemy = enemyUnits.First();
-            Unit myQueen = currGameState.MyQueen;
-            List<Position> enemyToQueenLine = map.useVisionLine(enemy.pos.x, enemy.pos.y, myQueen.pos.x, myQueen.pos.y);
-
-            Vector2_OB side1Pos = (new Vector2_OB(myQueen.pos.x, myQueen.pos.y) - new Vector2_OB(enemy.pos.x, enemy.pos.y)).Normalize().Orthogonal() * 10; 
-            Vector2_OB side2Pos = (new Vector2_OB(myQueen.pos.x, myQueen.pos.y) - new Vector2_OB(enemy.pos.x, enemy.pos.y)).Normalize().Orthogonal() * -10;
-            
-            List<Position> enemytoQueenSide1 = map.useVisionLine(enemy.pos.x, enemy.pos.y, (int)side1Pos.X, (int)side1Pos.Y); 
-            List<Position> enemytoQueenSide2 = map.useVisionLine(enemy.pos.x, enemy.pos.y, (int)side2Pos.X, (int)side2Pos.Y);
-            
-            //Expand line 
-            double influence = 10;
-            foreach (var pos in enemyToQueenLine)
-            {
-                if (map.isObstacle(pos.x / INFLUENCEMAP_SQUARELENGTH, pos.y/ INFLUENCEMAP_SQUARELENGTH))
-                {
-                    influence = influence * 0.66;
-                }
-                ScaleAndApplyInfluence(pos, influence, 1, 0, 0, ref map);
-            }
-
-            influence = -10;
-            
-            foreach (var pos in enemytoQueenSide1)
-            {
-                if (map.isObstacle(pos.x/ INFLUENCEMAP_SQUARELENGTH, pos.y/ INFLUENCEMAP_SQUARELENGTH))
-                {
-                    influence = influence * 0.66;
-                }
-                ScaleAndApplyInfluence(pos, influence, 1, 0, 0, ref map);
-            }
-            
-//            foreach (var pos in enemytoQueenSide2)
-//            {
-//                if (map.isObstacle(pos.x, pos.y))
-//                {
-//                    influence = influence * 0.66;
-//                }
-//                    
-//                ScaleAndApplyInfluence(pos, influence, 1, 0, 0, ref map);
-//            }
-
+            double enemyInfluence = GetEnemyInfluence(enemy);
+            ScaleAndApplyInfluence(enemy, enemyInfluence, 1, GetEnemyInfluenceRadius(enemy) *2, 0.9, ref map);
         }
         
-//        //Enemy units influence
-//        foreach (var enemy in enemyUnits)
-//        {
-//            double enemyInfluence = GetEnemyInfluence(enemy);
-//            ScaleAndApplyInfluence(enemy, enemyInfluence, GetEnemyInfluenceRadius(enemy), GetEnemyInfluenceRadius(enemy), 0.5, ref map);
-//        }
-        
-       
         
 //        //My Queen
 //        Unit myQueen = currGameState.MyQueen;
@@ -1153,7 +1111,7 @@ public class LaPulzellaD_Orleans
             case UnitType.Queen:
                 return 0;
             case UnitType.Knight:
-                return -10;
+                return -5;
             case UnitType.Archer:
                 return 0;
             case UnitType.Giant:
@@ -1166,7 +1124,7 @@ public class LaPulzellaD_Orleans
     private int GetEnemyInfluenceRadius(Unit enemy)
     {
         double squareLength = INFLUENCEMAP_SQUARELENGTH; //Maximum common divisor between 60, 100, 75, 50 (movement speeds)
-//        return 2;
+        //return 2;
         switch (enemy.unitType)
         {
             case UnitType.Queen:
@@ -1503,7 +1461,6 @@ public struct XAndY
 public class InfluenceMap
 {
 	protected double[][] _influenceMap;
-    protected bool[,] _obstacles;
 	protected int width, height;
 
 	private double minInfluence, maxInfluence;
@@ -1544,23 +1501,12 @@ public class InfluenceMap
 		{
 			this._influenceMap[i] = new double[height];
 		}
-	    this._obstacles = new bool[width, height];
 		this.computeDistanceFunc = computeDistanceFunc;
 		this.minInfluence = minInfluence;
 		this.maxInfluence = maxInfluence;
 		myHashset = new HashSet<XAndY>();
 	}
 
-    public void AddObstacle(int x, int y)
-    {
-        _obstacles[x, y] = true;
-    }
-
-    public bool isObstacle(int x, int y)
-    {
-        return _obstacles[x, y];
-    }
-    
 	private bool isInBounds(int x, int y)
 	{
 		return x >= 0 && x < width && y>=0 && y < height;
@@ -1846,312 +1792,6 @@ public class InfluenceMap
 		return currBest;
 	}
 
-    // use Bresenham-like algorithm to print a line from (y1,x1) to (y2,x2)
-    // The difference with Bresenham is that ALL the points of the line are
-    //   printed, not only one per x coordinate.
-    // Principles of the Bresenham's algorithm (heavily modified) were taken from:
-    //   http://www.intranet.ca/~sshah/waste/art7.html
-    public List<Position> useVisionLine(int y1, int x1, int y2, int x2)
-    {
-        List<Position> result = new List<Position>();
-        int i; // loop counter
-        int ystep, xstep; // the step on y and x axis
-        int error; // the error accumulated during the increment
-        int errorprev; // *vision the previous value of the error variable
-        int y = y1, x = x1; // the line points
-        int ddy, ddx; // compulsory variables: the double values of dy and dx
-        int dx = x2 - x1;
-        int dy = y2 - y1;
-        result.Add(new Position(y1, x1)); // first point
-        
-        // NB the last point can't be here, because of its previous point (which has to be verified)
-        if (dy < 0)
-        {
-            ystep = -1;
-            dy = -dy;
-        }
-        else
-            ystep = 1;
 
-        if (dx < 0)
-        {
-            xstep = -1;
-            dx = -dx;
-        }
-        else
-            xstep = 1;
-
-        ddy = 2 * dy; // work with double values for full precision
-        ddx = 2 * dx;
-        if (ddx >= ddy)
-        {
-            // first octant (0 <= slope <= 1)
-            // compulsory initialization (even for errorprev, needed when dx==dy)
-            errorprev = error = dx; // start in the middle of the square
-            for (i = 0; i < dx; i++)
-            {
-                // do not use the first point (already done)
-                x += xstep;
-                error += ddy;
-                if (error > ddx)
-                {
-                    // increment y if AFTER the middle ( > )
-                    y += ystep;
-                    error -= ddx;
-                    // three cases (octant == right->right-top for directions below):
-                    if (error + errorprev < ddx) // bottom square also
-                        result.Add(new Position(y - ystep, x));
-                    else if (error + errorprev > ddx) // left square also
-                        result.Add(new Position(y, x - xstep));
-                    else
-                    {
-                        // corner: bottom and left squares also
-                        result.Add(new Position(y - ystep, x));
-                        result.Add(new Position(y, x - xstep));
-                    }
-                }
-
-                result.Add(new Position(y, x));
-                errorprev = error;
-            }
-        }
-        else
-        {
-            // the same as above
-            errorprev = error = dy;
-            for (i = 0; i < dy; i++)
-            {
-                y += ystep;
-                error += ddx;
-                if (error > ddy)
-                {
-                    x += xstep;
-                    error -= ddy;
-                    if (error + errorprev < ddy)
-                        result.Add(new Position(y, x - xstep));
-                    else if (error + errorprev > ddy)
-                        result.Add(new Position(y - ystep, x));
-                    else
-                    {
-                        result.Add(new Position(y, x - xstep));
-                        result.Add(new Position(y - ystep, x));
-                    }
-                }
-
-                result.Add( new Position(y, x));
-                errorprev = error;
-            }
-        }
-      // assert ((y == y2) && (x == x2));  // the last point (y2,x2) has to be the same with the last point of the algorithm
-        return result;
-    } 
 
 }
-
-/** Vector2_OB Class
- * 
- * Author: Oran Bar
- */
-[Serializable]
-public class Vector2_OB : IEquatable<Vector2_OB>
-{
-    #region Static Variables
-    public static double COMPARISON_TOLERANCE = 0.0000001;
-
-    private readonly static Vector2_OB zeroVector = new Vector2_OB(0);
-    private readonly static Vector2_OB unitVector = new Vector2_OB(1);
-
-    public static Vector2_OB Zero
-    {
-        get { return zeroVector; }
-        private set { }
-    }
-    public static Vector2_OB One
-    {
-        get { return unitVector; }
-        private set { }
-    }
-    #endregion
-
-    public virtual double X { get; set; }
-    public virtual double Y { get; set; }
-
-    public Vector2_OB(double val)
-    {
-        this.X = val;
-        this.Y = val;
-    }
-
-    public Vector2_OB(double x, double y)
-    {
-        this.X = x;
-        this.Y = y;
-    }
-
-    public Vector2_OB(Vector2_OB v)
-    {
-        this.X = v.X;
-        this.Y = v.Y;
-    }
-
-    #region Operators
-    public static Vector2_OB operator +(Vector2_OB v1, Vector2_OB v2)
-    {
-        return new Vector2_OB(v1.X + v2.X, v1.Y + v2.Y);
-    }
-
-    public static Vector2_OB operator -(Vector2_OB v1, Vector2_OB v2)
-    {
-        return new Vector2_OB(v1.X - v2.X, v1.Y - v2.Y);
-    }
-
-    public static Vector2_OB operator *(Vector2_OB v1, double mult)
-    {
-        return new Vector2_OB(v1.X * mult, v1.Y * mult);
-    }
-
-    public static bool operator ==(Vector2_OB a, Vector2_OB b)
-    {
-        // If both are null, or both are same instance, return true.
-        if (System.Object.ReferenceEquals(a, b))
-        {
-            return true;
-        }
-
-        // If one is null, but not both, return false.
-        if (((object)a == null) || ((object)b == null))
-        {
-            return false;
-        }
-
-        // Return true if the fields match:
-        return a.Equals(b);
-    }
-
-    public static bool operator !=(Vector2_OB a, Vector2_OB b)
-    {
-        return (a == b) == false;
-    }
-    #endregion
-
-    #region Object Class Overrides
-    public override bool Equals(object obj)
-    {
-        if (obj == null)
-        {
-            return false;
-        }
-        return Equals(obj as Vector2_OB);
-    }
-
-    public bool Equals(Vector2_OB other)
-    {
-        if ((object)other == null)
-        {
-            return false;
-        }
-        if (Math.Abs(X - other.X) > COMPARISON_TOLERANCE)
-        {
-            return false;
-        }
-        if (Math.Abs(Y - other.Y) > COMPARISON_TOLERANCE)
-        {
-            return false;
-        }
-        return true;
-
-    }
-
-
-    public override int GetHashCode()
-    {
-        unchecked
-        {
-            return 17 * X.GetHashCode() + 23 * Y.GetHashCode();
-        }
-    }
-
-
-    public override string ToString()
-    {
-        return String.Format("[{0}, {1}] ", X, Y);
-    }
-    #endregion
-
-    #region Vector2_OB Methods
-    public static double Distance(Vector2_OB v1, Vector2_OB v2)
-    {
-        return Math.Sqrt(Math.Pow(v1.X - v2.X, 2) + Math.Pow(v1.Y - v2.Y, 2));
-    }
-
-    public static double DistanceSquared(Vector2_OB v1, Vector2_OB v2)
-    {
-        return Math.Pow(v1.X - v2.X, 2) + Math.Pow(v1.Y - v2.Y, 2);
-    }
-
-    public double Distance(Vector2_OB other)
-    {
-        return Vector2_OB.Distance(this, other);
-    }
-
-    public double DistanceSquared(Vector2_OB other)
-    {
-        return Vector2_OB.DistanceSquared(this, other);
-    }
-
-	public Vector2_OB Closest(params Vector2_OB[] vectors) {
-		return vectors.ToList().OrderBy( v1 => this.DistanceSquared(v1) ).First();
-	}
-
-	public double Length()
-    {
-        return Math.Sqrt(X * X + Y * Y);
-    }
-
-    public double LengthSquared()
-    {
-        return X * X + Y * Y;
-    }
-
-    public Vector2_OB Normalize()
-    {
-        double length = LengthSquared();
-        return new Vector2_OB(X / length, Y / length);
-    }
-
-    public double Dot(Vector2_OB v)
-    {
-        return X * v.X + Y * v.Y;
-    }
-
-    public double Cross(Vector2_OB v)
-    {
-        return X * v.Y + Y * v.X;
-    }
-
-    public Vector2_OB Orthogonal()
-    {
-        return new Vector2_OB(-Y, X);
-    }
-    
-    //TODO: test
-    public double AngleTo(Vector2_OB v)
-    {
-        return this.Dot(v) / (this.Length() + v.Length());
-    }
-
-    public Vector2_OB ScalarProjectionOn(Vector2_OB v)
-    {
-        return v.Normalize() * this.Dot(v);
-    }
-
-	public double AngleInDegree() {
-		return AngleInRadians() * (180.0 / Math.PI);
-	}
-
-	public double AngleInRadians() {
-		return Math.Atan2(Y, X);
-	}
-    #endregion
-}
-
