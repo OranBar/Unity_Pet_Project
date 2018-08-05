@@ -1021,10 +1021,44 @@ public class LaPulzellaD_Orleans
             Unit enemy = enemyUnits.First();
             Unit myQueen = currGameState.MyQueen;
             List<Position> enemyToQueenLine = map.useVisionLine(enemy.pos.x, enemy.pos.y, myQueen.pos.x, myQueen.pos.y);
+
+            Vector2_OB side1Pos = (new Vector2_OB(myQueen.pos.x, myQueen.pos.y) - new Vector2_OB(enemy.pos.x, enemy.pos.y)).Normalize().Orthogonal() * 10; 
+            Vector2_OB side2Pos = (new Vector2_OB(myQueen.pos.x, myQueen.pos.y) - new Vector2_OB(enemy.pos.x, enemy.pos.y)).Normalize().Orthogonal() * -10;
+            
+            List<Position> enemytoQueenSide1 = map.useVisionLine(enemy.pos.x, enemy.pos.y, (int)side1Pos.X, (int)side1Pos.Y); 
+            List<Position> enemytoQueenSide2 = map.useVisionLine(enemy.pos.x, enemy.pos.y, (int)side2Pos.X, (int)side2Pos.Y);
+            
+            //Expand line 
+            double influence = 10;
             foreach (var pos in enemyToQueenLine)
             {
-                ScaleAndApplyInfluence(pos, 10, 1, 0, 0, ref map);
+                if (map.isObstacle(pos.x / INFLUENCEMAP_SQUARELENGTH, pos.y/ INFLUENCEMAP_SQUARELENGTH))
+                {
+                    influence = influence * 0.66;
+                }
+                ScaleAndApplyInfluence(pos, influence, 1, 0, 0, ref map);
             }
+
+            influence = -10;
+            
+            foreach (var pos in enemytoQueenSide1)
+            {
+                if (map.isObstacle(pos.x/ INFLUENCEMAP_SQUARELENGTH, pos.y/ INFLUENCEMAP_SQUARELENGTH))
+                {
+                    influence = influence * 0.66;
+                }
+                ScaleAndApplyInfluence(pos, influence, 1, 0, 0, ref map);
+            }
+            
+//            foreach (var pos in enemytoQueenSide2)
+//            {
+//                if (map.isObstacle(pos.x, pos.y))
+//                {
+//                    influence = influence * 0.66;
+//                }
+//                    
+//                ScaleAndApplyInfluence(pos, influence, 1, 0, 0, ref map);
+//            }
 
         }
         
@@ -1469,6 +1503,7 @@ public struct XAndY
 public class InfluenceMap
 {
 	protected double[][] _influenceMap;
+    protected bool[,] _obstacles;
 	protected int width, height;
 
 	private double minInfluence, maxInfluence;
@@ -1509,12 +1544,23 @@ public class InfluenceMap
 		{
 			this._influenceMap[i] = new double[height];
 		}
+	    this._obstacles = new bool[width, height];
 		this.computeDistanceFunc = computeDistanceFunc;
 		this.minInfluence = minInfluence;
 		this.maxInfluence = maxInfluence;
 		myHashset = new HashSet<XAndY>();
 	}
 
+    public void AddObstacle(int x, int y)
+    {
+        _obstacles[x, y] = true;
+    }
+
+    public bool isObstacle(int x, int y)
+    {
+        return _obstacles[x, y];
+    }
+    
 	private bool isInBounds(int x, int y)
 	{
 		return x >= 0 && x < width && y>=0 && y < height;
@@ -1901,3 +1947,211 @@ public class InfluenceMap
     } 
 
 }
+
+/** Vector2_OB Class
+ * 
+ * Author: Oran Bar
+ */
+[Serializable]
+public class Vector2_OB : IEquatable<Vector2_OB>
+{
+    #region Static Variables
+    public static double COMPARISON_TOLERANCE = 0.0000001;
+
+    private readonly static Vector2_OB zeroVector = new Vector2_OB(0);
+    private readonly static Vector2_OB unitVector = new Vector2_OB(1);
+
+    public static Vector2_OB Zero
+    {
+        get { return zeroVector; }
+        private set { }
+    }
+    public static Vector2_OB One
+    {
+        get { return unitVector; }
+        private set { }
+    }
+    #endregion
+
+    public virtual double X { get; set; }
+    public virtual double Y { get; set; }
+
+    public Vector2_OB(double val)
+    {
+        this.X = val;
+        this.Y = val;
+    }
+
+    public Vector2_OB(double x, double y)
+    {
+        this.X = x;
+        this.Y = y;
+    }
+
+    public Vector2_OB(Vector2_OB v)
+    {
+        this.X = v.X;
+        this.Y = v.Y;
+    }
+
+    #region Operators
+    public static Vector2_OB operator +(Vector2_OB v1, Vector2_OB v2)
+    {
+        return new Vector2_OB(v1.X + v2.X, v1.Y + v2.Y);
+    }
+
+    public static Vector2_OB operator -(Vector2_OB v1, Vector2_OB v2)
+    {
+        return new Vector2_OB(v1.X - v2.X, v1.Y - v2.Y);
+    }
+
+    public static Vector2_OB operator *(Vector2_OB v1, double mult)
+    {
+        return new Vector2_OB(v1.X * mult, v1.Y * mult);
+    }
+
+    public static bool operator ==(Vector2_OB a, Vector2_OB b)
+    {
+        // If both are null, or both are same instance, return true.
+        if (System.Object.ReferenceEquals(a, b))
+        {
+            return true;
+        }
+
+        // If one is null, but not both, return false.
+        if (((object)a == null) || ((object)b == null))
+        {
+            return false;
+        }
+
+        // Return true if the fields match:
+        return a.Equals(b);
+    }
+
+    public static bool operator !=(Vector2_OB a, Vector2_OB b)
+    {
+        return (a == b) == false;
+    }
+    #endregion
+
+    #region Object Class Overrides
+    public override bool Equals(object obj)
+    {
+        if (obj == null)
+        {
+            return false;
+        }
+        return Equals(obj as Vector2_OB);
+    }
+
+    public bool Equals(Vector2_OB other)
+    {
+        if ((object)other == null)
+        {
+            return false;
+        }
+        if (Math.Abs(X - other.X) > COMPARISON_TOLERANCE)
+        {
+            return false;
+        }
+        if (Math.Abs(Y - other.Y) > COMPARISON_TOLERANCE)
+        {
+            return false;
+        }
+        return true;
+
+    }
+
+
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            return 17 * X.GetHashCode() + 23 * Y.GetHashCode();
+        }
+    }
+
+
+    public override string ToString()
+    {
+        return String.Format("[{0}, {1}] ", X, Y);
+    }
+    #endregion
+
+    #region Vector2_OB Methods
+    public static double Distance(Vector2_OB v1, Vector2_OB v2)
+    {
+        return Math.Sqrt(Math.Pow(v1.X - v2.X, 2) + Math.Pow(v1.Y - v2.Y, 2));
+    }
+
+    public static double DistanceSquared(Vector2_OB v1, Vector2_OB v2)
+    {
+        return Math.Pow(v1.X - v2.X, 2) + Math.Pow(v1.Y - v2.Y, 2);
+    }
+
+    public double Distance(Vector2_OB other)
+    {
+        return Vector2_OB.Distance(this, other);
+    }
+
+    public double DistanceSquared(Vector2_OB other)
+    {
+        return Vector2_OB.DistanceSquared(this, other);
+    }
+
+	public Vector2_OB Closest(params Vector2_OB[] vectors) {
+		return vectors.ToList().OrderBy( v1 => this.DistanceSquared(v1) ).First();
+	}
+
+	public double Length()
+    {
+        return Math.Sqrt(X * X + Y * Y);
+    }
+
+    public double LengthSquared()
+    {
+        return X * X + Y * Y;
+    }
+
+    public Vector2_OB Normalize()
+    {
+        double length = LengthSquared();
+        return new Vector2_OB(X / length, Y / length);
+    }
+
+    public double Dot(Vector2_OB v)
+    {
+        return X * v.X + Y * v.Y;
+    }
+
+    public double Cross(Vector2_OB v)
+    {
+        return X * v.Y + Y * v.X;
+    }
+
+    public Vector2_OB Orthogonal()
+    {
+        return new Vector2_OB(-Y, X);
+    }
+    
+    //TODO: test
+    public double AngleTo(Vector2_OB v)
+    {
+        return this.Dot(v) / (this.Length() + v.Length());
+    }
+
+    public Vector2_OB ScalarProjectionOn(Vector2_OB v)
+    {
+        return v.Normalize() * this.Dot(v);
+    }
+
+	public double AngleInDegree() {
+		return AngleInRadians() * (180.0 / Math.PI);
+	}
+
+	public double AngleInRadians() {
+		return Math.Atan2(Y, X);
+	}
+    #endregion
+}
+
