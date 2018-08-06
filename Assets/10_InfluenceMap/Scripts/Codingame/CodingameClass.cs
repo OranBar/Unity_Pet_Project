@@ -10,16 +10,8 @@ using System.IO;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq.Expressions;
-using System.Net.Mime;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
-using System.Xml.Schema;
-
 #if UNITY_EDITOR
+using UnityEditorInternal;
 using OranUnityUtils;
 using UnityEngine;
 #endif
@@ -41,16 +33,22 @@ class Player
         
         while (true)
         {
-            turn++;
+            turn = turn + 2;
+            giovannaD_Arco.turn = turn;
+            
             giovannaD_Arco.ParseInputs_Turn();
-            if (turn == 1)
+            if (turn == 2)
             {
                 Console.Error.WriteLine("Game Info");
-                Console.Error.WriteLine(giovannaD_Arco.game.Encode()+"\n");
+                Console.Error.WriteLine(giovannaD_Arco.gameInfo.Encode()+"\n");
             }
-            Console.Error.WriteLine(giovannaD_Arco.currGameState.Encode());
+            Console.Error.WriteLine(giovannaD_Arco.game.Encode());
+
+            Console.Error.WriteLine(giovannaD_Arco.Encode());
+            
             InfluenceMap runMap = new InfluenceMap();
             InfluenceMap buildMap = new InfluenceMap();
+            
             TurnAction move = giovannaD_Arco.think(out runMap, out buildMap);
             move.PrintMove();
         }
@@ -360,6 +358,11 @@ public class Unit
     {
         return $"Pos: {pos} - Owner: {owner} - UnitType {unitType} - health {health}";
     }
+
+    public double DistanceSqr(Position sitePos)
+    {
+        return pos.DistanceSqr(sitePos);
+    }
 }
 
 public class GameState
@@ -369,11 +372,39 @@ public class GameState
     public int money;
     public int touchedSiteId;
 
-    public int numUnits => units.Count;
 
+    //Properties
+    public IEnumerable<Site> MySites => sites.Where(s => s.owner == Owner.Friendly);
+    public IEnumerable<Site> EnemySites => sites.Where(s => s.owner == Owner.Enemy);
+    public Site TouchedSite => (touchedSiteId != -1)? sites[touchedSiteId] : null;  
+    
     public Unit MyQueen => units.First(u => u.owner == Owner.Friendly && u.unitType == UnitType.Queen);
     public Unit EnemyQueen => units.First(u => u.owner == Owner.Enemy && u.unitType == UnitType.Queen);
+    
+    public int UnitsCount => units.Count;
+    
+    public int Owned_knight_barrackses => sites.Count(ob => ob.structureType == StructureType.Barracks && ob.CreepsType == UnitType.Knight);
+    public int Owned_archer_barrackses => sites.Count(ob => ob.structureType == StructureType.Barracks && ob.CreepsType == UnitType.Archer);
+    public int Owned_giant_barrackses => sites.Count(ob => ob.structureType == StructureType.Barracks && ob.CreepsType == UnitType.Giant);
+    public int Owned_mines => sites.Count(ob => ob.structureType == StructureType.Mine && ob.gold > 0);
+    public int Owned_towers => sites.Count(ob => ob.structureType == StructureType.Tower && ob.owner == Owner.Friendly);
 
+    public int Total_owned_barrackses => Owned_archer_barrackses + Owned_giant_barrackses + Owned_knight_barrackses;
+           
+    public bool TouchingNeutralSite => TouchedSite != null && TouchedSite.owner == Owner.Neutral;
+    public bool TouchingMyMine => TouchedSite != null && TouchedSite.owner == Owner.Friendly &&
+                          TouchedSite.structureType == StructureType.Mine;
+        
+    public bool TouchingMyTower => TouchedSite != null && TouchedSite.owner == Owner.Friendly &&
+                           TouchedSite.structureType == StructureType.Tower;
+        
+    public bool Prev_touchingMyMine => TouchedSite != null && TouchedSite.owner == Owner.Friendly &&
+                               TouchedSite.structureType == StructureType.Mine;
+
+    public int EnemyUnitsInRange(int range) => units.Count(u => u.owner == Owner.Enemy && MyQueen.DistanceTo(u) <= range);
+
+    public int Owned_giants => units.Count(u => u.owner == Owner.Friendly && u.unitType == UnitType.Giant);
+    
     public string Encode()
     {
         StringEncoderBuilder result = new StringEncoderBuilder("|");
@@ -461,8 +492,9 @@ public class GameInfo
     public Dictionary<int, SiteInfo> sites = new Dictionary<int, SiteInfo>();
     public HashSet<int> minedOutSites_ids = new HashSet<int>();    //Info passed into Site
     
+    //Properties
     public int numSites => sites.Count;
-
+    
     public string GetSites_ToString()
     {
         return sites.Aggregate("", (agg, x) => agg + "\n"+ x.ToString());
@@ -657,69 +689,85 @@ public class StringEncoderBuilder
 
 
 
-#endregion        
+#endregion
 
 
 public class LaPulzellaD_Orleans
 {
-    public static int MAX_CONCURRENT_MINES = 0, MAX_BARRACKSES_KNIGHTS = 1, MAX_BARRACKSES_ARCER = 0, MAX_BARRACKSES_GIANT = 0, MAX_TOWERS = 0;
+    public static int MAX_CONCURRENT_MINES = 1,
+        MAX_BARRACKSES_KNIGHTS = 1,
+        MAX_BARRACKSES_ARCER = 0,
+        MAX_BARRACKSES_GIANT = 0,
+        MAX_TOWERS = 10;
+
     public static int GIANT_COST = 140, KNIGHT_COST = 80, ARCHER_COST = 100;
     public static int ENEMY_CHECK_RANGE = 340, TOO_MANY_UNITS_NEARBY = 2;
-    public static int INFLUENCEMAP_SQUARELENGTH = 25;
+    public static int INFLUENCEMAP_SQUARELENGTH = 24;
     public static int QUEEN_MOVEMENT = 60;
-    
-    public GameInfo game;
+    public static int MAX_DISTANCE = 4686400;
 
-    public GameState currGameState;
-    public GameState prevGameState = null;
+    public static Position CENTER = new Position(960, 500);
+    
+    public GameInfo gameInfo;
+
+    public GameState game;
+    public GameState prevGame = null;
+
+    public int turn;
 
     private int buildOrder_stateMachine_stateIndex = -1;
+
+    public LaPulzellaD_Orleans()
+    {
+        
+    }
+    
+    public string Encode()
+    {
+        StringEncoderBuilder sb = new StringEncoderBuilder(".");
+        sb.Append(MAX_CONCURRENT_MINES);
+        sb.Append(MAX_BARRACKSES_KNIGHTS);
+        sb.Append(MAX_BARRACKSES_ARCER);
+        sb.Append(MAX_BARRACKSES_GIANT);
+        sb.Append(MAX_TOWERS);
+        sb.Append(buildOrder_stateMachine_stateIndex);
+        sb.Append(turn);
+        return sb.Build();
+    }
+
+    public void Decode(string encoded)
+    {
+        encoded = encoded.Replace("x", "-1.");
+        String[] values = encoded.Split('.');
+        MAX_CONCURRENT_MINES = int.Parse(values[0]);
+        MAX_BARRACKSES_KNIGHTS = int.Parse(values[1]);
+        MAX_BARRACKSES_ARCER = int.Parse(values[2]);
+        MAX_BARRACKSES_GIANT = int.Parse(values[3]);
+        MAX_TOWERS  = int.Parse(values[4]);
+        buildOrder_stateMachine_stateIndex = int.Parse(values[5]);
+        turn = int.Parse(values[6]);
+    }
 
     
     public TurnAction think(out InfluenceMap turnInfluenceMap, out InfluenceMap buildInfluenceMap)
     {
         buildInfluenceMap = null;
         TurnAction chosenMove = new TurnAction();
-        Unit myQueen = currGameState.MyQueen;
-
+        GameState g = game;
+        
         turnInfluenceMap = CreateInfluenceMap();
 
-        var bestTileToRun = UnscaledBestInBox(myQueen, QUEEN_MOVEMENT * 10, turnInfluenceMap);
-#if UNITY_EDITOR
-//        Debug.Log("Queen Danger is "+turnInfluenceMap[myQueen.pos.x/INFLUENCEMAP_SQUARELENGTH, myQueen.pos.y/INFLUENCEMAP_SQUARELENGTH]);
+        var bestTileToRun = UnscaledBestInBox(g.MyQueen, QUEEN_MOVEMENT * 10, turnInfluenceMap);
         
-        UnityEngine.Debug.Log("BestTile is ("+bestTileToRun.Item1+", "+bestTileToRun.Item2+") with amount = "+turnInfluenceMap[bestTileToRun.Item1/INFLUENCEMAP_SQUARELENGTH, bestTileToRun.Item2/INFLUENCEMAP_SQUARELENGTH]);
+#if UNITY_EDITOR
+        UnityEngine.Debug.Log("BestTile is ("+bestTileToRun.Item1/INFLUENCEMAP_SQUARELENGTH+", "+bestTileToRun.Item2/INFLUENCEMAP_SQUARELENGTH+") with amount = "+turnInfluenceMap[bestTileToRun.Item1/INFLUENCEMAP_SQUARELENGTH, bestTileToRun.Item2/INFLUENCEMAP_SQUARELENGTH]);
 #endif
         
-//        Console.Error.WriteLine("My Queen "+currGameState.MyQueen);
-//        Console.Error.WriteLine("touchedSiteId "+currGameState.touchedSiteId);
-
-        
-        Site touchedSite = null;
-        if (currGameState.touchedSiteId != -1)
-        {
-            touchedSite = currGameState.sites[currGameState.touchedSiteId];
-        }
-        
-        IEnumerable<Site> mySites = currGameState.sites.Where(s => s.owner == Owner.Friendly);
-
-        // ReSharper disable once ReplaceWithSingleCallToFirstOrDefault
-        Site closestUnbuiltSite = SortSites_ByDistance_WithBiasTowardsCenter(myQueen.pos, currGameState.sites)
-            .Where(s => s.owner == Owner.Neutral 
-                        && currGameState.units.Where(u => u.owner == Owner.Enemy).Count(u => u.DistanceTo(s) < ENEMY_CHECK_RANGE) < TOO_MANY_UNITS_NEARBY)
-            .FirstOrDefault();
-
-//        Site targetMoveSite = ChooseNextSite();
-        
-        List<Site> closestUnbuiltMines = SortSites_ByDistance_WithBiasTowardsEdges(myQueen.pos, currGameState.sites)
-            .Where(s => s.structureType == StructureType.None && s.owner == Owner.Neutral && IsSiteMinedOut(s.siteId) == false)
-            .ToList();
-        
-        int owned_knight_barrackses = mySites.Count(ob => ob.structureType == StructureType.Barracks && ob.CreepsType == UnitType.Knight);
-        int owned_archer_barrackses = mySites.Count(ob => ob.structureType == StructureType.Barracks && ob.CreepsType == UnitType.Archer);
-        int owned_giant_barrackses = mySites.Count(ob => ob.structureType == StructureType.Barracks && ob.CreepsType == UnitType.Giant);
-        int owned_mines = mySites.Count(ob => ob.structureType == StructureType.Mine && ob.gold > 0);
-        int owned_towers = mySites.Count(ob => ob.structureType == StructureType.Tower && ob.owner == Owner.Friendly);
+//        int owned_knight_barrackses = mySites.Count(ob => ob.structureType == StructureType.Barracks && ob.CreepsType == UnitType.Knight);
+//        int owned_archer_barrackses = mySites.Count(ob => ob.structureType == StructureType.Barracks && ob.CreepsType == UnitType.Archer);
+//        int owned_giant_barrackses = mySites.Count(ob => ob.structureType == StructureType.Barracks && ob.CreepsType == UnitType.Giant);
+//        int owned_mines = mySites.Count(ob => ob.structureType == StructureType.Mine && ob.gold > 0);
+//        int owned_towers = mySites.Count(ob => ob.structureType == StructureType.Tower && ob.owner == Owner.Friendly);
         
 //        Console.Error.WriteLine($"owned_knight_barrackses {owned_knight_barrackses} " +
 //                                $"owned_archer_barrackses {owned_archer_barrackses} " +
@@ -736,168 +784,39 @@ public class LaPulzellaD_Orleans
 //        );
                             
         
-        
-        int total_owner_barrackses = owned_archer_barrackses + owned_giant_barrackses + owned_knight_barrackses;
-        
-        bool touchingNeutralSite = touchedSite != null && touchedSite.owner == Owner.Neutral;
-        bool touchingMyMine = touchedSite != null && touchedSite.owner == Owner.Friendly &&
-                              touchedSite.structureType == StructureType.Mine;
-        
-        bool touchingMyTower = touchedSite != null && touchedSite.owner == Owner.Friendly &&
-                               touchedSite.structureType == StructureType.Tower;
-        
-        bool prev_touchingMyMine = touchedSite != null && touchedSite.owner == Owner.Friendly &&
-                                   touchedSite.structureType == StructureType.Mine;
-
-        var enemyUnitsInMyQueenRange =
-            currGameState.units.Count(u => u.owner == Owner.Enemy && myQueen.DistanceTo(u) <= ENEMY_CHECK_RANGE);
-
-        int owned_giants = currGameState.units.Count(u => u.owner == Owner.Friendly && u.unitType == UnitType.Giant);
-        
+//        Console.Error.WriteLine("My Queen "+currGameState.MyQueen);
+//        Console.Error.WriteLine("touchedSiteId "+currGameState.touchedSiteId);
         
         //If we are touching a site, we do something with it
-        if (touchingNeutralSite)
+        if (g.TouchingNeutralSite)
         {
             //Build
-            var chosenBuildMove = ChoseBuildMove(closestUnbuiltMines, touchedSite, owned_mines, owned_knight_barrackses, owned_archer_barrackses, owned_giant_barrackses, owned_towers, myQueen);
+            var chosenBuildMove = ChoseBuildMove(g);
             chosenMove.queenAction = chosenBuildMove;
         }
         else //Run
-        if (enemyUnitsInMyQueenRange >= TOO_MANY_UNITS_NEARBY)
+        if (g.EnemyUnitsInRange(ENEMY_CHECK_RANGE) >= TOO_MANY_UNITS_NEARBY)
         {
             Console.Error.WriteLine("Running from enemies");
             chosenMove.queenAction = new Move(bestTileToRun.Item1, bestTileToRun.Item2);
 //            Move moveToAngle = RunToAngle(myQueen);
 //            chosenMove.queenAction = RunToClosestTowerOrAngle(myQueen);
         }
-        else if (touchingMyMine && IsMineMaxed(touchedSite) == false)
+        else if (g.TouchingMyMine && IsMineMaxed(g.TouchedSite) == false)
         {
             //Empower Mine
-            chosenMove.queenAction = new BuildMine(currGameState.touchedSiteId);
+            chosenMove.queenAction = new BuildMine(game.touchedSiteId);
         }
-        else if (touchingMyTower && touchedSite.param1 <= 700 && owned_towers >= 2)
+        else if (g.TouchingMyTower && g.TouchedSite.param1 <= 400 /*&& owned_towers >= 2*/)
         {
             //Emppower Tower
-            chosenMove.queenAction = new BuildTower(currGameState.touchedSiteId);
+            chosenMove.queenAction = new BuildTower(game.touchedSiteId);
         }
         
         if(chosenMove.queenAction is Wait)
         {
-            double squareLength = INFLUENCEMAP_SQUARELENGTH; //Maximum common divisor between 60, 100, 75, 50 (movement speeds)
-
-            int mapWidth = (int) Math.Ceiling(1920 / squareLength)+1;
-            int mapHeight = (int) Math.Ceiling(1000 / squareLength)+1;
-            double minInfluence = -40;
-            double maxInfluence = 40;
-            buildInfluenceMap = new InfluenceMap(mapWidth, mapHeight, minInfluence, maxInfluence, new EuclideanDistanceSqr());
-            
-//            ScaleAndApplyInfluence(myQueen, 15, QUEEN_MOVEMENT/INFLUENCEMAP_SQUARELENGTH, 0,0,ref buildInfluenceMap);
-            
-            foreach (var site in currGameState.sites.Where(s => s.owner == Owner.Neutral))
-            {
-                int sitePosX = (int) Math.Ceiling(site.pos.x / squareLength);
-                int sitePosY = (int) Math.Ceiling(site.pos.y / squareLength);
-
-
-                double influenceValue = site.maxMineSize * 3;// + (site.pos.Distance(myQueen.pos) / 500);  
-                if (owned_mines < MAX_CONCURRENT_MINES)
-                {
-//                    influenceValue = influenceValue /*+ (site.pos.DistanceTo(new Position(960, 500)) / 200)*/;
-                }
-                else
-                {
-                    //Bonus for being closer to center
-                    influenceValue = 6 * 3;
-                    //70 should cover most of the map
-                    buildInfluenceMap.applyInfluence(960,500 , influenceValue, 0, 70, 0.998);
-                }
-                
-                
-                int siteRadius = (int) Math.Floor(GetSiteInfo(site).radius / squareLength);
-                int distanceDecay = 3;
-                
-                
-                buildInfluenceMap.applyInfluence(sitePosX, sitePosY, influenceValue, siteRadius+1, distanceDecay, 0.4);
-                buildInfluenceMap.applyInfluence(sitePosX, sitePosY, -influenceValue, siteRadius, 0, 0);
-            }
-
-            Func<Site, bool> isBusyAttackingEnemies = t => currGameState.units
-                .Any(u1 => u1.owner == Owner.Friendly && u1.DistanceTo(t) < t.param2);
-                
-            
-            var enemyTowers = currGameState.sites
-                .Where(u => u.owner == Owner.Enemy && u.structureType == StructureType.Tower)
-                .Where(t => isBusyAttackingEnemies(t) == false);
-            
-            foreach (var tower in enemyTowers)
-            {
-//                int towerPosX = (int) Math.Ceiling(tower.pos.x / squareLength);
-//                int towerPosY = (int) Math.Ceiling(tower.pos.y / squareLength);
-                double towerInfluence = 10;
-                //4 is health decay per turn
-                int decayedDistance = (int) Math.Ceiling((tower.param2 - 4) / squareLength);
-//            int decayedDistance = 3;
-
-//                mapForBuilding.applyInfluence(towerPosX, towerPosY, -towerInfluence, 3, decayedDistance, 0.8);
-//                mapForBuilding.applyInfluence(towerPosX, towerPosY, towerInfluence, 1, 0, 0);
-//                
-                ScaleAndApplyInfluence(tower, -towerInfluence, 3, decayedDistance, 0.95, ref buildInfluenceMap);
-                ScaleAndApplyInfluence(tower, towerInfluence, 1,0,0, ref buildInfluenceMap);
-            }
-            
-            
-            var bestSiteForBuilding = UnscaledBestInBox(myQueen, QUEEN_MOVEMENT * 12, buildInfluenceMap);
-            Console.Error.WriteLine("best site for building is "+bestSiteForBuilding.Item1+", "+bestSiteForBuilding.Item2);
-
-            if (bestSiteForBuilding.Item1 + bestSiteForBuilding.Item2 == 0)
-            {
-                chosenMove.queenAction = new Wait();
-            }
-            else
-            {
-                chosenMove.queenAction = new Move(bestSiteForBuilding.Item1, bestSiteForBuilding.Item2);
-            }
-
-            if (closestUnbuiltMines.FirstOrDefault() != null && owned_mines < MAX_CONCURRENT_MINES)
-            {
-                //Go To Next Mine (Tries to filter our the mined out sites.
-//                chosenMove.queenAction = new Move(GetSiteInfo(closestUnbuiltMines.First()).pos);
-            }
-            else if (total_owner_barrackses < MAX_BARRACKSES_KNIGHTS + MAX_BARRACKSES_ARCER + MAX_BARRACKSES_GIANT || owned_towers < MAX_TOWERS)
-            {
-                //Go to next closest site
-//                chosenMove.queenAction = new Move(GetSiteInfo(closestUnbuiltSite).pos);
-                //Run to angle if close to enemies. Running takes priority, so we do the computations last
-            }
-            else
-            {
-                buildOrder_stateMachine_stateIndex++;
-
-                if (buildOrder_stateMachine_stateIndex == 0)
-                {
-//                    MAX_BARRACKSES_ARCER++;
-                    MAX_CONCURRENT_MINES++;
-                    MAX_CONCURRENT_MINES++;
-//                    MAX_CONCURRENT_MINES++;
-//                    MAX_BARRACKSES_KNIGHTS++;
-//                    MAX_BARRACKSES_KNIGHTS++;
-//                    MAX_BARRACKSES_GIANT++;
-                    MAX_TOWERS++;
-                    MAX_TOWERS++;
-                    MAX_TOWERS++;
-                    MAX_TOWERS++;
-
-                }
-                else if (buildOrder_stateMachine_stateIndex == 1)
-                {
-                    MAX_BARRACKSES_GIANT++;
-                    MAX_BARRACKSES_KNIGHTS++;
-                    
-                }
-                else if (buildOrder_stateMachine_stateIndex == 2){
-                    MAX_CONCURRENT_MINES++;
-                }
-            }
+            chosenMove.queenAction = SurvivorMode(g, out buildInfluenceMap);
+            Console.Error.WriteLine($"SurivorMode move is {chosenMove.queenAction}");
         }
         
         //Run to angle if close to enemies. Running takes priority, so we do the computations last
@@ -911,9 +830,9 @@ public class LaPulzellaD_Orleans
 ////            chosenMove.queenAction = RunToClosestTowerOrAngle(myQueen);
 //        }
 
-        Unit enemyQueen = currGameState.EnemyQueen;
+        Unit enemyQueen = game.EnemyQueen;
         
-        IEnumerable<Site> myIdleBarracses = mySites
+        IEnumerable<Site> myIdleBarracses = g.MySites
             .Where(site => site.structureType == StructureType.Barracks && site.param1 == 0)
             .OrderBy(s2 => s2.pos.DistanceSqr(enemyQueen.pos));
         
@@ -925,12 +844,12 @@ public class LaPulzellaD_Orleans
 
 //            DecideUnitsToTrain();
 
-            if (owned_giants >= 1)
+            if (g.Owned_giants >= 1)
             {
                 myIdleBarracses = myIdleBarracses.Where(b => b.CreepsType != UnitType.Giant);
             }
             
-            int remainingGold = currGameState.money;
+            int remainingGold = game.money;
             foreach (var barraks in myIdleBarracses)
             {
                 int cost = 0;
@@ -968,16 +887,240 @@ public class LaPulzellaD_Orleans
         return chosenMove;
     }
 
-//    private Site ChooseNextSite()
+    private double NormalizeDistance(double distance)
+    {
+        double result = 0;
+        result = distance / MAX_DISTANCE;
+        return result;
+    }
+    
+    private IAction SurvivorMode(GameState g, out InfluenceMap buildInfluenceMap)
+    {
+        double squareLength = INFLUENCEMAP_SQUARELENGTH; //Maximum common divisor between 60, 100, 75, 50 (movement speeds)
+
+        int mapWidth = (int) Math.Ceiling(1920 / squareLength)+1;
+        int mapHeight = (int) Math.Ceiling(1000 / squareLength)+1;
+        double minInfluence = -120;
+        double maxInfluence = 120;
+        buildInfluenceMap = new InfluenceMap(mapWidth, mapHeight, minInfluence, maxInfluence, new EuclideanDistanceSqr());
+
+        foreach (var site in g.sites)
+        {
+            int siteRadius = (int) Math.Floor(GetSiteInfo(site).radius / squareLength);
+
+            
+            if (site.owner == Owner.Friendly)
+            {
+                ScaleAndApplyInfluence(site.pos, -100, siteRadius-1, 0, 0, ref buildInfluenceMap);
+                continue;
+            }
+            if (site.structureType == StructureType.Mine && site.owner == Owner.Friendly)
+            {
+                continue;
+            }
+            
+            
+            
+
+            double influence = 0;
+            
+            double distanceToMyQueen = g.MyQueen.DistanceSqr(site.pos);
+            double distanceToEnemyQueen = g.EnemyQueen.DistanceSqr(site.pos);
+            double distanceToCenter = CENTER.DistanceSqr(site.pos); 
+
+            double distanceToMyQueen_norm = 1 - NormalizeDistance(distanceToMyQueen);
+            double distanceToEnemyQueen_norm = NormalizeDistance(distanceToEnemyQueen);
+            double distanceToCenter_norm = 1 - NormalizeDistance(distanceToCenter);
+            
+//            Console.Error.WriteLine(
+//                $"distanceToMyQueen : {distanceToMyQueen}" +
+//                $"distanceToEnemyQueen : {distanceToEnemyQueen}" +
+//                $"distanceToCenter : {distanceToCenter}"
+//            );
+
+            influence = distanceToMyQueen_norm *1.5+ distanceToCenter_norm;
+
+            double favorCloseSitesOverOpenSquares = 4;
+            
+            //TODO: maybe do siteRadius and siteRadius-1
+            ScaleAndApplyInfluence(site.pos, influence * favorCloseSitesOverOpenSquares, siteRadius, 0, 0, ref buildInfluenceMap);
+            ScaleAndApplyInfluence(site.pos, -influence * favorCloseSitesOverOpenSquares * 5, siteRadius-1, 0, 0, ref buildInfluenceMap);
+            
+            ScaleAndApplyInfluence(site.pos, influence, siteRadius, 18, 0.92, ref buildInfluenceMap);
+            ScaleAndApplyInfluence(site.pos, -influence, siteRadius, 0, 0.92, ref buildInfluenceMap);
+        }
+
+
+        var survivorModeChosenSite = UnscaledBestInBox(g.MyQueen, QUEEN_MOVEMENT*2, buildInfluenceMap);
+
+#if UNITY_EDITOR
+        UnityEngine.Debug.Log("Survivor Mode tile is is ("+survivorModeChosenSite.Item1/INFLUENCEMAP_SQUARELENGTH+", "+survivorModeChosenSite.Item2/INFLUENCEMAP_SQUARELENGTH+") with amount = "+buildInfluenceMap[survivorModeChosenSite.Item1/INFLUENCEMAP_SQUARELENGTH, survivorModeChosenSite.Item2/INFLUENCEMAP_SQUARELENGTH]);
+#endif
+        
+        return new Move(survivorModeChosenSite.Item1, survivorModeChosenSite.Item2);
+
+    }
+
+//    private void ScaleAndSetInfluence(Position sitePos, double amount, int fullDistance, int decayedDistance, double distanceDecay, ref InfluenceMap map)
 //    {
-//        Site closestUnbuiltSite = SortSites_ByDistance(currGameState.MyQueen.pos, currGameState.sites)
-//                    .Where(s => s.owner == Owner.Neutral 
-//                                && currGameState.units.Where(u => u.owner == Owner.Enemy).Count(u => u.DistanceTo(s) < ENEMY_CHECK_RANGE) < TOO_MANY_UNITS_NEARBY)
-//                    .FirstOrDefault();
-//
-//        return closestUnbuiltSite;
-//
+//        int scaledPosX = (int) Math.Ceiling(x*1.0 / INFLUENCEMAP_SQUARELENGTH);
+//        int scaledPosY = (int) Math.Ceiling(y*1.0 / INFLUENCEMAP_SQUARELENGTH);
+//        
+//        map.setInfluence(scaledPosX ,scaledPosY ,amount,fullDistance,decayedDistance,distanceDecay);
 //    }
+
+    private IAction Wood1Strategy(GameState g, out InfluenceMap buildInfluenceMap)
+    {
+        double squareLength = INFLUENCEMAP_SQUARELENGTH; //Maximum common divisor between 60, 100, 75, 50 (movement speeds)
+
+        int mapWidth = (int) Math.Ceiling(1920 / squareLength)+1;
+        int mapHeight = (int) Math.Ceiling(1000 / squareLength)+1;
+        double minInfluence = -120;
+        double maxInfluence = 120;
+        buildInfluenceMap = new InfluenceMap(mapWidth, mapHeight, minInfluence, maxInfluence, new EuclideanDistanceSqr());
+        
+        ScaleAndApplyInfluence(g.MyQueen, 20, QUEEN_MOVEMENT/INFLUENCEMAP_SQUARELENGTH, 0,0, ref buildInfluenceMap);
+        
+        
+        foreach (var site in game.sites.Where(s => s.owner == Owner.Neutral))
+        {
+            int sitePosX = (int) Math.Ceiling(site.pos.x / squareLength);
+            int sitePosY = (int) Math.Ceiling(site.pos.y / squareLength);
+
+
+            double influenceValue = 10;// + (site.pos.Distance(myQueen.pos) / 500);  
+            if (g.Owned_mines < MAX_CONCURRENT_MINES)
+            {
+                influenceValue = influenceValue + ((960 - site.pos.x) / 960.0) * 10 ;
+            }
+            else
+            {
+                //Bonus for being closer to center
+                //nfluenceValue = 6 * 3;
+                //70 should cover most of the map
+//                    buildInfluenceMap.applyInfluence(960, 500, influenceValue*10, 0, 70, 0.9998);
+            }
+            
+            
+            int siteRadius = (int) Math.Floor(GetSiteInfo(site).radius / squareLength);
+            int distanceDecay = 25;
+            
+            
+            //Being close to the site is good
+            buildInfluenceMap.applyInfluence(sitePosX, sitePosY, influenceValue, siteRadius+1, distanceDecay, 0.9);
+            //Let's not move inside the radius of sites.
+            buildInfluenceMap.applyInfluence(sitePosX, sitePosY, -influenceValue, siteRadius, 0, 0);
+            
+            //Touching the site is very good
+            buildInfluenceMap.applyInfluence(sitePosX, sitePosY, influenceValue * 3.1, siteRadius+1, 0, 0);
+            buildInfluenceMap.applyInfluence(sitePosX, sitePosY, influenceValue * -3.1, siteRadius, 0, 0);
+            
+        }
+
+        Func<Site, bool> isBusyAttackingEnemies = t => game.units
+            .Any(u1 => u1.owner == Owner.Friendly && u1.DistanceTo(t) < t.param2);
+            
+        
+        var enemyTowers = game.sites
+            .Where(u => u.owner == Owner.Enemy && u.structureType == StructureType.Tower)
+            .Where(t => isBusyAttackingEnemies(t) == false);
+        
+        foreach (var tower in enemyTowers)
+        {
+//                int towerPosX = (int) Math.Ceiling(tower.pos.x / squareLength);
+//                int towerPosY = (int) Math.Ceiling(tower.pos.y / squareLength);
+            double towerInfluence = 50;
+            //4 is health decay per turn
+            int decayedDistance = (int) Math.Ceiling((tower.param2 - 4) / squareLength);
+//            int decayedDistance = 3;
+
+//                mapForBuilding.applyInfluence(towerPosX, towerPosY, -towerInfluence, 3, decayedDistance, 0.8);
+//                mapForBuilding.applyInfluence(towerPosX, towerPosY, towerInfluence, 1, 0, 0);
+//                
+            ScaleAndApplyInfluence(tower, -towerInfluence, 3, decayedDistance, 0.95, ref buildInfluenceMap);
+            ScaleAndApplyInfluence(tower, towerInfluence, 1,0,0, ref buildInfluenceMap);
+        }
+        
+        
+        var bestSiteForBuilding = UnscaledBestInBox(g.MyQueen, QUEEN_MOVEMENT, buildInfluenceMap);
+        Console.Error.WriteLine("best site for building is "+bestSiteForBuilding.Item1+", "+bestSiteForBuilding.Item2);
+
+        TurnAction chosenMove = null;
+        
+        if (bestSiteForBuilding.Item1 + bestSiteForBuilding.Item2 == 0)
+        {
+            chosenMove.queenAction = new Wait();
+        }
+        else
+        {
+            chosenMove.queenAction = new Move(bestSiteForBuilding.Item1, bestSiteForBuilding.Item2);
+        }
+
+        if (/*closestUnbuiltMines.FirstOrDefault() != null &&*/ g.Owned_mines < MAX_CONCURRENT_MINES)
+        {
+            //Go To Next Mine (Tries to filter our the mined out sites.
+//                chosenMove.queenAction = new Move(GetSiteInfo(closestUnbuiltMines.First()).pos);
+        }
+        else if (g.Total_owned_barrackses < MAX_BARRACKSES_KNIGHTS + MAX_BARRACKSES_ARCER + MAX_BARRACKSES_GIANT || g.Owned_towers < MAX_TOWERS)
+        {
+            //Go to next closest site
+//                chosenMove.queenAction = new Move(GetSiteInfo(closestUnbuiltSite).pos);
+            //Run to angle if close to enemies. Running takes priority, so we do the computations last
+        }
+        else
+        {
+            buildOrder_stateMachine_stateIndex++;
+
+            
+            if (buildOrder_stateMachine_stateIndex == 0)
+            {
+//                    MAX_BARRACKSES_ARCER++;
+//                    MAX_CONCURRENT_MINES++;
+//                    MAX_CONCURRENT_MINES++;
+                MAX_CONCURRENT_MINES++;
+//                    MAX_BARRACKSES_KNIGHTS++;
+//                    MAX_BARRACKSES_KNIGHTS++;
+//                    MAX_BARRACKSES_GIANT++;
+//                    MAX_TOWERS++;
+//                    MAX_TOWERS++;
+                MAX_TOWERS++;
+//                    MAX_TOWERS++;
+            }
+            
+            if (buildOrder_stateMachine_stateIndex == 1)
+            {
+//                    MAX_BARRACKSES_ARCER++;
+//                    MAX_CONCURRENT_MINES++;
+//                    MAX_CONCURRENT_MINES++;
+//                    MAX_CONCURRENT_MINES++;
+//                    MAX_BARRACKSES_KNIGHTS++;
+//                    MAX_BARRACKSES_KNIGHTS++;
+//                    MAX_BARRACKSES_GIANT++;
+                MAX_TOWERS++;
+                MAX_TOWERS++;
+                MAX_TOWERS++;
+//                    MAX_TOWERS++;
+
+            }
+            else if (buildOrder_stateMachine_stateIndex == 2)
+            {
+//                    MAX_CONCURRENT_MINES++;
+                MAX_CONCURRENT_MINES++;
+
+                MAX_BARRACKSES_GIANT++;
+                MAX_BARRACKSES_KNIGHTS++;
+                
+            }
+            else if (buildOrder_stateMachine_stateIndex == 3){
+                MAX_CONCURRENT_MINES++;
+                MAX_TOWERS++;
+                MAX_TOWERS++;
+                MAX_TOWERS++;
+            }
+        }
+
+        return chosenMove;
+    }
 
     private InfluenceMap CreateInfluenceMap()
     {
@@ -990,13 +1133,13 @@ public class LaPulzellaD_Orleans
         double maxInfluence = 40;
         InfluenceMap map = new InfluenceMap(mapWidth, mapHeight, minInfluence, maxInfluence, new EuclideanDistanceSqr());
 
-        var enemyUnits = currGameState.units
+        var enemyUnits = game.units
             .Where(u => u.owner == Owner.Enemy);
 
-        var myTowers = currGameState.sites
+        var myTowers = game.sites
             .Where(u => u.owner == Owner.Friendly && u.structureType == StructureType.Tower);
         
-        var enemyTowers = currGameState.sites
+        var enemyTowers = game.sites
             .Where(u => u.owner == Owner.Enemy && u.structureType == StructureType.Tower);
         
         foreach (var tower in myTowers)
@@ -1026,6 +1169,26 @@ public class LaPulzellaD_Orleans
         {
             double enemyInfluence = GetEnemyInfluence(enemy);
             ScaleAndApplyInfluence(enemy, enemyInfluence, 1, GetEnemyInfluenceRadius(enemy) *2, 0.9, ref map);
+
+            var points = map.GetPointsInLine(enemy.pos.x, enemy.pos.y, game.MyQueen.pos.x, game.MyQueen.pos.y);
+            foreach (var point in points)
+            {
+                map.applyInfluence(point.x, point.y, 5, 1, 2, 0.75);
+            }
+
+        }
+
+        var myMines =
+            game.sites.Where(s => s.owner == Owner.Friendly && s.structureType == StructureType.Mine);
+        
+        foreach (var mine in myMines)
+        {
+            double mineInfluence = -2;
+            int mineRadius = GetSiteInfo(mine).radius / INFLUENCEMAP_SQUARELENGTH;
+            int decayedDistance = 5;
+            
+            ScaleAndApplyInfluence(mine, -mineInfluence, mineRadius+1, decayedDistance, 0.9, ref map);
+            ScaleAndApplyInfluence(mine, mineInfluence, mineRadius, 0, 0, ref map);
         }
         
         
@@ -1144,7 +1307,7 @@ public class LaPulzellaD_Orleans
     {
         //Copy game state
         GameState gameState = new GameState();
-        gameState.Decode(currGameState.Encode());
+        gameState.Decode(this.game.Encode());
 
         int availableMoney = gameState.money;
         
@@ -1167,22 +1330,22 @@ public class LaPulzellaD_Orleans
         double deltaMoreGiants = 0, deltaMoreKnights = 0, deltaMoreArchers = 0;
         
         int myGiantsCount =
-            currGameState.units.Count(u => u.owner == Owner.Friendly && u.unitType == UnitType.Giant);
+            this.game.units.Count(u => u.owner == Owner.Friendly && u.unitType == UnitType.Giant);
         
         int myKnightsCount = 
-            currGameState.units.Count(u => u.owner == Owner.Friendly && u.unitType == UnitType.Knight);
+            this.game.units.Count(u => u.owner == Owner.Friendly && u.unitType == UnitType.Knight);
         
         int myArchersCount =
-            currGameState.units.Count(u => u.owner == Owner.Friendly && u.unitType == UnitType.Archer);
+            this.game.units.Count(u => u.owner == Owner.Friendly && u.unitType == UnitType.Archer);
         
         int enemyTowersCount =
-            currGameState.sites.Count(s => s.owner == Owner.Enemy && s.structureType == StructureType.Tower);
+            this.game.sites.Count(s => s.owner == Owner.Enemy && s.structureType == StructureType.Tower);
         
         int enemyArchersCount =
-            currGameState.units.Count(u => u.owner == Owner.Enemy && u.unitType == UnitType.Archer);
+            this.game.units.Count(u => u.owner == Owner.Enemy && u.unitType == UnitType.Archer);
 
         int enemyUnitsCount =
-            currGameState.units.Count(u => u.owner == Owner.Enemy);
+            this.game.units.Count(u => u.owner == Owner.Enemy);
 
         
         if( availableMoney >= GIANT_COST && sitesThatCanTrainGiants.Count > 0)
@@ -1233,46 +1396,49 @@ public class LaPulzellaD_Orleans
     /**
      * Returns WAIT if Alexander can't mine anymore and has enough buildings.
      */
-    private IAction ChoseBuildMove(List<Site> closestUnbuiltMines, Site touchedSite, int owned_mines,
-        int owned_knight_barrackses, int owned_archer_barrackses, int owned_giant_barrackses, int owned_towers, Unit myQueen)
+    private IAction ChoseBuildMove(GameState g)
     {
         IAction chosenBuildMove = null;
         
         //touchedSite == closestUnbuiltMine
-        bool siteHasGold = touchedSite.gold > 0;
+        bool siteHasGold = g.TouchedSite.gold > 0;
 
-        if (owned_mines < MAX_CONCURRENT_MINES /*&& currGameState.touchedSiteId == closestUnbuiltMines.First().siteId*/
+        
+        if (g.Owned_mines < MAX_CONCURRENT_MINES /*&& currGameState.touchedSiteId == closestUnbuiltMines.First().siteId*/
                                                && siteHasGold)
         {
             //chosenMove.queenAction = new BuildMine(currGameState.touchedSiteId);
-            chosenBuildMove = new BuildMine(currGameState.touchedSiteId);
+            chosenBuildMove = new BuildMine(g.touchedSiteId);
         }
-        else if (owned_archer_barrackses < MAX_BARRACKSES_ARCER)
+        else if (g.Owned_archer_barrackses < MAX_BARRACKSES_ARCER)
         {
             //chosenMove.queenAction = new BuildBarracks(currGameState.touchedSiteId, BarracksType.Archer);
-            chosenBuildMove = new BuildBarracks(currGameState.touchedSiteId, BarracksType.Archer);
+            chosenBuildMove = new BuildBarracks(game.touchedSiteId, BarracksType.Archer);
         }
-        else if (owned_knight_barrackses < MAX_BARRACKSES_KNIGHTS)
+        else if (g.Owned_knight_barrackses < MAX_BARRACKSES_KNIGHTS)
         {
             //chosenMove.queenAction = new BuildBarracks(currGameState.touchedSiteId, BarracksType.Knight);
-            chosenBuildMove = new BuildBarracks(currGameState.touchedSiteId, BarracksType.Knight);
+            chosenBuildMove = new BuildBarracks(game.touchedSiteId, BarracksType.Knight);
         }
-        else if (owned_towers < MAX_TOWERS)
+        else if (g.Owned_towers < MAX_TOWERS)
         {
-            chosenBuildMove = new BuildTower(currGameState.touchedSiteId);
+            chosenBuildMove = new BuildTower(game.touchedSiteId);
         }
-        else if (owned_giant_barrackses < MAX_BARRACKSES_GIANT)
+        else if (g.Owned_giant_barrackses < MAX_BARRACKSES_GIANT)
         {
             //chosenMove.queenAction = new BuildBarracks(currGameState.touchedSiteId, BarracksType.Archer);
-            chosenBuildMove = new BuildBarracks(currGameState.touchedSiteId, BarracksType.Giant);
+            chosenBuildMove = new BuildBarracks(game.touchedSiteId, BarracksType.Giant);
         }
         else if (siteHasGold == false)
         {
-            chosenBuildMove = new BuildTower(currGameState.touchedSiteId);
+            chosenBuildMove = new BuildTower(game.touchedSiteId);
         }
         else
         {
-            chosenBuildMove = new Wait();
+//            chosenBuildMove = new Wait();
+            //By default build towers. #SurvivorMode
+            chosenBuildMove = new BuildTower(game.touchedSiteId);
+
         }
 
         return chosenBuildMove;
@@ -1290,7 +1456,7 @@ public class LaPulzellaD_Orleans
     private IAction RunToClosestTowerOrAngle(Unit myQueen)
     {
         Site closestTower =
-            currGameState.sites
+            game.sites
                 .Where(s => s.structureType == StructureType.Tower && s.owner == Owner.Friendly)
                 .OrderByDescending(s1 => myQueen.DistanceTo(s1))
                 .FirstOrDefault();
@@ -1307,7 +1473,7 @@ public class LaPulzellaD_Orleans
 
     private bool IsSiteMinedOut(int siteId)
     {
-        return game.minedOutSites_ids.Contains(siteId);
+        return gameInfo.minedOutSites_ids.Contains(siteId);
     }
 
     public List<Site> SortSites_ByDistance_WithBiasTowardsCenter(Position startPosition, List<Site> siteList)
@@ -1344,18 +1510,18 @@ public class LaPulzellaD_Orleans
     
     public SiteInfo GetSiteInfo(int siteId)
     {
-        return game.sites[siteId];
+        return gameInfo.sites[siteId];
     }
     
     public void ParseInputs_Turn()
     {
-        prevGameState = currGameState;
-        currGameState = new GameState();
+        prevGame = game;
+        game = new GameState();
         
         var inputs = Console.ReadLine().Split(' ');
-        currGameState.money = int.Parse(inputs[0]);
-        currGameState.touchedSiteId = int.Parse(inputs[1]); // -1 if none
-        for (int i = 0; i < game.numSites; i++)
+        game.money = int.Parse(inputs[0]);
+        game.touchedSiteId = int.Parse(inputs[1]); // -1 if none
+        for (int i = 0; i < gameInfo.numSites; i++)
         {
             inputs = Console.ReadLine().Split(' ');
             int siteId = int.Parse(inputs[0]);
@@ -1369,13 +1535,13 @@ public class LaPulzellaD_Orleans
            
             Site site = new Site(siteId, gold, maxMineSize, structureType, owner, param1, param2);
             site.isMinedOut = IsSiteMinedOut(site.siteId);
-            currGameState.sites.Add(site);
+            game.sites.Add(site);
 
-            site.pos = game.sites[site.siteId].pos;
+            site.pos = gameInfo.sites[site.siteId].pos;
             
             if (gold == 0 /*&& prevGameState != null && prevGameState.sites[siteId].gold > 0*/)
             {
-                game.minedOutSites_ids.Add(site.siteId);
+                gameInfo.minedOutSites_ids.Add(site.siteId);
 //                game.minedOutSites_ids.ToList().ForEach(Console.Error.WriteLine);
             }
         }
@@ -1391,13 +1557,13 @@ public class LaPulzellaD_Orleans
             int health = int.Parse(inputs[4]);
             
             Unit unit = new Unit(x,y,owner,unitType,health);
-            currGameState.units.Add(unit);
+            game.units.Add(unit);
         }
     }
     
     public void ParseInputs_Begin()
     {
-        game = new GameInfo();
+        gameInfo = new GameInfo();
         string[] inputs;
         int numSites = int.Parse(Console.ReadLine());
         
@@ -1410,7 +1576,7 @@ public class LaPulzellaD_Orleans
             int radius = int.Parse(inputs[3]);
             
             SiteInfo newSiteInfo = new SiteInfo(siteId, new Position(x,y), radius);
-            game.sites[siteId] = newSiteInfo;
+            gameInfo.sites[siteId] = newSiteInfo;
         }
     }
 
@@ -1573,43 +1739,6 @@ public class InfluenceMap
 		return neighbours;
 	}
 
-
-	//public int[][] getNeighbours(int x, int y)
-	//{
-	//	int noOfNeighbours = 8;
-	//	if (x == 0 || x == width - 1)
-	//	{
-	//		noOfNeighbours -= 3;
-	//	}
-	//	if (y == 0 || y == width - 1)
-	//	{
-	//		if (noOfNeighbours < 8)
-	//		{
-	//			noOfNeighbours -= 2;
-	//		}
-	//		noOfNeighbours -= 3;
-	//	}
-
-	//	int currNeighbours = 0;
-	//	int[][] neighbours = new int[noOfNeighbours][];
-	//	for (int i = -1; i <= 1; i++)
-	//	{
-	//		for (int j = -1; j <= 1; j++)
-	//		{
-	//			if (i == 0 && j == 0) { continue; }
-
-	//			int xNeighbour = x - i, yNeighbour = y - j;
-	//			if (xNeighbour >= 0 && xNeighbour <= width - 1
-	//			&& yNeighbour >= 0 && yNeighbour <= height - 1)
-	//			{
-	//				neighbours[currNeighbours] = new int[] { xNeighbour, yNeighbour };
-	//				currNeighbours++;
-	//			}
-	//		}
-	//	}
-	//	return neighbours;
-	//}
-
 	private HashSet<XAndY> myHashset;
 
 	public void applyInfluence(int x, int y, double amount, int fullDistance, int decayedDistance, double distanceDecay)
@@ -1662,17 +1791,6 @@ public class InfluenceMap
 			AddAmount_IfInBounds(x + 0, y - range, amount);
 		}
 	}
-
-//	private int TrySetAmount(int x, int y, double amount)
-//	{
-//		try
-//		{
-//			_influenceMap[x][y] += amount;
-//			return 1;
-////			return true;
-//		}
-//		catch { return 0; } //out of map
-//	}
 
 	/// FullAmount Distance is the distance where the full amount will be applied. Then, reducedAmountDistance is the distance that will suffer from decay
 	//public void applyInfluence(int x, int y, double amount, int fullAmountDistance, int reducedAmountDistance, double distanceDecay)
@@ -1750,26 +1868,26 @@ public class InfluenceMap
 		}
 	}
 
-	public void applyInfluence(double amount, int fullAmountDistance, int reducedAmountDistance, double distanceDecay, params int[] points)
-	{
-		if (points.Length % 2 == 1)
-		{
-		    throw new Exception("invalid number of points args");
-		}
-
-		int noOfPoints = points.Length / 2;
-
-		amount /= noOfPoints;
-
-		for (int i = 0; i < noOfPoints; i++)
-		{
-			int pointX = points[(i * 2)];
-			int pointY = points[(i * 2) + 1];
-
-			applyInfluence(pointX, pointY, amount, fullAmountDistance, reducedAmountDistance, distanceDecay);
-		}
-
-	}
+//	public void applyInfluence(double amount, int fullAmountDistance, int reducedAmountDistance, double distanceDecay, params int[] points)
+//	{
+//		if (points.Length % 2 == 1)
+//		{
+//		    throw new Exception("invalid number of points args");
+//		}
+//
+//		int noOfPoints = points.Length / 2;
+//
+//		amount /= noOfPoints;
+//
+//		for (int i = 0; i < noOfPoints; i++)
+//		{
+//			int pointX = points[(i * 2)];
+//			int pointY = points[(i * 2) + 1];
+//
+//			applyInfluence(pointX, pointY, amount, fullAmountDistance, reducedAmountDistance, distanceDecay);
+//		}
+//
+//	}
 	
 	//Use two opposite corners, where x1<x2 or y1<y2. They will define the bounds of the search. 
 	//The tile with highest score is selected. If multiple bests, it will select the last
@@ -1792,6 +1910,105 @@ public class InfluenceMap
 		return currBest;
 	}
 
+        // use Bresenham-like algorithm to print a line from (y1,x1) to (y2,x2)
+    // The difference with Bresenham is that ALL the points of the line are
+    //   printed, not only one per x coordinate.
+    // Principles of the Bresenham's algorithm (heavily modified) were taken from:
+    //   http://www.intranet.ca/~sshah/waste/art7.html
+    public List<Position> GetPointsInLine(int y1, int x1, int y2, int x2)
+    {
+        List<Position> result = new List<Position>();
+        int i; // loop counter
+        int ystep, xstep; // the step on y and x axis
+        int error; // the error accumulated during the increment
+        int errorprev; // *vision the previous value of the error variable
+        int y = y1, x = x1; // the line points
+        int ddy, ddx; // compulsory variables: the double values of dy and dx
+        int dx = x2 - x1;
+        int dy = y2 - y1;
+        result.Add(new Position(y1, x1)); // first point
+        
+        // NB the last point can't be here, because of its previous point (which has to be verified)
+        if (dy < 0)
+        {
+            ystep = -1;
+            dy = -dy;
+        }
+        else
+            ystep = 1;
+
+        if (dx < 0)
+        {
+            xstep = -1;
+            dx = -dx;
+        }
+        else
+            xstep = 1;
+
+        ddy = 2 * dy; // work with double values for full precision
+        ddx = 2 * dx;
+        if (ddx >= ddy)
+        {
+            // first octant (0 <= slope <= 1)
+            // compulsory initialization (even for errorprev, needed when dx==dy)
+            errorprev = error = dx; // start in the middle of the square
+            for (i = 0; i < dx; i++)
+            {
+                // do not use the first point (already done)
+                x += xstep;
+                error += ddy;
+                if (error > ddx)
+                {
+                    // increment y if AFTER the middle ( > )
+                    y += ystep;
+                    error -= ddx;
+                    // three cases (octant == right->right-top for directions below):
+                    if (error + errorprev < ddx) // bottom square also
+                        result.Add(new Position(y - ystep, x));
+                    else if (error + errorprev > ddx) // left square also
+                        result.Add(new Position(y, x - xstep));
+                    else
+                    {
+                        // corner: bottom and left squares also
+                        result.Add(new Position(y - ystep, x));
+                        result.Add(new Position(y, x - xstep));
+                    }
+                }
+
+                result.Add(new Position(y, x));
+                errorprev = error;
+            }
+        }
+        else
+        {
+            // the same as above
+            errorprev = error = dy;
+            for (i = 0; i < dy; i++)
+            {
+                y += ystep;
+                error += ddx;
+                if (error > ddy)
+                {
+                    x += xstep;
+                    error -= ddy;
+                    if (error + errorprev < ddy)
+                        result.Add(new Position(y, x - xstep));
+                    else if (error + errorprev > ddy)
+                        result.Add(new Position(y - ystep, x));
+                    else
+                    {
+                        result.Add(new Position(y, x - xstep));
+                        result.Add(new Position(y - ystep, x));
+                    }
+                }
+
+                result.Add( new Position(y, x));
+                errorprev = error;
+            }
+        }
+      // assert ((y == y2) && (x == x2));  // the last point (y2,x2) has to be the same with the last point of the algorithm
+        return result;
+    } 
 
 
 }

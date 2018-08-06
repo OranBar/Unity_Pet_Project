@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InfluenceMapCell : MonoBehaviour {
 
@@ -11,7 +12,15 @@ public class InfluenceMapCell : MonoBehaviour {
 	public int reducedDistance = 2;
 	public double distanceDecay = 1;
 
+	public bool enableMouseInput = false;
+
+	public Text influenceLabel;
 	private Material myMaterial;
+
+	private void Start()
+	{
+		UpdateLabel();
+	}
 
 	private void Update()
 	{
@@ -19,6 +28,7 @@ public class InfluenceMapCell : MonoBehaviour {
 		if(amount != influenceValue)
 		{
 			influenceValue = (float) amount;
+			UpdateLabel();
 		}
 	}
 
@@ -39,6 +49,9 @@ public class InfluenceMapCell : MonoBehaviour {
 
 	private void OnMouseDown()
 	{
+		if (enableMouseInput == false){ return; }
+		
+		
 		var newInfluence = influenceModifier;
 		if (Input.GetKey(KeyCode.LeftShift))
 		{
@@ -51,5 +64,17 @@ public class InfluenceMapCell : MonoBehaviour {
 	public void ChangeColor(Color color)
 	{
 		myMaterial.color = color;
+	}
+
+	public void UpdateLabel()
+	{
+		if (influenceValue != 0)
+		{
+			influenceLabel.text = influenceValue+"";
+		}
+		else
+		{
+			influenceLabel.text = "";
+		}
 	}
 }

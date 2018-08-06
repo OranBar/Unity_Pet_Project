@@ -22,7 +22,7 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 
 	public void applyInfluence(int x, int y, int fullDistance, int reducedDistance, double distanceDecay, double influence)
 	{
-		InflMap.applyInfluence(influence, fullDistance, reducedDistance, distanceDecay, x, y);
+		InflMap.applyInfluence(x, y, influence, fullDistance, reducedDistance, distanceDecay);
 	}
 
 	public int xOffset;
@@ -120,6 +120,7 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 				float normalizedAmount = Mathf.InverseLerp((float)minInfluence, (float)maxInfluence, (float)amount);
 				var color = influenceColorGradient.Evaluate(normalizedAmount);
 				influenceMapCells[x, y].ChangeColor(color);
+				
 				//influenceMapCells[x, y].GetComponent<Renderer>().material.color = color;
 			}
 		}
