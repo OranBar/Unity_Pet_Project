@@ -383,11 +383,11 @@ public class GameState
     
     public int UnitsCount => units.Count;
     
-    public int Owned_knight_barrackses => sites.Count(ob => ob.structureType == StructureType.Barracks && ob.CreepsType == UnitType.Knight);
-    public int Owned_archer_barrackses => sites.Count(ob => ob.structureType == StructureType.Barracks && ob.CreepsType == UnitType.Archer);
-    public int Owned_giant_barrackses => sites.Count(ob => ob.structureType == StructureType.Barracks && ob.CreepsType == UnitType.Giant);
-    public int Owned_mines => sites.Count(ob => ob.structureType == StructureType.Mine && ob.gold > 0);
-    public int Owned_towers => sites.Count(ob => ob.structureType == StructureType.Tower && ob.owner == Owner.Friendly);
+    public int Owned_knight_barrackses => MySites.Count(ob => ob.structureType == StructureType.Barracks && ob.CreepsType == UnitType.Knight);
+    public int Owned_archer_barrackses => MySites.Count(ob => ob.structureType == StructureType.Barracks && ob.CreepsType == UnitType.Archer);
+    public int Owned_giant_barrackses => MySites.Count(ob => ob.structureType == StructureType.Barracks && ob.CreepsType == UnitType.Giant);
+    public int Owned_mines => MySites.Count(ob => ob.structureType == StructureType.Mine && ob.gold > 0);
+    public int Owned_towers => MySites.Count(ob => ob.structureType == StructureType.Tower && ob.owner == Owner.Friendly);
 
     public int Total_owned_barrackses => Owned_archer_barrackses + Owned_giant_barrackses + Owned_knight_barrackses;
            
@@ -698,7 +698,7 @@ public class LaPulzellaD_Orleans
         MAX_BARRACKSES_KNIGHTS = 1,
         MAX_BARRACKSES_ARCER = 0,
         MAX_BARRACKSES_GIANT = 0,
-        MAX_TOWERS = 10;
+        MAX_TOWERS = 6;
 
     public static int GIANT_COST = 140, KNIGHT_COST = 80, ARCHER_COST = 100;
     public static int ENEMY_CHECK_RANGE = 340, TOO_MANY_UNITS_NEARBY = 2;
@@ -1437,7 +1437,7 @@ public class LaPulzellaD_Orleans
         {
 //            chosenBuildMove = new Wait();
             //By default build towers. #SurvivorMode
-            chosenBuildMove = new BuildTower(game.touchedSiteId);
+            chosenBuildMove = new BuildMine(game.touchedSiteId);
 
         }
 

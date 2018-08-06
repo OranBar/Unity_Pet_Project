@@ -13,7 +13,7 @@ public class Main : MonoBehaviour
     private string GAMESTATE_ENC =
         "24|0.202.2.1.0.424.372.0.|1.xx0.1.xx0.|2.xx1.1.196.263.0.|3.xxxxxx0.|4.xxxxxx0.|5.xxxxxx0.|6.xxxxxx0.|7.xxxxxx0.|8.xx0.1.xx0.|9.212.1.2.0.0.0.0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.xxxxxx0.|15.xxxxxx0.|16.252.3.1.0.484.402.0.|17.xx1.1.372.354.0.|18.xxxxxx0.|19.xxxxxx0.|20.271.3.1.0.460.391.0.|21.xx1.1.344.340.0.|22.xx0.1.xx0.|23.184.1.0.0.1.x0.|3|1126.742.0.0.4.|627.328.0.x95.|1147.790.1.x85.|44|16|";
 
-    private string PULZELLAINFO_ENC = "1.1.0.0.2.x50.";
+    private string PULZELLAINFO_ENC = "1.1.0.0.6.x96.";
 
     private void Start()
     {
