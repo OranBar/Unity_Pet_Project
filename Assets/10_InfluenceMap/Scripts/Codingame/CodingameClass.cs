@@ -942,7 +942,7 @@ public class LaPulzellaD_Orleans
 //                $"distanceToCenter : {distanceToCenter}"
 //            );
 
-            influence = distanceToMyQueen_norm *1.5+ distanceToCenter_norm;
+            influence = distanceToCenter_norm * 10;
 
             double favorCloseSitesOverOpenSquares = 4;
             
@@ -950,7 +950,7 @@ public class LaPulzellaD_Orleans
             ScaleAndApplyInfluence(site.pos, influence * favorCloseSitesOverOpenSquares, siteRadius, 0, 0, ref buildInfluenceMap);
             ScaleAndApplyInfluence(site.pos, -influence * favorCloseSitesOverOpenSquares * 5, siteRadius-1, 0, 0, ref buildInfluenceMap);
             
-            ScaleAndApplyInfluence(site.pos, influence, siteRadius, 25, 0.92, ref buildInfluenceMap);
+            ScaleAndApplyInfluence(site.pos, influence, siteRadius, 18, 0.92, ref buildInfluenceMap);
             ScaleAndApplyInfluence(site.pos, -influence, siteRadius, 0, 0.92, ref buildInfluenceMap);
         }
 
