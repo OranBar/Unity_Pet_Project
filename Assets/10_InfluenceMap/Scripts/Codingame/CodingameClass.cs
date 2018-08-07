@@ -918,10 +918,14 @@ public class LaPulzellaD_Orleans
             {
                 continue;
             }
-            
-            
-            
 
+            if (site.owner == Owner.Enemy && site.structureType == StructureType.Tower)
+            {
+                int towerRange = site.param2 / INFLUENCEMAP_SQUARELENGTH;
+                     
+                ScaleAndApplyInfluence(site, -50, siteRadius, towerRange - siteRadius, 0.8, ref buildInfluenceMap);
+            }
+            
             double influence = 0;
             
             double distanceToMyQueen = g.MyQueen.DistanceSqr(site.pos);
@@ -946,7 +950,7 @@ public class LaPulzellaD_Orleans
             ScaleAndApplyInfluence(site.pos, influence * favorCloseSitesOverOpenSquares, siteRadius, 0, 0, ref buildInfluenceMap);
             ScaleAndApplyInfluence(site.pos, -influence * favorCloseSitesOverOpenSquares * 5, siteRadius-1, 0, 0, ref buildInfluenceMap);
             
-            ScaleAndApplyInfluence(site.pos, influence, siteRadius, 18, 0.92, ref buildInfluenceMap);
+            ScaleAndApplyInfluence(site.pos, influence, siteRadius, 25, 0.92, ref buildInfluenceMap);
             ScaleAndApplyInfluence(site.pos, -influence, siteRadius, 0, 0.92, ref buildInfluenceMap);
         }
 
