@@ -701,7 +701,7 @@ public class LaPulzellaD_Orleans
         MAX_TOWERS = 6;
 
     public static int GIANT_COST = 140, KNIGHT_COST = 80, ARCHER_COST = 100;
-    public static int ENEMY_CHECK_RANGE = 340, TOO_MANY_UNITS_NEARBY = 2;
+    public static int ENEMY_CHECK_RANGE = 210, TOO_MANY_UNITS_NEARBY = 2;
     public static int INFLUENCEMAP_SQUARELENGTH = 25;
     public static int QUEEN_MOVEMENT = 60;
     public static int MAX_DISTANCE = 4686400;
@@ -909,14 +909,14 @@ public class LaPulzellaD_Orleans
             int siteRadius = (int) Math.Floor(GetSiteInfo(site).radius / squareLength);
 
             
-            if (site.owner == Owner.Friendly)
+            if (site.structureType != StructureType.Mine && site.owner == Owner.Friendly)
             {
-                ScaleAndApplyInfluence_Diamond(site.pos, -100, siteRadius-1, 0, 0, ref buildInfluenceMap);
+                ScaleAndApplyInfluence_Diamond(site.pos, -100, siteRadius, 0, 0, ref buildInfluenceMap);
                 continue;
             }
             if (site.structureType == StructureType.Mine && site.owner == Owner.Friendly)
             {
-                continue;
+                ScaleAndApplyInfluence_Diamond(site.pos, -10, siteRadius+1, 0, 0, ref buildInfluenceMap);
             }
 
             if (site.owner == Owner.Enemy && site.structureType == StructureType.Tower)
@@ -924,7 +924,7 @@ public class LaPulzellaD_Orleans
                 int towerRange = (int) Math.Ceiling(site.param2 / squareLength);
                      
 //                ScaleAndApplyInfluence_Diamond(site, -50, siteRadius, towerRange - siteRadius, 0.8, ref buildInfluenceMap);
-                ScaleAndApplyInfluence_Circle(site.pos, -50, siteRadius, towerRange - siteRadius, 0.8, ref buildInfluenceMap);
+                ScaleAndApplyInfluence_Circle(site.pos, -50, siteRadius, towerRange - siteRadius + 1, 0.8, ref buildInfluenceMap);
             }
 
             
@@ -944,16 +944,16 @@ public class LaPulzellaD_Orleans
 //                $"distanceToCenter : {distanceToCenter}"
 //            );
 
-            influence = distanceToCenter_norm;
+            influence = distanceToCenter_norm ;
 
             double favorCloseSitesOverOpenSquares = 4;
             
             //TODO: maybe do siteRadius and siteRadius-1
-            ScaleAndApplyInfluence_Diamond(site.pos, influence * favorCloseSitesOverOpenSquares, siteRadius, 0, 0, ref buildInfluenceMap);
-            ScaleAndApplyInfluence_Diamond(site.pos, -influence * favorCloseSitesOverOpenSquares * 5, siteRadius-1, 0, 0, ref buildInfluenceMap);
+            ScaleAndApplyInfluence_Diamond(site.pos, influence * favorCloseSitesOverOpenSquares, siteRadius+1, 0, 0, ref buildInfluenceMap);
+            ScaleAndApplyInfluence_Diamond(site.pos, -influence * favorCloseSitesOverOpenSquares * 5, siteRadius, 0, 0, ref buildInfluenceMap);
             
-            ScaleAndApplyInfluence_Diamond(site.pos, influence, siteRadius, 18, 0.92, ref buildInfluenceMap);
-            ScaleAndApplyInfluence_Diamond(site.pos, -influence, siteRadius, 0, 0.92, ref buildInfluenceMap);
+            ScaleAndApplyInfluence_Diamond(site.pos, influence, siteRadius+1, 18, 0.72, ref buildInfluenceMap);
+            ScaleAndApplyInfluence_Diamond(site.pos, -influence, siteRadius, 0, 0.72, ref buildInfluenceMap);
         }
 
 

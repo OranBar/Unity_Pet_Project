@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using NaughtyAttributes;
+using OranUnityUtils;
 
 public class InfluenceMapVisualizer : MonoBehaviour {
 
@@ -82,21 +83,66 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 		}
 	}
 
-	public void OnCellMouseOver(InfluenceMapCell cell)
+	public void OnCellMouseOver(InfluenceMapCell mouseOverCell)
 	{
-		int x1 = Mathf.Max(cell.x - mouseoverRange, 0);
-		int y1 = Mathf.Max(cell.y - mouseoverRange, 0);
-		int x2 = Mathf.Min(cell.x + mouseoverRange, width-1);
-		int y2 = Mathf.Min(cell.y + mouseoverRange, height-1);
+		int x1 = Mathf.Max(mouseOverCell.x - mouseoverRange, 0);
+		int y1 = Mathf.Max(mouseOverCell.y - mouseoverRange, 0);
+		int x2 = Mathf.Min(mouseOverCell.x + mouseoverRange, width-1);
+		int y2 = Mathf.Min(mouseOverCell.y + mouseoverRange, height-1);
+		
+		Vector2 startPos = new Vector2(mouseOverCell.x, mouseOverCell.y);
 		
 		List<Text> adjacentLabels = new List<Text>();
+		InfluenceMapCell bestCell = influenceMapCells[x1, y1], worstCell = influenceMapCells[x1, y1];
+		float distToBestCell = float.MaxValue, distToWorstCell = float.MaxValue;;
+
 		for (int i = x1; i <= x2; i++)
 		{
 			for (int j = y1; j <= y2; j++)
 			{
-				adjacentLabels.Add(influenceMapCells[i, j].influenceLabel);
+				InfluenceMapCell cell = influenceMapCells[i, j];
+				adjacentLabels.Add(cell.influenceLabel);
+				if (cell.influenceValue >= bestCell.influenceValue)
+				{
+					if (cell.influenceValue == bestCell.influenceValue)
+					{
+						float distToCell = Vector2.Distance(startPos, new Vector2(cell.x, cell.y));
+						if (distToCell < distToBestCell)
+						{
+							//We don't swap if the cell isn't any closer to the mouse.
+							bestCell = cell;
+							distToBestCell = distToCell;
+						}
+					}
+					else
+					{
+						bestCell = cell;
+					}
+
+				}
+				if (cell.influenceValue <= worstCell.influenceValue)
+				{
+					if (cell.influenceValue == worstCell.influenceValue)
+					{
+						float distToCell = Vector2.Distance(startPos, new Vector2(cell.x, cell.y));
+						if (distToCell < distToWorstCell)
+						{
+							//We don't swap if the cell isn't any closer to the mouse.
+							worstCell = cell;
+							distToWorstCell = distToCell;
+						}
+					}
+					else
+					{
+						worstCell = cell;
+					}
+					
+				}
 			}
 		}
+
+		bestCell.influenceLabel.color = Color.cyan;
+		worstCell.influenceLabel.color = Color.magenta;
 
 		labels.Except(adjacentLabels).ForEach(l => SetLabelColorAlpha(l, 0));
 		adjacentLabels.ForEach(l => SetLabelColorAlpha(l, 1));
@@ -114,6 +160,7 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 		if (Input.GetKeyUp(KeyCode.LeftControl))
 		{
 			labels.ForEach(l => SetLabelColorAlpha(l, 1));
+			labels.ForEach(l => SetLabelColor(l, Color.red));
 		}
 
 		if (Input.mouseScrollDelta.y != 0)
@@ -122,6 +169,11 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 			mouseoverRange = mouseoverRange + sign;
 			UpdateCells();
 		}
+	}
+
+	private void SetLabelColor(Text text, Color col)
+	{
+		text.color = col;
 	}
 
 	private void AllLabelsTransparentExcept()
