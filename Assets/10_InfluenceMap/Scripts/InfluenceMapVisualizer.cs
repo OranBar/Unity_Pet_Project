@@ -22,7 +22,7 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 
 	public void applyInfluence(int x, int y, int fullDistance, int reducedDistance, double distanceDecay, double influence)
 	{
-		InflMap.applyInfluence(x, y, influence, fullDistance, reducedDistance, distanceDecay);
+		InflMap.ApplyInfluence_Diamond(x, y, influence, fullDistance, reducedDistance, distanceDecay);
 	}
 
 	public int xOffset;

@@ -702,7 +702,7 @@ public class LaPulzellaD_Orleans
 
     public static int GIANT_COST = 140, KNIGHT_COST = 80, ARCHER_COST = 100;
     public static int ENEMY_CHECK_RANGE = 340, TOO_MANY_UNITS_NEARBY = 2;
-    public static int INFLUENCEMAP_SQUARELENGTH = 24;
+    public static int INFLUENCEMAP_SQUARELENGTH = 25;
     public static int QUEEN_MOVEMENT = 60;
     public static int MAX_DISTANCE = 4686400;
 
@@ -911,7 +911,7 @@ public class LaPulzellaD_Orleans
             
             if (site.owner == Owner.Friendly)
             {
-                ScaleAndApplyInfluence(site.pos, -100, siteRadius-1, 0, 0, ref buildInfluenceMap);
+                ScaleAndApplyInfluence_Diamond(site.pos, -100, siteRadius-1, 0, 0, ref buildInfluenceMap);
                 continue;
             }
             if (site.structureType == StructureType.Mine && site.owner == Owner.Friendly)
@@ -921,10 +921,12 @@ public class LaPulzellaD_Orleans
 
             if (site.owner == Owner.Enemy && site.structureType == StructureType.Tower)
             {
-                int towerRange = site.param2 / INFLUENCEMAP_SQUARELENGTH;
+                int towerRange = (int) Math.Ceiling(site.param2 / squareLength);
                      
-                ScaleAndApplyInfluence(site, -50, siteRadius, towerRange - siteRadius, 0.8, ref buildInfluenceMap);
+//                ScaleAndApplyInfluence_Diamond(site, -50, siteRadius, towerRange - siteRadius, 0.8, ref buildInfluenceMap);
+                ScaleAndApplyInfluence_Circle(site.pos, -50, siteRadius, towerRange - siteRadius, 0.8, ref buildInfluenceMap);
             }
+
             
             double influence = 0;
             
@@ -942,16 +944,16 @@ public class LaPulzellaD_Orleans
 //                $"distanceToCenter : {distanceToCenter}"
 //            );
 
-            influence = distanceToCenter_norm * 10;
+            influence = distanceToCenter_norm;
 
             double favorCloseSitesOverOpenSquares = 4;
             
             //TODO: maybe do siteRadius and siteRadius-1
-            ScaleAndApplyInfluence(site.pos, influence * favorCloseSitesOverOpenSquares, siteRadius, 0, 0, ref buildInfluenceMap);
-            ScaleAndApplyInfluence(site.pos, -influence * favorCloseSitesOverOpenSquares * 5, siteRadius-1, 0, 0, ref buildInfluenceMap);
+            ScaleAndApplyInfluence_Diamond(site.pos, influence * favorCloseSitesOverOpenSquares, siteRadius, 0, 0, ref buildInfluenceMap);
+            ScaleAndApplyInfluence_Diamond(site.pos, -influence * favorCloseSitesOverOpenSquares * 5, siteRadius-1, 0, 0, ref buildInfluenceMap);
             
-            ScaleAndApplyInfluence(site.pos, influence, siteRadius, 18, 0.92, ref buildInfluenceMap);
-            ScaleAndApplyInfluence(site.pos, -influence, siteRadius, 0, 0.92, ref buildInfluenceMap);
+            ScaleAndApplyInfluence_Diamond(site.pos, influence, siteRadius, 18, 0.92, ref buildInfluenceMap);
+            ScaleAndApplyInfluence_Diamond(site.pos, -influence, siteRadius, 0, 0.92, ref buildInfluenceMap);
         }
 
 
@@ -983,7 +985,7 @@ public class LaPulzellaD_Orleans
         double maxInfluence = 120;
         buildInfluenceMap = new InfluenceMap(mapWidth, mapHeight, minInfluence, maxInfluence, new EuclideanDistanceSqr());
         
-        ScaleAndApplyInfluence(g.MyQueen, 20, QUEEN_MOVEMENT/INFLUENCEMAP_SQUARELENGTH, 0,0, ref buildInfluenceMap);
+        ScaleAndApplyInfluence_Diamond(g.MyQueen, 20, QUEEN_MOVEMENT/INFLUENCEMAP_SQUARELENGTH, 0,0, ref buildInfluenceMap);
         
         
         foreach (var site in game.sites.Where(s => s.owner == Owner.Neutral))
@@ -1011,13 +1013,13 @@ public class LaPulzellaD_Orleans
             
             
             //Being close to the site is good
-            buildInfluenceMap.applyInfluence(sitePosX, sitePosY, influenceValue, siteRadius+1, distanceDecay, 0.9);
+            buildInfluenceMap.ApplyInfluence_Diamond(sitePosX, sitePosY, influenceValue, siteRadius+1, distanceDecay, 0.9);
             //Let's not move inside the radius of sites.
-            buildInfluenceMap.applyInfluence(sitePosX, sitePosY, -influenceValue, siteRadius, 0, 0);
+            buildInfluenceMap.ApplyInfluence_Diamond(sitePosX, sitePosY, -influenceValue, siteRadius, 0, 0);
             
             //Touching the site is very good
-            buildInfluenceMap.applyInfluence(sitePosX, sitePosY, influenceValue * 3.1, siteRadius+1, 0, 0);
-            buildInfluenceMap.applyInfluence(sitePosX, sitePosY, influenceValue * -3.1, siteRadius, 0, 0);
+            buildInfluenceMap.ApplyInfluence_Diamond(sitePosX, sitePosY, influenceValue * 3.1, siteRadius+1, 0, 0);
+            buildInfluenceMap.ApplyInfluence_Diamond(sitePosX, sitePosY, influenceValue * -3.1, siteRadius, 0, 0);
             
         }
 
@@ -1041,8 +1043,8 @@ public class LaPulzellaD_Orleans
 //                mapForBuilding.applyInfluence(towerPosX, towerPosY, -towerInfluence, 3, decayedDistance, 0.8);
 //                mapForBuilding.applyInfluence(towerPosX, towerPosY, towerInfluence, 1, 0, 0);
 //                
-            ScaleAndApplyInfluence(tower, -towerInfluence, 3, decayedDistance, 0.95, ref buildInfluenceMap);
-            ScaleAndApplyInfluence(tower, towerInfluence, 1,0,0, ref buildInfluenceMap);
+            ScaleAndApplyInfluence_Diamond(tower, -towerInfluence, 3, decayedDistance, 0.95, ref buildInfluenceMap);
+            ScaleAndApplyInfluence_Diamond(tower, towerInfluence, 1,0,0, ref buildInfluenceMap);
         }
         
         
@@ -1153,8 +1155,8 @@ public class LaPulzellaD_Orleans
             int decayedDistance = (int)Math.Ceiling(tower.param2 / squareLength);
 //            int decayedDistance = 3;
             
-            ScaleAndApplyInfluence(tower, towerInfluence, 1, decayedDistance, 0.96, ref map);
-            ScaleAndApplyInfluence(tower, -towerInfluence, 1, 0, 0, ref map);
+            ScaleAndApplyInfluence_Diamond(tower, towerInfluence, 1, decayedDistance, 0.96, ref map);
+            ScaleAndApplyInfluence_Diamond(tower, -towerInfluence, 1, 0, 0, ref map);
             
         }
         
@@ -1164,20 +1166,20 @@ public class LaPulzellaD_Orleans
             int decayedDistance = (int) Math.Ceiling(tower.param2 / squareLength);
 //            int decayedDistance = 3;
 
-            ScaleAndApplyInfluence(tower, -towerInfluence, 3, decayedDistance, 0.7, ref map);
-            ScaleAndApplyInfluence(tower, towerInfluence, 1, 0, 0, ref map);
+            ScaleAndApplyInfluence_Diamond(tower, -towerInfluence, 3, decayedDistance, 0.7, ref map);
+            ScaleAndApplyInfluence_Diamond(tower, towerInfluence, 1, 0, 0, ref map);
         }
         
         //Enemy units influence
         foreach (var enemy in enemyUnits)
         {
             double enemyInfluence = GetEnemyInfluence(enemy);
-            ScaleAndApplyInfluence(enemy, enemyInfluence, 1, GetEnemyInfluenceRadius(enemy) *2, 0.9, ref map);
+            ScaleAndApplyInfluence_Diamond(enemy, enemyInfluence, 1, GetEnemyInfluenceRadius(enemy) *2, 0.9, ref map);
 
             var points = map.GetPointsInLine(enemy.pos.x, enemy.pos.y, game.MyQueen.pos.x, game.MyQueen.pos.y);
             foreach (var point in points)
             {
-                map.applyInfluence(point.x, point.y, 5, 1, 2, 0.75);
+                map.ApplyInfluence_Diamond(point.x, point.y, 5, 1, 2, 0.75);
             }
 
         }
@@ -1191,8 +1193,8 @@ public class LaPulzellaD_Orleans
             int mineRadius = GetSiteInfo(mine).radius / INFLUENCEMAP_SQUARELENGTH;
             int decayedDistance = 5;
             
-            ScaleAndApplyInfluence(mine, -mineInfluence, mineRadius+1, decayedDistance, 0.9, ref map);
-            ScaleAndApplyInfluence(mine, mineInfluence, mineRadius, 0, 0, ref map);
+            ScaleAndApplyInfluence_Diamond(mine, -mineInfluence, mineRadius+1, decayedDistance, 0.9, ref map);
+            ScaleAndApplyInfluence_Diamond(mine, mineInfluence, mineRadius, 0, 0, ref map);
         }
         
         
@@ -1208,27 +1210,41 @@ public class LaPulzellaD_Orleans
 
     }
     
-    private void ScaleAndApplyInfluence(Site site, double amount, int fullDistance, int decayedDistance, double distanceDecay, ref InfluenceMap map)
+    private void ScaleAndApplyInfluence_Diamond(Site site, double amount, int fullDistance, int decayedDistance, double distanceDecay, ref InfluenceMap map)
     {
-        ScaleAndApplyInfluence(site.pos, amount, fullDistance, decayedDistance, distanceDecay, ref map);
+        ScaleAndApplyInfluence_Diamond(site.pos, amount, fullDistance, decayedDistance, distanceDecay, ref map);
     }
     
-    private void ScaleAndApplyInfluence(Unit unit, double amount, int fullDistance, int decayedDistance, double distanceDecay, ref InfluenceMap map)
+    private void ScaleAndApplyInfluence_Diamond(Unit unit, double amount, int fullDistance, int decayedDistance, double distanceDecay, ref InfluenceMap map)
     {
-        ScaleAndApplyInfluence(unit.pos, amount, fullDistance, decayedDistance, distanceDecay, ref map);
+        ScaleAndApplyInfluence_Diamond(unit.pos, amount, fullDistance, decayedDistance, distanceDecay, ref map);
     }
     
-    private void ScaleAndApplyInfluence(Position pos, double amount, int fullDistance, int decayedDistance, double distanceDecay, ref InfluenceMap map)
+    private void ScaleAndApplyInfluence_Diamond(Position pos, double amount, int fullDistance, int decayedDistance, double distanceDecay, ref InfluenceMap map)
     {
-        ScaleAndApplyInfluence(pos.x, pos.y, amount, fullDistance, decayedDistance, distanceDecay, ref map);
+        ScaleAndApplyInfluence_Diamond(pos.x, pos.y, amount, fullDistance, decayedDistance, distanceDecay, ref map);
     }
 
-    private void ScaleAndApplyInfluence(int x, int y, double amount, int fullDistance, int decayedDistance, double distanceDecay, ref InfluenceMap map)
+    private void ScaleAndApplyInfluence_Circle(Position pos, double amount, int fullDistance, int decayedDistance, double distanceDecay, ref InfluenceMap map)
+    {
+        ScaleAndApplyInfluence_Circle(pos.x, pos.y, amount, fullDistance,decayedDistance,distanceDecay, ref map);        
+    }
+
+    private void ScaleAndApplyInfluence_Circle(int x, int y, double amount, int fullDistance, int decayedDistance, double distanceDecay, ref InfluenceMap map)
     {
         int scaledPosX = (int) Math.Ceiling(x*1.0 / INFLUENCEMAP_SQUARELENGTH);
         int scaledPosY = (int) Math.Ceiling(y*1.0 / INFLUENCEMAP_SQUARELENGTH);
         
-        map.applyInfluence(scaledPosX ,scaledPosY ,amount,fullDistance,decayedDistance,distanceDecay);
+        map.ApplyInfluence_Circle(scaledPosX ,scaledPosY ,amount,fullDistance,decayedDistance,distanceDecay);
+        
+    }
+    
+    private void ScaleAndApplyInfluence_Diamond(int x, int y, double amount, int fullDistance, int decayedDistance, double distanceDecay, ref InfluenceMap map)
+    {
+        int scaledPosX = (int) Math.Ceiling(x*1.0 / INFLUENCEMAP_SQUARELENGTH);
+        int scaledPosY = (int) Math.Ceiling(y*1.0 / INFLUENCEMAP_SQUARELENGTH);
+        
+        map.ApplyInfluence_Diamond(scaledPosX ,scaledPosY ,amount,fullDistance,decayedDistance,distanceDecay);
         
     }
     
@@ -1745,7 +1761,7 @@ public class InfluenceMap
 
 	private HashSet<XAndY> myHashset;
 
-	public void applyInfluence(int x, int y, double amount, int fullDistance, int decayedDistance, double distanceDecay)
+	public void ApplyInfluence_Diamond(int x, int y, double amount, int fullDistance, int decayedDistance, double distanceDecay)
 	{
 		AddAmount_IfInBounds(x, y, amount);
 
@@ -1778,6 +1794,40 @@ public class InfluenceMap
 			}
 		}
 	}
+    
+    public void ApplyInfluence_Circle(int xPos, int yPos, double amount, int fullDistance, int decayedDistanceMult, double distanceDecay)
+    {
+        int xCenter = xPos;
+        int yCenter = yPos;
+        int radius = fullDistance + decayedDistanceMult;
+        
+        for (int x = xCenter - radius ; x <= xCenter; x++)
+        {
+            for (int y = yCenter - radius ; y <= yCenter; y++)
+            {
+                // we don't have to take the square root, it's slow
+                if ((x - xCenter)*(x - xCenter) + (y - yCenter)*(y - yCenter) <= radius*radius) 
+                {
+                    if ((x - xCenter) + (y - yCenter) > fullDistance)
+                    {
+                        double decayedDistance = (x - xCenter) + (y - yCenter) - fullDistance;
+                        amount = amount * (decayedDistanceMult / decayedDistance);
+                    }
+                    
+                    int xSym = xCenter - (x - xCenter);
+                    int ySym = yCenter - (y - yCenter);
+
+                    AddAmount_IfInBounds(x, y, amount);
+                    AddAmount_IfInBounds(x, ySym, amount);
+                    AddAmount_IfInBounds(xSym, y, amount);
+                    AddAmount_IfInBounds(xSym, ySym, amount);
+                    // (x, y), (x, ySym), (xSym , y), (xSym, ySym) are in the circle
+                }
+            }
+        }        
+    }
+    
+    
 
 	public void applyInfluenceStars(int x, int y, double amount, int fullDistance, int decayedDistance, double distanceDecay)
 	{
