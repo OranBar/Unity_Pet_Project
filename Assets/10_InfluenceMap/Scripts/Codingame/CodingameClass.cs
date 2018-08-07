@@ -816,6 +816,7 @@ public class LaPulzellaD_Orleans
         if(chosenMove.queenAction is Wait)
         {
             chosenMove.queenAction = SurvivorMode(g, out buildInfluenceMap);
+//            chosenMove.queenAction = Wood1Strategy(g, out buildInfluenceMap);
             Console.Error.WriteLine($"SurivorMode move is {chosenMove.queenAction}");
         }
         
@@ -916,7 +917,7 @@ public class LaPulzellaD_Orleans
             }
             if (site.structureType == StructureType.Mine && site.owner == Owner.Friendly)
             {
-                ScaleAndApplyInfluence_Diamond(site.pos, -10, siteRadius+1, 0, 0, ref buildInfluenceMap);
+//                ScaleAndApplyInfluence_Diamond(site.pos, -10, siteRadius+1, 0, 0, ref buildInfluenceMap);
             }
 
             if (site.owner == Owner.Enemy && site.structureType == StructureType.Tower)
@@ -944,7 +945,7 @@ public class LaPulzellaD_Orleans
 //                $"distanceToCenter : {distanceToCenter}"
 //            );
 
-            influence = distanceToCenter_norm ;
+            influence = distanceToCenter_norm * 50;
 
             double favorCloseSitesOverOpenSquares = 4;
             
@@ -962,7 +963,7 @@ public class LaPulzellaD_Orleans
 #if UNITY_EDITOR
         UnityEngine.Debug.Log("Survivor Mode tile is is ("+survivorModeChosenSite.Item1/INFLUENCEMAP_SQUARELENGTH+", "+survivorModeChosenSite.Item2/INFLUENCEMAP_SQUARELENGTH+") with amount = "+buildInfluenceMap[survivorModeChosenSite.Item1/INFLUENCEMAP_SQUARELENGTH, survivorModeChosenSite.Item2/INFLUENCEMAP_SQUARELENGTH]);
 #endif
-        
+
         return new Move(survivorModeChosenSite.Item1, survivorModeChosenSite.Item2);
 
     }
