@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using UnityEngine.UI;
 
 public class InfluenceMapCell : MonoBehaviour {
@@ -17,20 +18,22 @@ public class InfluenceMapCell : MonoBehaviour {
 	public Text influenceLabel;
 	private Material myMaterial;
 
+	public Action<InfluenceMapCell> OnMouseOver_Delegate { get; set; }
+	
 	private void Start()
 	{
-		UpdateLabel();
+//		UpdateLabel();
 	}
 
-	private void Update()
-	{
-		var amount = influenceMapVisualizer.InflMap[x, y];
-		if(amount != influenceValue)
-		{
-			influenceValue = (float) amount;
-			UpdateLabel();
-		}
-	}
+//	private void Update()
+//	{
+//		var amount = influenceMapVisualizer.InflMap[x, y];
+//		if(amount != influenceValue)
+//		{
+//			influenceValue = (float) amount;
+//			UpdateLabel();
+//		}
+//	}
 
 	[AutoParent] private InfluenceMapVisualizer influenceMapVisualizer;
 
@@ -47,18 +50,27 @@ public class InfluenceMapCell : MonoBehaviour {
 		this.GetComponent<Renderer>().material = this.myMaterial;
 	}
 
-	private void OnMouseDown()
+//	private void OnMouseDown()
+//	{
+//		if (enableMouseInput == false){ return; }
+//		
+//		
+//		var newInfluence = influenceModifier;
+//		if (Input.GetKey(KeyCode.LeftShift))
+//		{
+//			newInfluence *= -1;
+//		}
+//		influenceMapVisualizer.applyInfluence(x,y, fullDistance, reducedDistance, distanceDecay, newInfluence);
+//		influenceMapVisualizer.UpdateInfluenceColor();
+//	}
+
+	private void OnMouseOver()
 	{
-		if (enableMouseInput == false){ return; }
-		
-		
-		var newInfluence = influenceModifier;
-		if (Input.GetKey(KeyCode.LeftShift))
+		if (Input.GetKey(KeyCode.LeftControl))
 		{
-			newInfluence *= -1;
+			Debug.Log("MouseOver cell "+x+" "+y);
+			OnMouseOver_Delegate(this);
 		}
-		influenceMapVisualizer.applyInfluence(x,y, fullDistance, reducedDistance, distanceDecay, newInfluence);
-		influenceMapVisualizer.UpdateInfluenceColor();
 	}
 
 	public void ChangeColor(Color color)
