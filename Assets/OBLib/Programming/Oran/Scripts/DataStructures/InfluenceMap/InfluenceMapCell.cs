@@ -69,7 +69,7 @@ public class InfluenceMapCell : MonoBehaviour {
 		if (Input.GetKey(KeyCode.LeftControl))
 		{
 			Debug.Log("MouseOver cell "+x+" "+y);
-			OnMouseOver_Delegate(this);
+			OnMouseOver_Delegate?.Invoke(this);
 		}
 	}
 
