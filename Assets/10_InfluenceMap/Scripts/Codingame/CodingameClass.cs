@@ -1236,9 +1236,11 @@ public class LaPulzellaD_Orleans
         int scaledPosX = (int) Math.Ceiling(x*1.0 / INFLUENCEMAP_SQUARELENGTH);
         int scaledPosY = (int) Math.Ceiling(y*1.0 / INFLUENCEMAP_SQUARELENGTH);
         
-        map.ApplyInfluence_Circle(scaledPosX ,scaledPosY ,amount,fullDistance,decayedDistance,distanceDecay);
+        map.ApplyInfluence_Circle(scaledPosX ,scaledPosY ,amount,fullDistance,decayedDistance, linearPropagation);
         
     }
+
+    private Func<double, double, double, double> linearPropagation => (amount, distance, maxDistance) => amount - (amount * (distance / maxDistance));
     
     private void ScaleAndApplyInfluence_Diamond(int x, int y, double amount, int fullDistance, int decayedDistance, double distanceDecay, ref InfluenceMap map)
     {
@@ -1796,32 +1798,35 @@ public class InfluenceMap
 		}
 	}
     
-    public void ApplyInfluence_Circle(int xPos, int yPos, double amount, int fullDistance, int decayedDistanceMult, double distanceDecay)
+    public void ApplyInfluence_Circle(int xPos, int yPos, double amount, int fullDistance, int decayDistance, Func<double, double, double, double> decayedDistanceFunc)
     {
         int xCenter = xPos;
         int yCenter = yPos;
-        int radius = fullDistance + decayedDistanceMult;
+        int radius = fullDistance + decayDistance;
         
         for (int x = xCenter - radius ; x <= xCenter; x++)
         {
             for (int y = yCenter - radius ; y <= yCenter; y++)
             {
                 // we don't have to take the square root, it's slow
-                if ((x - xCenter)*(x - xCenter) + (y - yCenter)*(y - yCenter) <= radius*radius) 
+                var distanceSqr = (x - xCenter) * (x - xCenter) + (y - yCenter) * (y - yCenter);
+                if ( distanceSqr <= radius*radius)
                 {
-                    if ((x - xCenter) + (y - yCenter) > fullDistance)
+                    double cellAmount = amount;
+                    
+                    if (distanceSqr > fullDistance*fullDistance)
                     {
-                        double decayedDistance = (x - xCenter) + (y - yCenter) - fullDistance;
-                        amount = amount * (decayedDistanceMult / decayedDistance);
+                        double distanceDecay = Math.Sqrt(distanceSqr) - fullDistance;
+                        cellAmount = decayedDistanceFunc(amount, distanceDecay, decayDistance);
                     }
                     
                     int xSym = xCenter - (x - xCenter);
                     int ySym = yCenter - (y - yCenter);
 
-                    AddAmount_IfInBounds(x, y, amount);
-                    AddAmount_IfInBounds(x, ySym, amount);
-                    AddAmount_IfInBounds(xSym, y, amount);
-                    AddAmount_IfInBounds(xSym, ySym, amount);
+                    AddAmount_IfInBounds(x, y, cellAmount);
+                    AddAmount_IfInBounds(x, ySym, cellAmount);
+                    AddAmount_IfInBounds(xSym, y, cellAmount);
+                    AddAmount_IfInBounds(xSym, ySym, cellAmount);
                     // (x, y), (x, ySym), (xSym , y), (xSym, ySym) are in the circle
                 }
             }
