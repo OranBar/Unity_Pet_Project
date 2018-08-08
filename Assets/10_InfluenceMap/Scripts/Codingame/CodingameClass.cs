@@ -711,7 +711,7 @@ public class LaPulzellaD_Orleans
 
     public static PropagationFunction linearPropagation => (amount, distance, maxDistance) => amount - (amount * (distance / maxDistance));
     public static PropagationFunction polynomial2Propagation => (amount, distance, maxDistance) => amount - Math.Pow(amount * (distance / maxDistance),2);
-    public static PropagationFunction polynomial4Propagation => (amount, distance, maxDistance) => amount - Math.Pow(amount * (distance / maxDistance),2);
+    public static PropagationFunction polynomial4Propagation => (amount, distance, maxDistance) => amount - Math.Pow(amount * (distance / maxDistance),4);
 
     
     public static Position CENTER = new Position(960, 500);
@@ -911,14 +911,14 @@ public class LaPulzellaD_Orleans
         int mapHeight = (int) Math.Ceiling(1000 / squareLength)+1;
         double minInfluence = -120;
         double maxInfluence = 120;
-        buildInfluenceMap = new InfluenceMap(mapWidth, mapHeight, minInfluence, maxInfluence, new EuclideanDistanceSqr());
+        buildInfluenceMap = new InfluenceMap(mapWidth, mapHeight, minInfluence, maxInfluence, new ManhattanDistance());
 
         int searchRange = QUEEN_MOVEMENT * 2;
 
         
         foreach (var site in g.sites)
         {
-            int siteRadius = (int) Math.Floor(GetSiteInfo(site).radius / squareLength);
+            int siteRadius = (int) Math.Ceiling(GetSiteInfo(site).radius / squareLength);
             double favorCloseSitesOverOpenSquares = 4;
 
             
@@ -961,13 +961,12 @@ public class LaPulzellaD_Orleans
 
                 influence = 1;
             
-            
                 //TODO: maybe do siteRadius and siteRadius-1
-                ScaleAndApplyInfluence_Circle(site.pos, influence * favorCloseSitesOverOpenSquares, siteRadius+1, 0,polynomial2Propagation, ref buildInfluenceMap);
-                ScaleAndApplyInfluence_Circle(site.pos, -influence * favorCloseSitesOverOpenSquares * 5, siteRadius, 0,polynomial2Propagation, ref buildInfluenceMap);
+                ScaleAndApplyInfluence_Circle(site.pos, influence /** favorCloseSitesOverOpenSquares*/, siteRadius+1, 0,polynomial2Propagation, ref buildInfluenceMap);
+//                ScaleAndApplyInfluence_Circle(site.pos, -influence * favorCloseSitesOverOpenSquares * 5, siteRadius, 0,polynomial2Propagation, ref buildInfluenceMap);
             
-                ScaleAndApplyInfluence_Circle(site.pos, influence, siteRadius+1, 18, polynomial2Propagation,  ref buildInfluenceMap);
-                ScaleAndApplyInfluence_Circle(site.pos, -influence, siteRadius, 0,polynomial2Propagation, ref buildInfluenceMap);
+//                ScaleAndApplyInfluence_Circle(site.pos, influence, siteRadius+1, 3, polynomial2Propagation,  ref buildInfluenceMap);
+//                ScaleAndApplyInfluence_Circle(site.pos, -influence, siteRadius, 0,polynomial2Propagation, ref buildInfluenceMap);
             }
 
             
@@ -1672,6 +1671,22 @@ public class EuclideanDistanceSqr : DistanceFunc {
 	}
 }
 
+public class EuclideanDistance : DistanceFunc {
+
+    public double computeDistance(int x1, int y1, int x2, int y2)
+    {
+        return Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(y2 - y1, 2));
+    }
+}
+
+public class ManhattanDistance : DistanceFunc {
+
+    public double computeDistance(int x1, int y1, int x2, int y2)
+    {
+        return Math.Abs(x1 - x2) + Math.Abs(y1 - y2);
+    }
+}
+
 public struct XAndY
 {
 	public int x, y;
@@ -1833,41 +1848,64 @@ public class InfluenceMap
 			}
 		}
 	}
-    
-    public void ApplyInfluence_Circle(int xPos, int yPos, double amount, int fullDistance, int decayDistance, PropagationFunction decayedDistanceFunc)
+
+    public void ApplyInfluence_Circle(int xPos, int yPos, double amount, int fullDistance, int decayDistance,
+        PropagationFunction decayedDistanceFunc)
     {
         int xCenter = xPos;
         int yCenter = yPos;
         int radius = fullDistance + decayDistance;
-        
-        for (int x = xCenter - radius ; x <= xCenter; x++)
-        {
-            for (int y = yCenter - radius ; y <= yCenter; y++)
-            {
-                // we don't have to take the square root, it's slow
-                var distanceSqr = (x - xCenter) * (x - xCenter) + (y - yCenter) * (y - yCenter);
-                if ( distanceSqr <= radius*radius)
-                {
-                    double cellAmount = amount;
-                    
-                    if (distanceSqr > fullDistance*fullDistance)
-                    {
-                        double distanceDecay = Math.Sqrt(distanceSqr) - fullDistance;
-                        cellAmount = decayedDistanceFunc(amount, distanceDecay, decayDistance);
-                    }
-                    
-                    int xSym = xCenter - (x - xCenter);
-                    int ySym = yCenter - (y - yCenter);
 
-                    AddAmount_IfInBounds(x, y, cellAmount);
-                    AddAmount_IfInBounds(x, ySym, cellAmount);
-                    AddAmount_IfInBounds(xSym, y, cellAmount);
-                    AddAmount_IfInBounds(xSym, ySym, cellAmount);
-                    // (x, y), (x, ySym), (xSym , y), (xSym, ySym) are in the circle
+        foreach (var pos in GetSquaresInRange(xPos, yPos, radius))
+        {
+            int x = pos.x;
+            int y = pos.y;
+
+            var distanceSqr = (x - xCenter) * (x - xCenter) + (y - yCenter) * (y - yCenter);
+            if (distanceSqr <= radius * radius)
+            {
+                double cellAmount = amount;
+
+                if (distanceSqr > fullDistance * fullDistance)
+                {
+                    double mahnattanDistance = Math.Abs(x - xCenter) + Math.Abs(y - yCenter);
+                    cellAmount = decayedDistanceFunc(amount, mahnattanDistance, decayDistance);
+                }
+
+                int xSym = xCenter - (x - xCenter);
+                int ySym = yCenter - (y - yCenter);
+
+                AddAmount_IfInBounds(x, y, cellAmount);
+                AddAmount_IfInBounds(xSym, y, cellAmount);
+                AddAmount_IfInBounds(x, ySym, cellAmount);
+                AddAmount_IfInBounds(xSym, ySym, cellAmount);
+            }
+        }
+    }
+
+
+    
+    public List<Position> GetSquaresInRange (int xPos, int yPos, int radius)
+    {
+        List<Position> results = new List<Position>();
+            
+        int x, y;
+
+        for (y = -radius; y <= radius; y++)
+        {
+            for (x = -radius; x <=  radius; x++)
+            {
+                if ((x * x) + (y * y) <= (radius * radius))
+                {
+                    results.Add(new Position(xPos+x,yPos+y));
                 }
             }
-        }        
+        }
+
+        return results;
+
     }
+
 
     public Tuple<int, int> selectBestInCircle(int x1, int y1, int radius)
     {
