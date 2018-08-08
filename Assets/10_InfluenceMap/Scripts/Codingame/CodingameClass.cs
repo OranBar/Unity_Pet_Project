@@ -1827,6 +1827,57 @@ public class InfluenceMap
             }
         }        
     }
+
+    public Tuple<int, int> selectBestInCircle(int x1, int y1, int radius)
+    {
+        int xCenter = x1;
+        int yCenter = y1;
+
+        Tuple<int, int> bestSquare = Tuple.Create(x1, y1);
+        double bestSquareInflValue = _influenceMap[bestSquare.Item1][bestSquare.Item2];
+        
+        for (int x = xCenter - radius ; x <= xCenter; x++)
+        {
+            for (int y = yCenter - radius ; y <= yCenter; y++)
+            {
+                // we don't have to take the square root, it's slow
+                if ((x - xCenter)*(x - xCenter) + (y - yCenter)*(y - yCenter) <= radius*radius) 
+                {
+                    int xSym = xCenter - (x - xCenter);
+                    int ySym = yCenter - (y - yCenter);
+
+                    
+                    if (_influenceMap[x][y] > bestSquareInflValue)
+                    {
+                        bestSquare = Tuple.Create(x,y);
+                        bestSquareInflValue = _influenceMap[x][y];
+                    }
+                    if (_influenceMap[x][ySym] > bestSquareInflValue)
+                    {
+                        bestSquare = Tuple.Create(x,ySym);
+                        bestSquareInflValue = _influenceMap[x][ySym];
+                    }
+                    if (_influenceMap[xSym][y] > bestSquareInflValue)
+                    {
+                        bestSquare = Tuple.Create(xSym,y);
+                        bestSquareInflValue = _influenceMap[xSym][y];
+                    }
+                    if (_influenceMap[xSym][ySym] > bestSquareInflValue)
+                    {
+                        bestSquare = Tuple.Create(xSym,ySym);
+                        bestSquareInflValue = _influenceMap[xSym][ySym];
+                    }
+//                    AddAmount_IfInBounds(x, y, amount);
+//                    AddAmount_IfInBounds(x, ySym, amount);
+//                    AddAmount_IfInBounds(xSym, y, amount);
+//                    AddAmount_IfInBounds(xSym, ySym, amount);
+                    // (x, y), (x, ySym), (xSym , y), (xSym, ySym) are in the circle
+                }
+            }
+        }
+
+        return bestSquare;
+    }
     
     
 
