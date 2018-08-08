@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;
 using NaughtyAttributes;
@@ -46,14 +47,34 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 	public double maxInfluence;
 	public double minInfluence;
 
+	[SerializeField]
+	private bool _enableMouseInputCells;
+
+	private InfluenceMapCell currTile_mouseover;
+	private InfluenceMapCell currBestTile_mouseover, currWorstTile_mouseover;
+	private InfluenceMapCell prevTile_mouseover;
+	private InfluenceMapCell prevBestTile_mouseover, prevWorstTile_mouseover;
 	
-	[BoxGroup("Codingame Encoded Turn Info")]
-	public string gameInfo_encoded;
-	[BoxGroup("Codingame Encoded Turn Info")]
-	public string gameState_encoded;
-	[BoxGroup("Codingame Encoded Turn Info")]
-	public string pulzella_encoded;
 	
+	public Color defaultTextColor, bestTextColor, worstTextColor;
+	
+
+	public bool EnableMouseInputCells
+	{
+		get { return _enableMouseInputCells; }
+		set
+		{
+			if (value == _enableMouseInputCells)
+			{
+				return;
+			}
+			
+			_enableMouseInputCells = value;
+			EnableMouseInput(value);
+		}
+	}
+
+
 	private void Awake()
 	{
 		//By defualt, we create an empty one.
@@ -85,6 +106,7 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 
 	public void OnCellMouseOver(InfluenceMapCell mouseOverCell)
 	{
+		//Color cells in range of mouseovercell
 		int x1 = Mathf.Max(mouseOverCell.x - mouseoverRange, 0);
 		int y1 = Mathf.Max(mouseOverCell.y - mouseoverRange, 0);
 		int x2 = Mathf.Min(mouseOverCell.x + mouseoverRange, width-1);
@@ -96,6 +118,16 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 		InfluenceMapCell bestCell = influenceMapCells[x1, y1], worstCell = influenceMapCells[x1, y1];
 		float distToBestCell = float.MaxValue, distToWorstCell = float.MaxValue;;
 
+		if (currBestTile_mouseover != null)
+		{
+			currBestTile_mouseover.influenceLabel.color = defaultTextColor;
+		}
+
+		if (currWorstTile_mouseover != null)
+		{
+			currWorstTile_mouseover.influenceLabel.color = defaultTextColor;
+		}
+		
 		for (int i = x1; i <= x2; i++)
 		{
 			for (int j = y1; j <= y2; j++)
@@ -112,11 +144,14 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 							//We don't swap if the cell isn't any closer to the mouse.
 							bestCell = cell;
 							distToBestCell = distToCell;
+							currBestTile_mouseover = bestCell;
+
 						}
 					}
 					else
 					{
 						bestCell = cell;
+						currBestTile_mouseover = bestCell;
 					}
 
 				}
@@ -130,22 +165,35 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 							//We don't swap if the cell isn't any closer to the mouse.
 							worstCell = cell;
 							distToWorstCell = distToCell;
+							currWorstTile_mouseover = worstCell;
+
 						}
 					}
 					else
 					{
 						worstCell = cell;
+						currWorstTile_mouseover = worstCell;
 					}
 					
 				}
 			}
 		}
 
-		bestCell.influenceLabel.color = Color.cyan;
-		worstCell.influenceLabel.color = Color.magenta;
+		bestCell.influenceLabel.color = bestTextColor;
+		worstCell.influenceLabel.color = worstTextColor;
 
 		labels.Except(adjacentLabels).ForEach(l => SetLabelColorAlpha(l, 0));
 		adjacentLabels.ForEach(l => SetLabelColorAlpha(l, 1));
+		
+		currTile_mouseover = mouseOverCell;
+		
+		//Update range if mouse scroll (ctrl is already pressed if we're here, because of the check done before calling the delegate by influencemapcell
+		if (Input.mouseScrollDelta.y != 0)
+		{
+			int sign = Math.Sign(Input.mouseScrollDelta.y);
+			mouseoverRange = mouseoverRange + sign;
+			UpdateCells();
+		}
 	}
 
 	private void SetLabelColorAlpha(Text l, float alpha)
@@ -157,18 +205,17 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 
 	private void Update()
 	{
+		EnableMouseInputCells = _enableMouseInputCells;
+		
 		if (Input.GetKeyUp(KeyCode.LeftControl))
 		{
 			labels.ForEach(l => SetLabelColorAlpha(l, 1));
-			labels.ForEach(l => SetLabelColor(l, Color.red));
+			labels.ForEach(l => SetLabelColor(l, defaultTextColor));
 		}
 
-		if (Input.mouseScrollDelta.y != 0)
-		{
-			int sign = Math.Sign(Input.mouseScrollDelta.y);
-			mouseoverRange = mouseoverRange + sign;
-			UpdateCells();
-		}
+		
+
+		prevTile_mouseover = currBestTile_mouseover;
 	}
 
 	private void SetLabelColor(Text text, Color col)
@@ -181,15 +228,9 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 		
 	}
 
-	private void Start()
-	{
-//		UpdateCells();
-	}
-	
-	
 
 	#region Map Generation
-	[ContextMenu("Generate Map")]
+	[Button("Generate Map")]
 	public void GenerateMap()
 	{
 		this.Assert(cellPrefab.GetComponent<InfluenceMapCell>() != null);
@@ -210,7 +251,7 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 		}
 	}
 	
-	[ContextMenu("Destroy Map")]
+	[Button("Destroy Map")]
 	public void Destroy()
 	{
 		DestroyMap();
@@ -236,7 +277,7 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 		return newTile;
 	}
 	
-	[ContextMenu("Regenerate Board")]
+	[Button("Regenerate Map")]
 	public void RegenerateBoard()
 	{
 		DestroyMap();
@@ -259,6 +300,14 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 				influenceMapCells[x, y].UpdateLabel();
 				//influenceMapCells[x, y].GetComponent<Renderer>().material.color = color;
 			}
+		}
+	}
+
+	public void EnableMouseInput(bool enable)
+	{
+		foreach (var influenceMapCell in influenceMapCells)
+		{
+			influenceMapCell.enableMouseInput = enable;
 		}
 	}
 }
