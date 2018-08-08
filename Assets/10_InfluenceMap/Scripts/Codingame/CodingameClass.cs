@@ -21,6 +21,8 @@ using UnityEngine;
  * the standard input according to the problem statement.
  **/
 
+public delegate double PropagationFunction(double amount, double distance, double maxDistance);
+
 class Player
 {
     static void Main(string[] args)
@@ -401,7 +403,8 @@ public class GameState
     public bool Prev_touchingMyMine => TouchedSite != null && TouchedSite.owner == Owner.Friendly &&
                                TouchedSite.structureType == StructureType.Mine;
 
-    public int EnemyUnitsInRange(int range) => units.Count(u => u.owner == Owner.Enemy && MyQueen.DistanceTo(u) <= range);
+    public int EnemyUnitsInRangeOfMyQueen(int range) => units.Count(u => u.owner == Owner.Enemy && MyQueen.DistanceTo(u) <= range);
+    public int EnemyUnitsInRangeOf(Position p, int range) => units.Count(u => u.owner == Owner.Enemy && p.DistanceTo(u.pos) <= range);
 
     public int Owned_giants => units.Count(u => u.owner == Owner.Friendly && u.unitType == UnitType.Giant);
     
@@ -706,6 +709,11 @@ public class LaPulzellaD_Orleans
     public static int QUEEN_MOVEMENT = 60;
     public static int MAX_DISTANCE = 4686400;
 
+    public static PropagationFunction linearPropagation => (amount, distance, maxDistance) => amount - (amount * (distance / maxDistance));
+    public static PropagationFunction polynomial2Propagation => (amount, distance, maxDistance) => amount - Math.Pow(amount * (distance / maxDistance),2);
+    public static PropagationFunction polynomial4Propagation => (amount, distance, maxDistance) => amount - Math.Pow(amount * (distance / maxDistance),2);
+
+    
     public static Position CENTER = new Position(960, 500);
     
     public GameInfo gameInfo;
@@ -795,7 +803,7 @@ public class LaPulzellaD_Orleans
             chosenMove.queenAction = chosenBuildMove;
         }
         else //Run
-        if (g.EnemyUnitsInRange(ENEMY_CHECK_RANGE) >= TOO_MANY_UNITS_NEARBY)
+        if (g.EnemyUnitsInRangeOfMyQueen(ENEMY_CHECK_RANGE) >= TOO_MANY_UNITS_NEARBY)
         {
             Console.Error.WriteLine("Running from enemies");
             chosenMove.queenAction = new Move(bestTileToRun.Item1, bestTileToRun.Item2);
@@ -905,39 +913,43 @@ public class LaPulzellaD_Orleans
         double maxInfluence = 120;
         buildInfluenceMap = new InfluenceMap(mapWidth, mapHeight, minInfluence, maxInfluence, new EuclideanDistanceSqr());
 
+        int searchRange = QUEEN_MOVEMENT * 2;
+
+        
         foreach (var site in g.sites)
         {
             int siteRadius = (int) Math.Floor(GetSiteInfo(site).radius / squareLength);
+            double favorCloseSitesOverOpenSquares = 4;
 
             
             if (site.structureType != StructureType.Mine && site.owner == Owner.Friendly)
             {
-                ScaleAndApplyInfluence_Diamond(site.pos, -100, siteRadius, 0, 0, ref buildInfluenceMap);
-                continue;
+                ScaleAndApplyInfluence_Circle(site.pos, -100, siteRadius, 0, polynomial2Propagation, ref buildInfluenceMap);
             }
             if (site.structureType == StructureType.Mine && site.owner == Owner.Friendly)
             {
-//                ScaleAndApplyInfluence_Diamond(site.pos, -10, siteRadius+1, 0, 0, ref buildInfluenceMap);
+                ScaleAndApplyInfluence_Circle(site.pos, -120, siteRadius+1, 0, polynomial2Propagation, ref buildInfluenceMap);
             }
 
             if (site.owner == Owner.Enemy && site.structureType == StructureType.Tower)
             {
                 int towerRange = (int) Math.Ceiling(site.param2 / squareLength);
-                     
 //                ScaleAndApplyInfluence_Diamond(site, -50, siteRadius, towerRange - siteRadius, 0.8, ref buildInfluenceMap);
-                ScaleAndApplyInfluence_Circle(site.pos, -50, siteRadius, towerRange - siteRadius + 1, 0.8, ref buildInfluenceMap);
+                
+                ScaleAndApplyInfluence_Circle(site.pos, -100, siteRadius, towerRange - siteRadius + 1, polynomial2Propagation, ref buildInfluenceMap);
+//                ScaleAndApplyInfluence_Circle(site.pos, +100, siteRadius, towerRange - siteRadius + 1, polynomial2Propagation, ref buildInfluenceMap);
             }
-
+            else if(site.owner == Owner.Neutral)
+            {
+                double influence = 0;
             
-            double influence = 0;
-            
-            double distanceToMyQueen = g.MyQueen.DistanceSqr(site.pos);
-            double distanceToEnemyQueen = g.EnemyQueen.DistanceSqr(site.pos);
-            double distanceToCenter = CENTER.DistanceSqr(site.pos); 
+                double distanceToMyQueen = g.MyQueen.DistanceSqr(site.pos);
+                double distanceToEnemyQueen = g.EnemyQueen.DistanceSqr(site.pos);
+                double distanceToCenter = CENTER.DistanceSqr(site.pos); 
 
-            double distanceToMyQueen_norm = 1 - NormalizeDistance(distanceToMyQueen);
-            double distanceToEnemyQueen_norm = NormalizeDistance(distanceToEnemyQueen);
-            double distanceToCenter_norm = 1 - NormalizeDistance(distanceToCenter);
+                double distanceToMyQueen_norm = 1 - NormalizeDistance(distanceToMyQueen);
+                double distanceToEnemyQueen_norm = NormalizeDistance(distanceToEnemyQueen);
+                double distanceToCenter_norm = 1 - NormalizeDistance(distanceToCenter);
             
 //            Console.Error.WriteLine(
 //                $"distanceToMyQueen : {distanceToMyQueen}" +
@@ -945,20 +957,35 @@ public class LaPulzellaD_Orleans
 //                $"distanceToCenter : {distanceToCenter}"
 //            );
 
-            influence = distanceToCenter_norm * 50;
+//            influence = distanceToCenter_norm * 2;
 
-            double favorCloseSitesOverOpenSquares = 4;
+                influence = 1;
             
-            //TODO: maybe do siteRadius and siteRadius-1
-            ScaleAndApplyInfluence_Diamond(site.pos, influence * favorCloseSitesOverOpenSquares, siteRadius+1, 0, 0, ref buildInfluenceMap);
-            ScaleAndApplyInfluence_Diamond(site.pos, -influence * favorCloseSitesOverOpenSquares * 5, siteRadius, 0, 0, ref buildInfluenceMap);
             
-            ScaleAndApplyInfluence_Diamond(site.pos, influence, siteRadius+1, 18, 0.72, ref buildInfluenceMap);
-            ScaleAndApplyInfluence_Diamond(site.pos, -influence, siteRadius, 0, 0.72, ref buildInfluenceMap);
+                //TODO: maybe do siteRadius and siteRadius-1
+                ScaleAndApplyInfluence_Circle(site.pos, influence * favorCloseSitesOverOpenSquares, siteRadius+1, 0,polynomial2Propagation, ref buildInfluenceMap);
+                ScaleAndApplyInfluence_Circle(site.pos, -influence * favorCloseSitesOverOpenSquares * 5, siteRadius, 0,polynomial2Propagation, ref buildInfluenceMap);
+            
+                ScaleAndApplyInfluence_Circle(site.pos, influence, siteRadius+1, 18, polynomial2Propagation,  ref buildInfluenceMap);
+                ScaleAndApplyInfluence_Circle(site.pos, -influence, siteRadius, 0,polynomial2Propagation, ref buildInfluenceMap);
+            }
+
+            
+           
         }
 
 
-        var survivorModeChosenSite = UnscaledBestInBox(g.MyQueen, QUEEN_MOVEMENT*2, buildInfluenceMap);
+        
+    //Favor center
+        if (turn < 70)
+        {
+            ScaleAndApplyInfluence_Circle(new Position(960,200), .7, 6, 30, linearPropagation, ref buildInfluenceMap);
+            ScaleAndApplyInfluence_Circle(new Position(960,300), .7, 6, 30, linearPropagation, ref buildInfluenceMap);
+            ScaleAndApplyInfluence_Circle(new Position(960,400), .7, 6, 30, linearPropagation, ref buildInfluenceMap);
+            
+        }
+
+        var survivorModeChosenSite = UnscaledBestInBox(g.MyQueen, searchRange, buildInfluenceMap);
 
 #if UNITY_EDITOR
         UnityEngine.Debug.Log("Survivor Mode tile is is ("+survivorModeChosenSite.Item1/INFLUENCEMAP_SQUARELENGTH+", "+survivorModeChosenSite.Item2/INFLUENCEMAP_SQUARELENGTH+") with amount = "+buildInfluenceMap[survivorModeChosenSite.Item1/INFLUENCEMAP_SQUARELENGTH, survivorModeChosenSite.Item2/INFLUENCEMAP_SQUARELENGTH]);
@@ -1226,21 +1253,20 @@ public class LaPulzellaD_Orleans
         ScaleAndApplyInfluence_Diamond(pos.x, pos.y, amount, fullDistance, decayedDistance, distanceDecay, ref map);
     }
 
-    private void ScaleAndApplyInfluence_Circle(Position pos, double amount, int fullDistance, int decayedDistance, double distanceDecay, ref InfluenceMap map)
+    private void ScaleAndApplyInfluence_Circle(Position pos, double amount, int fullDistance, int decayedDistance, PropagationFunction propagationFunc, ref InfluenceMap map)
     {
-        ScaleAndApplyInfluence_Circle(pos.x, pos.y, amount, fullDistance,decayedDistance,distanceDecay, ref map);        
+        ScaleAndApplyInfluence_Circle(pos.x, pos.y, amount, fullDistance,decayedDistance,propagationFunc, ref map);        
     }
 
-    private void ScaleAndApplyInfluence_Circle(int x, int y, double amount, int fullDistance, int decayedDistance, double distanceDecay, ref InfluenceMap map)
+    private void ScaleAndApplyInfluence_Circle(int x, int y, double amount, int fullDistance, int decayedDistance, PropagationFunction propagationFunc, ref InfluenceMap map)
     {
         int scaledPosX = (int) Math.Ceiling(x*1.0 / INFLUENCEMAP_SQUARELENGTH);
         int scaledPosY = (int) Math.Ceiling(y*1.0 / INFLUENCEMAP_SQUARELENGTH);
         
-        map.ApplyInfluence_Circle(scaledPosX ,scaledPosY ,amount,fullDistance,decayedDistance, linearPropagation);
+        map.ApplyInfluence_Circle(scaledPosX ,scaledPosY ,amount,fullDistance,decayedDistance, propagationFunc);
         
     }
-
-    private Func<double, double, double, double> linearPropagation => (amount, distance, maxDistance) => amount - (amount * (distance / maxDistance));
+    
     
     private void ScaleAndApplyInfluence_Diamond(int x, int y, double amount, int fullDistance, int decayedDistance, double distanceDecay, ref InfluenceMap map)
     {
@@ -1426,7 +1452,7 @@ public class LaPulzellaD_Orleans
         //touchedSite == closestUnbuiltMine
         bool siteHasGold = g.TouchedSite.gold > 0;
 
-        
+
         if (g.Owned_mines < MAX_CONCURRENT_MINES /*&& currGameState.touchedSiteId == closestUnbuiltMines.First().siteId*/
                                                && siteHasGold)
         {
@@ -1458,9 +1484,19 @@ public class LaPulzellaD_Orleans
         }
         else
         {
-//            chosenBuildMove = new Wait();
+            //If enemies are close, no point in building a mine. Let's build a tower instead.
             //By default build towers. #SurvivorMode
-            chosenBuildMove = new BuildMine(game.touchedSiteId);
+            if (g.EnemyUnitsInRangeOf(g.TouchedSite.pos, 400) >= 2)
+            {
+                chosenBuildMove = new BuildTower(g.touchedSiteId);
+            }
+            else
+            {
+                chosenBuildMove = new BuildMine(game.touchedSiteId);
+            }
+            
+            
+//            chosenBuildMove = new Wait();
 
         }
 
@@ -1798,7 +1834,7 @@ public class InfluenceMap
 		}
 	}
     
-    public void ApplyInfluence_Circle(int xPos, int yPos, double amount, int fullDistance, int decayDistance, Func<double, double, double, double> decayedDistanceFunc)
+    public void ApplyInfluence_Circle(int xPos, int yPos, double amount, int fullDistance, int decayDistance, PropagationFunction decayedDistanceFunc)
     {
         int xCenter = xPos;
         int yCenter = yPos;
