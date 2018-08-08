@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using NaughtyAttributes;
+using OranUnityUtils;
 
 public class Main : MonoBehaviour
 {
@@ -57,9 +58,14 @@ public class Main : MonoBehaviour
         
         Debug.Log("chosen action "+action.queenAction);
         
+        var myQueenPosition = giovannaD_Arco.game.MyQueen.pos;
+        int xIndex = myQueenPosition.x / LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH;
+        int yIndex = myQueenPosition.y / LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH;
+        
+
+        visualizer.SetMyQueenPosition(new Position(xIndex, yIndex));
         visualizer.SetNewInfluenceMap(buildMap);
         visualizer.UpdateCells();
-
     }
     
 //    public void RunTurn(string gameState_Enc, string gameInfo_Enc)

@@ -32,7 +32,7 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 	}
 	[SerializeField] private InfluenceMap _influenceMap;
 
-	[SerializeField] private InfluenceMapCell[,]  influenceMapCells;
+	[SerializeField] public InfluenceMapCell[,]  influenceMapCells;
 
 	public void applyInfluence(int x, int y, int fullDistance, int reducedDistance, double distanceDecay, double influence)
 	{
@@ -57,7 +57,8 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 	
 	
 	public Color defaultTextColor, bestTextColor, worstTextColor;
-	
+	private Position myQueenPosition = null;
+
 
 	public bool EnableMouseInputCells
 	{
@@ -301,6 +302,12 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 				//influenceMapCells[x, y].GetComponent<Renderer>().material.color = color;
 			}
 		}
+
+		if (myQueenPosition != null)
+		{
+			influenceMapCells[myQueenPosition.x, myQueenPosition.y].ChangeColor(Color.green);
+		}
+		
 	}
 
 	public void EnableMouseInput(bool enable)
@@ -309,5 +316,10 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 		{
 			influenceMapCell.enableMouseInput = enable;
 		}
+	}
+
+	public void SetMyQueenPosition(Position position)
+	{
+		myQueenPosition = position;
 	}
 }
