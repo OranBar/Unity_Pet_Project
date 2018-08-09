@@ -1,0 +1,3506 @@
+tandard Error Stream:
+Game Info
+24|0.415.847.63.|1.1505.153.63.|2.1064.401.83.|3.856.599.83.|4.480.153.63.|5.1440.847.63.|6.1412.419.74.|7.508.581.74.|8.385.353.65.|9.1535.647.65.|10.876.850.60.|11.1044.150.60.|12.1279.221.74.|13.641.779.74.|14.201.497.76.|15.1719.503.76.|16.656.388.78.|17.1264.612.78.|18.172.824.82.|19.1748.176.82.|20.740.161.71.|21.1180.839.71.|22.212.156.66.|23.1708.844.66.|
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.xxxxxx0.|5.xxxxxx0.|6.xxxxxx0.|7.xxxxxx0.|8.238.1.xxxx0.|9.xxxxxx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.xxxx0.|15.xxxxxx0.|16.xxxxxx0.|17.xxxxxx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.247.1.xxxx0.|23.xxxxxx0.|2|186.250.0.x85.|1734.750.1.x85.|100|22|-
+1.1.0.0.6.x2.
+Standard Output Stream:
+BUILD 22 MINE
+TRAIN
+002
+501
+Standard Output Stream:
+BUILD 23 MINE
+TRAIN
+003
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.xxxxxx0.|5.xxxxxx0.|6.xxxxxx0.|7.xxxxxx0.|8.238.1.xxxx0.|9.xxxxxx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.xxxx0.|15.xxxxxx0.|16.xxxxxx0.|17.xxxxxx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.246.1.0.0.1.x0.|23.xx0.1.xx0.|2|186.250.0.x85.|1734.750.1.x85.|101|22|-
+1.1.0.0.6.x4.
+SurivorMode move is MOVE 300 360
+Standard Output Stream:
+MOVE 300 360
+TRAIN
+004
+501
+Standard Output Stream:
+MOVE 1445 613
+TRAIN
+005
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.231.3.xxxx0.|5.xxxxxx0.|6.xxxxxx0.|7.xxxxxx0.|8.238.1.xxxx0.|9.xxxxxx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.xxxx0.|15.xxxxxx0.|16.xxxxxx0.|17.xxxxxx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.245.1.0.0.1.x0.|23.xx0.1.xx0.|2|229.292.0.x85.|1680.724.1.x85.|102|x-
+1.1.0.0.6.x6.
+SurivorMode move is MOVE 340 400
+Standard Output Stream:
+MOVE 340 400
+TRAIN
+006
+501
+Standard Output Stream:
+MOVE 1445 613
+TRAIN
+007
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.231.3.xxxx0.|5.xxxxxx0.|6.xxxxxx0.|7.xxxxxx0.|8.238.1.xxxx0.|9.xxxxxx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.xxxx0.|15.xxxxxx0.|16.xxxxxx0.|17.xxxxxx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.244.1.0.0.1.x0.|23.xx0.1.xx0.|2|272.334.0.x85.|1626.698.1.x85.|103|x-
+1.1.0.0.6.x8.
+SurivorMode move is MOVE 380 420
+Standard Output Stream:
+MOVE 380 420
+TRAIN
+008
+501
+Standard Output Stream:
+MOVE 1445 613
+TRAIN
+009
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.231.3.xxxx0.|5.xxxxxx0.|6.xxxxxx0.|7.281.2.xxxx0.|8.238.1.xxxx0.|9.xxxxxx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.xxxx0.|15.xxxxxx0.|16.xxxxxx0.|17.xxxxxx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.243.1.0.0.1.x0.|23.xx0.1.xx0.|2|293.379.0.x85.|1614.702.1.x85.|104|8|-
+1.1.0.0.6.x10.
+Standard Output Stream:
+BUILD 8 BARRACKS-KNIGHT
+TRAIN
+010
+501
+Standard Output Stream:
+BUILD 9 MINE
+TRAIN
+011
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.231.3.xxxx0.|5.xxxxxx0.|6.xxxxxx0.|7.281.2.xxxx0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.xxxx0.|15.xxxxxx0.|16.xxxxxx0.|17.xxxxxx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.242.1.0.0.1.x0.|23.xx0.1.xx0.|2|293.379.0.x85.|1614.702.1.x85.|105|8|-
+1.1.0.0.6.x12.
+SurivorMode move is MOVE 280 480
+Standard Output Stream:
+MOVE 280 480
+TRAIN 8
+012
+501
+Standard Output Stream:
+MOVE 1614 484
+TRAIN
+013
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.xxxxxx0.|5.xxxxxx0.|6.xxxxxx0.|7.281.2.xxxx0.|8.238.1.2.0.4.0.0.|9.xx0.1.xx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.xxxx0.|15.xxxxxx0.|16.xxxxxx0.|17.xxxxxx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.241.1.0.0.1.x0.|23.xx0.1.xx0.|2|289.436.0.x85.|1631.641.1.x85.|26|14|-
+1.1.0.0.6.x14.
+Standard Output Stream:
+BUILD 14 TOWER
+TRAIN
+014
+501
+Standard Output Stream:
+MOVE 1614 484
+TRAIN
+015
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.xxxxxx0.|5.xxxxxx0.|6.xxxxxx0.|7.281.2.xxxx0.|8.238.1.2.0.3.0.0.|9.xx0.1.xx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.1.0.196.261.0.|15.xxxxxx0.|16.xxxxxx0.|17.xxxxxx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.240.1.0.0.1.x0.|23.xx0.1.xx0.|2|289.436.0.x85.|1625.581.1.x85.|27|14|-
+1.1.0.0.6.x16.
+Empower Tower!
+Standard Output Stream:
+BUILD 14 TOWER
+TRAIN
+016
+501
+Standard Output Stream:
+MOVE 1613 490
+TRAIN
+017
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.xxxxxx0.|5.xxxxxx0.|6.xxxxxx0.|7.281.2.xxxx0.|8.238.1.2.0.2.0.0.|9.xx0.1.xx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.1.0.292.314.0.|15.xxxxxx0.|16.xxxxxx0.|17.xxxxxx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.239.1.0.0.1.x0.|23.xx0.1.xx0.|2|289.436.0.x85.|1614.522.1.x85.|28|14|-
+1.1.0.0.6.x18.
+Empower Tower!
+Standard Output Stream:
+BUILD 14 TOWER
+TRAIN
+018
+501
+Standard Output Stream:
+BUILD 15 MINE
+TRAIN
+019
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.xxxxxx0.|5.xxxxxx0.|6.xxxxxx0.|7.281.2.xxxx0.|8.238.1.2.0.1.0.0.|9.xx0.1.xx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.1.0.388.359.0.|15.xx0.1.xx0.|16.xxxxxx0.|17.xxxxxx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.238.1.0.0.1.x0.|23.xx0.1.xx0.|2|289.436.0.x85.|1614.522.1.x85.|29|14|-
+1.1.0.0.6.x20.
+Empower Tower!
+Standard Output Stream:
+BUILD 14 TOWER
+TRAIN
+020
+501
+Standard Output Stream:
+BUILD 15 MINE
+TRAIN
+021
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.xxxxxx0.|5.xxxxxx0.|6.xxxxxx0.|7.281.2.xxxx0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.1.0.484.399.0.|15.xx0.1.xx0.|16.xxxxxx0.|17.xxxxxx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.237.1.0.0.1.x0.|23.xx0.1.xx0.|6|461.311.0.0.25.|378.439.0.0.25.|465.384.0.0.25.|481.346.0.0.25.|289.436.0.x85.|1614.522.1.x85.|30|14|-
+1.1.0.0.6.x22.
+SurivorMode move is MOVE 400 540
+Standard Output Stream:
+MOVE 400 540
+TRAIN
+022
+501
+Standard Output Stream:
+BUILD 15 TOWER
+TRAIN
+023
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.xxxxxx0.|5.xxxxxx0.|6.xxxxxx0.|7.281.2.xxxx0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.1.0.480.398.0.|15.xx1.1.196.261.0.|16.xxxxxx0.|17.xxxxxx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.236.1.0.0.1.x0.|23.xx0.1.xx0.|6|558.327.0.0.24.|478.446.0.0.24.|558.398.0.0.24.|563.355.0.0.24.|333.477.0.x85.|1614.522.1.x85.|31|x-
+1.1.0.0.6.x24.
+SurivorMode move is MOVE 440 560
+Standard Output Stream:
+MOVE 440 560
+TRAIN
+024
+501
+Standard Output Stream:
+BUILD 15 TOWER
+TRAIN
+025
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.xxxxxx0.|5.xxxxxx0.|6.xxxxxx0.|7.281.2.xxxx0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.1.0.476.396.0.|15.xx1.1.292.314.0.|16.xxxxxx0.|17.xxxxxx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.235.1.0.0.1.x0.|23.xx0.1.xx0.|6|631.292.0.0.23.|572.462.0.0.23.|570.437.0.0.23.|569.340.0.0.23.|380.514.0.x85.|1614.522.1.x85.|32|x-
+1.1.0.0.6.x26.
+SurivorMode move is MOVE 500 540
+Standard Output Stream:
+MOVE 500 540
+TRAIN
+026
+501
+Standard Output Stream:
+BUILD 15 TOWER
+TRAIN
+027
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.xxxxxx0.|5.xxxxxx0.|6.xxxxxx0.|7.281.2.xxxx0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.1.0.472.394.0.|15.xx1.1.388.359.0.|16.262.2.xxxx0.|17.xxxxxx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.234.1.0.0.1.x0.|23.xx0.1.xx0.|6|728.304.0.0.22.|671.488.0.0.22.|620.480.0.0.22.|610.300.0.0.22.|425.516.0.x85.|1614.522.1.x85.|33|7|-
+1.1.0.0.6.x28.
+Standard Output Stream:
+BUILD 7 TOWER
+TRAIN
+028
+501
+Standard Output Stream:
+BUILD 17 TOWER
+TRAIN
+029
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.xxxxxx0.|5.xxxxxx0.|6.xxxxxx0.|7.281.2.1.0.196.260.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.1.0.468.393.0.|15.xx1.1.384.357.0.|16.262.2.xxxx0.|17.xxxxxx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.233.1.0.0.1.x0.|23.xx0.1.xx0.|6|824.331.0.0.21.|771.494.0.0.21.|719.490.0.0.21.|703.298.0.0.21.|425.516.0.x85.|1556.537.1.x85.|34|7|-
+1.1.0.0.6.x30.
+Empower Tower!
+Standard Output Stream:
+BUILD 7 TOWER
+TRAIN
+030
+501
+Standard Output Stream:
+BUILD 6 TOWER
+TRAIN
+031
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.xxxxxx0.|5.xxxxxx0.|6.xxxxxx0.|7.281.2.1.0.292.313.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.1.0.464.391.0.|15.xx1.1.380.355.0.|16.262.2.xxxx0.|17.xxxxxx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.232.1.0.0.1.x0.|23.xx0.1.xx0.|6|921.355.0.0.20.|871.495.0.0.20.|819.491.0.0.20.|800.322.0.0.20.|425.516.0.x85.|1510.499.1.x85.|35|7|-
+1.1.0.0.6.x32.
+Empower Tower!
+Standard Output Stream:
+BUILD 7 TOWER
+TRAIN
+032
+501
+Standard Output Stream:
+BUILD 6 TOWER
+TRAIN
+033
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.xxxxxx0.|5.xxxxxx0.|6.xxxxxx0.|7.281.2.1.0.388.359.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.1.0.460.390.0.|15.xx1.1.376.354.0.|16.262.2.xxxx0.|17.xxxxxx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.231.1.0.0.1.x0.|23.xx0.1.xx0.|6|970.356.0.0.19.|971.493.0.0.19.|919.490.0.0.19.|897.345.0.0.19.|425.516.0.x85.|1493.485.1.x85.|36|7|-
+1.1.0.0.6.x34.
+Empower Tower!
+Standard Output Stream:
+BUILD 7 TOWER
+TRAIN
+034
+501
+Standard Output Stream:
+BUILD 6 TOWER
+TRAIN
+035
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.196.260.0.|7.281.2.1.0.484.399.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.1.0.456.388.0.|15.xx1.1.372.352.0.|16.262.2.xxxx0.|17.xxxxxx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.230.1.0.0.1.x0.|23.xx0.1.xx0.|6|997.322.0.0.18.|1068.505.0.0.18.|1017.494.0.0.18.|968.362.0.0.18.|425.516.0.x85.|1493.485.1.x85.|37|7|-
+1.1.0.0.6.x36.
+Empower Tower!
+Standard Output Stream:
+BUILD 7 TOWER
+TRAIN
+036
+501
+Standard Output Stream:
+BUILD 6 TOWER
+TRAIN
+037
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.292.313.0.|7.281.2.1.0.580.435.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.1.0.452.386.0.|15.xx1.1.368.350.0.|16.262.2.xxxx0.|17.xxxxxx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.229.1.0.0.1.x0.|23.xx0.1.xx0.|6|1070.297.0.0.17.|1168.500.0.0.14.|1114.502.0.0.17.|981.338.0.0.17.|425.516.0.x85.|1493.485.1.x85.|38|7|-
+1.1.0.0.6.x38.
+Empower Tower!
+Standard Output Stream:
+BUILD 7 TOWER
+TRAIN
+038
+501
+Standard Output Stream:
+BUILD 6 TOWER
+TRAIN
+039
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.388.359.0.|7.281.2.1.0.676.469.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.1.0.448.385.0.|15.xx1.1.364.348.0.|16.262.2.xxxx0.|17.xxxxxx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.228.1.0.0.1.x0.|23.xx0.1.xx0.|6|1163.332.0.0.16.|1268.495.0.0.10.|1214.498.0.0.16.|1029.303.0.0.16.|425.516.0.x85.|1493.485.1.x85.|39|7|-
+1.1.0.0.6.x40.
+SurivorMode move is MOVE 540 460
+Standard Output Stream:
+MOVE 540 460
+TRAIN
+040
+501
+Standard Output Stream:
+BUILD 17 TOWER
+TRAIN
+041
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.384.357.0.|7.281.2.1.0.672.468.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.1.0.444.383.0.|15.xx1.1.360.346.0.|16.262.2.xxxx0.|17.xxxxxx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.227.1.0.0.1.x0.|23.xx0.1.xx0.|6|1246.388.0.0.15.|1367.509.0.0.5.|1314.507.0.0.15.|1117.312.0.0.15.|476.481.0.x85.|1442.520.1.x85.|40|7|-
+1.1.0.0.6.x42.
+SurivorMode move is MOVE 580 400
+Standard Output Stream:
+MOVE 580 400
+TRAIN
+042
+501
+Standard Output Stream:
+BUILD 17 TOWER
+TRAIN
+043
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.231.3.xxxx0.|5.xxxxxx0.|6.xx1.1.380.355.0.|7.281.2.1.0.668.467.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.1.0.440.381.0.|15.xx1.1.356.345.0.|16.262.2.xxxx0.|17.xxxxxx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.226.1.0.0.1.x0.|23.xx0.1.xx0.|5|1312.463.0.0.14.|1344.546.0.0.14.|1193.377.0.0.14.|523.444.0.x85.|1396.556.1.x83.|41|x-
+1.1.0.0.6.x44.
+SurivorMode move is MOVE 640 460
+Standard Output Stream:
+MOVE 640 460
+TRAIN
+044
+501
+Standard Output Stream:
+BUILD 17 TOWER
+TRAIN
+045
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.376.353.0.|7.281.2.1.0.664.465.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.1.0.436.380.0.|15.xx1.1.352.343.0.|16.262.2.xxxx0.|17.xxxxxx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.225.1.0.0.1.x0.|23.xx0.1.xx0.|5|1333.531.0.0.13.|1373.526.0.0.9.|1258.453.0.0.13.|574.460.0.x85.|1367.578.1.x82.|42|16|-
+1.1.0.0.6.x46.
+Standard Output Stream:
+BUILD 16 TOWER
+TRAIN
+046
+501
+Standard Output Stream:
+BUILD 17 TOWER
+TRAIN
+047
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.372.351.0.|7.281.2.1.0.660.464.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.1.0.432.378.0.|15.xx1.1.348.341.0.|16.262.2.1.0.196.261.0.|17.xx1.1.196.261.0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.224.1.0.0.1.x0.|23.xx0.1.xx0.|5|1341.548.0.0.12.|1397.546.0.0.1.|1317.523.0.0.12.|574.460.0.x85.|1371.591.1.x80.|43|16|-
+1.1.0.0.6.x48.
+Empower Tower!
+Standard Output Stream:
+BUILD 16 TOWER
+TRAIN
+048
+501
+Standard Output Stream:
+BUILD 17 TOWER
+TRAIN
+049
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.368.350.0.|7.281.2.1.0.656.462.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.1.0.428.376.0.|15.xx1.1.344.339.0.|16.262.2.1.0.292.314.0.|17.xx1.1.292.314.0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.223.1.0.0.1.x0.|23.xx0.1.xx0.|4|1354.563.0.0.11.|1330.538.0.0.4.|574.460.0.x85.|1375.610.1.x78.|44|16|-
+1.1.0.0.6.x50.
+Empower Tower!
+Standard Output Stream:
+BUILD 16 TOWER
+TRAIN
+050
+501
+Standard Output Stream:
+BUILD 17 TOWER
+TRAIN
+051
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.364.348.0.|7.281.2.1.0.652.461.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.1.0.424.375.0.|15.xx1.1.340.337.0.|16.262.2.1.0.388.359.0.|17.xx1.1.388.359.0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.222.1.0.0.1.x0.|23.xx0.1.xx0.|3|1405.578.0.0.4.|574.460.0.x85.|1375.622.1.x76.|45|16|-
+1.1.0.0.6.x52.
+Empower Tower!
+Standard Output Stream:
+BUILD 16 TOWER
+TRAIN
+052
+501
+Standard Output Stream:
+BUILD 21 TOWER
+TRAIN
+053
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.360.346.0.|7.281.2.1.0.648.460.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.1.0.420.373.0.|15.xx1.1.336.335.0.|16.262.2.1.0.484.400.0.|17.xx1.1.384.358.0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.221.1.0.0.1.x0.|23.xx0.1.xx0.|2|574.460.0.x85.|1349.681.1.x75.|46|16|-
+1.1.0.0.6.x54.
+Empower Tower!
+Standard Output Stream:
+BUILD 16 TOWER
+TRAIN
+054
+501
+Standard Output Stream:
+BUILD 17 MINE
+TRAIN
+055
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.356.344.0.|7.281.2.1.0.644.458.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.1.0.416.371.0.|15.xx1.1.332.333.0.|16.262.2.1.0.580.436.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.220.1.0.0.1.x0.|23.xx0.1.xx0.|2|574.460.0.x85.|1349.681.1.x75.|47|16|-
+1.1.0.0.6.x56.
+Empower Tower!
+Standard Output Stream:
+BUILD 16 TOWER
+TRAIN
+056
+501
+Standard Output Stream:
+BUILD 17 MINE
+TRAIN
+057
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.352.342.0.|7.281.2.1.0.640.457.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.1.0.412.370.0.|15.xx1.1.328.331.0.|16.262.2.1.0.676.470.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.219.1.0.0.1.x0.|23.xx0.1.xx0.|2|574.460.0.x85.|1349.681.1.x75.|48|16|-
+1.1.0.0.6.x58.
+Empower Tower!
+Standard Output Stream:
+BUILD 16 TOWER
+TRAIN
+058
+501
+Standard Output Stream:
+MOVE 1354 810
+TRAIN
+059
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.xxxxxx0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.348.340.0.|7.281.2.1.0.636.455.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.xxxxxx0.|14.211.3.1.0.408.368.0.|15.xx1.1.324.330.0.|16.262.2.1.0.772.501.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.218.1.0.0.1.x0.|23.xx0.1.xx0.|2|574.460.0.x85.|1351.741.1.x75.|49|16|-
+1.1.0.0.6.x60.
+SurivorMode move is MOVE 680 580
+Standard Output Stream:
+MOVE 680 580
+TRAIN
+060
+501
+Standard Output Stream:
+MOVE 1354 810
+TRAIN
+061
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.324.3.xxxx0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.344.339.0.|7.281.2.1.0.632.454.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.271.4.xxxx0.|14.211.3.1.0.404.366.0.|15.xx1.1.320.328.0.|16.262.2.1.0.768.500.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.217.1.0.0.1.x0.|23.xx0.1.xx0.|2|614.505.0.x85.|1354.801.1.x75.|50|x-
+1.1.0.0.6.x62.
+SurivorMode move is MOVE 720 620
+Standard Output Stream:
+MOVE 720 620
+TRAIN
+062
+501
+Standard Output Stream:
+BUILD 5 MINE
+TRAIN
+063
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.324.3.xxxx0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx1.1.340.337.0.|7.281.2.1.0.628.453.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.271.4.xxxx0.|14.211.3.1.0.400.364.0.|15.xx1.1.316.326.0.|16.262.2.1.0.764.499.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.216.1.0.0.1.x0.|23.xx0.1.xx0.|2|655.549.0.x85.|1354.801.1.x75.|51|x-
+1.1.0.0.6.x64.
+SurivorMode move is MOVE 760 600
+Standard Output Stream:
+MOVE 760 600
+TRAIN
+064
+501
+Standard Output Stream:
+BUILD 5 MINE
+TRAIN
+065
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.324.3.xxxx0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx1.1.336.335.0.|7.281.2.1.0.624.451.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.xxxxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.271.4.xxxx0.|14.211.3.1.0.396.363.0.|15.xx1.1.312.324.0.|16.262.2.1.0.760.497.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.215.1.0.0.1.x0.|23.xx0.1.xx0.|2|709.575.0.x85.|1354.801.1.x75.|52|x-
+1.1.0.0.6.x66.
+SurivorMode move is MOVE 800 680
+Standard Output Stream:
+MOVE 800 680
+TRAIN
+066
+501
+Standard Output Stream:
+BUILD 5 MINE
+TRAIN
+067
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.324.3.xxxx0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx1.1.332.333.0.|7.281.2.1.0.620.450.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.xxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.271.4.xxxx0.|14.211.3.1.0.392.361.0.|15.xx1.1.308.322.0.|16.262.2.1.0.756.496.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.214.1.0.0.1.x0.|23.xx0.1.xx0.|2|744.621.0.x85.|1354.801.1.x75.|53|3|-
+1.1.0.0.6.x68.
+Standard Output Stream:
+BUILD 3 TOWER
+TRAIN
+068
+501
+Standard Output Stream:
+BUILD 15 BARRACKS-KNIGHT
+TRAIN
+069
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.324.3.1.0.196.263.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx1.1.328.331.0.|7.281.2.1.0.616.448.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.xxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.271.4.xxxx0.|14.211.3.1.0.388.359.0.|15.xx1.1.304.320.0.|16.262.2.1.0.752.495.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.213.1.0.0.1.x0.|23.xx0.1.xx0.|2|744.621.0.x85.|1400.762.1.x75.|54|3|-
+1.1.0.0.6.x70.
+Empower Tower!
+Standard Output Stream:
+BUILD 3 TOWER
+TRAIN
+070
+501
+Standard Output Stream:
+BUILD 15 BARRACKS-KNIGHT
+TRAIN
+071
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.324.3.1.0.292.315.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx1.1.324.329.0.|7.281.2.1.0.612.447.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.xxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.271.4.xxxx0.|14.211.3.1.0.384.357.0.|15.xx1.1.300.318.0.|16.262.2.1.0.748.494.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.212.1.0.0.1.x0.|23.xx0.1.xx0.|2|744.621.0.x85.|1447.724.1.x75.|55|3|-
+1.1.0.0.6.x72.
+Empower Tower!
+Standard Output Stream:
+BUILD 3 TOWER
+TRAIN
+072
+501
+Standard Output Stream:
+BUILD 6 BARRACKS-KNIGHT
+TRAIN
+073
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.324.3.1.0.388.361.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx1.1.320.327.0.|7.281.2.1.0.608.446.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.xxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.271.4.xxxx0.|14.211.3.1.0.380.355.0.|15.xx1.1.296.316.0.|16.262.2.1.0.744.492.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.211.1.0.0.1.x0.|23.xx0.1.xx0.|2|744.621.0.x85.|1440.664.1.x75.|56|3|-
+1.1.0.0.6.x74.
+Empower Tower!
+Standard Output Stream:
+BUILD 3 TOWER
+TRAIN
+074
+501
+Standard Output Stream:
+BUILD 6 BARRACKS-KNIGHT
+TRAIN
+075
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.324.3.1.0.484.401.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx1.1.316.325.0.|7.281.2.1.0.604.444.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.xxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.271.4.xxxx0.|14.211.3.1.0.376.354.0.|15.xx1.1.292.314.0.|16.262.2.1.0.740.491.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.210.1.0.0.1.x0.|23.xx0.1.xx0.|2|744.621.0.x85.|1433.604.1.x75.|57|3|-
+1.1.0.0.6.x76.
+Empower Tower!
+Standard Output Stream:
+BUILD 3 TOWER
+TRAIN
+076
+501
+Standard Output Stream:
+BUILD 6 BARRACKS-KNIGHT
+TRAIN
+077
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.324.3.1.0.580.437.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx1.1.312.323.0.|7.281.2.1.0.600.443.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.xxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.271.4.xxxx0.|14.211.3.1.0.372.352.0.|15.xx1.1.288.312.0.|16.262.2.1.0.736.490.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.209.1.0.0.1.x0.|23.xx0.1.xx0.|2|744.621.0.x85.|1426.544.1.x75.|58|3|-
+1.1.0.0.6.x78.
+Empower Tower!
+Standard Output Stream:
+BUILD 3 TOWER
+TRAIN
+078
+501
+Standard Output Stream:
+BUILD 6 BARRACKS-KNIGHT
+TRAIN
+079
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.324.3.1.0.676.471.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx1.1.308.321.0.|7.281.2.1.0.596.441.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.xxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.271.4.xxxx0.|14.211.3.1.0.368.350.0.|15.xx1.1.284.310.0.|16.262.2.1.0.732.488.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.208.1.0.0.1.x0.|23.xx0.1.xx0.|2|744.621.0.x85.|1424.523.1.x75.|59|3|-
+1.1.0.0.6.x80.
+Empower Tower!
+Standard Output Stream:
+BUILD 3 TOWER
+TRAIN
+080
+501
+Standard Output Stream:
+BUILD 6 BARRACKS-KNIGHT
+TRAIN
+081
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.324.3.1.0.772.502.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.0.0.0.|7.281.2.1.0.592.440.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.xxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.271.4.xxxx0.|14.211.3.1.0.364.348.0.|15.xx1.1.280.308.0.|16.262.2.1.0.728.487.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.207.1.0.0.1.x0.|23.xx0.1.xx0.|2|744.621.0.x85.|1424.523.1.x75.|60|3|-
+1.1.0.0.6.x82.
+SurivorMode move is MOVE 720 740
+Standard Output Stream:
+MOVE 720 740
+TRAIN
+082
+501
+Standard Output Stream:
+BUILD 6 MINE
+TRAIN 6
+083
+501
+Game Summary:
+Princess Boss: [WARNING] Cannot rebuild: training is in progress
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.324.3.1.0.768.501.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.4.0.0.|7.281.2.1.0.588.438.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.xxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.271.4.xxxx0.|14.211.3.1.0.360.346.0.|15.xx1.1.276.305.0.|16.262.2.1.0.724.486.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.206.1.0.0.1.x0.|23.xx0.1.xx0.|2|732.680.0.x85.|1424.523.1.x75.|61|x-
+1.1.0.0.6.x84.
+SurivorMode move is MOVE 740 780
+Standard Output Stream:
+MOVE 740 780
+TRAIN
+084
+501
+Standard Output Stream:
+MOVE 1178 246
+TRAIN 6
+085
+501
+Game Summary:
+Princess Boss: [WARNING] Barracks 6 is training
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.324.3.1.0.764.500.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.3.0.0.|7.281.2.1.0.584.437.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.xxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.271.4.xxxx0.|14.211.3.1.0.356.345.0.|15.xx1.1.272.303.0.|16.262.2.1.0.720.485.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.205.1.0.0.1.x0.|23.xx0.1.xx0.|2|738.739.0.x85.|1367.514.1.x75.|62|13|-
+1.1.0.0.6.x86.
+Standard Output Stream:
+BUILD 13 TOWER
+TRAIN
+086
+501
+Standard Output Stream:
+MOVE 1178 246
+TRAIN 6
+087
+501
+Game Summary:
+Princess Boss: [WARNING] Barracks 6 is training
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.324.3.1.0.760.498.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.2.0.0.|7.281.2.1.0.580.435.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.xxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.271.4.1.0.196.260.0.|14.211.3.1.0.352.343.0.|15.xx1.1.268.301.0.|16.262.2.1.0.716.483.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.204.1.0.0.1.x0.|23.xx0.1.xx0.|2|738.739.0.x85.|1321.472.1.x74.|63|13|-
+1.1.0.0.6.x88.
+Empower Tower!
+Standard Output Stream:
+BUILD 13 TOWER
+TRAIN
+088
+501
+Standard Output Stream:
+MOVE 1180 253
+TRAIN 6
+089
+501
+Game Summary:
+Princess Boss: [WARNING] Barracks 6 is training
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.324.3.1.0.756.497.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.1.0.0.|7.281.2.1.0.576.434.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.xxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.271.4.1.0.292.313.0.|14.211.3.1.0.348.341.0.|15.xx1.1.264.299.0.|16.262.2.1.0.712.482.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.203.1.0.0.1.x0.|23.xx0.1.xx0.|2|738.739.0.x85.|1289.422.1.x73.|64|13|-
+1.1.0.0.6.x90.
+Empower Tower!
+Standard Output Stream:
+BUILD 13 TOWER
+TRAIN
+090
+501
+Standard Output Stream:
+MOVE 1180 253
+TRAIN 6
+091
+501
+Game Summary:
+Princess Boss: [WARNING] Barracks 6 is training
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.324.3.1.0.752.496.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.0.0.0.|7.281.2.1.0.572.433.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.xxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.271.4.1.0.388.359.0.|14.211.3.1.0.344.339.0.|15.xx1.1.260.297.0.|16.262.2.1.0.708.481.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.202.1.0.0.1.x0.|23.xx0.1.xx0.|6|738.739.0.x85.|1403.324.1.0.25.|1334.475.1.0.25.|1393.512.1.0.25.|1318.436.1.0.25.|1256.372.1.x72.|65|13|-
+1.1.0.0.6.x92.
+Empower Tower!
+Standard Output Stream:
+BUILD 13 TOWER
+TRAIN
+092
+501
+Standard Output Stream:
+MOVE 1308 425
+TRAIN 6
+093
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.324.3.1.0.748.494.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.4.0.0.|7.281.2.1.0.568.431.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.xxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.271.4.1.0.484.399.0.|14.211.3.1.0.340.337.0.|15.xx1.1.256.295.0.|16.262.2.1.0.704.479.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.201.1.0.0.1.x0.|23.xx0.1.xx0.|6|738.739.0.x85.|1316.366.1.0.24.|1251.514.1.0.24.|1311.525.1.0.24.|1220.489.1.0.21.|1298.414.1.x72.|66|13|-
+1.1.0.0.6.x94.
+Empower Tower!
+Standard Output Stream:
+BUILD 13 TOWER
+TRAIN
+094
+501
+Standard Output Stream:
+MOVE 1180 253
+TRAIN 6
+095
+501
+Game Summary:
+Princess Boss: [WARNING] Barracks 6 is training
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.324.3.1.0.744.493.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.3.0.0.|7.281.2.1.0.564.430.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.xxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.271.4.1.0.580.435.0.|14.211.3.1.0.336.335.0.|15.xx1.1.252.293.0.|16.262.2.1.0.700.478.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.200.1.0.0.1.x0.|23.xx0.1.xx0.|6|738.739.0.x85.|1251.430.1.0.23.|1163.551.1.0.23.|1223.522.1.0.23.|1126.532.1.0.16.|1260.363.1.x72.|67|13|-
+1.1.0.0.6.x96.
+Empower Tower!
+Standard Output Stream:
+BUILD 13 TOWER
+TRAIN
+096
+501
+Standard Output Stream:
+MOVE 1180 253
+TRAIN 6
+097
+501
+Game Summary:
+Princess Boss: [WARNING] Barracks 6 is training
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.324.3.1.0.740.492.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.2.0.0.|7.281.2.1.0.560.428.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.xxxx0.|11.xxxxxx0.|12.xxxxxx0.|13.271.4.1.0.676.469.0.|14.211.3.1.0.332.333.0.|15.xx1.1.248.291.0.|16.262.2.1.0.696.477.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.199.1.0.0.1.x0.|23.xx0.1.xx0.|6|738.739.0.x85.|1165.482.1.0.22.|1074.592.1.0.22.|1132.563.1.0.22.|1036.578.1.0.8.|1225.314.1.x72.|68|13|-
+1.1.0.0.6.x98.
+Empower Tower!
+Standard Output Stream:
+BUILD 13 TOWER
+TRAIN
+098
+501
+Standard Output Stream:
+BUILD 12 MINE
+TRAIN 6
+099
+501
+Game Summary:
+Princess Boss: [WARNING] Barracks 6 is training
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.324.3.1.0.736.491.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.1.0.0.|7.281.2.1.0.556.427.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.xxxx0.|11.xxxxxx0.|12.xx0.1.xx0.|13.271.4.1.0.772.501.0.|14.211.3.1.0.328.331.0.|15.xx1.1.244.288.0.|16.262.2.1.0.692.475.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.198.1.0.0.1.x0.|23.xx0.1.xx0.|5|738.739.0.x85.|1079.534.1.0.21.|986.633.1.0.21.|1041.604.1.0.21.|1225.314.1.x72.|69|13|-
+1.1.0.0.6.x100.
+SurivorMode move is MOVE 840 800
+Standard Output Stream:
+MOVE 840 800
+TRAIN
+100
+501
+Standard Output Stream:
+BUILD 12 MINE
+TRAIN 6
+101
+501
+Game Summary:
+Princess Boss: [WARNING] Barracks 6 is training
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.324.3.1.0.732.489.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.0.0.0.|7.281.2.1.0.552.425.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.xxxx0.|11.xxxxxx0.|12.xx0.1.xx0.|13.271.4.1.0.768.499.0.|14.211.3.1.0.324.330.0.|15.xx1.1.240.286.0.|16.262.2.1.0.688.474.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.197.1.0.0.1.x0.|23.xx0.1.xx0.|9|789.770.0.x85.|1001.597.1.0.20.|905.691.1.0.6.|958.659.1.0.20.|1410.324.1.0.25.|1336.477.1.0.25.|1400.513.1.0.25.|1318.439.1.0.25.|1225.314.1.x72.|70|x-
+1.1.0.0.6.x102.
+SurivorMode move is MOVE 800 860
+Standard Output Stream:
+MOVE 800 860
+TRAIN
+102
+501
+Standard Output Stream:
+BUILD 12 MINE
+TRAIN 6
+103
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.324.3.1.0.728.488.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.4.0.0.|7.281.2.1.0.548.424.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.xxxx0.|11.xxxxxx0.|12.xx0.1.xx0.|13.271.4.1.0.764.498.0.|14.211.3.1.0.320.328.0.|15.xx1.1.236.284.0.|16.262.2.1.0.684.473.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.196.1.0.0.1.x0.|23.xx0.1.xx0.|8|788.827.0.x85.|933.671.1.0.12.|887.730.1.0.19.|1326.368.1.0.24.|1259.513.1.0.24.|1330.539.1.0.24.|1230.488.1.0.24.|1225.314.1.x72.|71|10|-
+1.1.0.0.6.x104.
+Standard Output Stream:
+BUILD 10 TOWER
+TRAIN
+104
+501
+Standard Output Stream:
+BUILD 12 MINE
+TRAIN
+105
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.324.3.1.0.724.487.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.3.0.0.|7.281.2.1.0.544.422.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.196.256.0.|11.xxxxxx0.|12.xx0.1.xx0.|13.271.4.1.0.760.497.0.|14.211.3.1.0.316.326.0.|15.xx1.1.232.282.0.|16.262.2.1.0.680.471.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.195.1.0.0.1.x0.|23.xx0.1.xx0.|8|787.828.0.x84.|865.744.1.0.4.|822.790.1.0.11.|1250.433.1.0.23.|1180.551.1.0.23.|1278.514.1.0.23.|1140.544.1.0.23.|1225.314.1.x72.|72|10|-
+1.1.0.0.6.x106.
+Empower Tower!
+Standard Output Stream:
+BUILD 10 TOWER
+TRAIN
+106
+501
+Standard Output Stream:
+MOVE 954 427
+TRAIN 6
+107
+501
+Game Summary:
+Princess Boss: [WARNING] Barracks 6 is training
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.324.3.1.0.720.485.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.2.0.0.|7.281.2.1.0.540.421.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.292.310.0.|11.xxxxxx0.|12.xx0.1.xx0.|13.271.4.1.0.756.496.0.|14.211.3.1.0.312.324.0.|15.xx1.1.228.279.0.|16.262.2.1.0.676.470.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.194.1.0.0.1.x0.|23.xx0.1.xx0.|7|779.837.0.x83.|804.796.1.0.3.|1174.498.1.0.22.|1101.609.1.0.22.|1190.543.1.0.22.|1060.607.1.0.22.|1170.337.1.x72.|73|x-
+1.1.0.0.6.x108.
+SurivorMode move is MOVE 880 780
+Standard Output Stream:
+MOVE 880 780
+TRAIN
+108
+501
+Standard Output Stream:
+MOVE 954 427
+TRAIN 6
+109
+501
+Game Summary:
+Princess Boss: [WARNING] Barracks 6 is training
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xxxxxx0.|3.324.3.1.0.716.484.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.1.0.0.|7.281.2.1.0.536.419.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.288.308.0.|11.xxxxxx0.|12.xx0.1.xx0.|13.271.4.1.0.752.494.0.|14.211.3.1.0.308.322.0.|15.xx1.1.224.277.0.|16.262.2.1.0.672.469.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.193.1.0.0.1.x0.|23.xx0.1.xx0.|6|816.783.0.x82.|1096.559.1.0.21.|1018.662.1.0.21.|1107.600.1.0.21.|978.667.1.0.17.|1153.329.1.x72.|74|10|-
+1.1.0.0.6.x110.
+Empower Tower!
+Standard Output Stream:
+BUILD 10 TOWER
+TRAIN
+110
+501
+Standard Output Stream:
+BUILD 2 TOWER
+TRAIN 6
+111
+501
+Game Summary:
+Princess Boss: [WARNING] Barracks 6 is training
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xx1.1.196.263.0.|3.324.3.1.0.712.483.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.0.0.0.|7.281.2.1.0.532.418.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.384.354.0.|11.xxxxxx0.|12.xx0.1.xx0.|13.271.4.1.0.748.493.0.|14.211.3.1.0.304.320.0.|15.xx1.1.220.275.0.|16.262.2.1.0.668.467.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.192.1.0.0.1.x0.|23.xx0.1.xx0.|9|815.782.0.x82.|1017.616.1.0.20.|934.712.1.0.20.|1023.658.1.0.20.|1414.324.1.0.25.|1337.479.1.0.25.|1403.514.1.0.25.|1319.441.1.0.25.|1153.329.1.x72.|75|10|-
+1.1.0.0.6.x112.
+Empower Tower!
+Standard Output Stream:
+BUILD 10 TOWER
+TRAIN
+112
+501
+Standard Output Stream:
+BUILD 2 TOWER
+TRAIN 6
+113
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xx1.1.292.315.0.|3.324.3.1.0.708.481.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.4.0.0.|7.281.2.1.0.528.416.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.480.395.0.|11.xxxxxx0.|12.xx0.1.xx0.|13.271.4.1.0.744.492.0.|14.211.3.1.0.300.318.0.|15.xx1.1.216.273.0.|16.262.2.1.0.664.466.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.191.1.0.0.1.x0.|23.xx0.1.xx0.|9|814.783.0.x81.|940.673.1.0.12.|859.756.1.0.8.|937.715.1.0.19.|1329.365.1.0.24.|1257.513.1.0.24.|1329.537.1.0.24.|1229.486.1.0.24.|1153.329.1.x72.|76|10|-
+1.1.0.0.6.x114.
+Empower Tower!
+Standard Output Stream:
+BUILD 10 TOWER
+TRAIN
+114
+501
+Standard Output Stream:
+BUILD 2 TOWER
+TRAIN
+115
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xx1.1.388.361.0.|3.324.3.1.0.704.480.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.3.0.0.|7.281.2.1.0.524.415.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.576.432.0.|11.xxxxxx0.|12.xx0.1.xx0.|13.271.4.1.0.740.490.0.|14.211.3.1.0.296.316.0.|15.xx1.1.212.270.0.|16.262.2.1.0.660.464.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.190.1.0.0.1.x0.|23.xx0.1.xx0.|8|807.788.0.x80.|873.725.1.0.4.|872.769.1.0.14.|1251.428.1.0.23.|1177.553.1.0.23.|1268.513.1.0.23.|1137.538.1.0.23.|1153.329.1.x72.|77|10|-
+1.1.0.0.6.x116.
+Empower Tower!
+Standard Output Stream:
+BUILD 10 TOWER
+TRAIN
+116
+501
+Standard Output Stream:
+BUILD 11 TOWER
+TRAIN
+117
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xx1.1.384.359.0.|3.324.3.1.0.700.479.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.2.0.0.|7.281.2.1.0.520.413.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.672.466.0.|11.xxxxxx0.|12.xx0.1.xx0.|13.271.4.1.0.736.489.0.|14.211.3.1.0.292.314.0.|15.xx1.1.208.268.0.|16.262.2.1.0.656.463.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.189.1.0.0.1.x0.|23.xx0.1.xx0.|7|797.794.0.x78.|847.774.1.0.9.|1173.491.1.0.22.|1095.607.1.0.22.|1179.549.1.0.22.|1054.598.1.0.22.|1122.278.1.x72.|78|x-
+1.1.0.0.6.x118.
+SurivorMode move is MOVE 660 660
+Standard Output Stream:
+MOVE 660 660
+TRAIN
+118
+501
+Standard Output Stream:
+MOVE 971 203
+TRAIN
+119
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xx1.1.380.357.0.|3.324.3.1.0.696.477.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.1.0.0.|7.281.2.1.0.516.411.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.668.465.0.|11.xxxxxx0.|12.xx0.1.xx0.|13.271.4.1.0.732.488.0.|14.211.3.1.0.288.312.0.|15.xx1.1.204.265.0.|16.262.2.1.0.652.462.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.188.1.0.0.1.x0.|23.xx0.1.xx0.|6|749.751.0.x77.|1088.544.1.0.21.|1004.646.1.0.21.|1089.592.1.0.21.|964.643.1.0.14.|1068.251.1.x72.|79|x-
+1.1.0.0.6.x120.
+SurivorMode move is MOVE 680 620
+Standard Output Stream:
+MOVE 680 620
+TRAIN
+120
+501
+Standard Output Stream:
+BUILD 11 TOWER
+TRAIN 6
+121
+501
+Game Summary:
+Princess Boss: [WARNING] Barracks 6 is training
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xx1.1.376.355.0.|3.324.3.1.0.692.476.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.0.0.0.|7.281.2.1.0.512.410.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.664.463.0.|11.xxxxxx0.|12.xx0.1.xx0.|13.271.4.1.0.728.487.0.|14.211.3.1.0.284.310.0.|15.xx1.1.200.263.0.|16.262.2.1.0.648.460.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.187.1.0.0.1.x0.|23.xx0.1.xx0.|9|721.698.0.x77.|996.580.1.0.20.|929.673.1.0.20.|993.622.1.0.20.|1400.325.1.0.25.|1333.472.1.0.25.|1386.510.1.0.25.|1318.433.1.0.25.|1065.239.1.x72.|80|x-
+1.1.0.0.6.x122.
+SurivorMode move is MOVE 600 600
+Standard Output Stream:
+MOVE 600 600
+TRAIN 8
+122
+501
+Standard Output Stream:
+BUILD 11 TOWER
+TRAIN 6
+123
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xx1.1.372.353.0.|3.324.3.1.0.688.475.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.4.0.0.|7.281.2.1.0.508.408.0.|8.238.1.2.0.4.0.0.|9.xx0.1.xx0.|10.291.2.1.0.660.462.0.|11.xx1.1.196.256.0.|12.xx0.1.xx0.|13.271.4.1.0.724.485.0.|14.211.3.1.0.280.308.0.|15.xx1.1.196.261.0.|16.262.2.1.0.644.459.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.186.1.0.0.1.x0.|23.xx0.1.xx0.|9|674.660.0.x77.|960.599.1.0.19.|847.703.1.0.5.|941.659.1.0.15.|1308.363.1.0.24.|1238.502.1.0.24.|1293.517.1.0.24.|1223.464.1.0.24.|1065.239.1.x72.|1|x-
+1.1.0.0.6.x124.
+SurivorMode move is MOVE 600 600
+Standard Output Stream:
+MOVE 600 600
+TRAIN
+124
+501
+Standard Output Stream:
+BUILD 11 TOWER
+TRAIN
+125
+501
+Standard Error Stream:
+24|0.xxxxxx0.|1.xxxxxx0.|2.xx1.1.368.352.0.|3.324.3.1.0.684.473.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.3.0.0.|7.281.2.1.0.504.407.0.|8.238.1.2.0.3.0.0.|9.xx0.1.xx0.|10.291.2.1.0.656.460.0.|11.xx1.1.292.310.0.|12.xx0.1.xx0.|13.271.4.1.0.720.484.0.|14.211.3.1.0.276.305.0.|15.xx1.1.192.258.0.|16.262.2.1.0.640.458.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.185.1.0.0.1.x0.|23.xx0.1.xx0.|8|627.622.0.x77.|959.611.1.0.18.|883.699.1.0.6.|1215.399.1.0.23.|1141.525.1.0.23.|1195.524.1.0.23.|1125.486.1.0.23.|1065.239.1.x72.|2|x-
+1.1.0.0.6.x126.
+SurivorMode move is MOVE 500 740
+Standard Output Stream:
+MOVE 500 740
+TRAIN
+126
+501
+Standard Output Stream:
+BUILD 11 TOWER
+TRAIN
+127
+501
+Standard Error Stream:
+24|0.239.1.xxxx0.|1.xxxxxx0.|2.xx1.1.364.350.0.|3.324.3.1.0.680.472.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.2.0.0.|7.281.2.1.0.500.405.0.|8.238.1.2.0.2.0.0.|9.xx0.1.xx0.|10.291.2.1.0.652.459.0.|11.xx1.1.388.356.0.|12.xx0.1.xx0.|13.271.4.1.0.716.483.0.|14.211.3.1.0.272.303.0.|15.xx1.1.188.256.0.|16.262.2.1.0.636.456.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.184.1.0.0.1.x0.|23.xx0.1.xx0.|7|583.663.0.x77.|946.651.1.0.13.|1156.450.1.0.22.|1047.555.1.0.22.|1097.546.1.0.22.|1029.517.1.0.22.|1065.239.1.x72.|3|x-
+1.1.0.0.6.x128.
+SurivorMode move is MOVE 480 760
+Standard Output Stream:
+MOVE 480 760
+TRAIN
+128
+501
+Standard Output Stream:
+BUILD 20 TOWER
+TRAIN
+129
+501
+Standard Error Stream:
+24|0.239.1.xxxx0.|1.xxxxxx0.|2.xx1.1.360.348.0.|3.324.3.1.0.676.471.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.1.0.0.|7.281.2.1.0.496.404.0.|8.238.1.2.0.1.0.0.|9.xx0.1.xx0.|10.291.2.1.0.648.458.0.|11.xx1.1.384.354.0.|12.xx0.1.xx0.|13.271.4.1.0.712.481.0.|14.211.3.1.0.268.301.0.|15.xx1.1.184.253.0.|16.262.2.1.0.632.455.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.183.1.0.0.1.x0.|23.xx0.1.xx0.|7|539.704.0.x77.|878.701.1.0.1.|1081.506.1.0.21.|959.585.1.0.21.|1001.573.1.0.21.|944.544.1.0.14.|1003.231.1.x72.|4|x-
+1.1.0.0.6.x130.
+SurivorMode move is MOVE 400 800
+Standard Output Stream:
+MOVE 400 800
+TRAIN
+130
+501
+Standard Output Stream:
+BUILD 20 TOWER
+TRAIN
+131
+501
+Standard Error Stream:
+24|0.239.1.xxxx0.|1.xxxxxx0.|2.xx1.1.356.346.0.|3.324.3.1.0.672.469.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.0.0.0.|7.281.2.1.0.492.402.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.644.456.0.|11.xx1.1.380.352.0.|12.xx0.1.xx0.|13.271.4.1.0.708.480.0.|14.211.3.1.0.264.299.0.|15.xx1.1.180.251.0.|16.262.2.1.0.628.453.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.182.1.0.0.1.x0.|23.xx0.1.xx0.|14|467.313.0.0.25.|370.438.0.0.25.|472.353.0.0.25.|438.283.0.0.25.|490.738.0.x77.|988.543.1.0.20.|952.640.1.0.16.|959.584.1.0.20.|927.523.1.0.10.|1398.325.1.0.25.|1331.470.1.0.25.|1380.509.1.0.25.|1317.430.1.0.25.|945.216.1.x72.|5|x-
+1.1.0.0.6.x132.
+SurivorMode move is MOVE 360 820
+Standard Output Stream:
+MOVE 360 820
+TRAIN
+132
+501
+Standard Output Stream:
+MOVE 768 108
+TRAIN
+133
+501
+Standard Error Stream:
+24|0.239.1.xxxx0.|1.xxxxxx0.|2.xx1.1.352.344.0.|3.324.3.1.0.668.468.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.0.0.0.|7.281.2.1.0.488.401.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.640.455.0.|11.xx1.1.376.351.0.|12.xx0.1.xx0.|13.271.4.1.0.704.479.0.|14.211.3.1.0.260.297.0.|15.xx1.1.176.248.0.|16.262.2.1.0.624.452.0.|17.xx0.1.xx0.|18.213.3.xxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.181.1.0.0.1.x0.|23.xx0.1.xx0.|14|566.280.0.0.24.|462.410.0.0.24.|565.322.0.0.24.|532.259.0.0.24.|443.757.0.x77.|948.551.1.0.15.|891.697.1.0.7.|957.622.1.0.19.|875.497.1.0.2.|1306.363.1.0.24.|1236.502.1.0.24.|1290.516.1.0.24.|1223.464.1.0.24.|894.185.1.x72.|6|0|-
+1.1.0.0.6.x134.
+Standard Output Stream:
+BUILD 0 MINE
+TRAIN
+134
+501
+Standard Output Stream:
+MOVE 768 108
+TRAIN 6
+135
+501
+Standard Error Stream:
+24|0.238.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.348.343.0.|3.324.3.1.0.664.467.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.4.0.0.|7.281.2.1.0.484.399.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.636.453.0.|11.xx1.1.372.349.0.|12.xx0.1.xx0.|13.271.4.1.0.700.477.0.|14.211.3.1.0.256.295.0.|15.xx1.1.172.246.0.|16.262.2.1.0.620.451.0.|17.xx0.1.xx0.|18.213.3.xxxx0.|19.xxxxxx0.|20.xxxxxx0.|21.xxxxxx0.|22.180.1.0.0.1.x0.|23.xx0.1.xx0.|12|662.236.0.0.23.|545.354.0.0.23.|649.274.0.0.23.|623.226.0.0.23.|443.757.0.x77.|939.537.1.0.10.|919.682.1.0.18.|1215.405.1.0.23.|1142.536.1.0.23.|1194.530.1.0.23.|1128.496.1.0.23.|843.154.1.x72.|8|0|-
+1.1.0.0.6.x136.
+SurivorMode move is MOVE 560 660
+Standard Output Stream:
+MOVE 560 660
+TRAIN
+136
+501
+Standard Output Stream:
+BUILD 20 TOWER
+TRAIN
+137
+501
+Standard Error Stream:
+24|0.237.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.344.341.0.|3.324.3.1.0.660.465.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.3.0.0.|7.281.2.1.0.480.397.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.632.452.0.|11.xx1.1.368.347.0.|12.xx0.1.xx0.|13.271.4.1.0.696.476.0.|14.211.3.1.0.252.293.0.|15.xx1.1.168.243.0.|16.262.2.1.0.616.449.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.196.259.0.|21.xxxxxx0.|22.179.1.0.0.1.x0.|23.xx0.1.xx0.|12|738.253.0.0.19.|622.292.0.0.22.|701.269.0.0.22.|671.222.0.0.22.|489.719.0.x77.|907.508.1.0.2.|825.704.1.0.6.|1151.458.1.0.22.|1046.565.1.0.22.|1097.556.1.0.22.|1033.527.1.0.22.|843.154.1.x72.|10|x-
+1.1.0.0.6.x138.
+SurivorMode move is MOVE 600 600
+Standard Output Stream:
+MOVE 600 600
+TRAIN
+138
+501
+Standard Output Stream:
+BUILD 20 TOWER
+TRAIN
+139
+501
+Standard Error Stream:
+24|0.236.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.340.339.0.|3.324.3.1.0.656.464.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.2.0.0.|7.281.2.1.0.476.396.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.628.451.0.|11.xx1.1.364.345.0.|12.xx0.1.xx0.|13.271.4.1.0.692.475.0.|14.211.3.1.0.248.291.0.|15.xx1.1.164.240.0.|16.262.2.1.0.612.448.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.292.313.0.|21.xxxxxx0.|22.178.1.0.0.1.x0.|23.xx0.1.xx0.|10|819.209.0.0.12.|693.247.0.0.21.|779.245.0.0.18.|731.253.0.0.21.|532.683.0.x77.|1071.507.1.0.21.|960.591.1.0.21.|999.578.1.0.21.|946.546.1.0.17.|843.154.1.x72.|12|7|-
+1.1.0.0.6.x140.
+Empower Tower!
+Standard Output Stream:
+BUILD 7 TOWER
+TRAIN
+140
+501
+Standard Output Stream:
+BUILD 20 TOWER
+TRAIN
+141
+501
+Standard Error Stream:
+24|0.235.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.336.337.0.|3.324.3.1.0.652.463.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.1.0.0.|7.281.2.1.0.572.433.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.624.449.0.|11.xx1.1.360.343.0.|12.xx0.1.xx0.|13.271.4.1.0.688.473.0.|14.211.3.1.0.244.288.0.|15.xx1.1.160.238.0.|16.262.2.1.0.608.446.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.388.358.0.|21.xxxxxx0.|22.177.1.0.0.1.x0.|23.xx0.1.xx0.|10|864.192.0.0.5.|762.250.0.0.20.|827.192.0.0.13.|801.229.0.0.20.|532.683.0.x77.|976.538.1.0.20.|953.637.1.0.13.|958.580.1.0.20.|922.519.1.0.9.|845.143.1.x70.|14|7|-
+1.1.0.0.6.x142.
+Empower Tower!
+Standard Output Stream:
+BUILD 7 TOWER
+TRAIN
+142
+501
+Standard Output Stream:
+MOVE 1560 129
+TRAIN
+143
+501
+Standard Error Stream:
+24|0.234.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.332.335.0.|3.324.3.1.0.648.461.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.0.0.0.|7.281.2.1.0.668.467.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.620.448.0.|11.xx1.1.356.341.0.|12.xx0.1.xx0.|13.271.4.1.0.684.472.0.|14.211.3.1.0.240.286.0.|15.xx1.1.156.235.0.|16.262.2.1.0.604.445.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.384.356.0.|21.xxxxxx0.|22.176.1.0.0.1.x0.|23.xx0.1.xx0.|13|838.197.0.0.15.|859.133.0.0.12.|873.174.0.0.19.|532.683.0.x77.|931.527.1.0.15.|906.690.1.0.5.|960.596.1.0.19.|856.495.1.0.1.|1397.325.1.0.25.|1330.468.1.0.25.|1375.507.1.0.25.|1317.428.1.0.25.|911.134.1.x68.|16|7|-
+1.1.0.0.6.x144.
+Empower Tower!
+Standard Output Stream:
+BUILD 7 TOWER
+TRAIN
+144
+501
+Standard Output Stream:
+MOVE 1471 409
+TRAIN
+145
+501
+Standard Error Stream:
+24|0.233.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.328.333.0.|3.324.3.1.0.644.460.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.0.0.0.|7.281.2.1.0.764.498.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.616.446.0.|11.xx1.1.352.340.0.|12.xx0.1.xx0.|13.271.4.1.0.680.471.0.|14.211.3.1.0.236.284.0.|15.xx1.1.152.232.0.|16.262.2.1.0.600.443.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.380.354.0.|21.xxxxxx0.|22.175.1.0.0.1.x0.|23.xx0.1.xx0.|11|903.168.0.0.11.|923.123.0.0.7.|930.207.0.0.15.|532.683.0.x77.|878.497.1.0.10.|957.625.1.0.18.|1304.361.1.0.24.|1234.496.1.0.24.|1280.514.1.0.24.|1221.457.1.0.24.|954.163.1.x65.|18|7|-
+1.1.0.0.6.x146.
+SurivorMode move is MOVE 640 720
+Standard Output Stream:
+MOVE 640 720
+TRAIN
+146
+501
+Standard Output Stream:
+MOVE 1471 409
+TRAIN
+147
+501
+Standard Error Stream:
+24|0.232.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.324.331.0.|3.324.3.1.0.640.458.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.0.0.0.|7.281.2.1.0.760.497.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.612.445.0.|11.xx1.1.348.338.0.|12.xx0.1.xx0.|13.271.4.1.0.676.469.0.|14.211.3.1.0.232.282.0.|15.xx1.1.148.229.0.|16.262.2.1.0.596.442.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.376.353.0.|21.xxxxxx0.|22.174.1.0.0.1.x0.|23.xx0.1.xx0.|10|940.199.0.0.7.|967.175.0.0.2.|946.251.0.0.11.|582.692.0.x77.|921.680.1.0.10.|1213.403.1.0.23.|1139.528.1.0.23.|1183.531.1.0.23.|1126.489.1.0.23.|989.222.1.x62.|20|13|-
+1.1.0.0.6.x148.
+Empower Tower!
+Standard Output Stream:
+BUILD 13 TOWER
+TRAIN
+148
+501
+Standard Output Stream:
+MOVE 1471 409
+TRAIN
+149
+501
+Standard Error Stream:
+24|0.231.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.320.329.0.|3.324.3.1.0.636.457.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.0.0.0.|7.281.2.1.0.756.496.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.608.443.0.|11.xx1.1.344.336.0.|12.xx0.1.xx0.|13.271.4.1.0.772.501.0.|14.211.3.1.0.228.279.0.|15.xx1.1.144.227.0.|16.262.2.1.0.592.441.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.372.351.0.|21.xxxxxx0.|22.173.1.0.0.1.x0.|23.xx0.1.xx0.|8|990.237.0.0.3.|1009.273.0.0.7.|582.692.0.x77.|1151.458.1.0.22.|1044.560.1.0.22.|1086.557.1.0.22.|1031.520.1.0.22.|1054.246.1.x60.|22|13|-
+1.1.0.0.6.x150.
+SurivorMode move is MOVE 700 560
+Standard Output Stream:
+MOVE 700 560
+TRAIN
+150
+501
+Standard Output Stream:
+MOVE 1560 129
+TRAIN 6
+151
+501
+Standard Error Stream:
+24|0.230.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.316.327.0.|3.324.3.1.0.632.456.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.4.0.0.|7.281.2.1.0.752.494.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.604.442.0.|11.xx1.1.340.334.0.|12.xx0.1.xx0.|13.271.4.1.0.768.499.0.|14.211.3.1.0.224.277.0.|15.xx1.1.140.224.0.|16.262.2.1.0.588.439.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.368.349.0.|21.xxxxxx0.|22.172.1.0.0.1.x0.|23.xx0.1.xx0.|7|1086.272.0.0.3.|622.647.0.x77.|1070.507.1.0.21.|959.584.1.0.15.|994.575.1.0.21.|942.540.1.0.11.|1117.230.1.x58.|24|x-
+1.1.0.0.6.x152.
+SurivorMode move is MOVE 740 560
+Standard Output Stream:
+MOVE 740 560
+TRAIN
+152
+501
+Standard Output Stream:
+MOVE 1805 157
+TRAIN
+153
+501
+Standard Error Stream:
+24|0.229.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.312.325.0.|3.324.3.1.0.628.454.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.3.0.0.|7.281.2.1.0.748.493.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.600.441.0.|11.xx1.1.336.332.0.|12.xx0.1.xx0.|13.271.4.1.0.764.498.0.|14.211.3.1.0.220.275.0.|15.xx1.1.136.221.0.|16.262.2.1.0.584.438.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.364.347.0.|21.xxxxxx0.|22.171.1.0.0.1.x0.|23.xx0.1.xx0.|6|670.611.0.x77.|973.532.1.0.20.|960.608.1.0.4.|950.555.1.0.20.|902.506.1.0.4.|1174.221.1.x57.|26|x-
+1.1.0.0.6.x154.
+SurivorMode move is MOVE 760 720
+Standard Output Stream:
+MOVE 760 720
+TRAIN
+154
+501
+Standard Output Stream:
+MOVE 973 206
+TRAIN
+155
+501
+Standard Error Stream:
+24|0.228.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.308.323.0.|3.324.3.1.0.624.453.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.2.0.0.|7.281.2.1.0.744.492.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.596.439.0.|11.xx1.1.332.330.0.|12.xx0.1.xx0.|13.271.4.1.0.760.497.0.|14.211.3.1.0.216.273.0.|15.xx1.1.132.218.0.|16.262.2.1.0.580.436.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.360.345.0.|21.xxxxxx0.|22.170.1.0.0.1.x0.|23.xx0.1.xx0.|4|708.657.0.x77.|926.522.1.0.19.|958.577.1.0.15.|1114.217.1.x57.|28|x-
+1.1.0.0.6.x156.
+SurivorMode move is MOVE 820 760
+Standard Output Stream:
+MOVE 820 760
+TRAIN
+156
+501
+Standard Output Stream:
+MOVE 973 206
+TRAIN
+157
+501
+Standard Error Stream:
+24|0.227.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.304.321.0.|3.324.3.1.0.620.451.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.1.0.0.|7.281.2.1.0.740.490.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.592.438.0.|11.xx1.1.328.328.0.|12.xx0.1.xx0.|13.271.4.1.0.756.496.0.|14.211.3.1.0.212.270.0.|15.xx1.1.128.215.0.|16.262.2.1.0.576.435.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.356.344.0.|21.xxxxxx0.|22.169.1.0.0.1.x0.|23.xx0.1.xx0.|4|752.698.0.x77.|921.518.1.0.12.|957.625.1.0.3.|1059.240.1.x57.|30|x-
+1.1.0.0.6.x158.
+SurivorMode move is MOVE 840 800
+Standard Output Stream:
+MOVE 840 800
+TRAIN
+158
+501
+Standard Output Stream:
+BUILD 11 MINE
+TRAIN
+159
+501
+Standard Error Stream:
+24|0.226.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.300.319.0.|3.324.3.1.0.616.450.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.0.0.0.|7.281.2.1.0.736.489.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.588.436.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.752.494.0.|14.211.3.1.0.208.268.0.|15.xx1.1.124.212.0.|16.262.2.1.0.572.433.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.352.342.0.|21.xxxxxx0.|22.168.1.0.0.1.x0.|23.xx0.1.xx0.|7|791.743.0.x77.|939.536.1.0.8.|1406.324.1.0.25.|1335.476.1.0.25.|1397.513.1.0.25.|1318.438.1.0.25.|1059.240.1.x57.|32|x-
+1.1.0.0.6.x160.
+SurivorMode move is MOVE 880 780
+Standard Output Stream:
+MOVE 880 780
+TRAIN
+160
+501
+Standard Output Stream:
+BUILD 11 TOWER
+TRAIN
+161
+501
+Standard Error Stream:
+24|0.225.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.296.317.0.|3.324.3.1.0.612.449.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.0.0.0.|7.281.2.1.0.732.488.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.584.435.0.|11.xx1.1.196.256.0.|12.xx0.1.xx0.|13.271.4.1.0.748.493.0.|14.211.3.1.0.204.265.0.|15.xx1.1.120.209.0.|16.262.2.1.0.568.432.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.348.340.0.|21.xxxxxx0.|22.167.1.0.0.1.x0.|23.xx0.1.xx0.|6|846.764.0.x77.|1322.370.1.0.24.|1254.514.1.0.24.|1324.533.1.0.24.|1230.484.1.0.24.|1059.240.1.x57.|34|10|-
+1.1.0.0.6.x162.
+Empower Tower!
+Standard Output Stream:
+BUILD 10 TOWER
+TRAIN
+162
+501
+Standard Output Stream:
+BUILD 11 MINE
+TRAIN
+163
+501
+Standard Error Stream:
+24|0.224.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.292.315.0.|3.324.3.1.0.608.447.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.0.0.0.|7.281.2.1.0.728.487.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.680.469.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.744.492.0.|14.211.3.1.0.200.263.0.|15.xx1.1.116.206.0.|16.262.2.1.0.564.430.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.344.338.0.|21.xxxxxx0.|22.166.1.0.0.1.x0.|23.xx0.1.xx0.|6|846.764.0.x77.|1245.434.1.0.23.|1172.555.1.0.23.|1255.513.1.0.23.|1138.534.1.0.17.|1059.240.1.x56.|36|10|-
+1.1.0.0.6.x164.
+Empower Tower!
+Standard Output Stream:
+BUILD 10 TOWER
+TRAIN
+164
+501
+Standard Output Stream:
+BUILD 11 TOWER
+TRAIN 6
+165
+501
+Standard Error Stream:
+24|0.223.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.288.313.0.|3.324.3.1.0.604.446.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.4.0.0.|7.281.2.1.0.724.485.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.776.500.0.|11.xx1.1.196.256.0.|12.xx0.1.xx0.|13.271.4.1.0.740.490.0.|14.211.3.1.0.196.261.0.|15.xx1.1.112.203.0.|16.262.2.1.0.560.429.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.340.336.0.|21.xxxxxx0.|22.165.1.0.0.1.x0.|23.xx0.1.xx0.|6|846.764.0.x77.|1168.498.1.0.22.|1093.611.1.0.22.|1167.557.1.0.22.|1055.594.1.0.6.|1059.240.1.x55.|38|10|-
+1.1.0.0.6.x166.
+SurivorMode move is MOVE 860 700
+Standard Output Stream:
+MOVE 860 700
+TRAIN
+166
+501
+Standard Output Stream:
+BUILD 11 MINE
+TRAIN
+167
+501
+Standard Error Stream:
+24|0.222.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.284.311.0.|3.324.3.1.0.600.444.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.3.0.0.|7.281.2.1.0.720.484.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.772.499.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.736.489.0.|14.211.3.1.0.192.258.0.|15.xx1.1.108.200.0.|16.262.2.1.0.556.427.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.336.334.0.|21.xxxxxx0.|22.164.1.0.0.1.x0.|23.xx0.1.xx0.|5|859.713.0.x77.|1086.555.1.0.21.|1006.651.1.0.21.|1078.602.1.0.21.|1059.240.1.x55.|40|3|-
+1.1.0.0.6.x168.
+Empower Tower!
+Standard Output Stream:
+BUILD 3 TOWER
+TRAIN
+168
+501
+Standard Output Stream:
+BUILD 11 TOWER
+TRAIN
+169
+501
+Standard Error Stream:
+24|0.221.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.280.309.0.|3.324.3.1.0.696.477.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.2.0.0.|7.281.2.1.0.716.483.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.768.498.0.|11.xx1.1.196.256.0.|12.xx0.1.xx0.|13.271.4.1.0.732.488.0.|14.211.3.1.0.188.256.0.|15.xx1.1.104.197.0.|16.262.2.1.0.552.426.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.332.332.0.|21.xxxxxx0.|22.163.1.0.0.1.x0.|23.xx0.1.xx0.|5|859.713.0.x77.|1004.611.1.0.20.|914.690.1.0.2.|988.648.1.0.20.|1059.240.1.x55.|42|3|-
+1.1.0.0.6.x170.
+Empower Tower!
+Standard Output Stream:
+BUILD 3 TOWER
+TRAIN
+170
+501
+Standard Output Stream:
+BUILD 11 MINE
+TRAIN
+171
+501
+Standard Error Stream:
+24|0.220.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.276.307.0.|3.324.3.1.0.792.508.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.1.0.0.|7.281.2.1.0.712.481.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.764.496.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.728.487.0.|14.211.3.1.0.184.253.0.|15.xx1.1.100.193.0.|16.262.2.1.0.548.424.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.328.330.0.|21.xxxxxx0.|22.162.1.0.0.1.x0.|23.xx0.1.xx0.|4|852.716.0.x76.|944.660.1.0.19.|914.685.1.0.12.|1059.240.1.x55.|44|3|-
+1.1.0.0.6.x172.
+SurivorMode move is MOVE 720 580
+Standard Output Stream:
+MOVE 720 580
+TRAIN
+172
+501
+Standard Output Stream:
+BUILD 11 TOWER
+TRAIN
+173
+501
+Standard Error Stream:
+24|0.219.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.272.305.0.|3.324.3.1.0.788.507.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.0.0.0.|7.281.2.1.0.708.480.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.760.495.0.|11.xx1.1.196.256.0.|12.xx0.1.xx0.|13.271.4.1.0.724.485.0.|14.211.3.1.0.180.251.0.|15.xx1.1.96.190.0.|16.262.2.1.0.544.423.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.324.328.0.|21.xxxxxx0.|22.161.1.0.0.1.x0.|23.xx0.1.xx0.|7|791.695.0.x75.|882.700.1.0.13.|1402.325.1.0.25.|1333.473.1.0.25.|1390.511.1.0.25.|1318.435.1.0.25.|1059.240.1.x55.|46|3|-
+1.1.0.0.6.x174.
+SurivorMode move is MOVE 720 560
+Standard Output Stream:
+MOVE 720 560
+TRAIN
+174
+501
+Standard Output Stream:
+BUILD 11 MINE
+TRAIN
+175
+501
+Standard Error Stream:
+24|0.218.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.268.303.0.|3.324.3.1.0.784.506.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.0.0.0.|7.281.2.1.0.704.479.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.756.494.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.720.484.0.|14.211.3.1.0.176.248.0.|15.xx1.1.92.187.0.|16.262.2.1.0.540.421.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.320.326.0.|21.xxxxxx0.|22.160.1.0.0.1.x0.|23.xx0.1.xx0.|6|752.647.0.x74.|1311.365.1.0.24.|1239.505.1.0.24.|1297.519.1.0.24.|1223.466.1.0.24.|1059.240.1.x55.|48|3|-
+1.1.0.0.6.x176.
+SurivorMode move is MOVE 860 700
+Standard Output Stream:
+MOVE 860 700
+TRAIN
+176
+501
+Standard Output Stream:
+BUILD 11 TOWER
+TRAIN
+177
+501
+Standard Error Stream:
+24|0.217.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.264.301.0.|3.324.3.1.0.780.505.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.0.0.0.|7.281.2.1.0.700.477.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.752.492.0.|11.xx1.1.196.256.0.|12.xx0.1.xx0.|13.271.4.1.0.716.483.0.|14.211.3.1.0.172.246.0.|15.xx1.1.88.183.0.|16.262.2.1.0.536.420.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.316.325.0.|21.xxxxxx0.|22.159.1.0.0.1.x0.|23.xx0.1.xx0.|6|792.694.0.x74.|1226.418.1.0.23.|1148.547.1.0.20.|1204.530.1.0.23.|1133.508.1.0.19.|1059.240.1.x55.|50|3|-
+1.1.0.0.6.x178.
+SurivorMode move is MOVE 900 720
+Standard Output Stream:
+MOVE 900 720
+TRAIN
+178
+501
+Standard Output Stream:
+BUILD 11 MINE
+TRAIN 6
+179
+501
+Standard Error Stream:
+24|0.216.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.260.299.0.|3.324.3.1.0.776.503.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.4.0.0.|7.281.2.1.0.696.476.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.748.491.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.712.481.0.|14.211.3.1.0.168.243.0.|15.xx1.1.84.180.0.|16.262.2.1.0.532.418.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.312.323.0.|21.xxxxxx0.|22.158.1.0.0.1.x0.|23.xx0.1.xx0.|6|850.713.0.x74.|1147.480.1.0.22.|1062.601.1.0.13.|1115.576.1.0.22.|1050.561.1.0.14.|1059.240.1.x55.|52|3|-
+1.1.0.0.6.x180.
+SurivorMode move is MOVE 920 800
+Standard Output Stream:
+MOVE 920 800
+TRAIN
+180
+501
+Standard Output Stream:
+BUILD 11 TOWER
+TRAIN
+181
+501
+Standard Error Stream:
+24|0.215.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.256.297.0.|3.324.3.1.0.772.502.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.3.0.0.|7.281.2.1.0.692.475.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.744.490.0.|11.xx1.1.196.256.0.|12.xx0.1.xx0.|13.271.4.1.0.708.480.0.|14.211.3.1.0.164.240.0.|15.xx1.1.80.176.0.|16.262.2.1.0.528.417.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.308.321.0.|21.xxxxxx0.|22.157.1.0.0.1.x0.|23.xx0.1.xx0.|6|888.760.0.x74.|1079.553.1.0.21.|988.674.1.0.5.|1037.639.1.0.21.|986.632.1.0.6.|1059.240.1.x55.|54|10|-
+1.1.0.0.6.x182.
+SurivorMode move is MOVE 1000 880
+Standard Output Stream:
+MOVE 1000 880
+TRAIN
+182
+501
+Standard Output Stream:
+BUILD 11 MINE
+TRAIN
+183
+501
+Standard Error Stream:
+24|0.214.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.252.295.0.|3.324.3.1.0.768.501.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.2.0.0.|7.281.2.1.0.688.473.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.740.489.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.704.479.0.|14.211.3.1.0.160.238.0.|15.xx1.1.76.173.0.|16.262.2.1.0.524.415.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.304.319.0.|21.283.2.xxxx0.|22.156.1.0.0.1.x0.|23.xx0.1.xx0.|4|945.792.0.x73.|1029.640.1.0.20.|995.721.1.0.20.|1059.240.1.x55.|56|10|-
+1.1.0.0.6.x184.
+SurivorMode move is MOVE 1060 900
+Standard Output Stream:
+MOVE 1060 900
+TRAIN
+184
+501
+Standard Output Stream:
+BUILD 11 TOWER
+TRAIN
+185
+501
+Standard Error Stream:
+24|0.213.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.248.292.0.|3.324.3.1.0.764.500.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.1.0.0.|7.281.2.1.0.684.472.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.736.487.0.|11.xx1.1.196.256.0.|12.xx0.1.xx0.|13.271.4.1.0.700.477.0.|14.211.3.1.0.156.235.0.|15.xx1.1.72.169.0.|16.262.2.1.0.520.414.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.300.317.0.|21.283.2.xxxx0.|22.155.1.0.0.1.x0.|23.xx0.1.xx0.|4|989.836.0.x72.|1009.738.1.0.15.|991.785.1.0.12.|1059.240.1.x55.|58|x-
+1.1.0.0.6.x186.
+SurivorMode move is MOVE 1100 840
+Standard Output Stream:
+MOVE 1100 840
+TRAIN
+186
+501
+Standard Output Stream:
+BUILD 11 MINE
+TRAIN
+187
+501
+Standard Error Stream:
+24|0.212.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.244.290.0.|3.324.3.1.0.760.498.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.0.0.0.|7.281.2.1.0.680.471.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.732.486.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.696.476.0.|14.211.3.1.0.152.232.0.|15.xx1.1.68.165.0.|16.262.2.1.0.516.412.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.296.315.0.|21.283.2.xxxx0.|22.154.1.0.0.1.x0.|23.xx0.1.xx0.|7|1055.845.0.x70.|1043.792.1.0.14.|1495.372.1.0.25.|1349.492.1.0.25.|1429.512.1.0.25.|1324.458.1.0.25.|1059.240.1.x55.|60|x-
+1.1.0.0.6.x188.
+SurivorMode move is MOVE 1160 780
+Standard Output Stream:
+MOVE 1160 780
+TRAIN
+188
+501
+Standard Output Stream:
+BUILD 11 MINE
+TRAIN
+189
+501
+Standard Error Stream:
+24|0.211.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.240.288.0.|3.324.3.1.0.756.497.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.0.0.0.|7.281.2.1.0.676.469.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.728.485.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.692.475.0.|14.211.3.1.0.148.229.0.|15.xx1.1.64.161.0.|16.262.2.1.0.512.411.0.|17.127.2.0.1.2.x0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.292.313.0.|21.283.2.xxxx0.|22.153.1.0.0.1.x0.|23.xx0.1.xx0.|7|1084.806.0.x69.|1036.790.1.0.2.|1507.425.1.0.24.|1318.529.1.0.24.|1356.576.1.0.24.|1266.513.1.0.24.|1059.240.1.x55.|62|21|-
+1.1.0.0.6.x190.
+Standard Output Stream:
+BUILD 21 TOWER
+TRAIN
+190
+501
+Standard Output Stream:
+BUILD 1 TOWER
+TRAIN
+191
+501
+Standard Error Stream:
+24|0.210.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.236.286.0.|3.324.3.1.0.752.496.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.0.0.0.|7.281.2.1.0.672.468.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.724.483.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.688.473.0.|14.211.3.1.0.144.227.0.|15.xx1.1.60.157.0.|16.262.2.1.0.508.409.0.|17.125.2.0.1.2.x0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.288.310.0.|21.283.2.1.0.196.259.0.|22.152.1.0.0.1.x0.|23.xx0.1.xx0.|6|1084.806.0.x68.|1459.503.1.0.23.|1298.519.1.0.23.|1361.629.1.0.23.|1195.541.1.0.23.|1118.229.1.x55.|64|21|-
+1.1.0.0.6.x192.
+Empower Tower!
+Standard Output Stream:
+BUILD 21 TOWER
+TRAIN
+192
+501
+Standard Output Stream:
+BUILD 1 TOWER
+TRAIN 6
+193
+501
+Standard Error Stream:
+24|0.209.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.232.284.0.|3.324.3.1.0.748.494.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.4.0.0.|7.281.2.1.0.668.467.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.720.482.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.684.472.0.|14.211.3.1.0.140.224.0.|15.xx1.1.56.153.0.|16.262.2.1.0.504.408.0.|17.123.2.0.1.2.x0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.284.308.0.|21.283.2.1.0.292.313.0.|22.151.1.0.0.1.x0.|23.xx0.1.xx0.|6|1084.806.0.x68.|1381.566.1.0.22.|1250.514.1.0.22.|1309.700.1.0.19.|1151.630.1.0.16.|1174.217.1.x55.|66|21|-
+1.1.0.0.6.x194.
+Empower Tower!
+Standard Output Stream:
+BUILD 21 TOWER
+TRAIN
+194
+501
+Standard Output Stream:
+BUILD 2 TOWER
+TRAIN
+195
+501
+Standard Error Stream:
+24|0.208.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.228.281.0.|3.324.3.1.0.744.493.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.3.0.0.|7.281.2.1.0.664.465.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.716.481.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.680.471.0.|14.211.3.1.0.136.221.0.|15.xx1.1.52.149.0.|16.262.2.1.0.500.406.0.|17.121.2.0.1.2.x0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.280.306.0.|21.283.2.1.0.388.358.0.|22.150.1.0.0.1.x0.|23.xx0.1.xx0.|6|1084.806.0.x68.|1362.624.1.0.21.|1179.561.1.0.21.|1219.743.1.0.14.|1115.723.1.0.7.|1143.268.1.x55.|68|21|-
+1.1.0.0.6.x196.
+Empower Tower!
+Standard Output Stream:
+BUILD 21 TOWER
+TRAIN
+196
+501
+Standard Output Stream:
+BUILD 2 TOWER
+TRAIN
+197
+501
+Standard Error Stream:
+24|0.207.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.224.279.0.|3.324.3.1.0.740.492.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.2.0.0.|7.281.2.1.0.660.464.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.712.479.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.676.469.0.|14.211.3.1.0.132.218.0.|15.xx1.1.48.145.0.|16.262.2.1.0.496.404.0.|17.119.2.0.1.2.x0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.276.304.0.|21.283.2.1.0.484.398.0.|22.149.1.0.0.1.x0.|23.xx0.1.xx0.|5|1082.812.0.x67.|1315.697.1.0.20.|1142.654.1.0.20.|1134.759.1.0.9.|1122.303.1.x55.|70|21|-
+1.1.0.0.6.x198.
+Empower Tower!
+Standard Output Stream:
+BUILD 21 TOWER
+TRAIN
+198
+501
+Standard Output Stream:
+BUILD 2 TOWER
+TRAIN
+199
+501
+Standard Error Stream:
+24|0.206.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.320.329.0.|3.324.3.1.0.736.491.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.1.0.0.|7.281.2.1.0.656.462.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.708.478.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.672.468.0.|14.211.3.1.0.128.215.0.|15.xx1.1.44.140.0.|16.262.2.1.0.492.403.0.|17.117.2.0.1.2.x0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.272.302.0.|21.283.2.1.0.580.435.0.|22.148.1.0.0.1.x0.|23.xx0.1.xx0.|4|1077.818.0.x66.|1225.742.1.0.19.|1105.742.1.0.12.|1122.303.1.x55.|72|21|-
+1.1.0.0.6.x200.
+Empower Tower!
+Standard Output Stream:
+BUILD 21 TOWER
+TRAIN
+200
+501
+Standard Output Stream:
+BUILD 1 TOWER
+TRAIN
+201
+501
+Standard Error Stream:
+24|0.205.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.316.327.0.|3.324.3.1.0.732.489.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.0.0.0.|7.281.2.1.0.652.461.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.704.477.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.668.467.0.|14.211.3.1.0.124.212.0.|15.xx1.1.40.136.0.|16.262.2.1.0.488.401.0.|17.115.2.0.1.2.x0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.268.300.0.|21.283.2.1.0.676.469.0.|22.147.1.0.0.1.x0.|23.xx0.1.xx0.|8|1075.824.0.x65.|1137.758.1.0.14.|1093.775.1.0.1.|1495.373.1.0.25.|1349.492.1.0.25.|1430.512.1.0.25.|1324.458.1.0.25.|1178.281.1.x55.|74|x-
+1.1.0.0.6.x202.
+SurivorMode move is MOVE 940 900
+Standard Output Stream:
+MOVE 940 900
+TRAIN
+202
+501
+Standard Output Stream:
+BUILD 1 TOWER
+TRAIN
+203
+501
+Standard Error Stream:
+24|0.204.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.312.325.0.|3.324.3.1.0.728.488.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.0.0.0.|7.281.2.1.0.648.460.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.700.475.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.664.465.0.|14.211.3.1.0.120.209.0.|15.xx1.1.36.131.0.|16.262.2.1.0.484.400.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.264.298.0.|21.283.2.1.0.672.467.0.|22.146.1.0.0.1.x0.|23.xx0.1.xx0.|7|1019.858.0.x64.|1081.816.1.0.9.|1507.423.1.0.24.|1310.524.1.0.24.|1356.575.1.0.24.|1261.513.1.0.24.|1199.289.1.x55.|76|x-
+1.1.0.0.6.x204.
+SurivorMode move is MOVE 880 780
+Standard Output Stream:
+MOVE 880 780
+TRAIN
+204
+501
+Standard Output Stream:
+BUILD 1 TOWER
+TRAIN 6
+205
+501
+Standard Error Stream:
+24|0.203.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.308.323.0.|3.324.3.1.0.724.487.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.4.0.0.|7.281.2.1.0.644.458.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.696.474.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.660.464.0.|14.211.3.1.0.116.206.0.|15.xx1.1.32.126.0.|16.262.2.1.0.480.398.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.260.296.0.|21.283.2.1.0.668.466.0.|22.145.1.0.0.1.x0.|23.xx0.1.xx0.|6|964.829.0.x63.|1464.499.1.0.23.|1251.514.1.0.23.|1363.609.1.0.23.|1182.557.1.0.23.|1227.312.1.x55.|78|10|-
+1.1.0.0.6.x206.
+Empower Tower!
+Standard Output Stream:
+BUILD 10 TOWER
+TRAIN
+206
+501
+Standard Output Stream:
+BUILD 1 TOWER
+TRAIN
+207
+501
+Standard Error Stream:
+24|0.202.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.304.321.0.|3.324.3.1.0.720.485.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.3.0.0.|7.281.2.1.0.640.457.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.792.505.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.656.462.0.|14.211.3.1.0.112.203.0.|15.xx1.1.28.121.0.|16.262.2.1.0.476.396.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.256.294.0.|21.283.2.1.0.664.465.0.|22.144.1.0.0.1.x0.|23.xx0.1.xx0.|6|964.829.0.x63.|1381.554.1.0.22.|1174.566.1.0.22.|1339.676.1.0.22.|1119.635.1.0.11.|1279.326.1.x55.|80|10|-
+1.1.0.0.6.x208.
+SurivorMode move is MOVE 840 700
+Standard Output Stream:
+MOVE 840 700
+TRAIN 8
+208
+501
+Standard Output Stream:
+BUILD 1 TOWER
+TRAIN
+209
+501
+Standard Error Stream:
+24|0.201.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.300.319.0.|3.324.3.1.0.716.484.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.2.0.0.|7.281.2.1.0.636.455.0.|8.238.1.2.0.4.0.0.|9.xx0.1.xx0.|10.291.2.1.0.788.504.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.652.461.0.|14.211.3.1.0.108.200.0.|15.xx1.1.24.115.0.|16.262.2.1.0.472.395.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.252.291.0.|21.283.2.1.0.660.463.0.|22.143.1.0.0.1.x0.|23.xx0.1.xx0.|5|929.776.0.x63.|1353.568.1.0.21.|1098.631.1.0.21.|1252.715.1.0.17.|1339.307.1.x55.|2|10|-
+1.1.0.0.6.x210.
+SurivorMode move is MOVE 800 660
+Standard Output Stream:
+MOVE 800 660
+TRAIN
+210
+501
+Standard Output Stream:
+BUILD 2 TOWER
+TRAIN
+211
+501
+Standard Error Stream:
+24|0.200.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.296.317.0.|3.324.3.1.0.712.483.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.1.0.0.|7.281.2.1.0.632.454.0.|8.238.1.2.0.3.0.0.|9.xx0.1.xx0.|10.291.2.1.0.784.503.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.648.460.0.|14.211.3.1.0.104.197.0.|15.xx1.1.20.110.0.|16.262.2.1.0.468.393.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.248.289.0.|21.283.2.1.0.656.462.0.|22.142.1.0.0.1.x0.|23.xx0.1.xx0.|5|884.736.0.x63.|1341.550.1.0.20.|1008.675.1.0.9.|1152.721.1.0.12.|1282.326.1.x55.|4|x-
+1.1.0.0.6.x212.
+SurivorMode move is MOVE 760 600
+Standard Output Stream:
+MOVE 760 600
+TRAIN
+212
+501
+Standard Output Stream:
+BUILD 2 TOWER
+TRAIN
+213
+501
+Standard Error Stream:
+24|0.199.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.292.315.0.|3.324.3.1.0.708.481.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.0.0.0.|7.281.2.1.0.628.453.0.|8.238.1.2.0.2.0.0.|9.xx0.1.xx0.|10.291.2.1.0.780.501.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.644.458.0.|14.211.3.1.0.100.193.0.|15.xx1.1.16.104.0.|16.262.2.1.0.464.392.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.244.287.0.|21.283.2.1.0.652.461.0.|22.141.1.0.0.1.x0.|23.xx0.1.xx0.|8|841.712.0.x63.|1290.516.1.0.19.|1052.717.1.0.7.|1406.324.1.0.25.|1335.476.1.0.25.|1396.513.1.0.25.|1318.437.1.0.25.|1225.346.1.x55.|6|3|-
+1.1.0.0.6.x214.
+SurivorMode move is MOVE 780 580
+Standard Output Stream:
+MOVE 780 580
+TRAIN
+214
+501
+Standard Output Stream:
+BUILD 2 TOWER
+TRAIN
+215
+501
+Standard Error Stream:
+24|0.198.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.288.313.0.|3.324.3.1.0.704.480.0.|4.xxxxxx0.|5.xx0.1.xx0.|6.xx2.1.0.0.0.|7.281.2.1.0.624.451.0.|8.238.1.2.0.1.0.0.|9.xx0.1.xx0.|10.291.2.1.0.776.500.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.640.457.0.|14.211.3.1.0.96.190.0.|15.xx1.1.12.97.0.|16.262.2.1.0.460.390.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.240.285.0.|21.283.2.1.0.648.459.0.|22.140.1.0.0.1.x0.|23.xx0.1.xx0.|7|791.693.0.x63.|1195.533.1.0.18.|1317.366.1.0.24.|1243.515.1.0.24.|1309.524.1.0.24.|1227.478.1.0.24.|1172.364.1.x55.|8|3|-
+1.1.0.0.6.x216.
+SurivorMode move is MOVE 680 560
+Standard Output Stream:
+MOVE 680 560
+TRAIN
+216
+501
+Standard Output Stream:
+BUILD 2 TOWER
+TRAIN 6
+217
+501
+Standard Error Stream:
+24|0.197.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.384.359.0.|3.324.3.1.0.700.479.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx2.1.4.0.0.|7.281.2.1.0.620.450.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.772.499.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.636.455.0.|14.211.3.1.0.92.187.0.|15.xx1.1.8.91.0.|16.262.2.1.0.456.388.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.236.283.0.|21.283.2.1.0.644.458.0.|22.139.1.0.0.1.x0.|23.xx0.1.xx0.|11|456.299.0.0.25.|377.439.0.0.25.|469.374.0.0.25.|478.333.0.0.25.|753.647.0.x63.|1098.558.1.0.7.|1227.411.1.0.23.|1148.545.1.0.23.|1215.523.1.0.23.|1131.507.1.0.23.|1172.364.1.x55.|10|3|-
+1.1.0.0.6.x218.
+Empower Tower!
+Standard Output Stream:
+BUILD 3 TOWER
+TRAIN
+218
+501
+Standard Output Stream:
+MOVE 1778 498
+TRAIN
+219
+501
+Standard Error Stream:
+24|0.196.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.380.357.0.|3.324.3.1.0.796.510.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx2.1.3.0.0.|7.281.2.1.0.616.448.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.768.498.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.632.454.0.|14.211.3.1.0.88.183.0.|15.xx1.1.4.83.0.|16.262.2.1.0.452.387.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.232.280.0.|21.283.2.1.0.640.456.0.|22.138.1.0.0.1.x0.|23.xx0.1.xx0.|10|554.306.0.0.21.|477.432.0.0.24.|558.376.0.0.24.|573.334.0.0.24.|753.647.0.x63.|1146.465.1.0.22.|1054.575.1.0.19.|1118.549.1.0.22.|1035.537.1.0.22.|1231.376.1.x55.|12|3|-
+1.1.0.0.6.x220.
+SurivorMode move is MOVE 700 520
+Standard Output Stream:
+MOVE 700 520
+TRAIN
+220
+501
+Standard Output Stream:
+MOVE 1778 498
+TRAIN
+221
+501
+Standard Error Stream:
+24|0.195.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.376.355.0.|3.324.3.1.0.792.508.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx2.1.2.0.0.|7.281.2.1.0.612.447.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.764.496.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.628.453.0.|14.211.3.1.0.84.180.0.|15.xxxxxx0.|16.262.2.1.0.448.385.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.228.278.0.|21.283.2.1.0.636.455.0.|22.137.1.0.0.1.x0.|23.xx0.1.xx0.|10|652.289.0.0.17.|567.432.0.0.23.|562.357.0.0.23.|609.301.0.0.23.|730.592.0.x63.|1061.508.1.0.21.|959.584.1.0.6.|1019.560.1.0.18.|944.544.1.0.15.|1290.389.1.x55.|14|x-
+1.1.0.0.6.x222.
+SurivorMode move is MOVE 660 480
+Standard Output Stream:
+MOVE 660 480
+TRAIN
+222
+501
+Standard Output Stream:
+MOVE 1778 498
+TRAIN
+223
+501
+Standard Error Stream:
+24|0.194.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.372.353.0.|3.324.3.1.0.788.507.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx2.1.1.0.0.|7.281.2.1.0.608.446.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.760.495.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.624.451.0.|14.211.3.1.0.80.176.0.|15.xxxxxx0.|16.262.2.1.0.444.383.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.224.276.0.|21.283.2.1.0.632.454.0.|22.136.1.0.0.1.x0.|23.xx0.1.xx0.|9|751.303.0.0.13.|615.478.0.0.22.|588.317.0.0.22.|704.296.0.0.19.|698.541.0.x63.|966.505.1.0.20.|937.533.1.0.5.|972.550.1.0.11.|1311.392.1.x55.|16|x-
+1.1.0.0.6.x224.
+SurivorMode move is MOVE 660 480
+Standard Output Stream:
+MOVE 660 480
+TRAIN
+224
+501
+Standard Output Stream:
+MOVE 1778 498
+TRAIN
+225
+501
+Standard Error Stream:
+24|0.193.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.368.352.0.|3.324.3.1.0.784.506.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx2.1.0.0.0.|7.281.2.1.0.604.444.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.756.494.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.620.450.0.|14.211.3.1.0.76.173.0.|15.xxxxxx0.|16.262.2.1.0.440.382.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.220.273.0.|21.283.2.1.0.628.452.0.|22.135.1.0.0.1.x0.|23.xx0.1.xx0.|11|850.318.0.0.9.|627.482.0.0.21.|671.290.0.0.18.|803.311.0.0.18.|675.500.0.x63.|878.488.1.0.19.|1396.325.1.0.25.|1323.473.1.0.25.|1356.498.1.0.25.|1315.432.1.0.25.|1312.381.1.x55.|18|x-
+1.1.0.0.6.x226.
+SurivorMode move is MOVE 660 480
+Standard Output Stream:
+MOVE 660 480
+TRAIN
+226
+501
+Standard Output Stream:
+BUILD 6 TOWER
+TRAIN
+227
+501
+Standard Error Stream:
+24|0.192.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.364.350.0.|3.324.3.1.0.780.505.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.196.260.0.|7.281.2.1.0.600.443.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.752.492.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.616.448.0.|14.211.3.1.0.72.169.0.|15.xxxxxx0.|16.262.2.1.0.436.380.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.216.271.0.|21.283.2.1.0.624.451.0.|22.134.1.0.0.1.x0.|23.xx0.1.xx0.|11|949.332.0.0.4.|622.481.0.0.20.|770.304.0.0.14.|902.325.0.0.17.|670.501.0.x63.|778.492.1.0.1.|1300.333.1.0.24.|1222.479.1.0.24.|1258.499.1.0.21.|1215.438.1.0.24.|1311.384.1.x55.|20|x-
+1.1.0.0.6.x228.
+SurivorMode move is MOVE 620 460
+Standard Output Stream:
+MOVE 620 460
+TRAIN
+228
+501
+Standard Output Stream:
+BUILD 6 TOWER
+TRAIN
+229
+501
+Standard Error Stream:
+24|0.191.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.360.348.0.|3.324.3.1.0.776.503.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.292.313.0.|7.281.2.1.0.596.441.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.748.491.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.612.447.0.|14.211.3.1.0.68.165.0.|15.xxxxxx0.|16.262.2.1.0.432.378.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.212.269.0.|21.283.2.1.0.620.449.0.|22.133.1.0.0.1.x0.|23.xx0.1.xx0.|10|1023.305.0.0.3.|719.468.0.0.19.|869.319.0.0.10.|986.333.0.0.12.|610.487.0.x63.|1202.354.1.0.23.|1120.488.1.0.23.|1160.497.1.0.17.|1151.457.1.0.23.|1311.384.1.x55.|22|16|-
+1.1.0.0.6.x230.
+Empower Tower!
+Standard Output Stream:
+BUILD 16 TOWER
+TRAIN
+230
+501
+Standard Output Stream:
+BUILD 6 BARRACKS-KNIGHT
+TRAIN
+231
+501
+Standard Error Stream:
+24|0.190.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.356.346.0.|3.324.3.1.0.772.502.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx2.1.0.0.0.|7.281.2.1.0.592.440.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.744.490.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.608.446.0.|14.211.3.1.0.64.161.0.|15.xxxxxx0.|16.262.2.1.0.528.417.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.208.266.0.|21.283.2.1.0.616.448.0.|22.132.1.0.0.1.x0.|23.xx0.1.xx0.|10|1116.310.0.0.2.|818.454.0.0.18.|968.334.0.0.9.|1054.297.0.0.7.|610.487.0.x63.|1156.352.1.0.22.|1020.503.1.0.15.|1060.508.1.0.16.|1100.499.1.0.19.|1311.384.1.x55.|24|16|-
+1.1.0.0.6.x232.
+Empower Tower!
+Standard Output Stream:
+BUILD 16 TOWER
+TRAIN
+232
+501
+Standard Output Stream:
+BUILD 6 TOWER
+TRAIN 6
+233
+501
+Game Summary:
+Princess Boss: [WARNING] Cannot rebuild: training is in progress
+Standard Error Stream:
+24|0.189.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.352.344.0.|3.324.3.1.0.768.501.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx2.1.4.0.0.|7.281.2.1.0.588.438.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.740.489.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.604.444.0.|14.211.3.1.0.60.157.0.|15.xxxxxx0.|16.262.2.1.0.624.452.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.204.264.0.|21.283.2.1.0.612.447.0.|22.131.1.0.0.1.x0.|23.xx0.1.xx0.|9|1211.343.0.0.1.|917.440.0.0.17.|1033.302.0.0.4.|1153.313.0.0.6.|610.487.0.x63.|1137.327.1.0.21.|960.503.1.0.15.|1001.503.1.0.15.|1311.384.1.x55.|26|16|-
+1.1.0.0.6.x234.
+Empower Tower!
+Standard Output Stream:
+BUILD 16 TOWER
+TRAIN
+234
+501
+Standard Output Stream:
+MOVE 1778 498
+TRAIN
+235
+501
+Standard Error Stream:
+24|0.188.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.348.343.0.|3.324.3.1.0.764.500.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx2.1.3.0.0.|7.281.2.1.0.584.437.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.736.487.0.|11.xx0.1.xx0.|12.xx0.1.xx0.|13.271.4.1.0.600.443.0.|14.211.3.1.0.56.153.0.|15.xxxxxx0.|16.262.2.1.0.720.485.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.200.262.0.|21.283.2.1.0.608.445.0.|22.130.1.0.0.1.x0.|23.xx0.1.xx0.|7|969.443.0.0.12.|1125.296.0.0.3.|1240.343.0.0.5.|610.487.0.x63.|1086.299.1.0.20.|901.499.1.0.8.|1318.372.1.x54.|28|16|-
+1.1.0.0.6.x236.
+SurivorMode move is MOVE 720 600
+Standard Output Stream:
+MOVE 720 600
+TRAIN
+236
+501
+Standard Output Stream:
+MOVE 1778 498
+TRAIN
+237
+501
+Standard Error Stream:
+24|0.187.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.344.341.0.|3.324.3.1.0.760.498.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx2.1.2.0.0.|7.281.2.1.0.580.435.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.732.486.0.|11.xx0.1.xx0.|12.xxxxxx0.|13.271.4.1.0.596.441.0.|14.211.3.1.0.52.149.0.|15.xxxxxx0.|16.262.2.1.0.716.483.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.196.259.0.|21.283.2.1.0.604.444.0.|22.129.1.0.0.1.x0.|23.xx0.1.xx0.|6|987.471.0.0.7.|1221.322.0.0.2.|1284.350.0.0.4.|652.530.0.x63.|996.321.1.0.19.|1335.348.1.x53.|30|x-
+1.1.0.0.6.x238.
+SurivorMode move is MOVE 700 460
+Standard Output Stream:
+MOVE 700 460
+TRAIN
+238
+501
+Standard Output Stream:
+MOVE 1331 192
+TRAIN
+239
+501
+Standard Error Stream:
+24|0.186.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.340.339.0.|3.324.3.1.0.756.497.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx2.1.1.0.0.|7.281.2.1.0.576.434.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.728.485.0.|11.xx0.1.xx0.|12.xxxxxx0.|13.271.4.1.0.592.440.0.|14.211.3.1.0.48.145.0.|15.xxxxxx0.|16.262.2.1.0.712.482.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.192.257.0.|21.283.2.1.0.600.442.0.|22.128.1.0.0.1.x0.|23.xx0.1.xx0.|6|1025.498.0.0.2.|1299.313.0.0.1.|1331.346.0.0.3.|690.492.0.x63.|908.369.1.0.7.|1351.298.1.x51.|32|16|-
+1.1.0.0.6.x240.
+SurivorMode move is MOVE 760 600
+Standard Output Stream:
+MOVE 760 600
+TRAIN
+240
+501
+Standard Output Stream:
+BUILD 12 TOWER
+TRAIN
+241
+501
+Standard Error Stream:
+24|0.185.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.336.337.0.|3.324.3.1.0.752.496.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx2.1.0.0.0.|7.281.2.1.0.572.433.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.724.483.0.|11.xx0.1.xx0.|12.xx1.1.196.260.0.|13.271.4.1.0.588.438.0.|14.211.3.1.0.44.140.0.|15.xxxxxx0.|16.262.2.1.0.708.481.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.188.254.0.|21.283.2.1.0.596.441.0.|22.127.1.0.0.1.x0.|23.xx0.1.xx0.|7|1359.341.0.0.2.|723.542.0.x63.|1398.325.1.0.25.|1328.462.1.0.25.|1358.497.1.0.25.|1317.422.1.0.25.|1359.288.1.x49.|34|x-
+1.1.0.0.6.x242.
+SurivorMode move is MOVE 760 600
+Standard Output Stream:
+MOVE 760 600
+TRAIN
+242
+501
+Standard Output Stream:
+BUILD 12 TOWER
+TRAIN
+243
+501
+Standard Error Stream:
+24|0.184.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.332.335.0.|3.324.3.1.0.748.494.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx2.1.0.0.0.|7.281.2.1.0.568.431.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.720.482.0.|11.xx0.1.xx0.|12.xx1.1.292.313.0.|13.271.4.1.0.584.437.0.|14.211.3.1.0.40.136.0.|15.xxxxxx0.|16.262.2.1.0.704.479.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.184.252.0.|21.283.2.1.0.592.439.0.|22.126.1.0.0.1.x0.|23.xx0.1.xx0.|6|742.592.0.x63.|1313.365.1.0.24.|1230.486.1.0.21.|1261.514.1.0.21.|1220.446.1.0.24.|1365.281.1.x48.|36|3|-
+1.1.0.0.6.x244.
+SurivorMode move is MOVE 660 700
+Standard Output Stream:
+MOVE 660 700
+TRAIN
+244
+501
+Standard Output Stream:
+MOVE 1310 440
+TRAIN
+245
+501
+Standard Error Stream:
+24|0.183.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.328.333.0.|3.324.3.1.0.744.493.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx2.1.0.0.0.|7.281.2.1.0.564.430.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.716.481.0.|11.xx0.1.xx0.|12.xx1.1.288.311.0.|13.271.4.1.0.580.435.0.|14.211.3.1.0.36.131.0.|15.xxxxxx0.|16.262.2.1.0.700.478.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.180.249.0.|21.283.2.1.0.588.438.0.|22.125.1.0.0.1.x0.|23.xx0.1.xx0.|6|706.640.0.x63.|1222.406.1.0.23.|1131.517.1.0.13.|1167.536.1.0.17.|1130.481.1.0.23.|1345.338.1.x48.|38|x-
+1.1.0.0.6.x246.
+SurivorMode move is MOVE 700 720
+Standard Output Stream:
+MOVE 700 720
+TRAIN
+246
+501
+Standard Output Stream:
+BUILD 6 MINE
+TRAIN
+247
+501
+Standard Error Stream:
+24|0.182.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.324.331.0.|3.324.3.1.0.740.492.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.560.428.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.712.479.0.|11.xx0.1.xx0.|12.xx1.1.284.309.0.|13.271.4.1.0.576.434.0.|14.211.3.1.0.32.126.0.|15.xxxxxx0.|16.262.2.1.0.696.477.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.176.247.0.|21.283.2.1.0.584.436.0.|22.124.1.0.0.1.x0.|23.xx0.1.xx0.|6|705.696.0.x63.|1147.463.1.0.22.|1034.564.1.0.5.|1076.570.1.0.13.|1046.523.1.0.19.|1345.338.1.x48.|40|13|-
+1.1.0.0.6.x248.
+Empower Tower!
+Standard Output Stream:
+BUILD 13 TOWER
+TRAIN
+248
+501
+Standard Output Stream:
+BUILD 6 MINE
+TRAIN
+249
+501
+Standard Error Stream:
+24|0.181.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.320.329.0.|3.324.3.1.0.736.491.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.556.427.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.708.478.0.|11.xx0.1.xx0.|12.xx1.1.280.307.0.|13.271.4.1.0.672.468.0.|14.211.3.1.0.28.121.0.|15.xxxxxx0.|16.262.2.1.0.692.475.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.172.244.0.|21.283.2.1.0.580.435.0.|22.123.1.0.0.1.x0.|23.xx0.1.xx0.|5|705.696.0.x63.|1065.517.1.0.21.|991.601.1.0.9.|958.566.1.0.15.|1345.338.1.x48.|42|13|-
+1.1.0.0.6.x250.
+Empower Tower!
+Standard Output Stream:
+BUILD 13 TOWER
+TRAIN
+250
+501
+Standard Output Stream:
+MOVE 959 442
+TRAIN
+251
+501
+Standard Error Stream:
+24|0.180.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.316.327.0.|3.324.3.1.0.732.489.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.552.425.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.704.477.0.|11.xx0.1.xx0.|12.xx1.1.276.305.0.|13.271.4.1.0.768.499.0.|14.211.3.1.0.24.115.0.|15.xxxxxx0.|16.262.2.1.0.688.474.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.168.241.0.|21.283.2.1.0.576.434.0.|22.122.1.0.0.1.x0.|23.xx0.1.xx0.|4|705.696.0.x63.|975.562.1.0.17.|959.589.1.0.14.|1287.354.1.x48.|44|13|-
+1.1.0.0.6.x252.
+SurivorMode move is MOVE 600 600
+Standard Output Stream:
+MOVE 600 600
+TRAIN
+252
+501
+Standard Output Stream:
+BUILD 12 BARRACKS-KNIGHT
+TRAIN
+253
+501
+Standard Error Stream:
+24|0.179.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.312.325.0.|3.324.3.1.0.728.488.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.548.424.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.700.475.0.|11.xx0.1.xx0.|12.xx1.1.272.303.0.|13.271.4.1.0.764.498.0.|14.211.3.1.0.20.110.0.|15.xxxxxx0.|16.262.2.1.0.684.473.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.164.239.0.|21.283.2.1.0.572.432.0.|22.121.1.0.0.1.x0.|23.xx0.1.xx0.|3|661.656.0.x63.|949.553.1.0.13.|1285.326.1.x48.|46|x-
+1.1.0.0.6.x254.
+SurivorMode move is MOVE 600 600
+Standard Output Stream:
+MOVE 600 600
+TRAIN
+254
+501
+Standard Output Stream:
+BUILD 12 BARRACKS-KNIGHT
+TRAIN
+255
+501
+Standard Error Stream:
+24|0.178.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.308.323.0.|3.324.3.1.0.724.487.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.544.422.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.696.474.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.760.497.0.|14.211.3.1.0.16.104.0.|15.xxxxxx0.|16.262.2.1.0.680.471.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.160.236.0.|21.283.2.1.0.568.431.0.|22.120.1.0.0.1.x0.|23.xx0.1.xx0.|2|617.615.0.x63.|1285.326.1.x48.|48|x-
+1.1.0.0.6.x256.
+SurivorMode move is MOVE 660 480
+Standard Output Stream:
+MOVE 660 480
+TRAIN
+256
+501
+Standard Output Stream:
+MOVE 1421 193
+TRAIN 12
+257
+501
+Standard Error Stream:
+24|0.177.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.304.321.0.|3.324.3.1.0.720.485.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.540.421.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.692.473.0.|11.xx0.1.xx0.|12.xx2.1.4.0.0.|13.271.4.1.0.756.496.0.|14.211.3.1.0.12.97.0.|15.xxxxxx0.|16.262.2.1.0.676.470.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.156.233.0.|21.283.2.1.0.564.429.0.|22.119.1.0.0.1.x0.|23.xx0.1.xx0.|2|635.558.0.x63.|1343.304.1.x48.|50|x-
+1.1.0.0.6.x258.
+SurivorMode move is MOVE 720 440
+Standard Output Stream:
+MOVE 720 440
+TRAIN
+258
+501
+Standard Output Stream:
+MOVE 1421 193
+TRAIN
+259
+501
+Standard Error Stream:
+24|0.176.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.300.319.0.|3.324.3.1.0.716.484.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.536.419.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.688.471.0.|11.xx0.1.xx0.|12.xx2.1.3.0.0.|13.271.4.1.0.752.494.0.|14.211.3.1.0.8.91.0.|15.xxxxxx0.|16.262.2.1.0.672.469.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.152.231.0.|21.283.2.1.0.560.428.0.|22.118.1.0.0.1.x0.|23.xx0.1.xx0.|2|670.509.0.x63.|1377.255.1.x48.|52|x-
+1.1.0.0.6.x260.
+SurivorMode move is MOVE 720 440
+Standard Output Stream:
+MOVE 720 440
+TRAIN
+260
+501
+Standard Output Stream:
+MOVE 1421 193
+TRAIN
+261
+501
+Standard Error Stream:
+24|0.175.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.296.317.0.|3.324.3.1.0.712.483.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.532.418.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.684.470.0.|11.xx0.1.xx0.|12.xx2.1.2.0.0.|13.271.4.1.0.748.493.0.|14.211.3.1.0.4.83.0.|15.xxxxxx0.|16.262.2.1.0.668.467.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.148.228.0.|21.283.2.1.0.556.426.0.|22.117.1.0.0.1.x0.|23.xx0.1.xx0.|2|717.478.0.x63.|1412.206.1.x48.|54|16|-
+1.1.0.0.6.x262.
+Empower Tower!
+Standard Output Stream:
+BUILD 16 TOWER
+TRAIN
+262
+501
+Standard Output Stream:
+MOVE 1421 193
+TRAIN
+263
+501
+Standard Error Stream:
+24|0.174.1.0.0.1.x0.|1.xxxxxx0.|2.xx1.1.292.315.0.|3.324.3.1.0.708.481.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.528.416.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.680.469.0.|11.xx0.1.xx0.|12.xx2.1.1.0.0.|13.271.4.1.0.744.492.0.|14.xxxxxx0.|15.xxxxxx0.|16.262.2.1.0.764.499.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.144.225.0.|21.283.2.1.0.552.425.0.|22.116.1.0.0.1.x0.|23.xx0.1.xx0.|2|717.478.0.x63.|1421.193.1.x48.|56|16|-
+1.1.0.0.6.x264.
+SurivorMode move is MOVE 580 560
+Standard Output Stream:
+MOVE 580 560
+TRAIN
+264
+501
+Standard Output Stream:
+BUILD 1 MINE
+TRAIN
+265
+501
+Standard Error Stream:
+24|0.173.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.288.313.0.|3.324.3.1.0.704.480.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.524.415.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.676.467.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.740.490.0.|14.xxxxxx0.|15.xxxxxx0.|16.262.2.1.0.760.497.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.140.222.0.|21.283.2.1.0.548.423.0.|22.115.1.0.0.1.x0.|23.xx0.1.xx0.|6|666.509.0.x63.|1270.126.1.0.25.|1201.276.1.0.25.|1259.314.1.0.25.|1185.238.1.0.25.|1421.193.1.x48.|58|x-
+1.1.0.0.6.x266.
+SurivorMode move is MOVE 600 600
+Standard Output Stream:
+MOVE 600 600
+TRAIN
+266
+501
+Standard Output Stream:
+MOVE 1613 512
+TRAIN
+267
+501
+Standard Error Stream:
+24|0.172.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.284.311.0.|3.324.3.1.0.700.479.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.520.413.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.672.466.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.736.489.0.|14.xxxxxx0.|15.xxxxxx0.|16.262.2.1.0.756.496.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.136.219.0.|21.283.2.1.0.544.422.0.|22.114.1.0.0.1.x0.|23.xx0.1.xx0.|6|631.558.0.x63.|1184.172.1.0.24.|1121.315.1.0.21.|1166.350.1.0.24.|1095.282.1.0.21.|1452.244.1.x48.|60|x-
+1.1.0.0.6.x268.
+SurivorMode move is MOVE 600 600
+Standard Output Stream:
+MOVE 600 600
+TRAIN
+268
+501
+Standard Output Stream:
+MOVE 1613 512
+TRAIN
+269
+501
+Standard Error Stream:
+24|0.171.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.280.309.0.|3.324.3.1.0.696.477.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.516.411.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.668.465.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.732.488.0.|14.xxxxxx0.|15.xxxxxx0.|16.262.2.1.0.752.495.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.132.216.0.|21.283.2.1.0.540.420.0.|22.113.1.0.0.1.x0.|23.xx0.1.xx0.|6|611.602.0.x63.|1104.232.1.0.23.|1056.297.1.0.20.|1154.348.1.0.23.|1004.316.1.0.14.|1483.295.1.x48.|62|7|-
+1.1.0.0.6.x270.
+Empower Tower!
+Standard Output Stream:
+BUILD 7 TOWER
+TRAIN
+270
+501
+Standard Output Stream:
+MOVE 1613 512
+TRAIN 12
+271
+501
+Standard Error Stream:
+24|0.170.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.276.307.0.|3.324.3.1.0.692.476.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.612.447.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.664.463.0.|11.xx0.1.xx0.|12.xx2.1.4.0.0.|13.271.4.1.0.728.487.0.|14.xxxxxx0.|15.xxxxxx0.|16.262.2.1.0.748.494.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.128.213.0.|21.283.2.1.0.536.419.0.|22.112.1.0.0.1.x0.|23.xx0.1.xx0.|6|611.602.0.x63.|1024.292.1.0.22.|969.341.1.0.19.|1144.334.1.0.22.|923.375.1.0.5.|1514.346.1.x48.|64|7|-
+1.1.0.0.6.x272.
+Empower Tower!
+Standard Output Stream:
+BUILD 7 TOWER
+TRAIN
+272
+501
+Standard Output Stream:
+MOVE 1613 512
+TRAIN
+273
+501
+Standard Error Stream:
+24|0.169.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.272.305.0.|3.324.3.1.0.688.475.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.708.480.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.660.462.0.|11.xx0.1.xx0.|12.xx2.1.3.0.0.|13.271.4.1.0.724.485.0.|14.xxxxxx0.|15.xxxxxx0.|16.262.2.1.0.744.492.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.124.210.0.|21.283.2.1.0.532.417.0.|22.111.1.0.0.1.x0.|23.xx0.1.xx0.|5|611.602.0.x63.|944.352.1.0.21.|888.400.1.0.18.|1113.309.1.0.21.|1545.398.1.x48.|66|7|-
+1.1.0.0.6.x274.
+SurivorMode move is MOVE 660 480
+Standard Output Stream:
+MOVE 660 480
+TRAIN
+274
+501
+Standard Output Stream:
+MOVE 1613 512
+TRAIN
+275
+501
+Standard Error Stream:
+24|0.168.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.268.303.0.|3.324.3.1.0.684.473.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.704.479.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.656.460.0.|11.xx0.1.xx0.|12.xx2.1.2.0.0.|13.271.4.1.0.720.484.0.|14.xxxxxx0.|15.xxxxxx0.|16.262.2.1.0.740.491.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.120.207.0.|21.283.2.1.0.528.416.0.|22.110.1.0.0.1.x0.|23.xx0.1.xx0.|4|633.546.0.x63.|859.405.1.0.20.|1031.302.1.0.20.|1576.450.1.x48.|68|x-
+1.1.0.0.6.x276.
+SurivorMode move is MOVE 700 580
+Standard Output Stream:
+MOVE 700 580
+TRAIN
+276
+501
+Standard Output Stream:
+MOVE 1613 512
+TRAIN
+277
+501
+Standard Error Stream:
+24|0.167.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.264.301.0.|3.324.3.1.0.680.472.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.700.477.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.652.459.0.|11.xx0.1.xx0.|12.xx2.1.1.0.0.|13.271.4.1.0.716.483.0.|14.xxxxxx0.|15.xxxxxx0.|16.262.2.1.0.736.490.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.116.204.0.|21.283.2.1.0.524.414.0.|22.109.1.0.0.1.x0.|23.xx0.1.xx0.|4|687.573.0.x63.|787.475.1.0.2.|950.360.1.0.19.|1607.502.1.x48.|70|x-
+1.1.0.0.6.x278.
+SurivorMode move is MOVE 600 600
+Standard Output Stream:
+MOVE 600 600
+TRAIN
+278
+501
+Standard Output Stream:
+MOVE 1613 512
+TRAIN
+279
+501
+Standard Error Stream:
+24|0.166.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.260.299.0.|3.324.3.1.0.676.471.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.696.476.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.648.458.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.712.481.0.|14.xxxxxx0.|15.xxxxxx0.|16.262.2.1.0.732.488.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.112.201.0.|21.283.2.1.0.520.412.0.|22.108.1.0.0.1.x0.|23.xx0.1.xx0.|7|630.591.0.x63.|869.418.1.0.18.|1277.126.1.0.25.|1203.280.1.0.25.|1267.315.1.0.25.|1186.242.1.0.25.|1613.512.1.x48.|72|x-
+1.1.0.0.6.x280.
+SurivorMode move is MOVE 660 480
+Standard Output Stream:
+MOVE 660 480
+TRAIN
+280
+501
+Standard Output Stream:
+BUILD 15 MINE
+TRAIN
+281
+501
+Standard Error Stream:
+24|0.165.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.256.297.0.|3.324.3.1.0.672.469.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.692.475.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.644.456.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.708.480.0.|14.xxxxxx0.|15.xx0.1.xx0.|16.262.2.1.0.728.487.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.108.198.0.|21.283.2.1.0.516.411.0.|22.107.1.0.0.1.x0.|23.xx0.1.xx0.|6|646.533.0.x63.|1189.167.1.0.24.|1122.316.1.0.24.|1173.348.1.0.24.|1095.284.1.0.24.|1613.512.1.x48.|74|x-
+1.1.0.0.6.x282.
+SurivorMode move is MOVE 580 560
+Standard Output Stream:
+MOVE 580 560
+TRAIN
+282
+501
+Standard Output Stream:
+BUILD 15 MINE
+TRAIN
+283
+501
+Standard Error Stream:
+24|0.164.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.252.295.0.|3.324.3.1.0.668.468.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.688.473.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.640.455.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.704.479.0.|14.xxxxxx0.|15.xx0.1.xx0.|16.262.2.1.0.724.486.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.104.195.0.|21.283.2.1.0.512.409.0.|22.106.1.0.0.1.x0.|23.xx0.1.xx0.|6|608.550.0.x63.|1105.222.1.0.23.|1050.298.1.0.23.|1148.339.1.0.23.|1002.317.1.0.17.|1613.512.1.x48.|76|7|-
+1.1.0.0.6.x284.
+Empower Tower!
+Standard Output Stream:
+BUILD 7 TOWER
+TRAIN
+284
+501
+Standard Output Stream:
+BUILD 15 MINE
+TRAIN
+285
+501
+Standard Error Stream:
+24|0.163.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.248.292.0.|3.324.3.1.0.664.467.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.784.505.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.636.453.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.700.477.0.|14.xxxxxx0.|15.xx0.1.xx0.|16.262.2.1.0.720.485.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.100.192.0.|21.283.2.1.0.508.408.0.|22.105.1.0.0.1.x0.|23.xx0.1.xx0.|6|608.550.0.x63.|1022.277.1.0.22.|961.341.1.0.22.|1114.310.1.0.22.|916.368.1.0.5.|1613.512.1.x48.|78|7|-
+1.1.0.0.6.x286.
+SurivorMode move is MOVE 660 480
+Standard Output Stream:
+MOVE 660 480
+TRAIN
+286
+501
+Standard Output Stream:
+MOVE 1643 215
+TRAIN
+287
+501
+Standard Error Stream:
+24|0.162.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.244.290.0.|3.324.3.1.0.660.465.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.780.503.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.632.452.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.696.476.0.|14.xxxxxx0.|15.xx0.1.xx0.|16.262.2.1.0.716.483.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.96.188.0.|21.283.2.1.0.504.406.0.|22.104.1.0.0.1.x0.|23.xx0.1.xx0.|5|644.502.0.x63.|936.328.1.0.21.|872.386.1.0.21.|1029.303.1.0.21.|1619.452.1.x48.|80|x-
+1.1.0.0.6.x288.
+SurivorMode move is MOVE 760 600
+Standard Output Stream:
+MOVE 760 600
+TRAIN 8
+288
+501
+Standard Output Stream:
+MOVE 1643 215
+TRAIN 12
+289
+501
+Standard Error Stream:
+24|0.161.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.240.288.0.|3.324.3.1.0.656.464.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.776.502.0.|8.238.1.2.0.4.0.0.|9.xx0.1.xx0.|10.291.2.1.0.628.451.0.|11.xx0.1.xx0.|12.xx2.1.4.0.0.|13.271.4.1.0.692.475.0.|14.xxxxxx0.|15.xx0.1.xx0.|16.262.2.1.0.712.482.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.92.185.0.|21.283.2.1.0.500.405.0.|22.103.1.0.0.1.x0.|23.xx0.1.xx0.|5|690.541.0.x63.|860.393.1.0.20.|796.451.1.0.3.|946.358.1.0.20.|1625.392.1.x48.|2|x-
+1.1.0.0.6.x290.
+SurivorMode move is MOVE 600 600
+Standard Output Stream:
+MOVE 600 600
+TRAIN
+290
+501
+Standard Output Stream:
+BUILD 19 TOWER
+TRAIN
+291
+501
+Standard Error Stream:
+24|0.160.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.236.286.0.|3.324.3.1.0.652.463.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.772.501.0.|8.238.1.2.0.3.0.0.|9.xx0.1.xx0.|10.291.2.1.0.624.449.0.|11.xx0.1.xx0.|12.xx2.1.3.0.0.|13.271.4.1.0.688.473.0.|14.xxxxxx0.|15.xx0.1.xx0.|16.262.2.1.0.708.481.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.88.181.0.|21.283.2.1.0.496.403.0.|22.102.1.0.0.1.x0.|23.xx0.1.xx0.|4|640.574.0.x63.|783.456.1.0.15.|864.416.1.0.19.|1655.340.1.x48.|4|x-
+1.1.0.0.6.x292.
+SurivorMode move is MOVE 600 600
+Standard Output Stream:
+MOVE 600 600
+TRAIN
+292
+501
+Standard Output Stream:
+BUILD 19 TOWER
+TRAIN
+293
+501
+Standard Error Stream:
+24|0.159.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.232.284.0.|3.324.3.1.0.648.461.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.768.499.0.|8.238.1.2.0.2.0.0.|9.xx0.1.xx0.|10.291.2.1.0.620.448.0.|11.xx0.1.xx0.|12.xx2.1.2.0.0.|13.271.4.1.0.684.472.0.|14.xxxxxx0.|15.xx0.1.xx0.|16.262.2.1.0.704.479.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.84.178.0.|21.283.2.1.0.492.402.0.|22.101.1.0.0.1.x0.|23.xx0.1.xx0.|3|611.602.0.x63.|783.475.1.0.14.|1685.288.1.x48.|6|7|-
+1.1.0.0.6.x294.
+SurivorMode move is MOVE 700 720
+Standard Output Stream:
+MOVE 700 720
+TRAIN
+294
+501
+Standard Output Stream:
+BUILD 19 TOWER
+TRAIN
+295
+501
+Standard Error Stream:
+24|0.158.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.228.281.0.|3.324.3.1.0.644.460.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.764.498.0.|8.238.1.2.0.1.0.0.|9.xx0.1.xx0.|10.291.2.1.0.616.446.0.|11.xx0.1.xx0.|12.xx2.1.1.0.0.|13.271.4.1.0.680.471.0.|14.xxxxxx0.|15.xx0.1.xx0.|16.262.2.1.0.700.478.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xxxxxx0.|20.xx1.1.80.174.0.|21.283.2.1.0.488.400.0.|22.100.1.0.0.1.x0.|23.xx0.1.xx0.|2|647.650.0.x63.|1693.274.1.x48.|8|x-
+1.1.0.0.6.x296.
+SurivorMode move is MOVE 760 600
+Standard Output Stream:
+MOVE 760 600
+TRAIN
+296
+501
+Standard Output Stream:
+BUILD 19 TOWER
+TRAIN
+297
+501
+Standard Error Stream:
+24|0.157.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.224.279.0.|3.324.3.1.0.640.458.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.760.497.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.612.445.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.676.469.0.|14.xxxxxx0.|15.xx0.1.xx0.|16.262.2.1.0.696.477.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xx1.1.196.262.0.|20.xx1.1.76.170.0.|21.283.2.1.0.484.398.0.|22.99.1.0.0.1.x0.|23.xx0.1.xx0.|10|451.293.0.0.25.|377.439.0.0.25.|470.368.0.0.25.|475.326.0.0.25.|702.626.0.x63.|1292.127.1.0.25.|1206.284.1.0.25.|1276.316.1.0.25.|1187.247.1.0.25.|1693.274.1.x48.|10|x-
+1.1.0.0.6.x298.
+SurivorMode move is MOVE 580 580
+Standard Output Stream:
+MOVE 580 580
+TRAIN
+298
+501
+Standard Output Stream:
+BUILD 19 TOWER
+TRAIN
+299
+501
+Standard Error Stream:
+24|0.156.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.220.277.0.|3.324.3.1.0.636.457.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.756.496.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.608.443.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.672.468.0.|14.xxxxxx0.|15.xx0.1.xx0.|16.262.2.1.0.692.475.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xx1.1.292.315.0.|20.xx1.1.72.167.0.|21.283.2.1.0.480.397.0.|22.98.1.0.0.1.x0.|23.xx0.1.xx0.|10|550.290.0.0.24.|476.428.0.0.24.|561.360.0.0.24.|577.321.0.0.24.|646.605.0.x63.|1206.158.1.0.24.|1134.324.1.0.24.|1185.358.1.0.24.|1101.298.1.0.18.|1693.274.1.x48.|12|x-
+1.1.0.0.6.x300.
+SurivorMode move is MOVE 520 520
+Standard Output Stream:
+MOVE 520 520
+TRAIN
+300
+501
+Standard Output Stream:
+BUILD 19 TOWER
+TRAIN 12
+301
+501
+Standard Error Stream:
+24|0.155.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.216.275.0.|3.324.3.1.0.632.456.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.752.494.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.604.442.0.|11.xx0.1.xx0.|12.xx2.1.4.0.0.|13.271.4.1.0.668.467.0.|14.xxxxxx0.|15.xx0.1.xx0.|16.262.2.1.0.688.474.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xx1.1.388.360.0.|20.xx1.1.68.163.0.|21.283.2.1.0.476.395.0.|22.97.1.0.0.1.x0.|23.xx0.1.xx0.|10|634.277.0.0.23.|562.420.0.0.23.|596.309.0.0.23.|674.289.0.0.20.|612.570.0.x63.|1124.215.1.0.23.|1077.298.1.0.23.|1163.368.1.0.23.|1012.311.1.0.11.|1693.274.1.x48.|14|7|-
+1.1.0.0.6.x302.
+SurivorMode move is MOVE 480 540
+Standard Output Stream:
+MOVE 480 540
+TRAIN
+302
+501
+Standard Output Stream:
+MOVE 1778 497
+TRAIN
+303
+501
+Standard Error Stream:
+24|0.154.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.212.272.0.|3.324.3.1.0.628.454.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.748.493.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.600.441.0.|11.xx0.1.xx0.|12.xx2.1.3.0.0.|13.271.4.1.0.664.465.0.|14.xxxxxx0.|15.xx0.1.xx0.|16.262.2.1.0.684.473.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xx1.1.384.359.0.|20.xx1.1.64.159.0.|21.283.2.1.0.472.394.0.|22.96.1.0.0.1.x0.|23.xx0.1.xx0.|9|734.282.0.0.19.|587.459.0.0.22.|689.291.0.0.22.|774.293.0.0.19.|601.532.0.x63.|1038.267.1.0.22.|985.326.1.0.22.|1161.362.1.0.22.|1714.330.1.x48.|16|7|-
+1.1.0.0.6.x304.
+SurivorMode move is MOVE 480 540
+Standard Output Stream:
+MOVE 480 540
+TRAIN
+304
+501
+Standard Output Stream:
+MOVE 1778 497
+TRAIN
+305
+501
+Standard Error Stream:
+24|0.153.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.208.270.0.|3.324.3.1.0.624.453.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.744.492.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.596.439.0.|11.xx0.1.xx0.|12.xx2.1.2.0.0.|13.271.4.1.0.660.464.0.|14.xxxxxx0.|15.xx0.1.xx0.|16.262.2.1.0.680.471.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xx1.1.380.357.0.|20.xx1.1.60.155.0.|21.283.2.1.0.468.392.0.|22.95.1.0.0.1.x0.|23.xx0.1.xx0.|9|833.292.0.0.18.|674.485.0.0.21.|789.300.0.0.18.|874.303.0.0.15.|569.497.0.x63.|949.312.1.0.21.|893.365.1.0.10.|1148.340.1.0.21.|1735.386.1.x48.|18|7|-
+1.1.0.0.6.x306.
+SurivorMode move is MOVE 480 360
+Standard Output Stream:
+MOVE 480 360
+TRAIN
+306
+501
+Standard Output Stream:
+MOVE 1778 497
+TRAIN
+307
+501
+Standard Error Stream:
+24|0.152.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.204.268.0.|3.324.3.1.0.620.451.0.|4.231.3.xxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.740.490.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.592.438.0.|11.xx0.1.xx0.|12.xx2.1.1.0.0.|13.271.4.1.0.656.462.0.|14.xxxxxx0.|15.xx0.1.xx0.|16.262.2.1.0.676.470.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xx1.1.376.355.0.|20.xx1.1.56.151.0.|21.283.2.1.0.464.390.0.|22.94.1.0.0.1.x0.|23.xx0.1.xx0.|8|930.305.0.0.17.|774.479.0.0.20.|888.311.0.0.17.|972.303.0.0.11.|536.447.0.x63.|856.355.1.0.20.|1091.301.1.0.20.|1775.412.1.x48.|20|x-
+1.1.0.0.6.x308.
+SurivorMode move is MOVE 480 320
+Standard Output Stream:
+MOVE 480 320
+TRAIN
+308
+501
+Standard Output Stream:
+BUILD 15 TOWER
+TRAIN
+309
+501
+Standard Error Stream:
+24|0.151.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.200.265.0.|3.324.3.1.0.616.450.0.|4.231.3.xxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.736.489.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.588.436.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.652.461.0.|14.xxxxxx0.|15.xx1.1.196.261.0.|16.262.2.1.0.672.469.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xx1.1.372.353.0.|20.xx1.1.52.146.0.|21.283.2.1.0.460.389.0.|22.93.1.0.0.1.x0.|23.xx0.1.xx0.|12|1020.307.0.0.13.|874.472.0.0.19.|980.324.0.0.16.|1065.297.0.0.10.|512.392.0.x63.|757.366.1.0.6.|992.278.1.0.19.|1263.127.1.0.25.|1195.266.1.0.25.|1232.304.1.0.25.|1184.227.1.0.25.|1775.412.1.x48.|22|x-
+1.1.0.0.6.x310.
+SurivorMode move is MOVE 480 260
+Standard Output Stream:
+MOVE 480 260
+TRAIN
+310
+501
+Standard Output Stream:
+BUILD 15 TOWER
+TRAIN
+311
+501
+Standard Error Stream:
+24|0.150.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.196.263.0.|3.324.3.1.0.612.449.0.|4.231.3.xxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.732.488.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.584.435.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.648.460.0.|14.xxxxxx0.|15.xx1.1.292.314.0.|16.262.2.1.0.668.467.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xx1.1.368.351.0.|20.283.2.1.1.48.142.0.|21.283.2.1.0.456.387.0.|22.92.1.0.0.1.x0.|23.xx0.1.xx0.|11|1111.308.0.0.9.|974.465.0.0.18.|1062.297.0.0.15.|1150.332.0.0.9.|498.334.0.x63.|893.289.1.0.18.|1166.153.1.0.24.|1102.272.1.0.24.|1151.290.1.0.24.|1082.235.1.0.24.|1775.412.1.x48.|24|x-
+1.1.0.0.6.x312.
+SurivorMode move is MOVE 480 240
+Standard Output Stream:
+MOVE 480 240
+TRAIN
+312
+501
+Standard Output Stream:
+BUILD 15 TOWER
+TRAIN
+313
+501
+Standard Error Stream:
+24|0.149.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.192.260.0.|3.324.3.1.0.608.447.0.|4.231.3.xxxx0.|5.xxxxxx0.|6.xx0.1.xx0.|7.281.2.1.0.728.487.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.580.433.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.644.458.0.|14.xxxxxx0.|15.xx1.1.388.359.0.|16.262.2.1.0.664.466.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xx1.1.364.350.0.|20.283.2.1.1.44.138.0.|21.283.2.1.0.452.385.0.|22.91.1.0.0.1.x0.|23.xx0.1.xx0.|11|1210.332.0.0.8.|1044.503.0.0.14.|1163.314.0.0.14.|1249.345.0.0.8.|487.275.0.x63.|793.286.1.0.7.|1116.187.1.0.23.|1006.267.1.0.23.|1055.268.1.0.23.|978.237.1.0.23.|1775.412.1.x48.|26|x-
+1.1.0.0.6.x314.
+SurivorMode move is MOVE 480 240
+Standard Output Stream:
+MOVE 480 240
+TRAIN
+314
+501
+Standard Output Stream:
+MOVE 1594 650
+TRAIN
+315
+501
+Standard Error Stream:
+24|0.148.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.188.258.0.|3.324.3.1.0.604.446.0.|4.231.3.xxxx0.|5.xxxxxx0.|6.xxxxxx0.|7.281.2.1.0.724.485.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.576.432.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.640.457.0.|14.xxxxxx0.|15.xx1.1.384.357.0.|16.262.2.1.0.660.464.0.|17.xx0.1.xx0.|18.xxxxxx0.|19.xx1.1.360.348.0.|20.283.2.1.1.40.133.0.|21.283.2.1.0.448.384.0.|22.90.1.0.0.1.x0.|23.xx0.1.xx0.|10|1309.347.0.0.7.|1143.494.0.0.10.|1262.331.0.0.13.|1343.354.0.0.7.|480.247.0.x63.|1046.231.1.0.22.|908.265.1.0.19.|955.264.1.0.22.|876.237.1.0.22.|1763.406.1.x48.|28|4|-
+1.1.0.0.6.x316.
+Standard Output Stream:
+BUILD 4 MINE
+TRAIN
+316
+501
+Standard Output Stream:
+MOVE 1594 650
+TRAIN 12
+317
+501
+Standard Error Stream:
+24|0.147.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.184.255.0.|3.324.3.1.0.600.444.0.|4.230.3.0.0.1.x0.|5.xxxxxx0.|6.xxxxxx0.|7.281.2.1.0.720.484.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.572.430.0.|11.xx0.1.xx0.|12.xx2.1.4.0.0.|13.271.4.1.0.636.455.0.|14.xxxxxx0.|15.xx1.1.380.355.0.|16.262.2.1.0.656.463.0.|17.xxxxxx0.|18.xxxxxx0.|19.xx1.1.356.346.0.|20.283.2.1.1.36.128.0.|21.283.2.1.0.444.382.0.|22.89.1.0.0.1.x0.|23.xx0.1.xx0.|10|1387.327.0.0.6.|1242.480.0.0.6.|1349.346.0.0.12.|1432.326.0.0.3.|480.247.0.x63.|946.234.1.0.21.|809.262.1.0.18.|855.260.1.0.18.|778.245.1.0.14.|1741.398.1.x48.|31|4|-
+1.1.0.0.6.x318.
+Standard Output Stream:
+BUILD 4 MINE
+TRAIN
+318
+501
+Standard Output Stream:
+MOVE 1594 653
+TRAIN
+319
+501
+Standard Error Stream:
+24|0.146.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.180.253.0.|3.324.3.1.0.596.443.0.|4.228.3.0.0.2.x0.|5.xxxxxx0.|6.xxxxxx0.|7.281.2.1.0.716.483.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.568.429.0.|11.xx0.1.xx0.|12.xx2.1.3.0.0.|13.271.4.1.0.632.454.0.|14.xxxxxx0.|15.xx1.1.376.354.0.|16.262.2.1.0.652.462.0.|17.xxxxxx0.|18.xxxxxx0.|19.xx1.1.352.344.0.|20.283.2.1.1.32.123.0.|21.283.2.1.0.440.380.0.|22.88.1.0.0.1.x0.|23.xx0.1.xx0.|9|1483.340.0.0.5.|1332.470.0.0.5.|1432.326.0.0.11.|480.247.0.x63.|846.237.1.0.20.|714.259.1.0.17.|755.257.1.0.14.|674.251.1.0.6.|1703.397.1.x48.|35|4|-
+1.1.0.0.6.x320.
+Standard Output Stream:
+BUILD 4 MINE
+TRAIN
+320
+501
+Standard Output Stream:
+MOVE 1594 653
+TRAIN
+321
+501
+Standard Error Stream:
+24|0.145.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.176.250.0.|3.324.3.1.0.592.441.0.|4.225.3.0.0.3.x0.|5.xxxxxx0.|6.xxxxxx0.|7.281.2.1.0.712.481.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.564.427.0.|11.xx0.1.xx0.|12.xx2.1.2.0.0.|13.271.4.1.0.628.453.0.|14.xxxxxx0.|15.xx1.1.372.352.0.|16.262.2.1.0.648.460.0.|17.xxxxxx0.|18.xxxxxx0.|19.xx1.1.348.342.0.|20.283.2.1.1.28.118.0.|21.283.2.1.0.436.379.0.|22.87.1.0.0.1.x0.|23.xx0.1.xx0.|8|1386.510.0.0.4.|1525.364.0.0.10.|480.247.0.x63.|750.252.1.0.16.|614.254.1.0.16.|655.253.1.0.9.|574.249.1.0.2.|1653.419.1.x48.|40|4|-
+1.1.0.0.6.x322.
+SurivorMode move is MOVE 360 300
+Standard Output Stream:
+MOVE 360 300
+TRAIN
+322
+501
+Standard Output Stream:
+MOVE 1594 653
+TRAIN
+323
+501
+Standard Error Stream:
+24|0.144.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.172.248.0.|3.324.3.1.0.588.440.0.|4.222.3.0.0.3.x0.|5.xxxxxx0.|6.xxxxxx0.|7.281.2.1.0.708.480.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.560.426.0.|11.xx0.1.xx0.|12.xx2.1.1.0.0.|13.271.4.1.0.624.451.0.|14.xxxxxx0.|15.xx1.1.368.350.0.|16.262.2.1.0.644.459.0.|17.xxxxxx0.|18.xxxxxx0.|19.xx1.1.344.340.0.|20.xx1.1.24.112.0.|21.283.2.1.0.432.377.0.|22.86.1.0.0.1.x0.|23.xx0.1.xx0.|8|1484.500.0.0.3.|1584.432.0.0.3.|426.266.0.x62.|650.257.1.0.8.|517.261.1.0.12.|558.259.1.0.8.|475.261.1.0.1.|1617.471.1.x47.|45|8|-
+1.1.0.0.6.x324.
+SurivorMode move is MOVE 300 380
+Standard Output Stream:
+MOVE 300 380
+TRAIN
+324
+501
+Standard Output Stream:
+MOVE 1594 653
+TRAIN
+325
+501
+Standard Error Stream:
+24|0.143.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.168.245.0.|3.324.3.1.0.584.439.0.|4.219.3.0.0.3.x0.|5.xxxxxx0.|6.xxxxxx0.|7.281.2.1.0.704.479.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.556.424.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.620.450.0.|14.211.3.xxxx0.|15.xx1.1.364.348.0.|16.262.2.1.0.640.458.0.|17.xxxxxx0.|18.xxxxxx0.|19.xx1.1.340.339.0.|20.xx1.1.20.106.0.|21.283.2.1.0.428.375.0.|22.85.1.0.0.1.x0.|23.xx0.1.xx0.|10|1561.526.0.0.2.|372.256.0.x61.|550.259.1.0.3.|439.238.1.0.11.|474.262.1.0.7.|1264.127.1.0.25.|1185.252.1.0.25.|1208.287.1.0.25.|1184.211.1.0.25.|1613.535.1.x45.|50|8|-
+1.1.0.0.6.x326.
+SurivorMode move is MOVE 240 360
+Standard Output Stream:
+MOVE 240 360
+TRAIN
+326
+501
+Standard Output Stream:
+MOVE 1594 653
+TRAIN
+327
+501
+Standard Error Stream:
+24|0.142.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.164.243.0.|3.324.3.1.0.580.437.0.|4.216.3.0.0.3.x0.|5.xxxxxx0.|6.xxxxxx0.|7.281.2.1.0.700.477.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.552.423.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.616.448.0.|14.211.3.xxxx0.|15.xx1.1.360.346.0.|16.262.2.1.0.636.456.0.|17.xxxxxx0.|18.xxxxxx0.|19.xx1.1.336.337.0.|20.xx1.1.16.100.0.|21.283.2.1.0.424.374.0.|22.84.1.0.0.1.x0.|23.xx0.1.xx0.|8|315.286.0.x60.|353.261.1.0.10.|394.267.1.0.6.|1165.144.1.0.24.|1084.258.1.0.24.|1109.289.1.0.21.|1086.219.1.0.24.|1615.593.1.x44.|55|8|-
+1.1.0.0.6.x328.
+SurivorMode move is MOVE 180 400
+Standard Output Stream:
+MOVE 180 400
+TRAIN
+328
+501
+Standard Output Stream:
+MOVE 1613 507
+TRAIN
+329
+501
+Standard Error Stream:
+24|0.141.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.160.240.0.|3.324.3.1.0.576.436.0.|4.213.3.0.0.3.x0.|5.xxxxxx0.|6.xxxxxx0.|7.281.2.1.0.696.476.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.548.421.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.612.447.0.|14.211.3.xxxx0.|15.xx1.1.356.345.0.|16.262.2.1.0.632.455.0.|17.xxxxxx0.|18.xxxxxx0.|19.xx1.1.332.335.0.|20.xx1.1.12.94.0.|21.283.2.1.0.420.372.0.|22.83.1.0.0.1.x0.|23.xx0.1.xx0.|8|266.327.0.x59.|290.286.1.0.9.|325.291.1.0.2.|1121.174.1.0.23.|978.273.1.0.20.|1013.296.1.0.17.|992.234.1.0.23.|1614.533.1.x44.|60|x-
+1.1.0.0.6.x330.
+SurivorMode move is MOVE 180 440
+Standard Output Stream:
+MOVE 180 440
+TRAIN
+330
+501
+Standard Output Stream:
+BUILD 15 MINE
+TRAIN
+331
+501
+Standard Error Stream:
+24|0.140.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.156.237.0.|3.324.3.1.0.572.434.0.|4.210.3.0.0.3.x0.|5.xxxxxx0.|6.xxxxxx0.|7.281.2.1.0.692.475.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.544.420.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.608.446.0.|14.211.3.xxxx0.|15.xx0.1.xx0.|16.262.2.1.0.628.453.0.|17.xxxxxx0.|18.xxxxxx0.|19.xx1.1.328.333.0.|20.xx1.1.8.87.0.|21.283.2.1.0.416.370.0.|22.82.1.0.0.1.x0.|23.xx0.1.xx0.|7|227.379.0.x57.|240.326.1.0.8.|1062.229.1.0.22.|877.288.1.0.15.|915.307.1.0.13.|895.250.1.0.22.|1614.533.1.x44.|65|x-
+1.1.0.0.6.x332.
+SurivorMode move is MOVE 280 480
+Standard Output Stream:
+MOVE 280 480
+TRAIN
+332
+501
+Standard Output Stream:
+BUILD 15 MINE
+TRAIN
+333
+501
+Standard Error Stream:
+24|0.139.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.152.235.0.|3.324.3.1.0.568.433.0.|4.207.3.0.0.3.x0.|5.xxxxxx0.|6.xxxxxx0.|7.281.2.1.0.688.473.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.540.418.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.604.444.0.|14.211.3.xxxx0.|15.xx0.1.xx0.|16.262.2.1.0.624.452.0.|17.xxxxxx0.|18.xxxxxx0.|19.xx1.1.324.331.0.|20.xx1.1.4.79.0.|21.283.2.1.0.412.369.0.|22.81.1.0.0.1.x0.|23.xx0.1.xx0.|7|272.418.0.x56.|252.370.1.0.4.|965.252.1.0.21.|779.310.1.0.10.|816.324.1.0.9.|799.275.1.0.21.|1614.533.1.x44.|70|14|-
+1.1.0.0.6.x334.
+Standard Output Stream:
+BUILD 14 MINE
+TRAIN
+334
+501
+Standard Output Stream:
+BUILD 15 MINE
+TRAIN
+335
+501
+Standard Error Stream:
+24|0.138.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.148.232.0.|3.324.3.1.0.564.431.0.|4.204.3.0.0.3.x0.|5.xxxxxx0.|6.xxxxxx0.|7.281.2.1.0.684.472.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.536.417.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.600.443.0.|14.210.3.0.0.1.x0.|15.xx0.1.xx0.|16.262.2.1.0.620.451.0.|17.xxxxxx0.|18.xxxxxx0.|19.xx1.1.320.329.0.|20.xxxxxx0.|21.283.2.1.0.408.367.0.|22.80.1.0.0.1.x0.|23.xx0.1.xx0.|6|278.423.0.x55.|868.276.1.0.20.|696.297.1.0.9.|737.331.1.0.1.|724.277.1.0.20.|1614.533.1.x44.|76|14|-
+1.1.0.0.6.x336.
+Standard Output Stream:
+BUILD 14 MINE
+TRAIN
+336
+501
+Standard Output Stream:
+MOVE 1309 435
+TRAIN
+337
+501
+Standard Error Stream:
+24|0.137.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.144.229.0.|3.324.3.1.0.560.430.0.|4.201.3.0.0.3.x0.|5.xxxxxx0.|6.xxxxxx0.|7.281.2.1.0.680.471.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.532.415.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.596.441.0.|14.208.3.0.0.2.x0.|15.xx0.1.xx0.|16.262.2.1.0.616.449.0.|17.xxxxxx0.|18.xxxxxx0.|19.xx1.1.316.327.0.|20.xxxxxx0.|21.283.2.1.0.404.365.0.|22.79.1.0.0.1.x0.|23.xx0.1.xx0.|5|278.423.0.x55.|771.300.1.0.16.|595.306.1.0.5.|636.291.1.0.15.|1557.515.1.x44.|83|14|-
+1.1.0.0.6.x338.
+Standard Output Stream:
+BUILD 14 MINE
+TRAIN 8
+338
+501
+Standard Output Stream:
+MOVE 1309 435
+TRAIN
+339
+501
+Standard Error Stream:
+24|0.136.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.140.226.0.|3.324.3.1.0.556.428.0.|4.198.3.0.0.3.x0.|5.xxxxxx0.|6.xxxxxx0.|7.281.2.1.0.676.469.0.|8.238.1.2.0.4.0.0.|9.xx0.1.xx0.|10.291.2.1.0.528.414.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.592.440.0.|14.205.3.0.0.3.x0.|15.xx0.1.xx0.|16.262.2.1.0.612.448.0.|17.xxxxxx0.|18.xxxxxx0.|19.xx1.1.312.325.0.|20.xxxxxx0.|21.283.2.1.0.400.363.0.|22.78.1.0.0.1.x0.|23.xx0.1.xx0.|4|278.423.0.x55.|690.295.1.0.8.|542.326.1.0.14.|1500.497.1.x44.|11|14|-
+1.1.0.0.6.x340.
+SurivorMode move is MOVE 380 540
+Standard Output Stream:
+MOVE 380 540
+TRAIN
+340
+501
+Standard Output Stream:
+BUILD 6 TOWER
+TRAIN
+341
+501
+Standard Error Stream:
+24|0.135.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.136.224.0.|3.324.3.1.0.552.427.0.|4.195.3.0.0.3.x0.|5.xxxxxx0.|6.xxxxxx0.|7.281.2.1.0.672.468.0.|8.238.1.2.0.3.0.0.|9.xx0.1.xx0.|10.291.2.1.0.524.412.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.588.438.0.|14.202.3.0.0.3.x0.|15.xx0.1.xx0.|16.262.2.1.0.608.446.0.|17.xxxxxx0.|18.xxxxxx0.|19.xx1.1.308.323.0.|20.xxxxxx0.|21.283.2.1.0.396.362.0.|22.77.1.0.0.1.x0.|23.xx0.1.xx0.|3|317.468.0.x55.|466.383.1.0.6.|1491.489.1.x44.|19|x-
+1.1.0.0.6.x342.
+SurivorMode move is MOVE 420 580
+Standard Output Stream:
+MOVE 420 580
+TRAIN
+342
+501
+Standard Output Stream:
+BUILD 6 TOWER
+TRAIN 12
+343
+501
+Standard Error Stream:
+24|0.134.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.132.221.0.|3.324.3.1.0.548.425.0.|4.192.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.196.260.0.|7.281.2.1.0.668.467.0.|8.238.1.2.0.2.0.0.|9.xx0.1.xx0.|10.291.2.1.0.520.411.0.|11.xx0.1.xx0.|12.xx2.1.4.0.0.|13.271.4.1.0.584.437.0.|14.199.3.0.0.3.x0.|15.xx0.1.xx0.|16.262.2.1.0.604.445.0.|17.xxxxxx0.|18.xxxxxx0.|19.xx1.1.304.321.0.|20.xxxxxx0.|21.283.2.1.0.392.360.0.|22.76.1.0.0.1.x0.|23.xx0.1.xx0.|2|358.512.0.x55.|1491.489.1.x44.|27|x-
+1.1.0.0.6.x344.
+SurivorMode move is MOVE 460 620
+Standard Output Stream:
+MOVE 460 620
+TRAIN
+344
+501
+Standard Output Stream:
+BUILD 6 TOWER
+TRAIN
+345
+501
+Standard Error Stream:
+24|0.133.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.128.218.0.|3.324.3.1.0.544.424.0.|4.189.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.292.313.0.|7.281.2.1.0.664.465.0.|8.238.1.2.0.1.0.0.|9.xx0.1.xx0.|10.291.2.1.0.516.409.0.|11.xx0.1.xx0.|12.xx2.1.3.0.0.|13.271.4.1.0.580.435.0.|14.196.3.0.0.3.x0.|15.xx0.1.xx0.|16.262.2.1.0.600.443.0.|17.xxxxxx0.|18.xxxxxx0.|19.xx1.1.300.319.0.|20.xxxxxx0.|21.283.2.1.0.388.358.0.|22.75.1.0.0.1.x0.|23.xx0.1.xx0.|2|399.556.0.x55.|1491.489.1.x44.|35|x-
+1.1.0.0.6.x346.
+SurivorMode move is MOVE 500 660
+Standard Output Stream:
+MOVE 500 660
+TRAIN
+346
+501
+Standard Output Stream:
+BUILD 6 TOWER
+TRAIN
+347
+501
+Standard Error Stream:
+24|0.132.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.124.215.0.|3.324.3.1.0.540.422.0.|4.186.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.388.359.0.|7.281.2.1.0.660.464.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.512.408.0.|11.xx0.1.xx0.|12.xx2.1.2.0.0.|13.271.4.1.0.576.434.0.|14.193.3.0.0.3.x0.|15.xx0.1.xx0.|16.262.2.1.0.596.442.0.|17.xxxxxx0.|18.xxxxxx0.|19.xx1.1.296.317.0.|20.xxxxxx0.|21.283.2.1.0.384.356.0.|22.74.1.0.0.1.x0.|23.xx0.1.xx0.|6|460.309.0.0.25.|378.439.0.0.25.|465.383.0.0.25.|481.344.0.0.25.|407.608.0.x55.|1491.489.1.x44.|43|7|-
+1.1.0.0.6.x348.
+Empower Tower!
+Standard Output Stream:
+BUILD 7 TOWER
+TRAIN
+348
+501
+Standard Output Stream:
+MOVE 1594 653
+TRAIN
+349
+501
+Standard Error Stream:
+24|0.131.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.120.212.0.|3.324.3.1.0.536.421.0.|4.183.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.384.357.0.|7.281.2.1.0.756.496.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.508.406.0.|11.xx0.1.xx0.|12.xx2.1.1.0.0.|13.271.4.1.0.572.433.0.|14.190.3.0.0.3.x0.|15.xx0.1.xx0.|16.262.2.1.0.592.441.0.|17.xxxxxx0.|18.xxxxxx0.|19.xx1.1.292.315.0.|20.xxxxxx0.|21.283.2.1.0.380.354.0.|22.73.1.0.0.1.x0.|23.xx0.1.xx0.|6|557.329.0.0.24.|478.448.0.0.24.|558.399.0.0.24.|562.356.0.0.24.|407.608.0.x55.|1523.540.1.x44.|51|7|-
+1.1.0.0.6.x350.
+SurivorMode move is MOVE 280 720
+Standard Output Stream:
+MOVE 280 720
+TRAIN
+350
+501
+Standard Output Stream:
+MOVE 1594 653
+TRAIN
+351
+501
+Standard Error Stream:
+24|0.130.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.116.209.0.|3.324.3.1.0.532.419.0.|4.180.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.380.355.0.|7.281.2.1.0.752.494.0.|8.238.1.2.0.0.0.0.|9.xx0.1.xx0.|10.291.2.1.0.504.405.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.568.431.0.|14.187.3.0.0.3.x0.|15.xx0.1.xx0.|16.262.2.1.0.588.439.0.|17.xxxxxx0.|18.213.3.xxxx0.|19.xx1.1.288.313.0.|20.xxxxxx0.|21.283.2.1.0.376.353.0.|22.72.1.0.0.1.x0.|23.xx0.1.xx0.|10|623.295.0.0.23.|563.482.0.0.23.|574.442.0.0.23.|564.353.0.0.23.|362.648.0.x55.|1269.127.1.0.25.|1201.276.1.0.25.|1259.314.1.0.25.|1185.237.1.0.25.|1567.557.1.x44.|59|x-
+1.1.0.0.6.x352.
+SurivorMode move is MOVE 240 760
+Standard Output Stream:
+MOVE 240 760
+TRAIN
+352
+501
+Standard Output Stream:
+BUILD 9 TOWER
+TRAIN
+353
+501
+Standard Error Stream:
+24|0.129.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.112.206.0.|3.324.3.1.0.528.418.0.|4.177.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.376.353.0.|7.281.2.1.0.748.493.0.|8.238.1.2.0.0.0.0.|9.xx1.1.196.258.0.|10.291.2.1.0.500.403.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.564.430.0.|14.184.3.0.0.3.x0.|15.xx0.1.xx0.|16.262.2.1.0.584.438.0.|17.xxxxxx0.|18.213.3.xxxx0.|19.xx1.1.284.311.0.|20.xxxxxx0.|21.283.2.1.0.372.351.0.|22.71.1.0.0.1.x0.|23.xx0.1.xx0.|10|718.303.0.0.22.|668.504.0.0.22.|633.484.0.0.22.|579.326.0.0.22.|318.689.0.x55.|1180.170.1.0.24.|1119.312.1.0.21.|1166.351.1.0.24.|1094.279.1.0.24.|1567.557.1.x44.|67|x-
+1.1.0.0.6.x354.
+SurivorMode move is MOVE 260 780
+Standard Output Stream:
+MOVE 260 780
+TRAIN
+354
+501
+Standard Output Stream:
+BUILD 9 TOWER
+TRAIN
+355
+501
+Standard Error Stream:
+24|0.128.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.108.203.0.|3.324.3.1.0.524.416.0.|4.174.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.372.351.0.|7.281.2.1.0.744.492.0.|8.238.1.2.0.0.0.0.|9.xx1.1.292.311.0.|10.291.2.1.0.496.401.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.560.428.0.|14.181.3.0.0.3.x0.|15.xx0.1.xx0.|16.262.2.1.0.580.436.0.|17.xxxxxx0.|18.213.3.xxxx0.|19.xx1.1.280.309.0.|20.xxxxxx0.|21.283.2.1.0.368.349.0.|22.70.1.0.0.1.x0.|23.xx0.1.xx0.|10|814.332.0.0.21.|769.510.0.0.21.|731.493.0.0.21.|640.290.0.0.21.|286.740.0.x55.|1096.224.1.0.23.|1047.298.1.0.20.|1154.349.1.0.23.|1001.318.1.0.17.|1567.557.1.x44.|75|x-
+1.1.0.0.6.x356.
+SurivorMode move is MOVE 240 760
+Standard Output Stream:
+MOVE 240 760
+TRAIN
+356
+501
+Standard Output Stream:
+BUILD 9 TOWER
+TRAIN
+357
+501
+Standard Error Stream:
+24|0.127.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.104.199.0.|3.324.3.1.0.520.415.0.|4.171.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.368.350.0.|7.281.2.1.0.740.490.0.|8.238.1.2.0.0.0.0.|9.xx1.1.388.357.0.|10.291.2.1.0.492.400.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.556.427.0.|14.178.3.0.0.3.x0.|15.xx0.1.xx0.|16.262.2.1.0.576.435.0.|17.xxxxxx0.|18.213.3.xxxx0.|19.xx1.1.276.307.0.|20.xxxxxx0.|21.283.2.1.0.364.347.0.|22.69.1.0.0.1.x0.|23.xx0.1.xx0.|10|901.346.0.0.17.|867.496.0.0.20.|826.500.0.0.20.|737.309.0.0.20.|254.747.0.x55.|1011.277.1.0.22.|958.342.1.0.19.|1143.333.1.0.22.|923.382.1.0.7.|1567.557.1.x44.|83|18|-
+1.1.0.0.6.x358.
+Standard Output Stream:
+BUILD 18 MINE
+TRAIN 8
+358
+501
+Standard Output Stream:
+MOVE 1778 500
+TRAIN
+359
+501
+Standard Error Stream:
+24|0.126.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.100.196.0.|3.324.3.1.0.516.413.0.|4.168.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.364.348.0.|7.281.2.1.0.736.489.0.|8.238.1.2.0.4.0.0.|9.xx1.1.384.355.0.|10.291.2.1.0.488.398.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.552.425.0.|14.175.3.0.0.3.x0.|15.xx0.1.xx0.|16.262.2.1.0.572.433.0.|17.xxxxxx0.|18.212.3.0.0.1.x0.|19.xx1.1.272.305.0.|20.xxxxxx0.|21.283.2.1.0.360.345.0.|22.68.1.0.0.1.x0.|23.xx0.1.xx0.|9|970.357.0.0.13.|967.502.0.0.19.|925.499.0.0.19.|834.335.0.0.19.|254.747.0.x55.|925.327.1.0.21.|892.406.1.0.18.|1104.305.1.0.21.|1620.543.1.x44.|12|18|-
+1.1.0.0.6.x360.
+Standard Output Stream:
+BUILD 18 MINE
+TRAIN
+360
+501
+Standard Output Stream:
+BUILD 15 TOWER
+TRAIN
+361
+501
+Standard Error Stream:
+24|0.125.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.96.193.0.|3.324.3.1.0.512.412.0.|4.165.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.360.346.0.|7.281.2.1.0.732.488.0.|8.238.1.2.0.3.0.0.|9.xx1.1.380.353.0.|10.291.2.1.0.484.397.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.548.424.0.|14.172.3.0.0.3.x0.|15.xx1.1.196.261.0.|16.262.2.1.0.568.432.0.|17.xxxxxx0.|18.210.3.0.0.2.x0.|19.xx1.1.268.303.0.|20.xxxxxx0.|21.283.2.1.0.356.344.0.|22.67.1.0.0.1.x0.|23.xx0.1.xx0.|9|984.334.0.0.9.|1067.508.0.0.18.|1025.505.0.0.18.|913.346.0.0.18.|254.747.0.x55.|857.394.1.0.20.|804.453.1.0.3.|1018.308.1.0.20.|1620.543.1.x44.|22|18|-
+1.1.0.0.6.x362.
+Standard Output Stream:
+BUILD 18 MINE
+TRAIN
+362
+501
+Standard Output Stream:
+BUILD 15 TOWER
+TRAIN
+363
+501
+Standard Error Stream:
+24|0.124.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.92.190.0.|3.324.3.1.0.508.410.0.|4.162.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.356.344.0.|7.281.2.1.0.728.487.0.|8.238.1.2.0.2.0.0.|9.xx1.1.376.352.0.|10.291.2.1.0.480.395.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.544.422.0.|14.169.3.0.0.3.x0.|15.xx1.1.292.314.0.|16.262.2.1.0.564.430.0.|17.xxxxxx0.|18.207.3.0.0.3.x0.|19.xx1.1.264.301.0.|20.xxxxxx0.|21.283.2.1.0.352.342.0.|22.66.1.0.0.1.x0.|23.xx0.1.xx0.|8|1006.315.0.0.5.|1167.514.0.0.14.|1125.511.0.0.17.|969.359.0.0.17.|254.747.0.x55.|771.445.1.0.19.|928.328.1.0.19.|1620.543.1.x44.|33|18|-
+1.1.0.0.6.x364.
+SurivorMode move is MOVE 360 620
+Standard Output Stream:
+MOVE 360 620
+TRAIN
+364
+501
+Standard Output Stream:
+BUILD 15 TOWER
+TRAIN 12
+365
+501
+Standard Error Stream:
+24|0.123.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.88.186.0.|3.324.3.1.0.504.409.0.|4.159.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.352.342.0.|7.281.2.1.0.724.485.0.|8.238.1.2.0.1.0.0.|9.xx1.1.372.350.0.|10.291.2.1.0.476.393.0.|11.xx0.1.xx0.|12.xx2.1.4.0.0.|13.271.4.1.0.540.421.0.|14.166.3.0.0.3.x0.|15.xx1.1.388.359.0.|16.262.2.1.0.560.429.0.|17.xxxxxx0.|18.204.3.0.0.3.x0.|19.xx1.1.260.299.0.|20.xxxxxx0.|21.283.2.1.0.348.340.0.|22.65.1.0.0.1.x0.|23.xx0.1.xx0.|8|1087.300.0.0.4.|1266.513.0.0.7.|1225.517.0.0.16.|982.337.0.0.13.|292.701.0.x55.|683.492.1.0.3.|842.379.1.0.18.|1620.543.1.x44.|44|x-
+1.1.0.0.6.x366.
+SurivorMode move is MOVE 400 580
+Standard Output Stream:
+MOVE 400 580
+TRAIN
+366
+501
+Standard Output Stream:
+MOVE 1804 157
+TRAIN
+367
+501
+Standard Error Stream:
+24|0.122.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.84.183.0.|3.324.3.1.0.500.407.0.|4.156.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.348.340.0.|7.281.2.1.0.720.484.0.|8.238.1.2.0.0.0.0.|9.xx1.1.368.348.0.|10.291.2.1.0.472.392.0.|11.xx0.1.xx0.|12.xx2.1.3.0.0.|13.271.4.1.0.536.419.0.|14.163.3.0.0.3.x0.|15.xx1.1.384.357.0.|16.262.2.1.0.556.427.0.|17.xxxxxx0.|18.201.3.0.0.3.x0.|19.xx1.1.256.297.0.|20.xxxxxx0.|21.283.2.1.0.344.338.0.|22.64.1.0.0.1.x0.|23.xx0.1.xx0.|10|1182.333.0.0.3.|1325.509.0.0.15.|1038.300.0.0.9.|460.308.0.0.25.|378.439.0.0.25.|466.382.0.0.25.|480.342.0.0.25.|332.656.0.x55.|754.427.1.0.9.|1614.483.1.x44.|55|x-
+1.1.0.0.6.x368.
+SurivorMode move is MOVE 440 520
+Standard Output Stream:
+MOVE 440 520
+TRAIN
+368
+501
+Standard Output Stream:
+MOVE 1804 157
+TRAIN
+369
+501
+Standard Error Stream:
+24|0.121.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.80.179.0.|3.324.3.1.0.496.405.0.|4.153.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.344.339.0.|7.281.2.1.0.716.483.0.|8.238.1.2.0.0.0.0.|9.xx1.1.364.346.0.|10.291.2.1.0.468.390.0.|11.xx0.1.xx0.|12.xx2.1.2.0.0.|13.271.4.1.0.532.418.0.|14.160.3.0.0.3.x0.|15.xx1.1.380.355.0.|16.262.2.1.0.552.426.0.|17.xxxxxx0.|18.198.3.0.0.3.x0.|19.xx1.1.252.294.0.|20.xxxxxx0.|21.283.2.1.0.340.336.0.|22.63.1.0.0.1.x0.|23.xx0.1.xx0.|9|1280.353.0.0.2.|1414.514.0.0.4.|1136.311.0.0.5.|558.316.0.0.24.|478.438.0.0.24.|557.387.0.0.24.|568.343.0.0.24.|369.609.0.x55.|1642.429.1.x44.|66|x-
+1.1.0.0.6.x370.
+SurivorMode move is MOVE 480 540
+Standard Output Stream:
+MOVE 480 540
+TRAIN
+370
+501
+Standard Output Stream:
+MOVE 1804 157
+TRAIN
+371
+501
+Standard Error Stream:
+24|0.120.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.76.176.0.|3.324.3.1.0.492.404.0.|4.150.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.340.337.0.|7.281.2.1.0.712.481.0.|8.238.1.2.0.0.0.0.|9.xx1.1.360.344.0.|10.291.2.1.0.464.388.0.|11.xx0.1.xx0.|12.xx2.1.1.0.0.|13.271.4.1.0.528.416.0.|14.157.3.0.0.3.x0.|15.xx1.1.376.354.0.|16.262.2.1.0.548.424.0.|17.xxxxxx0.|18.195.3.0.0.3.x0.|19.xx1.1.248.292.0.|20.xxxxxx0.|21.283.2.1.0.336.334.0.|22.62.1.0.0.1.x0.|23.xx0.1.xx0.|7|1235.323.0.0.4.|653.289.0.0.23.|570.437.0.0.23.|557.387.0.0.23.|600.306.0.0.23.|403.577.0.x55.|1673.377.1.x44.|77|7|-
+1.1.0.0.6.x372.
+SurivorMode move is MOVE 520 520
+Standard Output Stream:
+MOVE 520 520
+TRAIN
+372
+501
+Standard Output Stream:
+MOVE 1804 157
+TRAIN
+373
+501
+Standard Error Stream:
+24|0.119.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.72.172.0.|3.324.3.1.0.488.402.0.|4.147.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.336.335.0.|7.281.2.1.0.708.480.0.|8.238.1.2.0.0.0.0.|9.xx1.1.356.342.0.|10.291.2.1.0.460.387.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.524.415.0.|14.154.3.0.0.3.x0.|15.xx1.1.372.352.0.|16.262.2.1.0.544.423.0.|17.xxxxxx0.|18.192.3.0.0.3.x0.|19.xx1.1.244.290.0.|20.xxxxxx0.|21.283.2.1.0.332.332.0.|22.61.1.0.0.1.x0.|23.xx0.1.xx0.|10|753.292.0.0.22.|622.481.0.0.22.|558.374.0.0.22.|695.290.0.0.22.|418.527.0.x55.|1265.127.1.0.25.|1198.272.1.0.25.|1249.311.1.0.25.|1184.233.1.0.25.|1704.325.1.x44.|88|7|-
+1.1.0.0.6.x374.
+SurivorMode move is MOVE 520 400
+Standard Output Stream:
+MOVE 520 400
+TRAIN 8
+374
+501
+Standard Output Stream:
+MOVE 1804 157
+TRAIN
+375
+501
+Standard Error Stream:
+24|0.118.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.68.168.0.|3.324.3.1.0.484.401.0.|4.144.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.332.333.0.|7.281.2.1.0.704.479.0.|8.238.1.2.0.4.0.0.|9.xx1.1.352.340.0.|10.291.2.1.0.456.385.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.520.413.0.|14.151.3.0.0.3.x0.|15.xx1.1.368.350.0.|16.262.2.1.0.540.421.0.|17.xxxxxx0.|18.189.3.0.0.3.x0.|19.xx1.1.240.288.0.|20.xxxxxx0.|21.283.2.1.0.328.330.0.|22.60.1.0.0.1.x0.|23.xx0.1.xx0.|10|853.291.0.0.21.|719.476.0.0.21.|572.336.0.0.21.|795.290.0.0.21.|456.480.0.x55.|1172.164.1.0.24.|1103.301.1.0.21.|1151.332.1.0.24.|1088.263.1.0.24.|1733.288.1.x44.|19|x-
+1.1.0.0.6.x376.
+SurivorMode move is MOVE 560 540
+Standard Output Stream:
+MOVE 560 540
+TRAIN
+376
+501
+Standard Output Stream:
+BUILD 19 TOWER
+TRAIN
+377
+501
+Standard Error Stream:
+24|0.117.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.64.165.0.|3.324.3.1.0.480.399.0.|4.141.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.328.331.0.|7.281.2.1.0.700.477.0.|8.238.1.2.0.3.0.0.|9.xx1.1.348.339.0.|10.291.2.1.0.452.384.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.516.411.0.|14.148.3.0.0.3.x0.|15.xx1.1.364.348.0.|16.262.2.1.0.536.420.0.|17.xxxxxx0.|18.186.3.0.0.3.x0.|19.xx1.1.336.337.0.|20.xxxxxx0.|21.283.2.1.0.324.328.0.|22.59.1.0.0.1.x0.|23.xx0.1.xx0.|10|947.291.0.0.17.|817.458.0.0.20.|641.290.0.0.20.|895.290.0.0.20.|508.476.0.x55.|1090.216.1.0.23.|1023.306.1.0.17.|1090.300.1.0.23.|987.285.1.0.20.|1733.288.1.x44.|30|7|-
+1.1.0.0.6.x378.
+Empower Tower!
+Standard Output Stream:
+BUILD 7 TOWER
+TRAIN
+378
+501
+Standard Output Stream:
+MOVE 1559 128
+TRAIN
+379
+501
+Standard Error Stream:
+24|0.116.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.60.161.0.|3.324.3.1.0.476.398.0.|4.138.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.324.329.0.|7.281.2.1.0.796.508.0.|8.238.1.2.0.2.0.0.|9.xx1.1.344.337.0.|10.291.2.1.0.448.382.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.512.410.0.|14.145.3.0.0.3.x0.|15.xx1.1.360.346.0.|16.262.2.1.0.532.418.0.|17.xxxxxx0.|18.183.3.0.0.3.x0.|19.xx1.1.332.335.0.|20.xxxxxx0.|21.283.2.1.0.320.326.0.|22.58.1.0.0.1.x0.|23.xx0.1.xx0.|10|1037.275.0.0.13.|914.436.0.0.19.|741.287.0.0.19.|992.282.0.0.19.|508.476.0.x55.|1001.241.1.0.22.|937.336.1.0.16.|990.322.1.0.22.|895.341.1.0.10.|1676.263.1.x44.|41|7|-
+1.1.0.0.6.x380.
+SurivorMode move is MOVE 620 340
+Standard Output Stream:
+MOVE 620 340
+TRAIN
+380
+501
+Standard Output Stream:
+MOVE 1559 128
+TRAIN
+381
+501
+Standard Error Stream:
+24|0.115.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.56.157.0.|3.324.3.1.0.472.396.0.|4.135.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.320.327.0.|7.281.2.1.0.792.507.0.|8.238.1.2.0.1.0.0.|9.xx1.1.340.335.0.|10.291.2.1.0.444.380.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.508.408.0.|14.142.3.0.0.3.x0.|15.xx1.1.356.345.0.|16.262.2.1.0.528.417.0.|17.xxxxxx0.|18.180.3.0.0.3.x0.|19.xx1.1.328.333.0.|20.xxxxxx0.|21.283.2.1.0.316.325.0.|22.57.1.0.0.1.x0.|23.xx0.1.xx0.|10|1137.265.0.0.9.|961.415.0.0.15.|841.279.0.0.18.|1092.272.0.0.18.|546.430.0.x55.|909.279.1.0.21.|840.359.1.0.12.|893.346.1.0.21.|798.366.1.0.2.|1637.218.1.x44.|52|x-
+1.1.0.0.6.x382.
+SurivorMode move is MOVE 620 300
+Standard Output Stream:
+MOVE 620 300
+TRAIN
+382
+501
+Standard Output Stream:
+MOVE 1559 128
+TRAIN
+383
+501
+Standard Error Stream:
+24|0.114.1.0.0.1.x0.|1.xx0.1.xx0.|2.xx1.1.52.153.0.|3.324.3.1.0.468.394.0.|4.132.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.316.325.0.|7.281.2.1.0.788.506.0.|8.238.1.2.0.0.0.0.|9.xx1.1.336.333.0.|10.291.2.1.0.440.379.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.504.407.0.|14.139.3.0.0.3.x0.|15.xx1.1.352.343.0.|16.262.2.1.0.524.415.0.|17.xxxxxx0.|18.177.3.0.0.3.x0.|19.xx1.1.324.331.0.|20.283.2.xxxx0.|21.283.2.1.0.312.323.0.|22.56.1.0.0.1.x0.|23.xx0.1.xx0.|13|1202.277.0.0.5.|963.375.0.0.11.|934.253.0.0.17.|1172.247.0.0.17.|471.319.0.0.25.|375.438.0.0.25.|472.361.0.0.25.|445.287.0.0.25.|548.374.0.x55.|818.315.1.0.20.|761.374.1.0.5.|796.353.1.0.20.|1598.173.1.x44.|63|16|-
+1.1.0.0.6.x384.
+Empower Tower!
+Standard Output Stream:
+BUILD 16 TOWER
+TRAIN
+384
+501
+Standard Output Stream:
+BUILD 1 TOWER
+TRAIN
+385
+501
+Standard Error Stream:
+24|0.113.1.0.0.1.x0.|1.xx1.1.196.257.0.|2.xx1.1.48.148.0.|3.324.3.1.0.464.393.0.|4.129.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.312.323.0.|7.281.2.1.0.784.505.0.|8.238.1.2.0.0.0.0.|9.xx1.1.332.331.0.|10.291.2.1.0.436.377.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.500.405.0.|14.136.3.0.0.3.x0.|15.xx1.1.348.341.0.|16.262.2.1.0.620.451.0.|17.xxxxxx0.|18.174.3.0.0.3.x0.|19.xx1.1.320.329.0.|20.283.2.xxxx0.|21.283.2.1.0.308.321.0.|22.55.1.0.0.1.x0.|23.xx0.1.xx0.|12|1252.312.0.0.1.|1010.312.0.0.7.|1033.241.0.0.16.|1190.255.0.0.16.|576.301.0.0.24.|473.421.0.0.24.|543.326.0.0.24.|543.276.0.0.24.|548.378.0.x55.|734.314.1.0.19.|742.340.1.0.15.|1598.173.1.x44.|74|16|-
+1.1.0.0.6.x386.
+Empower Tower!
+Standard Output Stream:
+BUILD 16 TOWER
+TRAIN
+386
+501
+Standard Output Stream:
+BUILD 1 TOWER
+TRAIN
+387
+501
+Standard Error Stream:
+24|0.112.1.0.0.1.x0.|1.xx1.1.292.311.0.|2.xx1.1.44.144.0.|3.324.3.1.0.460.391.0.|4.126.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.308.321.0.|7.281.2.1.0.780.503.0.|8.238.1.2.0.0.0.0.|9.xx1.1.328.329.0.|10.291.2.1.0.432.375.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.496.404.0.|14.133.3.0.0.3.x0.|15.xx1.1.344.339.0.|16.262.2.1.0.716.483.0.|17.xxxxxx0.|18.171.3.0.0.3.x0.|19.xx1.1.316.327.0.|20.283.2.xxxx0.|21.283.2.1.0.304.319.0.|22.54.1.0.0.1.x0.|23.xx0.1.xx0.|11|1106.286.0.0.3.|1132.229.0.0.15.|1206.281.0.0.15.|675.273.0.0.23.|562.424.0.0.23.|627.293.0.0.23.|637.255.0.0.23.|548.374.0.x55.|674.291.1.0.11.|723.315.1.0.11.|1598.173.1.x44.|85|16|-
+1.1.0.0.6.x388.
+SurivorMode move is MOVE 460 260
+Standard Output Stream:
+MOVE 460 260
+TRAIN 8
+388
+501
+Standard Output Stream:
+BUILD 1 TOWER
+TRAIN
+389
+501
+Standard Error Stream:
+24|0.111.1.0.0.1.x0.|1.xx1.1.388.357.0.|2.xx1.1.40.140.0.|3.324.3.1.0.456.389.0.|4.123.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.304.319.0.|7.281.2.1.0.776.502.0.|8.238.1.2.0.4.0.0.|9.xx1.1.324.327.0.|10.291.2.1.0.428.373.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.492.402.0.|14.130.3.0.0.3.x0.|15.xx1.1.340.337.0.|16.262.2.1.0.712.482.0.|17.xxxxxx0.|18.168.3.0.0.3.x0.|19.xx1.1.312.325.0.|20.283.2.xxxx0.|21.283.2.1.0.300.317.0.|22.53.1.0.0.1.x0.|23.xx0.1.xx0.|11|1196.268.0.0.2.|1184.216.0.0.14.|1263.315.0.0.8.|779.263.0.0.22.|575.445.0.0.22.|703.263.0.0.22.|741.253.0.0.22.|511.327.0.x55.|584.306.1.0.6.|644.290.1.0.3.|1598.173.1.x44.|16|x-
+1.1.0.0.6.x390.
+SurivorMode move is MOVE 620 200
+Standard Output Stream:
+MOVE 620 200
+TRAIN
+390
+501
+Standard Output Stream:
+MOVE 1333 195
+TRAIN
+391
+501
+Standard Error Stream:
+24|0.110.1.0.0.1.x0.|1.xx1.1.384.355.0.|2.xx1.1.36.135.0.|3.324.3.1.0.452.388.0.|4.120.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.300.317.0.|7.281.2.1.0.772.501.0.|8.238.1.2.0.3.0.0.|9.xx1.1.320.325.0.|10.291.2.1.0.424.372.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.488.401.0.|14.127.3.0.0.3.x0.|15.xx1.1.336.335.0.|16.262.2.1.0.708.481.0.|17.xxxxxx0.|18.165.3.0.0.3.x0.|19.xx1.1.308.323.0.|20.283.2.xxxx0.|21.283.2.1.0.296.315.0.|22.52.1.0.0.1.x0.|23.xx0.1.xx0.|10|1237.306.0.0.1.|1187.199.0.0.13.|1357.292.0.0.1.|881.256.0.0.21.|625.482.0.0.21.|801.257.0.0.21.|840.246.0.0.21.|540.276.0.x53.|592.276.1.0.2.|1580.209.1.x44.|27|x-
+1.1.0.0.6.x392.
+SurivorMode move is MOVE 660 180
+Standard Output Stream:
+MOVE 660 180
+TRAIN
+392
+501
+Standard Output Stream:
+MOVE 1471 408
+TRAIN
+393
+501
+Standard Error Stream:
+24|0.109.1.0.0.1.x0.|1.xx1.1.380.353.0.|2.xx1.1.32.130.0.|3.324.3.1.0.448.386.0.|4.117.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.296.315.0.|7.281.2.1.0.768.499.0.|8.238.1.2.0.2.0.0.|9.xx1.1.316.323.0.|10.291.2.1.0.420.370.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.484.399.0.|14.124.3.0.0.3.x0.|15.xx1.1.332.333.0.|16.262.2.1.0.704.479.0.|17.xxxxxx0.|18.162.3.0.0.3.x0.|19.xx1.1.304.321.0.|20.283.2.xxxx0.|21.283.2.1.0.292.313.0.|22.51.1.0.0.1.x0.|23.xx0.1.xx0.|7|1190.187.0.0.12.|981.257.0.0.20.|722.473.0.0.20.|901.258.0.0.20.|940.248.0.0.20.|586.230.0.x52.|1551.262.1.x44.|38|x-
+1.1.0.0.6.x394.
+SurivorMode move is MOVE 700 240
+Standard Output Stream:
+MOVE 700 240
+TRAIN
+394
+501
+Standard Output Stream:
+MOVE 1471 408
+TRAIN
+395
+501
+Standard Error Stream:
+24|0.108.1.0.0.1.x0.|1.xx1.1.376.351.0.|2.xx1.1.28.125.0.|3.324.3.1.0.444.384.0.|4.114.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.292.313.0.|7.281.2.1.0.764.498.0.|8.238.1.2.0.1.0.0.|9.xx1.1.312.321.0.|10.291.2.1.0.416.368.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.480.397.0.|14.121.3.0.0.3.x0.|15.xx1.1.328.331.0.|16.262.2.1.0.700.478.0.|17.xxxxxx0.|18.159.3.0.0.3.x0.|19.xx1.1.300.319.0.|20.283.2.xxxx0.|21.283.2.1.0.288.310.0.|22.50.1.0.0.1.x0.|23.xx0.1.xx0.|7|1190.187.0.0.8.|1080.268.0.0.19.|820.454.0.0.19.|1000.267.0.0.19.|1040.259.0.0.19.|646.235.0.x52.|1522.315.1.x44.|49|x-
+1.1.0.0.6.x396.
+SurivorMode move is MOVE 740 260
+Standard Output Stream:
+MOVE 740 260
+TRAIN
+396
+501
+Standard Output Stream:
+MOVE 1471 408
+TRAIN
+397
+501
+Standard Error Stream:
+24|0.107.1.0.0.1.x0.|1.xx1.1.372.349.0.|2.xx1.1.24.120.0.|3.324.3.1.0.440.383.0.|4.111.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.288.311.0.|7.281.2.1.0.760.497.0.|8.238.1.2.0.0.0.0.|9.xx1.1.308.319.0.|10.291.2.1.0.412.367.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.476.396.0.|14.118.3.0.0.3.x0.|15.xx1.1.324.330.0.|16.262.2.1.0.696.477.0.|17.xxxxxx0.|18.156.3.0.0.3.x0.|19.xx1.1.296.317.0.|20.283.2.xxxx0.|21.283.2.1.0.284.308.0.|22.49.1.0.0.1.x0.|23.xx0.1.xx0.|11|1184.215.0.0.4.|1178.290.0.0.15.|919.441.0.0.18.|1097.286.0.0.15.|1138.281.0.0.18.|455.299.0.0.25.|378.439.0.0.25.|469.374.0.0.25.|478.333.0.0.25.|702.256.0.x52.|1501.363.1.x44.|60|20|-
+1.1.0.0.6.x398.
+Standard Output Stream:
+BUILD 20 MINE
+TRAIN
+398
+501
+Standard Output Stream:
+BUILD 6 TOWER
+TRAIN
+399
+501
+Standard Error Stream:
+24|0.106.1.0.0.1.x0.|1.xx1.1.368.348.0.|2.xx1.1.20.115.0.|3.324.3.1.0.436.381.0.|4.108.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.384.357.0.|7.281.2.1.0.756.496.0.|8.238.1.2.0.0.0.0.|9.xx1.1.304.317.0.|10.291.2.1.0.408.365.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.472.394.0.|14.115.3.0.0.3.x0.|15.xx1.1.320.328.0.|16.262.2.1.0.692.475.0.|17.xxxxxx0.|18.153.3.0.0.3.x0.|19.xx1.1.292.315.0.|20.282.2.0.0.1.x0.|21.283.2.1.0.280.306.0.|22.48.1.0.0.1.x0.|23.xx0.1.xx0.|11|1198.270.0.0.3.|1274.317.0.0.8.|971.448.0.0.14.|1194.310.0.0.14.|1235.305.0.0.17.|554.304.0.0.24.|478.432.0.0.24.|558.373.0.0.24.|574.332.0.0.24.|702.256.0.x52.|1501.363.1.x44.|72|20|-
+1.1.0.0.6.x400.
+Standard Output Stream:
+BUILD 20 MINE
+TRAIN
+400
+501
+Standard Output Stream:
+MOVE 1805 158
+TRAIN
+401
+501
+Standard Error Stream:
+24|0.105.1.0.0.1.x0.|1.xx1.1.364.346.0.|2.xx1.1.16.109.0.|3.324.3.1.0.432.379.0.|4.105.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.380.355.0.|7.281.2.1.0.752.494.0.|8.238.1.2.0.0.0.0.|9.xx1.1.300.315.0.|10.291.2.1.0.404.363.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.468.392.0.|14.112.3.0.0.3.x0.|15.xx1.1.316.326.0.|16.262.2.1.0.688.474.0.|17.xxxxxx0.|18.150.3.0.0.3.x0.|19.xx1.1.288.313.0.|20.280.2.0.0.2.x0.|21.283.2.1.0.276.304.0.|22.47.1.0.0.1.x0.|23.xx0.1.xx0.|10|1256.313.0.0.2.|1000.483.0.0.10.|1295.326.0.0.13.|1335.318.0.0.16.|651.272.0.0.23.|565.428.0.0.23.|570.338.0.0.23.|622.295.0.0.23.|702.256.0.x52.|1551.329.1.x44.|85|20|-
+1.1.0.0.6.x402.
+SurivorMode move is MOVE 720 360
+Standard Output Stream:
+MOVE 720 360
+TRAIN 8
+402
+501
+Standard Output Stream:
+MOVE 1805 158
+TRAIN
+403
+501
+Standard Error Stream:
+24|0.104.1.0.0.1.x0.|1.xx1.1.360.344.0.|2.xx1.1.12.103.0.|3.324.3.1.0.428.378.0.|4.102.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.376.353.0.|7.281.2.1.0.748.493.0.|8.238.1.2.0.4.0.0.|9.xx1.1.296.313.0.|10.291.2.1.0.400.361.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.464.391.0.|14.109.3.0.0.3.x0.|15.xx1.1.312.324.0.|16.262.2.1.0.684.473.0.|17.xxxxxx0.|18.147.3.0.0.3.x0.|19.xx1.1.284.311.0.|20.278.2.0.0.2.x0.|21.283.2.1.0.272.302.0.|22.46.1.0.0.1.x0.|23.xx0.1.xx0.|10|1355.311.0.0.1.|1079.504.0.0.6.|1394.316.0.0.8.|1436.309.0.0.12.|746.254.0.0.22.|597.468.0.0.22.|636.291.0.0.22.|689.272.0.0.22.|728.306.0.x52.|1601.295.1.x44.|18|16|-
+1.1.0.0.6.x404.
+Empower Tower!
+Standard Output Stream:
+BUILD 16 TOWER
+TRAIN
+404
+501
+Standard Output Stream:
+MOVE 1805 158
+TRAIN
+405
+501
+Standard Error Stream:
+24|0.103.1.0.0.1.x0.|1.xx1.1.356.342.0.|2.xx1.1.8.97.0.|3.324.3.1.0.424.376.0.|4.99.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.372.351.0.|7.281.2.1.0.744.492.0.|8.238.1.2.0.3.0.0.|9.xx1.1.292.311.0.|10.291.2.1.0.396.360.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.460.389.0.|14.106.3.0.0.3.x0.|15.xx1.1.308.322.0.|16.262.2.1.0.780.504.0.|17.xxxxxx0.|18.144.3.0.0.3.x0.|19.xx1.1.280.309.0.|20.276.2.0.0.2.x0.|21.283.2.1.0.268.300.0.|22.45.1.0.0.1.x0.|23.xx0.1.xx0.|9|1172.468.0.0.5.|1493.295.0.0.7.|1534.287.0.0.1.|846.255.0.0.21.|685.482.0.0.21.|713.262.0.0.21.|783.257.0.0.21.|732.311.0.x52.|1651.262.1.x44.|31|16|-
+1.1.0.0.6.x406.
+SurivorMode move is MOVE 840 420
+Standard Output Stream:
+MOVE 840 420
+TRAIN
+406
+501
+Standard Output Stream:
+MOVE 1805 158
+TRAIN
+407
+501
+Standard Error Stream:
+24|0.102.1.0.0.1.x0.|1.xx1.1.352.340.0.|2.324.3.1.1.4.90.0.|3.324.3.1.0.420.374.0.|4.96.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.368.350.0.|7.281.2.1.0.740.490.0.|8.238.1.2.0.2.0.0.|9.xx1.1.288.309.0.|10.291.2.1.0.392.358.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.456.388.0.|14.103.3.0.0.3.x0.|15.xx1.1.304.320.0.|16.262.2.1.0.776.503.0.|17.xxxxxx0.|18.141.3.0.0.3.x0.|19.xx1.1.276.307.0.|20.274.2.0.0.2.x0.|21.283.2.1.0.264.298.0.|22.44.1.0.0.1.x0.|23.xx0.1.xx0.|7|1591.275.0.0.3.|946.255.0.0.20.|782.460.0.0.20.|813.261.0.0.20.|883.257.0.0.20.|774.354.0.x52.|1673.260.1.x43.|44|x-
+1.1.0.0.6.x408.
+SurivorMode move is MOVE 840 460
+Standard Output Stream:
+MOVE 840 460
+TRAIN
+408
+501
+Standard Output Stream:
+BUILD 19 TOWER
+TRAIN
+409
+501
+Standard Error Stream:
+24|0.101.1.0.0.1.x0.|1.xx1.1.348.338.0.|2.324.3.xxxx0.|3.324.3.1.0.416.373.0.|4.93.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.364.348.0.|7.281.2.1.0.736.489.0.|8.238.1.2.0.1.0.0.|9.xx1.1.284.307.0.|10.291.2.1.0.388.356.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.452.386.0.|14.100.3.0.0.3.x0.|15.xx1.1.300.318.0.|16.262.2.1.0.772.501.0.|17.xxxxxx0.|18.138.3.0.0.3.x0.|19.xx1.1.372.353.0.|20.272.2.0.0.2.x0.|21.283.2.1.0.260.296.0.|22.43.1.0.0.1.x0.|23.xx0.1.xx0.|6|1046.256.0.0.19.|880.440.0.0.19.|913.261.0.0.19.|983.258.0.0.19.|805.404.0.x52.|1676.263.1.x42.|57|x-
+1.1.0.0.6.x410.
+SurivorMode move is MOVE 920 520
+Standard Output Stream:
+MOVE 920 520
+TRAIN
+410
+501
+Standard Output Stream:
+MOVE 1778 501
+TRAIN 12
+411
+501
+Standard Error Stream:
+24|0.100.1.0.0.1.x0.|1.xx1.1.344.336.0.|2.324.3.xxxx0.|3.324.3.1.0.412.371.0.|4.90.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.360.346.0.|7.281.2.1.0.732.488.0.|8.238.1.2.0.0.0.0.|9.xx1.1.280.305.0.|10.291.2.1.0.384.354.0.|11.xx0.1.xx0.|12.xx2.1.4.0.0.|13.271.4.1.0.448.384.0.|14.97.3.0.0.3.x0.|15.xx1.1.296.316.0.|16.262.2.1.0.768.500.0.|17.xxxxxx0.|18.135.3.0.0.3.x0.|19.xx1.1.368.351.0.|20.270.2.0.0.2.x0.|21.283.2.1.0.256.294.0.|22.42.1.0.0.1.x0.|23.xx0.1.xx0.|10|1146.265.0.0.15.|964.430.0.0.18.|1013.268.0.0.18.|1083.266.0.0.18.|453.296.0.0.25.|378.439.0.0.25.|470.371.0.0.25.|476.329.0.0.25.|847.447.0.x52.|1700.318.1.x42.|70|x-
+1.1.0.0.6.x412.
+SurivorMode move is MOVE 940 540
+Standard Output Stream:
+MOVE 940 540
+TRAIN
+412
+501
+Standard Output Stream:
+MOVE 1778 501
+TRAIN
+413
+501
+Standard Error Stream:
+24|0.99.1.0.0.1.x0.|1.xx1.1.340.334.0.|2.324.3.xxxx0.|3.324.3.1.0.408.369.0.|4.87.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.356.344.0.|7.281.2.1.0.728.487.0.|8.238.1.2.0.0.0.0.|9.xx1.1.276.303.0.|10.291.2.1.0.380.352.0.|11.xx0.1.xx0.|12.xx2.1.3.0.0.|13.271.4.1.0.444.383.0.|14.94.3.0.0.3.x0.|15.xx1.1.292.314.0.|16.262.2.1.0.764.499.0.|17.xxxxxx0.|18.132.3.0.0.3.x0.|19.xx1.1.364.350.0.|20.268.2.0.0.2.x0.|21.283.2.1.0.252.291.0.|22.41.1.0.0.1.x0.|23.xx0.1.xx0.|10|1229.302.0.0.8.|981.463.0.0.17.|1112.283.0.0.17.|1182.283.0.0.17.|552.300.0.0.24.|478.434.0.0.24.|558.371.0.0.24.|575.331.0.0.24.|889.489.0.x52.|1724.373.1.x42.|83|3|-
+1.1.0.0.6.x414.
+Empower Tower!
+Standard Output Stream:
+BUILD 3 TOWER
+TRAIN 8
+414
+501
+Standard Output Stream:
+MOVE 1778 501
+TRAIN
+415
+501
+Standard Error Stream:
+24|0.98.1.0.0.1.x0.|1.xx1.1.336.333.0.|2.324.3.xxxx0.|3.324.3.1.0.504.409.0.|4.84.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.352.342.0.|7.281.2.1.0.724.485.0.|8.238.1.2.0.4.0.0.|9.xx1.1.272.301.0.|10.291.2.1.0.376.351.0.|11.xx0.1.xx0.|12.xx2.1.2.0.0.|13.271.4.1.0.440.381.0.|14.91.3.0.0.3.x0.|15.xx1.1.288.312.0.|16.262.2.1.0.760.497.0.|17.xxxxxx0.|18.129.3.0.0.3.x0.|19.xx1.1.360.348.0.|20.266.2.0.0.2.x0.|21.283.2.1.0.248.289.0.|22.40.1.0.0.1.x0.|23.xx0.1.xx0.|9|1049.504.0.0.16.|1210.302.0.0.16.|1273.316.0.0.16.|648.273.0.0.23.|570.437.0.0.23.|567.345.0.0.23.|621.295.0.0.23.|889.489.0.x52.|1757.403.1.x42.|16|3|-
+1.1.0.0.6.x416.
+Empower Tower!
+Standard Output Stream:
+BUILD 3 TOWER
+TRAIN
+416
+501
+Standard Output Stream:
+BUILD 15 TOWER
+TRAIN
+417
+501
+Standard Error Stream:
+24|0.97.1.0.0.1.x0.|1.xx1.1.332.331.0.|2.324.3.xxxx0.|3.324.3.1.0.600.444.0.|4.81.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.348.340.0.|7.281.2.1.0.720.484.0.|8.238.1.2.0.3.0.0.|9.xx1.1.268.299.0.|10.291.2.1.0.372.349.0.|11.xx0.1.xx0.|12.xx2.1.1.0.0.|13.271.4.1.0.436.379.0.|14.88.3.0.0.3.x0.|15.xx1.1.384.357.0.|16.262.2.1.0.756.496.0.|17.xxxxxx0.|18.126.3.0.0.3.x0.|19.xx1.1.356.346.0.|20.264.2.0.0.2.x0.|21.283.2.1.0.244.287.0.|22.39.1.0.0.1.x0.|23.xx0.1.xx0.|9|1148.493.0.0.15.|1308.322.0.0.15.|1371.334.0.0.8.|753.281.0.0.22.|629.483.0.0.22.|614.298.0.0.22.|713.296.0.0.22.|889.489.0.x52.|1757.403.1.x42.|29|3|-
+1.1.0.0.6.x418.
+Empower Tower!
+Standard Output Stream:
+BUILD 3 TOWER
+TRAIN
+418
+501
+Standard Output Stream:
+MOVE 1765 859
+TRAIN
+419
+501
+Standard Error Stream:
+24|0.96.1.0.0.1.x0.|1.xx1.1.328.329.0.|2.324.3.xxxx0.|3.324.3.1.0.696.477.0.|4.78.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.344.339.0.|7.281.2.1.0.716.483.0.|8.238.1.2.0.2.0.0.|9.xx1.1.264.297.0.|10.291.2.1.0.368.347.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.432.378.0.|14.85.3.0.0.3.x0.|15.xx1.1.380.355.0.|16.262.2.1.0.752.495.0.|17.xxxxxx0.|18.123.3.0.0.3.x0.|19.xx1.1.352.344.0.|20.262.2.0.0.2.x0.|21.283.2.1.0.240.285.0.|22.38.1.0.0.1.x0.|23.xx0.1.xx0.|12|1248.484.0.0.14.|1400.325.0.0.10.|852.296.0.0.21.|729.483.0.0.21.|711.295.0.0.21.|812.309.0.0.21.|889.489.0.x52.|1291.127.1.0.25.|1206.283.1.0.25.|1275.316.1.0.25.|1186.246.1.0.25.|1794.426.1.x42.|42|3|-
+1.1.0.0.6.x420.
+Empower Tower!
+Standard Output Stream:
+BUILD 3 TOWER
+TRAIN
+420
+501
+Standard Output Stream:
+MOVE 1765 859
+TRAIN
+421
+501
+Standard Error Stream:
+24|0.95.1.0.0.1.x0.|1.xx1.1.324.327.0.|2.324.3.xxxx0.|3.324.3.1.0.792.508.0.|4.75.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.340.337.0.|7.281.2.1.0.712.481.0.|8.238.1.2.0.1.0.0.|9.xx1.1.260.294.0.|10.291.2.1.0.364.345.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.428.376.0.|14.82.3.0.0.3.x0.|15.xx1.1.376.354.0.|16.262.2.1.0.748.494.0.|17.xxxxxx0.|18.120.3.0.0.3.x0.|19.xx1.1.348.342.0.|20.260.2.0.0.2.x0.|21.283.2.1.0.236.283.0.|22.37.1.0.0.1.x0.|23.xx0.1.xx0.|11|1345.486.0.0.6.|950.315.0.0.20.|829.483.0.0.20.|810.311.0.0.20.|911.326.0.0.20.|889.489.0.x52.|1208.157.1.0.24.|1139.329.1.0.24.|1184.357.1.0.24.|1106.304.1.0.18.|1823.478.1.x42.|55|3|-
+1.1.0.0.6.x422.
+SurivorMode move is MOVE 1000 480
+Standard Output Stream:
+MOVE 1000 480
+TRAIN
+422
+501
+Standard Output Stream:
+MOVE 1765 859
+TRAIN
+423
+501
+Standard Error Stream:
+24|0.94.1.0.0.1.x0.|1.xx1.1.320.325.0.|2.324.3.xxxx0.|3.324.3.1.0.788.507.0.|4.72.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.336.335.0.|7.281.2.1.0.708.480.0.|8.238.1.2.0.0.0.0.|9.xx1.1.256.292.0.|10.291.2.1.0.360.343.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.424.374.0.|14.79.3.0.0.3.x0.|15.xx1.1.372.352.0.|16.262.2.1.0.744.492.0.|17.xxxxxx0.|18.117.3.0.0.3.x0.|19.xx1.1.344.340.0.|20.258.2.0.0.2.x0.|21.283.2.1.0.232.280.0.|22.36.1.0.0.1.x0.|23.xx0.1.xx0.|14|1020.307.0.0.19.|901.493.0.0.19.|908.333.0.0.19.|985.333.0.0.19.|461.310.0.0.25.|378.439.0.0.25.|465.384.0.0.25.|481.345.0.0.25.|952.484.0.x52.|1146.235.1.0.23.|1133.323.1.0.23.|1167.388.1.0.23.|1067.297.1.0.11.|1820.539.1.x42.|68|x-
+1.1.0.0.6.x424.
+SurivorMode move is MOVE 1020 500
+Standard Output Stream:
+MOVE 1020 500
+TRAIN
+424
+501
+Standard Output Stream:
+MOVE 1765 859
+TRAIN
+425
+501
+Standard Error Stream:
+24|0.93.1.0.0.1.x0.|1.xx1.1.316.323.0.|2.324.3.xxxx0.|3.324.3.1.0.784.506.0.|4.69.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.332.333.0.|7.281.2.1.0.704.479.0.|8.238.1.2.0.0.0.0.|9.xx1.1.252.290.0.|10.291.2.1.0.356.341.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.420.373.0.|14.76.3.0.0.3.x0.|15.xx1.1.368.350.0.|16.262.2.1.0.740.491.0.|17.0.2.xxxx0.|18.114.3.0.0.3.x0.|19.xx1.1.340.339.0.|20.256.2.0.0.2.x0.|21.283.2.1.0.228.278.0.|22.35.1.0.0.1.x0.|23.xx0.1.xx0.|14|1067.292.0.0.18.|961.507.0.0.18.|977.344.0.0.18.|1028.303.0.0.18.|558.330.0.0.24.|477.450.0.0.24.|558.401.0.0.24.|562.358.0.0.24.|1013.502.0.x52.|1117.312.1.0.22.|1148.340.1.0.22.|1154.454.1.0.19.|1087.299.1.0.7.|1810.598.1.x42.|81|2|-
+1.1.0.0.6.x426.
+Standard Output Stream:
+BUILD 2 TOWER
+TRAIN 8
+426
+501
+Standard Output Stream:
+MOVE 1765 859
+TRAIN
+427
+501
+Standard Error Stream:
+24|0.92.1.0.0.1.x0.|1.xx1.1.312.321.0.|2.324.3.1.0.196.263.0.|3.324.3.1.0.780.505.0.|4.66.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.328.331.0.|7.281.2.1.0.700.477.0.|8.238.1.2.0.4.0.0.|9.xx1.1.248.288.0.|10.291.2.1.0.352.340.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.416.371.0.|14.73.3.0.0.3.x0.|15.xx1.1.364.348.0.|16.262.2.1.0.736.490.0.|17.0.2.xxxx1.|18.111.3.0.0.3.x0.|19.xx1.1.336.337.0.|20.254.2.0.0.2.x0.|21.283.2.1.0.224.276.0.|22.34.1.0.0.1.x0.|23.xx0.1.xx0.|14|1158.315.0.0.14.|1014.555.0.0.17.|1004.316.0.0.17.|1093.289.0.0.17.|619.296.0.0.23.|569.471.0.0.23.|588.460.0.0.23.|561.362.0.0.23.|1015.503.0.x52.|1142.333.1.0.21.|1167.384.1.0.21.|1078.504.1.0.11.|1092.301.1.0.6.|1800.657.1.x42.|14|2|-
+1.1.0.0.6.x428.
+Empower Tower!
+Standard Output Stream:
+BUILD 2 TOWER
+TRAIN
+428
+501
+Standard Output Stream:
+MOVE 1765 860
+TRAIN
+429
+501
+Standard Error Stream:
+24|0.91.1.0.0.1.x0.|1.xx1.1.308.319.0.|2.324.3.1.0.292.315.0.|3.324.3.1.0.776.503.0.|4.63.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.324.329.0.|7.281.2.1.0.696.476.0.|8.238.1.2.0.3.0.0.|9.xx1.1.244.286.0.|10.291.2.1.0.348.338.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.412.369.0.|14.70.3.0.0.3.x0.|15.xx1.1.360.346.0.|16.262.2.1.0.732.488.0.|17.0.2.xxxx1.|18.108.3.0.0.3.x0.|19.xx1.1.332.335.0.|20.252.2.0.0.2.x0.|21.283.2.1.0.220.273.0.|22.33.1.0.0.1.x0.|23.xx0.1.xx0.|13|1242.369.0.0.10.|1112.575.0.0.16.|1052.298.0.0.16.|1182.339.0.0.16.|712.303.0.0.22.|650.496.0.0.22.|692.496.0.0.22.|560.364.0.0.22.|1007.503.0.x51.|1159.359.1.0.20.|1156.450.1.0.20.|1098.303.1.0.5.|1790.716.1.x42.|27|2|-
+1.1.0.0.6.x430.
+Empower Tower!
+Standard Output Stream:
+BUILD 2 TOWER
+TRAIN
+430
+501
+Standard Output Stream:
+MOVE 1765 860
+TRAIN
+431
+501
+Standard Error Stream:
+24|0.90.1.0.0.1.x0.|1.xx1.1.304.317.0.|2.324.3.1.0.388.361.0.|3.324.3.1.0.772.502.0.|4.60.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.320.327.0.|7.281.2.1.0.692.475.0.|8.238.1.2.0.2.0.0.|9.xx1.1.240.283.0.|10.291.2.1.0.344.336.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.408.367.0.|14.67.3.0.0.3.x0.|15.xx1.1.356.345.0.|16.262.2.1.0.728.487.0.|17.0.2.xxxx1.|18.105.3.0.0.3.x0.|19.xx1.1.328.333.0.|20.250.2.0.0.2.x0.|21.283.2.1.0.216.271.0.|22.32.1.0.0.1.x0.|23.xx0.1.xx0.|13|1318.430.0.0.5.|1166.596.0.0.15.|1110.306.0.0.15.|1263.398.0.0.15.|803.343.0.0.21.|747.520.0.0.21.|789.521.0.0.21.|557.380.0.0.21.|1007.503.0.x51.|1168.408.1.0.15.|1084.503.1.0.12.|1140.330.1.0.4.|1780.775.1.x42.|40|2|-
+1.1.0.0.6.x432.
+Empower Tower!
+Standard Output Stream:
+BUILD 2 TOWER
+TRAIN
+432
+501
+Standard Output Stream:
+BUILD 23 TOWER
+TRAIN
+433
+501
+Standard Error Stream:
+24|0.89.1.0.0.1.x0.|1.xx1.1.300.315.0.|2.324.3.1.0.484.401.0.|3.324.3.1.0.768.501.0.|4.57.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.316.325.0.|7.281.2.1.0.688.473.0.|8.238.1.2.0.1.0.0.|9.xx1.1.236.281.0.|10.291.2.1.0.340.334.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.404.366.0.|14.64.3.0.0.3.x0.|15.xx1.1.352.343.0.|16.262.2.1.0.724.486.0.|17.0.2.xxxx1.|18.102.3.0.0.3.x0.|19.xx1.1.324.331.0.|20.248.2.0.0.2.x0.|21.283.2.1.0.212.269.0.|22.31.1.0.0.1.x0.|23.xx1.1.196.258.0.|13|1369.504.0.0.1.|1165.619.0.0.14.|1193.351.0.0.14.|1328.464.0.0.10.|894.383.0.0.20.|812.505.0.0.20.|872.496.0.0.20.|563.423.0.0.20.|1000.503.0.x50.|1135.477.1.0.10.|1052.505.1.0.4.|1162.366.1.0.3.|1780.775.1.x42.|53|x-
+1.1.0.0.6.x434.
+SurivorMode move is MOVE 880 380
+Standard Output Stream:
+MOVE 880 380
+TRAIN
+434
+501
+Standard Output Stream:
+BUILD 23 TOWER
+TRAIN
+435
+501
+Standard Error Stream:
+24|0.88.1.0.0.1.x0.|1.xx1.1.296.313.0.|2.324.3.1.0.480.399.0.|3.324.3.1.0.764.500.0.|4.54.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.312.323.0.|7.281.2.1.0.684.472.0.|8.238.1.2.0.0.0.0.|9.xx1.1.232.279.0.|10.291.2.1.0.336.332.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.400.364.0.|14.61.3.0.0.3.x0.|15.xx1.1.348.341.0.|16.262.2.1.0.720.485.0.|17.xxxxxx1.|18.99.3.0.0.3.x0.|19.xx1.1.320.329.0.|20.246.2.0.0.2.x0.|21.283.2.1.0.208.266.0.|22.30.1.0.0.1.x0.|23.xx1.1.292.311.0.|15|1184.670.0.0.13.|1274.410.0.0.13.|1404.527.0.0.5.|960.411.0.0.19.|905.505.0.0.19.|968.525.0.0.19.|625.482.0.0.19.|466.323.0.0.25.|377.439.0.0.25.|474.362.0.0.25.|459.401.0.0.25.|953.461.0.x49.|1055.505.1.0.9.|1166.379.1.0.2.|1780.775.1.x42.|66|x-
+1.1.0.0.6.x436.
+SurivorMode move is MOVE 900 360
+Standard Output Stream:
+MOVE 900 360
+TRAIN
+436
+501
+Standard Output Stream:
+BUILD 23 TOWER
+TRAIN
+437
+501
+Standard Error Stream:
+24|0.87.1.0.0.1.x0.|1.xx1.1.292.311.0.|2.324.3.1.0.476.398.0.|3.324.3.1.0.760.498.0.|4.51.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.308.321.0.|7.281.2.1.0.680.471.0.|8.238.1.2.0.0.0.0.|9.xx1.1.228.277.0.|10.291.2.1.0.332.330.0.|11.33.2.0.1.2.x0.|12.xx2.1.0.0.0.|13.271.4.1.0.396.362.0.|14.58.3.0.0.3.x0.|15.xx1.1.344.339.0.|16.262.2.1.0.716.483.0.|17.xxxxxx1.|18.96.3.0.0.3.x0.|19.xx1.1.316.327.0.|20.244.2.0.0.2.x0.|21.283.2.1.0.204.264.0.|22.29.1.0.0.1.x0.|23.xx1.1.388.357.0.|12|1265.712.0.0.12.|1338.478.0.0.8.|986.470.0.0.18.|1000.537.0.0.18.|1064.554.0.0.18.|722.507.0.0.18.|560.353.0.0.24.|474.462.0.0.24.|557.391.0.0.24.|554.433.0.0.24.|924.407.0.x49.|1780.775.1.x42.|79|x-
+1.1.0.0.6.x438.
+SurivorMode move is MOVE 1000 480
+Standard Output Stream:
+MOVE 1000 480
+TRAIN
+438
+501
+Standard Output Stream:
+MOVE 1594 654
+TRAIN
+439
+501
+Standard Error Stream:
+24|0.86.1.0.0.1.x0.|1.xx1.1.288.309.0.|2.324.3.1.0.472.396.0.|3.324.3.1.0.756.497.0.|4.48.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.304.319.0.|7.281.2.1.0.676.469.0.|8.238.1.2.0.0.0.0.|9.xx1.1.224.274.0.|10.291.2.1.0.328.328.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.392.360.0.|14.55.3.0.0.3.x0.|15.xx1.1.340.337.0.|16.262.2.1.0.712.482.0.|17.xxxxxx1.|18.93.3.0.0.3.x0.|19.xx1.1.312.325.0.|20.242.2.0.0.2.x0.|21.283.2.1.0.200.262.0.|22.28.1.0.0.1.x0.|23.xx1.1.384.355.0.|11|1365.719.0.0.11.|1077.515.0.0.17.|1096.564.0.0.17.|1160.581.0.0.17.|805.508.0.0.17.|568.344.0.0.23.|572.484.0.0.23.|576.446.0.0.23.|631.484.0.0.23.|961.450.0.x49.|1730.742.1.x42.|92|2|-
+1.1.0.0.6.x440.
+Empower Tower!
+Standard Output Stream:
+BUILD 2 TOWER
+TRAIN 8
+440
+501
+Standard Output Stream:
+MOVE 1594 654
+TRAIN
+441
+501
+Standard Error Stream:
+24|0.85.1.0.0.1.x0.|1.xx1.1.284.307.0.|2.324.3.1.0.568.433.0.|3.324.3.1.0.752.496.0.|4.45.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.300.317.0.|7.281.2.1.0.672.468.0.|8.238.1.2.0.4.0.0.|9.xx1.1.220.272.0.|10.291.2.1.0.324.326.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.388.359.0.|14.52.3.0.0.3.x0.|15.xx1.1.336.335.0.|16.262.2.1.0.708.481.0.|17.xxxxxx1.|18.90.3.0.0.3.x0.|19.xx1.1.308.323.0.|20.240.2.0.0.2.x0.|21.283.2.1.0.196.259.0.|22.27.1.0.0.1.x0.|23.xx1.1.380.353.0.|11|1465.716.0.0.1.|1171.544.0.0.16.|1167.592.0.0.16.|1181.559.0.0.13.|897.502.0.0.16.|584.321.0.0.22.|675.517.0.0.22.|647.486.0.0.22.|729.505.0.0.22.|961.450.0.x49.|1680.709.1.x42.|25|2|-
+1.1.0.0.6.x442.
+Empower Tower!
+Standard Output Stream:
+BUILD 2 TOWER
+TRAIN
+442
+501
+Standard Output Stream:
+MOVE 1594 654
+TRAIN
+443
+501
+Standard Error Stream:
+24|0.84.1.0.0.1.x0.|1.xx1.1.280.305.0.|2.324.3.1.0.664.467.0.|3.324.3.1.0.748.494.0.|4.42.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.296.315.0.|7.281.2.1.0.668.467.0.|8.238.1.2.0.3.0.0.|9.xx1.1.216.270.0.|10.291.2.1.0.320.324.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.384.357.0.|14.49.3.0.0.3.x0.|15.xx1.1.332.333.0.|16.262.2.1.0.704.479.0.|17.xxxxxx1.|18.87.3.0.0.3.x0.|19.xx1.1.304.321.0.|20.238.2.0.0.2.x0.|21.283.2.1.0.192.257.0.|22.26.1.0.0.1.x0.|23.xx1.1.376.352.0.|10|1250.514.0.0.12.|1165.603.0.0.15.|1199.537.0.0.12.|994.525.0.0.15.|644.290.0.0.21.|774.534.0.0.21.|745.505.0.0.21.|817.503.0.0.21.|961.450.0.x49.|1629.677.1.x42.|38|2|-
+1.1.0.0.6.x444.
+Empower Tower!
+Standard Output Stream:
+BUILD 2 TOWER
+TRAIN
+444
+501
+Standard Output Stream:
+BUILD 9 TOWER
+TRAIN
+445
+501
+Standard Error Stream:
+24|0.83.1.0.0.1.x0.|1.xx1.1.276.303.0.|2.324.3.1.0.760.498.0.|3.324.3.1.0.744.493.0.|4.39.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.292.313.0.|7.281.2.1.0.664.465.0.|8.238.1.2.0.2.0.0.|9.xx1.1.312.321.0.|10.291.2.1.0.316.322.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.380.355.0.|14.46.3.0.0.3.x0.|15.xx1.1.328.331.0.|16.262.2.1.0.700.478.0.|17.xxxxxx1.|18.84.3.0.0.3.x0.|19.xx1.1.300.319.0.|20.236.2.0.0.2.x0.|21.283.2.1.0.188.254.0.|22.25.1.0.0.1.x0.|23.xx1.1.372.350.0.|10|1343.540.0.0.5.|1165.616.0.0.14.|1273.513.0.0.11.|1091.548.0.0.14.|738.315.0.0.20.|855.495.0.0.20.|812.505.0.0.20.|913.506.0.0.20.|961.450.0.x49.|1629.677.1.x42.|51|2|-
+1.1.0.0.6.x446.
+SurivorMode move is MOVE 860 500
+Standard Output Stream:
+MOVE 860 500
+TRAIN
+446
+501
+Standard Output Stream:
+MOVE 1805 158
+TRAIN
+447
+501
+Standard Error Stream:
+24|0.82.1.0.0.1.x0.|1.xx1.1.272.300.0.|2.324.3.1.0.756.497.0.|3.324.3.1.0.740.492.0.|4.36.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.288.311.0.|7.281.2.1.0.660.464.0.|8.238.1.2.0.1.0.0.|9.xx1.1.308.319.0.|10.291.2.1.0.312.320.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.376.353.0.|14.43.3.0.0.3.x0.|15.xx1.1.324.330.0.|16.262.2.1.0.696.477.0.|17.xxxxxx1.|18.81.3.0.0.3.x0.|19.xx1.1.296.317.0.|20.234.2.0.0.2.x0.|21.283.2.1.0.184.252.0.|22.24.1.0.0.1.x0.|23.xx1.1.368.348.0.|9|1166.625.0.0.13.|1369.539.0.0.7.|1183.556.0.0.13.|833.347.0.0.19.|937.518.0.0.19.|883.498.0.0.19.|1018.528.0.0.19.|914.465.0.x49.|1648.620.1.x42.|64|x-
+1.1.0.0.6.x448.
+SurivorMode move is MOVE 780 580
+Standard Output Stream:
+MOVE 780 580
+TRAIN
+448
+501
+Standard Output Stream:
+MOVE 1805 158
+TRAIN
+449
+501
+Standard Error Stream:
+24|0.81.1.0.0.1.x0.|1.xx1.1.268.298.0.|2.324.3.1.0.752.496.0.|3.324.3.1.0.736.491.0.|4.33.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.284.309.0.|7.281.2.1.0.656.462.0.|8.238.1.2.0.0.0.0.|9.xx1.1.304.317.0.|10.291.2.1.0.308.318.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.372.351.0.|14.40.3.0.0.3.x0.|15.xx1.1.320.328.0.|16.262.2.1.0.692.475.0.|17.xxxxxx1.|18.78.3.0.0.3.x0.|19.xx1.1.292.315.0.|20.232.2.0.0.2.x0.|21.283.2.1.0.180.249.0.|22.23.1.0.0.1.x0.|23.xx1.1.364.346.0.|12|1167.632.0.0.12.|1250.514.0.0.12.|929.374.0.0.18.|1037.527.0.0.18.|998.507.0.0.18.|1118.536.0.0.18.|462.312.0.0.25.|378.439.0.0.25.|466.390.0.0.25.|478.351.0.0.25.|869.486.0.x49.|1649.584.1.x42.|77|3|-
+1.1.0.0.6.x450.
+SurivorMode move is MOVE 760 600
+Standard Output Stream:
+MOVE 760 600
+TRAIN
+450
+501
+Standard Output Stream:
+MOVE 1805 158
+TRAIN
+451
+501
+Standard Error Stream:
+24|0.80.1.0.0.1.x0.|1.xx1.1.264.296.0.|2.324.3.1.0.748.494.0.|3.324.3.1.0.732.489.0.|4.30.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.280.307.0.|7.281.2.1.0.652.461.0.|8.238.1.2.0.0.0.0.|9.xx1.1.300.315.0.|10.291.2.1.0.304.316.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.368.350.0.|14.37.3.0.0.3.x0.|15.xx1.1.316.326.0.|16.262.2.1.0.688.474.0.|17.xxxxxx1.|18.75.3.0.0.3.x0.|19.xx1.1.288.313.0.|20.230.2.0.0.2.x0.|21.283.2.1.0.176.247.0.|22.22.1.0.0.1.x0.|23.xx1.1.360.344.0.|12|1168.635.0.0.11.|1350.522.0.0.5.|961.388.0.0.17.|1137.530.0.0.17.|1098.513.0.0.17.|1212.528.0.0.17.|560.331.0.0.24.|478.448.0.0.24.|559.407.0.0.24.|561.362.0.0.24.|813.493.0.x49.|1623.551.1.x42.|90|3|-
+1.1.0.0.6.x452.
+SurivorMode move is MOVE 680 600
+Standard Output Stream:
+MOVE 680 600
+TRAIN 8
+452
+501
+Standard Output Stream:
+MOVE 1594 654
+TRAIN
+453
+501
+Standard Error Stream:
+24|0.79.1.0.0.1.x0.|1.xx1.1.260.294.0.|2.324.3.1.0.744.493.0.|3.324.3.1.0.728.488.0.|4.27.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.276.305.0.|7.281.2.1.0.648.460.0.|8.238.1.2.0.4.0.0.|9.xx1.1.296.313.0.|10.291.2.1.0.300.314.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.364.348.0.|14.34.3.0.0.3.x0.|15.xx1.1.312.324.0.|16.262.2.1.0.684.473.0.|17.xxxxxx1.|18.72.3.0.0.3.x0.|19.xx1.1.284.311.0.|20.228.2.0.0.2.x0.|21.283.2.1.0.172.244.0.|22.21.1.0.0.1.x0.|23.xx1.1.356.343.0.|11|1179.663.0.0.10.|962.422.0.0.16.|1229.520.0.0.16.|1189.530.0.0.16.|1303.520.0.0.16.|614.298.0.0.23.|568.464.0.0.23.|598.468.0.0.23.|560.365.0.0.23.|765.530.0.x49.|1620.602.1.x42.|23|3|-
+1.1.0.0.6.x454.
+SurivorMode move is MOVE 780 640
+Standard Output Stream:
+MOVE 780 640
+TRAIN
+454
+501
+Standard Output Stream:
+BUILD 9 TOWER
+TRAIN
+455
+501
+Standard Error Stream:
+24|0.78.1.0.0.1.x0.|1.xx1.1.256.292.0.|2.324.3.1.0.740.492.0.|3.324.3.1.0.724.487.0.|4.24.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.272.303.0.|7.281.2.1.0.644.458.0.|8.238.1.2.0.3.0.0.|9.xx1.1.392.359.0.|10.291.2.1.0.296.312.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.360.346.0.|14.31.3.0.0.3.x0.|15.xx1.1.308.322.0.|16.262.2.1.0.680.471.0.|17.xxxxxx1.|18.69.3.0.0.3.x0.|19.xx1.1.280.309.0.|20.226.2.0.0.2.x0.|21.283.2.1.0.168.241.0.|22.20.1.0.0.1.x0.|23.xx1.1.352.341.0.|11|1228.704.0.0.9.|999.482.0.0.15.|1325.526.0.0.15.|1277.514.0.0.15.|1400.545.0.0.6.|707.301.0.0.22.|657.488.0.0.22.|699.493.0.0.22.|560.362.0.0.22.|743.586.0.x49.|1620.602.1.x42.|36|3|-
+1.1.0.0.6.x456.
+SurivorMode move is MOVE 660 700
+Standard Output Stream:
+MOVE 660 700
+TRAIN
+456
+501
+Standard Output Stream:
+MOVE 1805 158
+TRAIN
+457
+501
+Standard Error Stream:
+24|0.77.1.0.0.1.x0.|1.xx1.1.252.290.0.|2.324.3.1.0.736.491.0.|3.324.3.1.0.720.485.0.|4.21.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.268.301.0.|7.281.2.1.0.640.457.0.|8.238.1.2.0.2.0.0.|9.xx1.1.388.357.0.|10.291.2.1.0.292.310.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.356.344.0.|14.28.3.0.0.3.x0.|15.xx1.1.304.320.0.|16.262.2.1.0.676.470.0.|17.xxxxxx1.|18.66.3.0.0.3.x0.|19.xx1.1.276.307.0.|20.224.2.0.0.2.x0.|21.283.2.1.0.164.239.0.|22.19.1.0.0.1.x0.|23.xx1.1.348.339.0.|10|1320.695.0.0.8.|1092.508.0.0.14.|1425.536.0.0.14.|1376.526.0.0.11.|803.328.0.0.21.|757.495.0.0.21.|799.500.0.0.21.|566.346.0.0.21.|708.635.0.x49.|1626.556.1.x42.|49|x-
+1.1.0.0.6.x458.
+SurivorMode move is MOVE 720 740
+Standard Output Stream:
+MOVE 720 740
+TRAIN
+458
+501
+Standard Output Stream:
+MOVE 1805 158
+TRAIN
+459
+501
+Standard Error Stream:
+24|0.76.1.0.0.1.x0.|1.xx1.1.248.287.0.|2.324.3.1.0.732.489.0.|3.324.3.1.0.716.484.0.|4.18.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.264.299.0.|7.281.2.1.0.636.455.0.|8.238.1.2.0.1.0.0.|9.xx1.1.384.355.0.|10.291.2.1.0.288.308.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.352.342.0.|14.25.3.0.0.3.x0.|15.xx1.1.300.318.0.|16.262.2.1.0.672.469.0.|17.xxxxxx1.|18.63.3.0.0.3.x0.|19.xx1.1.272.305.0.|20.222.2.0.0.2.x0.|21.283.2.1.0.160.236.0.|22.18.1.0.0.1.x0.|23.xx1.1.344.337.0.|10|1404.640.0.0.7.|1192.507.0.0.13.|1523.518.0.0.6.|1475.515.0.0.7.|901.349.0.0.20.|857.496.0.0.20.|898.495.0.0.20.|600.307.0.0.20.|715.695.0.x49.|1612.500.1.x42.|62|x-
+1.1.0.0.6.x460.
+SurivorMode move is MOVE 740 780
+Standard Output Stream:
+MOVE 740 780
+TRAIN
+460
+501
+Standard Output Stream:
+BUILD 15 TOWER
+TRAIN
+461
+501
+Standard Error Stream:
+24|0.75.1.0.0.1.x0.|1.xx1.1.244.285.0.|2.324.3.1.0.728.488.0.|3.324.3.1.0.712.483.0.|4.15.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.260.297.0.|7.281.2.1.0.632.454.0.|8.238.1.2.0.0.0.0.|9.xx1.1.380.353.0.|10.291.2.1.0.284.306.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.348.340.0.|14.22.3.0.0.3.x0.|15.xx1.1.396.363.0.|16.262.2.1.0.668.467.0.|17.xxxxxx1.|18.60.3.0.0.3.x0.|19.xx1.1.268.303.0.|20.220.2.0.0.2.x0.|21.283.2.1.0.156.233.0.|22.17.1.0.0.1.x0.|23.xx1.1.340.335.0.|14|1482.579.0.0.2.|1292.505.0.0.9.|1571.529.0.0.2.|1549.494.0.0.6.|970.357.0.0.19.|957.496.0.0.19.|998.496.0.0.19.|689.294.0.0.19.|460.309.0.0.25.|378.439.0.0.25.|465.383.0.0.25.|481.344.0.0.25.|742.750.0.x49.|1613.498.1.x41.|75|13|-
+1.1.0.0.6.x462.
+Empower Tower!
+Standard Output Stream:
+BUILD 13 TOWER
+TRAIN
+462
+501
+Standard Output Stream:
+MOVE 1805 158
+TRAIN
+463
+501
+Standard Error Stream:
+24|0.74.1.0.0.1.x0.|1.xx1.1.240.283.0.|2.324.3.1.0.724.487.0.|3.324.3.1.0.708.481.0.|4.12.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.256.294.0.|7.281.2.1.0.628.453.0.|8.238.1.2.0.0.0.0.|9.xx1.1.376.352.0.|10.291.2.1.0.280.304.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.444.383.0.|14.19.3.0.0.3.x0.|15.xx1.1.392.361.0.|16.262.2.1.0.664.466.0.|17.xxxxxx1.|18.57.3.0.0.3.x0.|19.xx1.1.264.301.0.|20.218.2.0.0.2.x0.|21.283.2.1.0.152.231.0.|22.16.1.0.0.1.x0.|23.xx1.1.336.333.0.|12|1379.508.0.0.4.|1586.440.0.0.5.|1003.317.0.0.18.|1051.504.0.0.18.|1096.502.0.0.18.|788.309.0.0.18.|559.319.0.0.24.|478.439.0.0.24.|557.389.0.0.24.|567.345.0.0.24.|742.750.0.x49.|1637.434.1.x39.|88|13|-
+1.1.0.0.6.x464.
+Empower Tower!
+Standard Output Stream:
+BUILD 13 TOWER
+TRAIN 8
+464
+501
+Standard Output Stream:
+MOVE 1805 158
+TRAIN
+465
+501
+Standard Error Stream:
+24|0.73.1.0.0.1.x0.|1.xx1.1.236.281.0.|2.324.3.1.0.720.485.0.|3.324.3.1.0.704.480.0.|4.9.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.252.292.0.|7.281.2.1.0.624.451.0.|8.238.1.2.0.4.0.0.|9.xx1.1.372.350.0.|10.291.2.1.0.276.302.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.540.421.0.|14.16.3.0.0.3.x0.|15.xx1.1.388.359.0.|16.262.2.1.0.660.464.0.|17.xxxxxx1.|18.54.3.0.0.3.x0.|19.xx1.1.260.299.0.|20.216.2.0.0.2.x0.|21.283.2.1.0.148.228.0.|22.15.1.0.0.1.x0.|23.xx1.1.332.331.0.|10|1094.300.0.0.17.|1149.489.0.0.17.|1194.482.0.0.17.|888.317.0.0.17.|651.289.0.0.23.|571.438.0.0.23.|557.395.0.0.23.|598.308.0.0.23.|742.750.0.x49.|1672.380.1.x38.|21|13|-
+1.1.0.0.6.x466.
+Empower Tower!
+Standard Output Stream:
+BUILD 13 TOWER
+TRAIN
+466
+501
+Standard Output Stream:
+MOVE 1805 158
+TRAIN
+467
+501
+Standard Error Stream:
+24|0.72.1.0.0.1.x0.|1.xx1.1.232.278.0.|2.324.3.1.0.716.484.0.|3.324.3.1.0.700.479.0.|4.6.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.248.290.0.|7.281.2.1.0.620.450.0.|8.238.1.2.0.3.0.0.|9.xx1.1.368.348.0.|10.291.2.1.0.272.300.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.636.455.0.|14.13.3.0.0.3.x0.|15.xx1.1.384.357.0.|16.262.2.1.0.656.463.0.|17.xxxxxx1.|18.51.3.0.0.3.x0.|19.xx1.1.256.297.0.|20.214.2.0.0.2.x0.|21.283.2.1.0.144.225.0.|22.14.1.0.0.1.x0.|23.xx1.1.328.329.0.|10|1194.305.0.0.16.|1245.461.0.0.16.|1290.453.0.0.10.|988.318.0.0.16.|751.293.0.0.22.|625.482.0.0.22.|557.397.0.0.22.|691.291.0.0.22.|742.750.0.x49.|1703.329.1.x38.|34|13|-
+1.1.0.0.6.x468.
+Empower Tower!
+Standard Output Stream:
+BUILD 13 TOWER
+TRAIN
+468
+501
+Standard Output Stream:
+MOVE 1805 158
+TRAIN
+469
+501
+Standard Error Stream:
+24|0.71.1.0.0.1.x0.|1.xx1.1.228.276.0.|2.324.3.1.0.712.483.0.|3.324.3.1.0.696.477.0.|4.3.3.0.0.3.x0.|5.xxxxxx0.|6.xx1.1.244.288.0.|7.281.2.1.0.616.448.0.|8.238.1.2.0.2.0.0.|9.xx1.1.364.346.0.|10.291.2.1.0.268.298.0.|11.xx0.1.xx0.|12.xx2.1.0.0.0.|13.271.4.1.0.732.488.0.|14.10.3.0.0.3.x0.|15.xx1.1.380.355.0.|16.262.2.1.0.652.462.0.|17.xxxxxx1.|18.48.3.0.0.3.x0.|19.xx1.1.252.294.0.|20.212.2.0.0.2.x0.|21.283.2.1.0.140.222.0.|22.13.1.0.0.1.x0.|23.xx1.1.324.327.0.|10|1290.314.0.0.12.|1311.434.0.0.12.|1317.424.0.0.6.|1081.297.0.0.15.|851.292.0.0.21.|723.476.0.0.21.|557.396.0.0.21.|791.291.0.0.21.|742.750.0.x49.|1732.288.1.x38.|47|13|-
+1.1.0.0.6.x470.
+SurivorMode move is MOVE 840 800
+Standard Output Stream:
+MOVE 840 800
+TRAIN
+470
+501
+Standard Output Stream:
+BUILD 19 TOWER
+TRAIN
+471
+501
+Standard Error Stream:
+24|0.70.1.0.0.1.x0.|1.xx1.1.224.274.0.|2.324.3.1.0.708.481.0.|3.324.3.1.0.692.476.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.240.286.0.|7.281.2.1.0.612.447.0.|8.238.1.2.0.1.0.0.|9.xx1.1.360.344.0.|10.291.2.1.0.264.296.0.|11.xxxxxx0.|12.xx2.1.0.0.0.|13.271.4.1.0.728.487.0.|14.7.3.0.0.3.x0.|15.xx1.1.376.354.0.|16.262.2.1.0.648.460.0.|17.xxxxxx1.|18.45.3.0.0.3.x0.|19.xx1.1.348.342.0.|20.210.2.0.0.2.x0.|21.283.2.1.0.136.219.0.|22.12.1.0.0.1.x0.|23.xx1.1.320.325.0.|10|1390.308.0.0.8.|1317.427.0.0.8.|1347.350.0.0.2.|1181.296.0.0.14.|951.292.0.0.20.|821.458.0.0.20.|557.394.0.0.20.|891.291.0.0.20.|795.777.0.x49.|1732.288.1.x38.|60|x-
+1.1.0.0.6.x472.
+SurivorMode move is MOVE 880 780
+Standard Output Stream:
+MOVE 880 780
+TRAIN
+472
+501
+Standard Output Stream:
+MOVE 1559 128
+TRAIN
+473
+501
+Standard Error Stream:
+24|0.69.1.0.0.1.x0.|1.xx1.1.220.272.0.|2.324.3.1.0.704.480.0.|3.324.3.1.0.688.475.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.236.283.0.|7.281.2.1.0.608.446.0.|8.238.1.2.0.0.0.0.|9.xx1.1.356.342.0.|10.291.2.1.0.260.293.0.|11.xxxxxx0.|12.xx2.1.0.0.0.|13.271.4.1.0.724.485.0.|14.4.3.0.0.3.x0.|15.xx1.1.372.352.0.|16.262.2.1.0.644.459.0.|17.xxxxxx1.|18.42.3.0.0.3.x0.|19.xx1.1.344.340.0.|20.208.2.0.0.2.x0.|21.283.2.1.0.132.216.0.|22.11.1.0.0.1.x0.|23.xx1.1.316.323.0.|13|1331.370.0.0.4.|1439.316.0.0.1.|1269.316.0.0.13.|1051.288.0.0.19.|918.435.0.0.19.|557.382.0.0.19.|991.287.0.0.19.|450.293.0.0.25.|377.439.0.0.25.|471.367.0.0.25.|475.325.0.0.25.|850.763.0.x49.|1675.262.1.x38.|70|10|-
+1.1.0.0.6.x474.
+Empower Tower!
+Standard Output Stream:
+BUILD 10 TOWER
+TRAIN
+474
+501
+Standard Output Stream:
+MOVE 1559 128
+TRAIN
+475
+501
+Standard Error Stream:
+24|0.68.1.0.0.1.x0.|1.xx1.1.216.269.0.|2.324.3.1.0.700.479.0.|3.324.3.1.0.684.473.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.232.281.0.|7.281.2.1.0.604.444.0.|8.238.1.2.0.0.0.0.|9.xx1.1.352.340.0.|10.291.2.1.0.356.341.0.|11.xxxxxx0.|12.xx2.1.0.0.0.|13.271.4.1.0.720.484.0.|14.1.3.0.0.3.x0.|15.xx1.1.368.350.0.|16.262.2.1.0.640.458.0.|17.xxxxxx1.|18.39.3.0.0.3.x0.|19.xx1.1.340.339.0.|20.206.2.0.0.2.x0.|21.283.2.1.0.128.213.0.|22.10.1.0.0.1.x0.|23.xx1.1.312.321.0.|11|1366.295.0.0.12.|1150.276.0.0.18.|961.414.0.0.18.|569.340.0.0.18.|1090.276.0.0.18.|543.281.0.0.24.|476.424.0.0.24.|544.362.0.0.24.|578.304.0.0.24.|850.763.0.x49.|1636.217.1.x38.|80|10|-
+1.1.0.0.6.x476.
+Empower Tower!
+Standard Output Stream:
+BUILD 10 TOWER
+TRAIN 8
+476
+501
+Standard Output Stream:
+MOVE 1559 128
+TRAIN
+477
+501
+Standard Error Stream:
+24|0.67.1.0.0.1.x0.|1.xx1.1.212.267.0.|2.324.3.1.0.696.477.0.|3.324.3.1.0.680.472.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.228.279.0.|7.281.2.1.0.600.443.0.|8.238.1.2.0.4.0.0.|9.xx1.1.348.339.0.|10.291.2.1.0.452.384.0.|11.xxxxxx0.|12.xx2.1.0.0.0.|13.271.4.1.0.716.483.0.|14.xxxxxx0.|15.xx1.1.364.348.0.|16.262.2.1.0.636.456.0.|17.xxxxxx1.|18.36.3.0.0.3.x0.|19.xx1.1.336.337.0.|20.204.2.0.0.2.x0.|21.283.2.1.0.124.210.0.|22.9.1.0.0.1.x0.|23.xx1.1.308.319.0.|11|1454.248.0.0.2.|1210.286.0.0.17.|964.373.0.0.17.|630.293.0.0.17.|1184.253.0.0.17.|645.255.0.0.23.|558.405.0.0.23.|583.321.0.0.23.|681.284.0.0.23.|850.763.0.x49.|1597.172.1.x38.|8|10|-
+1.1.0.0.6.x478.
+Empower Tower!
+Standard Output Stream:
+BUILD 10 TOWER
+TRAIN
+478
+501
+Standard Output Stream:
+BUILD 1 TOWER
+TRAIN
+479
+501
+Standard Error Stream:
+24|0.66.1.0.0.1.x0.|1.xx1.1.308.319.0.|2.324.3.1.0.692.476.0.|3.324.3.1.0.676.471.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.224.277.0.|7.281.2.1.0.596.441.0.|8.238.1.2.0.3.0.0.|9.xx1.1.344.337.0.|10.291.2.1.0.548.421.0.|11.xxxxxx0.|12.xx2.1.0.0.0.|13.271.4.1.0.712.481.0.|14.xxxxxx0.|15.xx1.1.360.346.0.|16.262.2.1.0.632.455.0.|17.xxxxxx1.|18.33.3.0.0.3.x0.|19.xx1.1.332.335.0.|20.202.2.0.0.2.x0.|21.283.2.1.0.120.207.0.|22.8.1.0.0.1.x0.|23.xx1.1.304.317.0.|10|1275.316.0.0.13.|1013.310.0.0.16.|726.284.0.0.16.|1200.273.0.0.16.|745.252.0.0.22.|557.395.0.0.22.|671.287.0.0.22.|782.273.0.0.22.|850.763.0.x49.|1597.172.1.x38.|15|10|-
+1.1.0.0.6.x480.
+Empower Tower!
+Standard Output Stream:
+BUILD 10 TOWER
+TRAIN
+480
+501
+Standard Output Stream:
+BUILD 1 TOWER
+TRAIN
+481
+501
+Standard Error Stream:
+24|0.65.1.0.0.1.x0.|1.xx1.1.404.364.0.|2.324.3.1.0.688.475.0.|3.324.3.1.0.672.469.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.220.274.0.|7.281.2.1.0.592.440.0.|8.238.1.2.0.2.0.0.|9.xx1.1.340.335.0.|10.291.2.1.0.644.456.0.|11.xxxxxx0.|12.xx2.1.0.0.0.|13.271.4.1.0.708.480.0.|14.xxxxxx0.|15.xx1.1.356.345.0.|16.262.2.1.0.628.453.0.|17.xxxxxx1.|18.30.3.0.0.3.x0.|19.xx1.1.328.333.0.|20.200.2.0.0.2.x0.|21.283.2.1.0.116.204.0.|22.7.1.0.0.1.x0.|23.xx1.1.300.315.0.|10|1368.283.0.0.6.|1109.284.0.0.15.|823.274.0.0.15.|1243.309.0.0.15.|846.240.0.0.21.|559.368.0.0.21.|770.275.0.0.21.|882.261.0.0.21.|850.763.0.x49.|1597.172.1.x38.|22|10|-
+1.1.0.0.6.x482.
+Empower Tower!
+Standard Output Stream:
+BUILD 10 TOWER
+TRAIN
+482
+501
+Standard Output Stream:
+MOVE 1766 859
+TRAIN
+483
+501
+Standard Error Stream:
+24|0.64.1.0.0.1.x0.|1.xx1.1.400.362.0.|2.324.3.1.0.684.473.0.|3.324.3.1.0.668.468.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.216.272.0.|7.281.2.1.0.588.438.0.|8.238.1.2.0.1.0.0.|9.xx1.1.336.333.0.|10.291.2.1.0.740.489.0.|11.xxxxxx0.|12.xx2.1.0.0.0.|13.271.4.1.0.704.479.0.|14.xxxxxx0.|15.xx1.1.352.343.0.|16.262.2.1.0.624.452.0.|17.xxxxxx1.|18.27.3.0.0.3.x0.|19.xx1.1.324.331.0.|20.198.2.0.0.2.x0.|21.283.2.1.0.112.201.0.|22.6.1.0.0.1.x0.|23.xx1.1.296.313.0.|9|1203.278.0.0.14.|922.270.0.0.14.|1339.303.0.0.11.|946.236.0.0.20.|587.317.0.0.20.|870.270.0.0.20.|983.257.0.0.20.|850.763.0.x49.|1611.230.1.x38.|29|10|-
+1.1.0.0.6.x484.
+SurivorMode move is MOVE 780 640
+Standard Output Stream:
+MOVE 780 640
+TRAIN
+484
+501
+Standard Output Stream:
+MOVE 1766 859
+TRAIN
+485
+501
+Standard Error Stream:
+24|0.63.1.0.0.1.x0.|1.xx1.1.396.360.0.|2.324.3.1.0.680.472.0.|3.324.3.1.0.664.467.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.212.270.0.|7.281.2.1.0.584.437.0.|8.238.1.2.0.0.0.0.|9.xx1.1.332.331.0.|10.291.2.1.0.736.487.0.|11.xxxxxx0.|12.xx2.1.0.0.0.|13.271.4.1.0.700.477.0.|14.xxxxxx0.|15.xx1.1.348.341.0.|16.262.2.1.0.620.451.0.|17.xxxxxx1.|18.24.3.0.0.3.x0.|19.xx1.1.320.329.0.|20.196.2.0.0.2.x0.|21.283.2.1.0.108.198.0.|22.5.1.0.0.1.x0.|23.xx1.1.292.311.0.|13|1280.316.0.0.13.|1021.274.0.0.13.|1439.298.0.0.3.|1047.242.0.0.19.|675.289.0.0.19.|970.272.0.0.19.|1083.262.0.0.19.|452.294.0.0.25.|377.439.0.0.25.|470.369.0.0.25.|475.327.0.0.25.|820.711.0.x49.|1625.288.1.x38.|36|3|-
+1.1.0.0.6.x486.
+Empower Tower!
+Standard Output Stream:
+BUILD 3 TOWER
+TRAIN
+486
+501
+Standard Output Stream:
+MOVE 1766 859
+TRAIN
+487
+501
+Standard Error Stream:
+24|0.62.1.0.0.1.x0.|1.xx1.1.392.358.0.|2.324.3.1.0.676.471.0.|3.324.3.1.0.760.498.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.208.267.0.|7.281.2.1.0.580.435.0.|8.238.1.2.0.0.0.0.|9.xx1.1.328.329.0.|10.291.2.1.0.732.486.0.|11.xxxxxx0.|12.xx2.1.0.0.0.|13.271.4.1.0.696.476.0.|14.xxxxxx0.|15.xx1.1.344.339.0.|16.262.2.1.0.616.449.0.|17.xxxxxx1.|18.21.3.0.0.3.x0.|19.xx1.1.316.327.0.|20.194.2.0.0.2.x0.|21.283.2.1.0.104.195.0.|22.4.1.0.0.1.x0.|23.xx1.1.288.309.0.|12|1380.324.0.0.9.|1119.287.0.0.12.|1146.257.0.0.18.|775.295.0.0.18.|1069.283.0.0.18.|1183.277.0.0.18.|551.297.0.0.24.|477.432.0.0.24.|559.367.0.0.24.|577.328.0.0.24.|820.711.0.x49.|1639.346.1.x38.|43|3|-
+1.1.0.0.6.x488.
+SurivorMode move is MOVE 700 580
+Standard Output Stream:
+MOVE 700 580
+TRAIN
+488
+501
+Standard Output Stream:
+MOVE 1766 859
+TRAIN
+489
+501
+Standard Error Stream:
+24|0.61.1.0.0.1.x0.|1.xx1.1.388.357.0.|2.324.3.1.0.672.469.0.|3.324.3.1.0.756.497.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.204.265.0.|7.281.2.1.0.576.434.0.|8.238.1.2.0.0.0.0.|9.xx1.1.324.327.0.|10.291.2.1.0.728.485.0.|11.xxxxxx0.|12.xx2.1.0.0.0.|13.271.4.1.0.692.475.0.|14.xxxxxx0.|15.xx1.1.340.337.0.|16.262.2.1.0.612.448.0.|17.xxxxxx1.|18.18.3.0.0.3.x0.|19.xx1.1.312.325.0.|20.192.2.0.0.2.x0.|21.283.2.1.0.100.192.0.|22.3.1.0.0.1.x0.|23.xx1.1.284.307.0.|11|1207.318.0.0.11.|1229.302.0.0.17.|874.307.0.0.17.|1167.303.0.0.17.|1271.316.0.0.17.|625.285.0.0.23.|568.434.0.0.23.|572.336.0.0.23.|666.290.0.0.23.|771.675.0.x49.|1653.404.1.x38.|50|3|-
+1.1.0.0.6.x490.
+SurivorMode move is MOVE 640 540
+Standard Output Stream:
+MOVE 640 540
+TRAIN
+490
+501
+Standard Output Stream:
+MOVE 1766 859
+TRAIN
+491
+501
+Standard Error Stream:
+24|0.60.1.0.0.1.x0.|1.xx1.1.384.355.0.|2.324.3.1.0.668.468.0.|3.324.3.1.0.752.496.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.200.262.0.|7.281.2.1.0.572.433.0.|8.238.1.2.0.0.0.0.|9.xx1.1.320.325.0.|10.291.2.1.0.724.483.0.|11.xxxxxx0.|12.xx2.1.0.0.0.|13.271.4.1.0.688.473.0.|14.xxxxxx0.|15.xx1.1.336.335.0.|16.262.2.1.0.608.446.0.|17.xxxxxx1.|18.15.3.0.0.3.x0.|19.xx1.1.308.323.0.|20.190.2.0.0.2.x0.|21.283.2.1.0.96.188.0.|22.2.1.0.0.1.x0.|23.xx1.1.280.305.0.|11|1294.353.0.0.10.|1331.333.0.0.16.|973.324.0.0.16.|1261.330.0.0.16.|1362.338.0.0.10.|724.298.0.0.22.|625.482.0.0.22.|629.293.0.0.22.|765.305.0.0.22.|729.632.0.x49.|1635.437.1.x38.|57|x-
+1.1.0.0.6.x492.
+SurivorMode move is MOVE 600 600
+Standard Output Stream:
+MOVE 600 600
+TRAIN
+492
+501
+Standard Output Stream:
+MOVE 1766 859
+TRAIN
+493
+501
+Standard Error Stream:
+24|0.59.1.0.0.1.x0.|1.xx1.1.380.353.0.|2.324.3.1.0.664.467.0.|3.324.3.1.0.748.494.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.196.260.0.|7.281.2.1.0.568.431.0.|8.238.1.2.0.0.0.0.|9.xx1.1.316.323.0.|10.291.2.1.0.720.482.0.|11.xxxxxx0.|12.xx2.1.0.0.0.|13.271.4.1.0.684.472.0.|14.xxxxxx0.|15.xx1.1.332.333.0.|16.262.2.1.0.604.445.0.|17.xxxxxx1.|18.12.3.0.0.3.x0.|19.xx1.1.304.321.0.|20.188.2.0.0.2.x0.|21.283.2.1.0.92.185.0.|22.1.1.0.0.1.x0.|23.xx1.1.276.303.0.|10|1323.385.0.0.9.|1389.327.0.0.15.|1042.299.0.0.15.|1343.348.0.0.15.|822.319.0.0.21.|725.487.0.0.21.|727.302.0.0.21.|863.326.0.0.21.|671.618.0.x49.|1613.489.1.x38.|64|x-
+1.1.0.0.6.x494.
+SurivorMode move is MOVE 560 540
+Standard Output Stream:
+MOVE 560 540
+TRAIN
+494
+501
+Standard Output Stream:
+MOVE 1766 859
+TRAIN
+495
+501
+Standard Error Stream:
+24|0.58.1.0.0.1.x0.|1.xx1.1.376.351.0.|2.324.3.1.0.660.465.0.|3.324.3.1.0.744.493.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.192.258.0.|7.281.2.1.0.564.430.0.|8.238.1.2.0.0.0.0.|9.xx1.1.312.321.0.|10.291.2.1.0.716.481.0.|11.xxxxxx0.|12.xx2.1.0.0.0.|13.271.4.1.0.680.471.0.|14.xxxxxx0.|15.xx1.1.328.331.0.|16.262.2.1.0.600.443.0.|17.xxxxxx1.|18.9.3.0.0.3.x0.|19.xx1.1.300.319.0.|20.186.2.0.0.2.x0.|21.283.2.1.0.88.181.0.|22.xxxxxx0.|23.xx1.1.272.301.0.|10|1317.411.0.0.8.|1467.342.0.0.5.|1135.320.0.0.14.|1375.331.0.0.11.|918.347.0.0.20.|825.494.0.0.20.|823.329.0.0.20.|959.354.0.0.20.|622.584.0.x49.|1623.551.1.x38.|71|x-
+1.1.0.0.6.x496.
+SurivorMode move is MOVE 520 520
+Standard Output Stream:
+MOVE 520 520
+TRAIN
+496
+501
+Standard Output Stream:
+MOVE 1766 857
+TRAIN
+497
+501
+Standard Error Stream:
+24|0.57.1.0.0.1.x0.|1.xx1.1.372.349.0.|2.324.3.1.0.656.464.0.|3.324.3.1.0.740.492.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.188.255.0.|7.281.2.1.0.560.428.0.|8.238.1.2.0.0.0.0.|9.xx1.1.308.319.0.|10.291.2.1.0.712.479.0.|11.xxxxxx0.|12.xx2.1.0.0.0.|13.271.4.1.0.676.469.0.|14.xxxxxx0.|15.xx1.1.324.330.0.|16.262.2.1.0.596.442.0.|17.xxxxxx1.|18.6.3.0.0.3.x0.|19.xx1.1.296.317.0.|20.184.2.0.0.2.x0.|21.283.2.1.0.84.178.0.|22.xxxxxx0.|23.xx1.1.268.299.0.|9|1337.477.0.0.4.|1222.369.0.0.13.|1438.328.0.0.7.|962.379.0.0.19.|924.504.0.0.19.|918.361.0.0.19.|991.327.0.0.19.|603.537.0.x49.|1648.605.1.x38.|77|7|-
+1.1.0.0.6.x498.
+Empower Tower!
+Standard Output Stream:
+BUILD 7 TOWER
+TRAIN
+498
+501
+Standard Output Stream:
+MOVE 1766 857
+TRAIN
+499
+501
+Standard Error Stream:
+24|0.56.1.0.0.1.x0.|1.xx1.1.368.348.0.|2.324.3.1.0.652.463.0.|3.324.3.1.0.736.491.0.|4.xxxxxx0.|5.xxxxxx0.|6.xx1.1.184.253.0.|7.281.2.1.0.656.462.0.|8.238.1.2.0.0.0.0.|9.xx1.1.304.317.0.|10.291.2.1.0.708.478.0.|11.xxxxxx0.|12.xx2.1.0.0.0.|13.271.4.1.0.672.468.0.|14.xxxxxx0.|15.xx1.1.320.328.0.|16.262.2.1.0.592.441.0.|17.xxxxxx1.|18.3.3.0.0.3.x0.|19.xx1.1.292.315.0.|20.182.2.0.0.2.x0.|21.283.2.1.0.80.174.0.|22.xxxxxx0.|23.xx1.1.264.297.0.|7|1306.423.0.0.12.|965.432.0.0.18.|1022.524.0.0.18.|964.374.0.0.18.|1040.300.0.0.18.|603.537.0.x49.|1673.659.1.x38.|83|7|-
+1.1.0.0.6.x500.
+Empower Tower!
+Standard Output Stream:
+BUILD 7 TOWER
+TRAIN 8
+500
+501
+Standard Output Stream:
+MOVE 1766 857
+TRAIN

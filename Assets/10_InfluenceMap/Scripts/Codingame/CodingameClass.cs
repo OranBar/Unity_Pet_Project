@@ -44,7 +44,7 @@ class Player
                 Console.Error.WriteLine("Game Info");
                 Console.Error.WriteLine(giovannaD_Arco.gameInfo.Encode());
             }
-            Console.Error.Write(giovannaD_Arco.game.Encode()+"-");
+            Console.Error.WriteLine(giovannaD_Arco.game.Encode()+"-");
 
             Console.Error.WriteLine(giovannaD_Arco.Encode());
             
@@ -926,7 +926,7 @@ public class LaPulzellaD_Orleans
         buildInfluenceMap = new InfluenceMap(mapWidth, mapHeight, minInfluence, maxInfluence, new ManhattanDistance());
 
         int searchRange = QUEEN_MOVEMENT * 2;
-        double favorCloseSitesOverOpenSquares = 1;
+        double favorCloseSitesOverOpenSquares = 1.5;
         
         //Avoid enemy towers!!
         foreach (var tower in g.EnemySites.Where(s => s.structureType == StructureType.Tower))
@@ -945,11 +945,11 @@ public class LaPulzellaD_Orleans
             double towerHp = tower.param1;
 //            if (towerHp < HEAL_TOWER)
 //            {
-                var towerHp_norm = 1 - (towerHp / 899);
+                var towerHp_norm = 1 - (towerHp / 799);
                 double influence = towerHp_norm * 3;
                 
                 ScaleAndApplyInfluence_Circle(tower.pos, influence, siteRadius+1, 10, polynomial2Propagation, ref buildInfluenceMap);
-                ScaleAndApplyInfluence_Circle(tower.pos, influence * favorCloseSitesOverOpenSquares, siteRadius+1, 0, polynomial2Propagation, ref buildInfluenceMap);
+                ScaleAndApplyInfluence_Circle(tower.pos, influence * favorCloseSitesOverOpenSquares, siteRadius+1, 0, linearPropagation, ref buildInfluenceMap);
 
 //            }
             
@@ -1015,7 +1015,9 @@ public class LaPulzellaD_Orleans
                 }
             
                 //TODO: maybe do siteRadius and siteRadius-1
-                ScaleAndApplyInfluence_Circle(site.pos, influence * favorCloseSitesOverOpenSquares, siteRadius+1, 1, polynomial2Propagation, ref buildInfluenceMap);
+                ScaleAndApplyInfluence_Circle(site.pos, influence * favorCloseSitesOverOpenSquares, siteRadius+1, 0, polynomial2Propagation, ref buildInfluenceMap);
+                
+                ScaleAndApplyInfluence_Circle(site.pos, influence/2 * favorCloseSitesOverOpenSquares, siteRadius+1, 7, polynomial2Propagation, ref buildInfluenceMap);
                 ScaleAndApplyInfluence_Circle(site.pos, influence, siteRadius+1, 60, linearPropagation,  ref buildInfluenceMap);
             
             }

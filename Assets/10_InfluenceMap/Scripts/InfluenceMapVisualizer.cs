@@ -49,6 +49,8 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 
 	[SerializeField]
 	private bool _enableMouseInputCells;
+	[SerializeField]
+	private bool _showNumbers;
 
 	private InfluenceMapCell currTile_mouseover;
 	private InfluenceMapCell currBestTile_mouseover, currWorstTile_mouseover;
@@ -72,6 +74,21 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 			
 			_enableMouseInputCells = value;
 			EnableMouseInput(value);
+		}
+	}
+	
+	public bool ShowNumbers
+	{
+		get { return _showNumbers; }
+		set
+		{
+			if (value == _showNumbers)
+			{
+				return;
+			}
+			
+			_showNumbers = value;
+			EnableNumbers(value);
 		}
 	}
 
@@ -207,6 +224,7 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 	private void Update()
 	{
 		EnableMouseInputCells = _enableMouseInputCells;
+		ShowNumbers = _showNumbers;
 		
 		if (Input.GetKeyUp(KeyCode.LeftControl))
 		{
@@ -315,6 +333,14 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 		foreach (var influenceMapCell in influenceMapCells)
 		{
 			influenceMapCell.enableMouseInput = enable;
+		}
+	}
+	
+	public void EnableNumbers(bool enable)
+	{
+		foreach (var influenceMapCell in influenceMapCells)
+		{
+			influenceMapCell.influenceLabel.enabled = enable;
 		}
 	}
 
