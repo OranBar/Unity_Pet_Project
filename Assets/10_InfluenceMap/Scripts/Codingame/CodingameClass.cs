@@ -705,12 +705,13 @@ public class LaPulzellaD_Orleans
 
     public static int GIANT_COST = 140, KNIGHT_COST = 80, ARCHER_COST = 100;
     public static int ENEMY_CHECK_RANGE = 210, TOO_MANY_UNITS_NEARBY = 2;
-    public static int INFLUENCEMAP_SQUARELENGTH = 25;
+    public static int INFLUENCEMAP_SQUARELENGTH = 20;
     public static int QUEEN_MOVEMENT = 60;
     public static int MAX_DISTANCE = 4686400;
 
     public static PropagationFunction linearPropagation => (amount, distance, maxDistance) => amount - amount * (distance / maxDistance);
     public static PropagationFunction polynomial2Propagation => (amount, distance, maxDistance) => (1 - Math.Pow(distance / maxDistance, 2)) * amount;
+    public static PropagationFunction polynomial4Propagation => (amount, distance, maxDistance) => (1 - Math.Pow(distance / maxDistance, 4)) * amount;
 //    public static PropagationFunction polynomial2Propagation => (amount, distance, maxDistance) => amount - amount * Math.Pow(distance*distance/ maxDistance, 2) ;
 //    public static PropagationFunction polynomial4Propagation => (amount, distance, maxDistance) => amount - amount * Math.Pow(distance) / maxDistance;
 
@@ -916,10 +917,19 @@ public class LaPulzellaD_Orleans
 
         int searchRange = QUEEN_MOVEMENT * 2;
 
+
+        foreach (var tower in g.EnemySites.Where(s => s.structureType == StructureType.Tower))
+        {
+            int siteRadius = GetRadius(tower);
+            int towerRange = (int) Math.Ceiling(tower.param2 / squareLength);
+                
+            ScaleAndApplyInfluence_Circle(tower.pos, -100, siteRadius, towerRange - siteRadius + 1, polynomial2Propagation, ref buildInfluenceMap);
+        }
+        
         
         foreach (var site in g.sites)
         {
-            int siteRadius = (int) Math.Ceiling(GetSiteInfo(site).radius / squareLength);
+            int siteRadius = (int) Math.Floor(GetSiteInfo(site).radius / squareLength);
             double favorCloseSitesOverOpenSquares = 4;
 
             
@@ -930,15 +940,6 @@ public class LaPulzellaD_Orleans
             if (site.structureType == StructureType.Mine && site.owner == Owner.Friendly)
             {
                 ScaleAndApplyInfluence_Circle(site.pos, -120, siteRadius+1, 0, polynomial2Propagation, ref buildInfluenceMap);
-            }
-
-            if (site.owner == Owner.Enemy && site.structureType == StructureType.Tower)
-            {
-                int towerRange = (int) Math.Ceiling(site.param2 / squareLength);
-//                ScaleAndApplyInfluence_Diamond(site, -50, siteRadius, towerRange - siteRadius, 0.8, ref buildInfluenceMap);
-                
-                ScaleAndApplyInfluence_Circle(site.pos, -100, siteRadius, towerRange - siteRadius + 1, polynomial2Propagation, ref buildInfluenceMap);
-//                ScaleAndApplyInfluence_Circle(site.pos, +100, siteRadius, towerRange - siteRadius + 1, polynomial2Propagation, ref buildInfluenceMap);
             }
             else if(site.owner == Owner.Neutral)
             {
@@ -952,19 +953,22 @@ public class LaPulzellaD_Orleans
                 double distanceToEnemyQueen_norm = NormalizeDistance(distanceToEnemyQueen);
                 double distanceToCenter_norm = 1 - NormalizeDistance(distanceToCenter);
 
-                influence = 2;
-            
+                influence = 4;
+                int siteX = (int) Math.Ceiling(site.pos.x / squareLength);
+                int siteY = (int) Math.Ceiling(site.pos.y / squareLength);
+                if (buildInfluenceMap[siteX, siteY] <= -50)
+                {
+                    influence = 0;
+                }
             
                 //TODO: maybe do siteRadius and siteRadius-1
-                ScaleAndApplyInfluence_Circle(site.pos, influence * favorCloseSitesOverOpenSquares, siteRadius+1, 0,polynomial2Propagation, ref buildInfluenceMap);
-                ScaleAndApplyInfluence_Circle(site.pos, influence, siteRadius+1, 40, polynomial2Propagation,  ref buildInfluenceMap);
-                
-                //Take out siteradius from the map :D
-                ScaleAndApplyInfluence_Circle(site.pos, -150, siteRadius, 0,polynomial2Propagation, ref buildInfluenceMap);
-            }
-
+                ScaleAndApplyInfluence_Circle(site.pos, influence * favorCloseSitesOverOpenSquares, siteRadius+1, 1, polynomial2Propagation, ref buildInfluenceMap);
+                ScaleAndApplyInfluence_Circle(site.pos, influence, siteRadius+1, 60, linearPropagation,  ref buildInfluenceMap);
             
-           
+            }
+            
+            //Take out siteradius from the map :D
+            ScaleAndApplyInfluence_Circle(site.pos, minInfluence, siteRadius, 0,polynomial2Propagation, ref buildInfluenceMap);
         }
 
 
@@ -986,6 +990,12 @@ public class LaPulzellaD_Orleans
 
         return new Move(survivorModeChosenSite.Item1, survivorModeChosenSite.Item2);
 
+    }
+
+    private int GetRadius(Site site)
+    {
+        int siteRadius = (int) Math.Floor(GetSiteInfo(site).radius / (double)INFLUENCEMAP_SQUARELENGTH);
+        return siteRadius;
     }
 
 //    private void ScaleAndSetInfluence(Position sitePos, double amount, int fullDistance, int decayedDistance, double distanceDecay, ref InfluenceMap map)

@@ -38,10 +38,14 @@ public class Main : MonoBehaviour
     }
 
     [Button]
+    public void ReRunSimulation()
+    {
+        Start();
+    }
+    
+    
     public void RunTurn()
     {
-       
-        
         LaPulzellaD_Orleans giovannaD_Arco = new LaPulzellaD_Orleans();
         giovannaD_Arco.Decode(pulzella_encoded);
         giovannaD_Arco.game = new GameState();
