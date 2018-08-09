@@ -951,24 +951,16 @@ public class LaPulzellaD_Orleans
                 double distanceToMyQueen_norm = 1 - NormalizeDistance(distanceToMyQueen);
                 double distanceToEnemyQueen_norm = NormalizeDistance(distanceToEnemyQueen);
                 double distanceToCenter_norm = 1 - NormalizeDistance(distanceToCenter);
-            
-//            Console.Error.WriteLine(
-//                $"distanceToMyQueen : {distanceToMyQueen}" +
-//                $"distanceToEnemyQueen : {distanceToEnemyQueen}" +
-//                $"distanceToCenter : {distanceToCenter}"
-//            );
 
-//            influence = distanceToCenter_norm * 2;
-
-                influence = 1;
+                influence = 2;
             
             
                 //TODO: maybe do siteRadius and siteRadius-1
-//                ScaleAndApplyInfluence_Circle(site.pos, influence * favorCloseSitesOverOpenSquares, siteRadius+1, 0,polynomial2Propagation, ref buildInfluenceMap);
-//                ScaleAndApplyInfluence_Circle(site.pos, -influence * favorCloseSitesOverOpenSquares * 5, siteRadius, 0,polynomial2Propagation, ref buildInfluenceMap);
-            
-                ScaleAndApplyInfluence_Circle(site.pos, influence, siteRadius+1, 5, polynomial2Propagation,  ref buildInfluenceMap);
-                ScaleAndApplyInfluence_Circle(site.pos, -influence, siteRadius, 0,polynomial2Propagation, ref buildInfluenceMap);
+                ScaleAndApplyInfluence_Circle(site.pos, influence * favorCloseSitesOverOpenSquares, siteRadius+1, 0,polynomial2Propagation, ref buildInfluenceMap);
+                ScaleAndApplyInfluence_Circle(site.pos, influence, siteRadius+1, 40, polynomial2Propagation,  ref buildInfluenceMap);
+                
+                //Take out siteradius from the map :D
+                ScaleAndApplyInfluence_Circle(site.pos, -150, siteRadius, 0,polynomial2Propagation, ref buildInfluenceMap);
             }
 
             
@@ -978,13 +970,13 @@ public class LaPulzellaD_Orleans
 
         
     //Favor center
-        if (turn < 70)
-        {
-            ScaleAndApplyInfluence_Circle(new Position(960,200), .7, 6, 30, linearPropagation, ref buildInfluenceMap);
-            ScaleAndApplyInfluence_Circle(new Position(960,300), .7, 6, 30, linearPropagation, ref buildInfluenceMap);
-            ScaleAndApplyInfluence_Circle(new Position(960,400), .7, 6, 30, linearPropagation, ref buildInfluenceMap);
-            
-        }
+//        if (turn < 70)
+//        {
+//            ScaleAndApplyInfluence_Circle(new Position(960,200), .7, 6, 30, linearPropagation, ref buildInfluenceMap);
+//            ScaleAndApplyInfluence_Circle(new Position(960,300), .7, 6, 30, linearPropagation, ref buildInfluenceMap);
+//            ScaleAndApplyInfluence_Circle(new Position(960,400), .7, 6, 30, linearPropagation, ref buildInfluenceMap);
+//            
+//        }
 
         var survivorModeChosenSite = UnscaledBestInBox(g.MyQueen, searchRange, buildInfluenceMap);
 
@@ -1875,13 +1867,15 @@ public class InfluenceMap
                     cellAmount = decayedDistanceFunc(amount, Math.Sqrt(distanceSqr) - fullDistance, decayDistance);
                 }
 
-                int xSym = xCenter - (x - xCenter);
-                int ySym = yCenter - (y - yCenter);
-
                 AddAmount_IfInBounds(x, y, cellAmount);
-                AddAmount_IfInBounds(xSym, y, cellAmount);
-                AddAmount_IfInBounds(x, ySym, cellAmount);
-                AddAmount_IfInBounds(xSym, ySym, cellAmount);
+                
+                
+//                int xSym = xCenter - (x - xCenter);
+//                int ySym = yCenter - (y - yCenter);
+
+//                AddAmount_IfInBounds(xSym, y, cellAmount);
+//                AddAmount_IfInBounds(x, ySym, cellAmount);
+//                AddAmount_IfInBounds(xSym, ySym, cellAmount);
             }
         }
     }
