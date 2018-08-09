@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 using NaughtyAttributes;
 using OranUnityUtils;
@@ -9,9 +10,15 @@ public class Main : MonoBehaviour
     [BoxGroup("Codingame Encoded Turn Info")]
     public string gameInfo_encoded;
     [BoxGroup("Codingame Encoded Turn Info")]
-    public string gameState_encoded;
-    [BoxGroup("Codingame Encoded Turn Info")]
-    public string pulzella_encoded;
+    [ResizableTextArea]
+    public string gameState_and_pulzella_encoded;
+    
+    [Space]
+    
+    [ShowNonSerializedField] [ReadOnly]
+    private string gameState_encoded;
+    [ShowNonSerializedField] [ReadOnly]
+    private string pulzella_encoded;
     
     public InfluenceMapVisualizer visualizer;
  
@@ -25,15 +32,6 @@ public class Main : MonoBehaviour
 
     private void Start()
     {
-        //Copying from the IDE, I need to discard the last character, which is a newline.
-        gameInfo_encoded = gameInfo_encoded.Remove(gameInfo_encoded.Length-1);
-        gameState_encoded = gameState_encoded.Remove(gameState_encoded.Length-1);
-        pulzella_encoded = pulzella_encoded.Remove(pulzella_encoded.Length-1);
-        
-        Debug.Assert(gameInfo_encoded.Contains("x") == false);
-        Debug.Assert(gameState_encoded.Contains("x"));
-        Debug.Assert(pulzella_encoded.Length <= 15);
-        
         RunTurn();
     }
 
@@ -46,12 +44,37 @@ public class Main : MonoBehaviour
     
     public void RunTurn()
     {
+        var tmp = gameState_and_pulzella_encoded.Split('-');
+        gameState_encoded = tmp[0];
+        pulzella_encoded = tmp[1];
+//        
+//        Debug.Assert(gameInfo_encoded.Contains("x") == false);
+//        Debug.Assert(gameState_encoded.Contains("x"));
+//        Debug.Assert(pulzella_encoded.Length <= 15);
+//        
         LaPulzellaD_Orleans giovannaD_Arco = new LaPulzellaD_Orleans();
-        giovannaD_Arco.Decode(pulzella_encoded);
-        giovannaD_Arco.game = new GameState();
-        giovannaD_Arco.game.Decode(gameState_encoded);
-        giovannaD_Arco.gameInfo = new GameInfo();
-        giovannaD_Arco.gameInfo.Decode(gameInfo_encoded);
+//        try
+//        {
+            giovannaD_Arco.Decode(pulzella_encoded);
+            giovannaD_Arco.game = new GameState();
+            giovannaD_Arco.game.Decode(gameState_encoded);
+            giovannaD_Arco.gameInfo = new GameInfo();
+            giovannaD_Arco.gameInfo.Decode(gameInfo_encoded);
+
+//        }
+//        catch (FormatException)
+//        {
+//            gameInfo_encoded = gameInfo_encoded.Remove(gameInfo_encoded.Length-1);
+//            gameState_encoded = gameState_encoded.Remove(gameState_encoded.Length-1);
+//            pulzella_encoded = pulzella_encoded.Remove(pulzella_encoded.Length-1);
+//            
+//            giovannaD_Arco.Decode(pulzella_encoded);
+//            giovannaD_Arco.game = new GameState();
+//            giovannaD_Arco.game.Decode(gameState_encoded);
+//            giovannaD_Arco.gameInfo = new GameInfo();
+//            giovannaD_Arco.gameInfo.Decode(gameInfo_encoded);
+//
+//        }
 
         foreach (var site in giovannaD_Arco.game.sites)
         {
