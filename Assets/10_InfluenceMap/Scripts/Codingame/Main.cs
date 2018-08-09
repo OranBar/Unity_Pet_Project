@@ -25,12 +25,6 @@ public class Main : MonoBehaviour
 
     private void Start()
     {
-        RunTurn();
-    }
-
-    [Button]
-    public void RunTurn()
-    {
         //Copying from the IDE, I need to discard the last character, which is a newline.
         gameInfo_encoded = gameInfo_encoded.Remove(gameInfo_encoded.Length-1);
         gameState_encoded = gameState_encoded.Remove(gameState_encoded.Length-1);
@@ -39,6 +33,14 @@ public class Main : MonoBehaviour
         Debug.Assert(gameInfo_encoded.Contains("x") == false);
         Debug.Assert(gameState_encoded.Contains("x"));
         Debug.Assert(pulzella_encoded.Length <= 15);
+        
+        RunTurn();
+    }
+
+    [Button]
+    public void RunTurn()
+    {
+       
         
         LaPulzellaD_Orleans giovannaD_Arco = new LaPulzellaD_Orleans();
         giovannaD_Arco.Decode(pulzella_encoded);

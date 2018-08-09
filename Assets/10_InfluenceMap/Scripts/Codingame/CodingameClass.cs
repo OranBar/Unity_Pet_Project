@@ -709,9 +709,10 @@ public class LaPulzellaD_Orleans
     public static int QUEEN_MOVEMENT = 60;
     public static int MAX_DISTANCE = 4686400;
 
-    public static PropagationFunction linearPropagation => (amount, distance, maxDistance) => amount - (amount * (distance / maxDistance));
-    public static PropagationFunction polynomial2Propagation => (amount, distance, maxDistance) => amount - Math.Pow(amount * (distance / maxDistance),2);
-    public static PropagationFunction polynomial4Propagation => (amount, distance, maxDistance) => amount - Math.Pow(amount * (distance / maxDistance),4);
+    public static PropagationFunction linearPropagation => (amount, distance, maxDistance) => amount - amount * (distance / maxDistance);
+    public static PropagationFunction polynomial2Propagation => (amount, distance, maxDistance) => (1 - Math.Pow(distance / maxDistance, 2)) * amount;
+//    public static PropagationFunction polynomial2Propagation => (amount, distance, maxDistance) => amount - amount * Math.Pow(distance*distance/ maxDistance, 2) ;
+//    public static PropagationFunction polynomial4Propagation => (amount, distance, maxDistance) => amount - amount * Math.Pow(distance) / maxDistance;
 
     
     public static Position CENTER = new Position(960, 500);
@@ -961,12 +962,13 @@ public class LaPulzellaD_Orleans
 
                 influence = 1;
             
+            
                 //TODO: maybe do siteRadius and siteRadius-1
-                ScaleAndApplyInfluence_Circle(site.pos, influence /** favorCloseSitesOverOpenSquares*/, siteRadius+1, 0,polynomial2Propagation, ref buildInfluenceMap);
+//                ScaleAndApplyInfluence_Circle(site.pos, influence * favorCloseSitesOverOpenSquares, siteRadius+1, 0,polynomial2Propagation, ref buildInfluenceMap);
 //                ScaleAndApplyInfluence_Circle(site.pos, -influence * favorCloseSitesOverOpenSquares * 5, siteRadius, 0,polynomial2Propagation, ref buildInfluenceMap);
             
-//                ScaleAndApplyInfluence_Circle(site.pos, influence, siteRadius+1, 3, polynomial2Propagation,  ref buildInfluenceMap);
-//                ScaleAndApplyInfluence_Circle(site.pos, -influence, siteRadius, 0,polynomial2Propagation, ref buildInfluenceMap);
+                ScaleAndApplyInfluence_Circle(site.pos, influence, siteRadius+1, 5, polynomial2Propagation,  ref buildInfluenceMap);
+                ScaleAndApplyInfluence_Circle(site.pos, -influence, siteRadius, 0,polynomial2Propagation, ref buildInfluenceMap);
             }
 
             
@@ -1862,14 +1864,15 @@ public class InfluenceMap
             int y = pos.y;
 
             var distanceSqr = (x - xCenter) * (x - xCenter) + (y - yCenter) * (y - yCenter);
+            double manhattanDistance = Math.Abs(x - xCenter) + Math.Abs(y - yCenter);
             if (distanceSqr <= radius * radius)
             {
                 double cellAmount = amount;
 
                 if (distanceSqr > fullDistance * fullDistance)
                 {
-                    double mahnattanDistance = Math.Abs(x - xCenter) + Math.Abs(y - yCenter);
-                    cellAmount = decayedDistanceFunc(amount, mahnattanDistance, decayDistance);
+//                    double mahnattanDistance = Math.Abs(x - xCenter) + Math.Abs(y - yCenter);
+                    cellAmount = decayedDistanceFunc(amount, Math.Sqrt(distanceSqr) - fullDistance, decayDistance);
                 }
 
                 int xSym = xCenter - (x - xCenter);
