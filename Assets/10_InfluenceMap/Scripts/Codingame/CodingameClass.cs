@@ -409,6 +409,7 @@ public class GameState
 
     public int EnemyUnitsInRangeOfMyQueen(int range) => units.Count(u => u.owner == Owner.Enemy && MyQueen.DistanceTo(u) <= range);
     public int EnemyUnitsInRangeOf(Position p, int range) => units.Count(u => u.owner == Owner.Enemy && p.DistanceTo(u.pos) <= range);
+    public int AlliedTowersInRangeOf(Position p, int range) => sites.Count(s => s.owner == Owner.Friendly && p.DistanceTo(s.pos) <= range);
 
     public int Owned_giants => units.Count(u => u.owner == Owner.Friendly && u.unitType == UnitType.Giant);
 
@@ -707,6 +708,7 @@ public class LaPulzellaD_Orleans
         MAX_BARRACKSES_ARCER = 0,
         MAX_BARRACKSES_GIANT = 0,
         MAX_TOWERS = 6;
+        
 
     public static int GIANT_COST = 140, KNIGHT_COST = 80, ARCHER_COST = 100;
     public static int ENEMY_CHECK_RANGE = 210, TOO_MANY_UNITS_NEARBY = 2;
@@ -714,7 +716,7 @@ public class LaPulzellaD_Orleans
     public static int QUEEN_MOVEMENT = 60;
     public static int MAX_DISTANCE = 4686400;
     public static int HEAL_TOWER = 900 / 3;
-    
+    public static int TOWERCOUNT_GIANT_TRIGGER = 4;
 
     public static PropagationFunction linearPropagation => (amount, distance, maxDistance) => amount - amount * (distance / maxDistance);
     public static PropagationFunction polynomial2Propagation => (amount, distance, maxDistance) => (1 - Math.Pow(distance / maxDistance, 2)) * amount;
@@ -773,62 +775,27 @@ public class LaPulzellaD_Orleans
         GameState g = game;
 
         turnInfluenceMap = null;
-        
-//        turnInfluenceMap = CreateInfluenceMap();
 
-//        var bestTileToRun = UnscaledBestInBox(g.MyQueen, QUEEN_MOVEMENT * 10, turnInfluenceMap);
-        
-//#if UNITY_EDITOR
-//        UnityEngine.Debug.Log("BestTile is ("+bestTileToRun.Item1/INFLUENCEMAP_SQUARELENGTH+", "+bestTileToRun.Item2/INFLUENCEMAP_SQUARELENGTH+") with amount = "+turnInfluenceMap[bestTileToRun.Item1/INFLUENCEMAP_SQUARELENGTH, bestTileToRun.Item2/INFLUENCEMAP_SQUARELENGTH]);
-//#endif
-        
-//        int owned_knight_barrackses = mySites.Count(ob => ob.structureType == StructureType.Barracks && ob.CreepsType == UnitType.Knight);
-//        int owned_archer_barrackses = mySites.Count(ob => ob.structureType == StructureType.Barracks && ob.CreepsType == UnitType.Archer);
-//        int owned_giant_barrackses = mySites.Count(ob => ob.structureType == StructureType.Barracks && ob.CreepsType == UnitType.Giant);
-//        int owned_mines = mySites.Count(ob => ob.structureType == StructureType.Mine && ob.gold > 0);
-//        int owned_towers = mySites.Count(ob => ob.structureType == StructureType.Tower && ob.owner == Owner.Friendly);
-        
-//        Console.Error.WriteLine($"owned_knight_barrackses {owned_knight_barrackses} " +
-//                                $"owned_archer_barrackses {owned_archer_barrackses} " +
-//                                $"owned_giant_barrackses {owned_giant_barrackses} " +
-//                                $"owned_mines {owned_mines} " +
-//                                $"owned_towers {owned_towers} ");
-//
-//        Console.Error.WriteLine(
-//            $"MAX_CONCURRENT_MINES {MAX_CONCURRENT_MINES} " +
-//            $"MAX_BARRACKSES_KNIGHTS {MAX_BARRACKSES_KNIGHTS} " +
-//            $"MAX_BARRACKSES_ARCER  {MAX_BARRACKSES_ARCER} " +
-//            $"MAX_BARRACKSES_GIANT {MAX_BARRACKSES_GIANT} " +
-//            $"MAX_TOWERS {MAX_TOWERS} "
-//        );
-                            
-        
-//        Console.Error.WriteLine("My Queen "+currGameState.MyQueen);
-//        Console.Error.WriteLine("touchedSiteId "+currGameState.touchedSiteId);
+        bool isSafeToBuild = g.EnemyUnitsInRangeOfMyQueen(ENEMY_CHECK_RANGE) < 2;
         
         //If we are touching a site, we do something with it
-        if (g.TouchingNeutralSite)
+        //Second condition makes him less likely to build when enemies are close
+        if (g.TouchingNeutralSite && isSafeToBuild)
         {
             //Build
             var chosenBuildMove = ChoseBuildMove(g);
             chosenMove.queenAction = chosenBuildMove;
+            Console.Error.WriteLine("Build Neutral Site");
         }
-//        else //Run
-//        if (g.EnemyUnitsInRangeOfMyQueen(ENEMY_CHECK_RANGE) >= TOO_MANY_UNITS_NEARBY)
-//        {
-//            Console.Error.WriteLine("Running from enemies");
-//            chosenMove.queenAction = new Move(bestTileToRun.Item1, bestTileToRun.Item2);
-////            Move moveToAngle = RunToAngle(myQueen);
-////            chosenMove.queenAction = RunToClosestTowerOrAngle(myQueen);
-//        }
         else if (g.TouchingMyMine && IsMineMaxed(g.TouchedSite) == false)
         {
             //Empower Mine
+            Console.Error.WriteLine("Empower Mine!");
             chosenMove.queenAction = new BuildMine(game.touchedSiteId);
         }
-        else if (g.TouchingMyTower && g.TouchedSite.param1 <= 300 + 145 * g.Owned_towers && g.TouchedSite.param1 <= 700)
+        else if (g.TouchingMyTower && g.TouchedSite.param1 <= 300 + 145 * g.Owned_towers && g.TouchedSite.param1 <= 700 && isSafeToBuild)
         {
-            //Emppower Tower
+            //Empower Tower
             Console.Error.WriteLine("Empower Tower!");
             chosenMove.queenAction = new BuildTower(game.touchedSiteId);
         }
@@ -859,31 +826,47 @@ public class LaPulzellaD_Orleans
         
         List<Site> barracksesToTrainFrom = new List<Site>();
         
-        if (myIdleBarracses.Any())
+        if (myIdleBarracses.Any() )
         {
             //Train
 
 //            DecideUnitsToTrain();
 
-            if (g.Owned_giants >= 1)
-            {
-                myIdleBarracses = myIdleBarracses.Where(b => b.CreepsType != UnitType.Giant);
-            }
+//            if (g.Owned_giants >= 1)
+//            {
+//                myIdleBarracses = myIdleBarracses.Where(b => b.CreepsType != UnitType.Giant);
+//            }
             
             int remainingGold = game.money;
+
+                
+            if (g.Owned_giant_barrackses >= 1 && (g.Owned_giants < 1 && g.EnemySites.Count(s => s.structureType==StructureType.Tower) < TOWERCOUNT_GIANT_TRIGGER))
+            {
+                if (remainingGold > GIANT_COST)
+                {
+                    var giant_Rax = myIdleBarracses.First(b => b.CreepsType == UnitType.Giant);
+                    barracksesToTrainFrom.Add(giant_Rax);
+                    remainingGold -= GIANT_COST;
+                }
+                else
+                {
+                    //Wait for money to build giants
+                }
+            }
+            
             foreach (var barraks in myIdleBarracses)
             {
                 int cost = 0;
                 switch (barraks.CreepsType)
                 {
+                    case UnitType.Giant:
+                        cost += GIANT_COST;
+                        break;
                     case UnitType.Knight:
                         cost += KNIGHT_COST;
                         break;
                     case UnitType.Archer:
                         cost += ARCHER_COST;
-                        break;
-                    case UnitType.Giant:
-                        cost += GIANT_COST;
                         break;
                 }
                 
@@ -937,6 +920,20 @@ public class LaPulzellaD_Orleans
             ScaleAndApplyInfluence_Circle(tower.pos, -50, siteRadius, towerRange - siteRadius + 1, linearPropagation, ref buildInfluenceMap);
         }
         
+        //Avoid Enemy Units!
+        foreach (var enemy in g.EnemyUnits)
+        {
+            double enemyInfluence = GetEnemyInfluence(enemy);
+            ScaleAndApplyInfluence_Diamond(enemy.pos, enemyInfluence, 1, GetEnemyInfluenceRadius(enemy) * 3, 0.5, ref buildInfluenceMap);
+
+//            var points = buildInfluenceMap.GetPointsInLine(enemy.pos.x, enemy.pos.y, game.MyQueen.pos.x, game.MyQueen.pos.y);
+//            foreach (var point in points)
+//            {
+//                buildInfluenceMap.ApplyInfluence_Diamond(point.x, point.y, 5, 1, 2, 0.75);
+//            }
+
+        }
+        
         foreach (var tower in g.MySites.Where(s => s.structureType == StructureType.Tower))
         {
             int siteRadius = GetRadius(tower);
@@ -946,8 +943,9 @@ public class LaPulzellaD_Orleans
             double towerHp = tower.param1;
 //            if (towerHp < HEAL_TOWER)
 //            {
-                var towerHp_norm = 1 - (towerHp / 800);
-                double influence = towerHp_norm;
+                var towerHp_norm = 1 - (towerHp / 800);     //[0,1]
+                // Towers covering a tower make it better. If there are more enemies, then it should be even better
+                int enemyThreat = (g.EnemyUnits.Count() / 2) * g.AlliedTowersInRangeOf(tower.pos, tower.param2);             
                 
                 ScaleAndApplyInfluence_Circle(tower.pos, towerHp_norm, siteRadius+1, 10, polynomial2Propagation, ref buildInfluenceMap);
                 ScaleAndApplyInfluence_Circle(tower.pos, towerHp_norm * favorCloseSitesOverOpenSquares, siteRadius+1, 0, linearPropagation, ref buildInfluenceMap);
@@ -959,19 +957,7 @@ public class LaPulzellaD_Orleans
             //ScaleAndApplyInfluence_Circle(tower.pos, 10, 0, towerRange, linearPropagation, ref buildInfluenceMap);
         }
         
-        //Enemy units influence
-        foreach (var enemy in g.EnemyUnits)
-        {
-            double enemyInfluence = GetEnemyInfluence(enemy);
-            ScaleAndApplyInfluence_Circle(enemy.pos, enemyInfluence, 1, GetEnemyInfluenceRadius(enemy) *2, linearPropagation, ref buildInfluenceMap);
-
-//            var points = buildInfluenceMap.GetPointsInLine(enemy.pos.x, enemy.pos.y, game.MyQueen.pos.x, game.MyQueen.pos.y);
-//            foreach (var point in points)
-//            {
-//                buildInfluenceMap.ApplyInfluence_Diamond(point.x, point.y, 5, 1, 2, 0.75);
-//            }
-
-        }
+        
 
         
         List<Site> influencingSites = g.sites.Where(s => s.owner==Owner.Neutral).ToList();
@@ -996,6 +982,11 @@ public class LaPulzellaD_Orleans
             {
                 ScaleAndApplyInfluence_Circle(site.pos, -120, siteRadius+1, 0, polynomial2Propagation, ref buildInfluenceMap);
             }
+
+//            if (site.structureType == StructureType.Barracks && site.owner == Owner.Enemy && site.param1 != 0)
+//            {
+//                ScaleAndApplyInfluence_Circle(site.pos, -25 * (6 - site.param1) , siteRadius, 8, linearPropagation, ref buildInfluenceMap);
+//            }
             else if(site.owner == Owner.Neutral)
             {
                 //TODO: I only need to do this once, then copy it every time. It will cost much less than computing it again every time. Unless the influence values change with the time
@@ -1013,19 +1004,19 @@ public class LaPulzellaD_Orleans
                 int siteY = (int) Math.Ceiling(site.pos.y / squareLength);
                 //Only if not mine in control of enemy, spread influence
 
-                influence = distanceToCenter_norm;
+                influence = 1+distanceToCenter_norm;
                 
-                if (buildInfluenceMap[siteX, siteY] >= -50)
-                {
-                    if(buildInfluenceMap[siteX, siteY] >= 20)
-                    {
-                        influence = 4;
-                    }   
-                    else
-                    {
-                        influence = 2;
-                    }
-                }
+//                if (buildInfluenceMap[siteX, siteY] >= -50)
+//                {
+//                    if(buildInfluenceMap[siteX, siteY] >= 20)
+//                    {
+//                        influence *= 4;
+//                    }   
+//                    else
+//                    {
+//                        influence *= 2;
+//                    }
+//                }
             
                 //TODO: maybe do siteRadius and siteRadius-1
                 ScaleAndApplyInfluence_Circle(site.pos, influence * favorCloseSitesOverOpenSquares, siteRadius+1, 0, polynomial2Propagation, ref buildInfluenceMap);
@@ -1403,7 +1394,7 @@ public class LaPulzellaD_Orleans
             case UnitType.Queen:
                 return 0;
             case UnitType.Knight:
-                return -5;
+                return -5 + (-1 * (enemy.health/25)) ;
             case UnitType.Archer:
                 return 0;
             case UnitType.Giant:
@@ -1815,9 +1806,24 @@ public class InfluenceMap
 		}
 	}
 
-	public InfluenceMap()
+    public InfluenceMap()
+    {
+        
+    }
+    
+	public InfluenceMap(InfluenceMap mapToCopy)
 	{
-			
+//	    _influenceMap = new double[mapToCopy.width][mapToCopy.height];
+//	    for (int i = 0; i < mapToCopy.width; i++)
+//	    {
+//	        Array.Copy(_influenceMap[i], 0, mapToCopy._influenceMap[i], 0, height);
+//	    }
+	    _influenceMap = mapToCopy._influenceMap.Clone() as double[][];
+	    width = mapToCopy.width;
+	    height = mapToCopy.height;
+	    minInfluence = mapToCopy.minInfluence;
+	    maxInfluence = mapToCopy.maxInfluence;
+	    computeDistanceFunc = mapToCopy.computeDistanceFunc;
 	}
 	
 	public InfluenceMap(int width, int height, double minInfluence, double maxInfluence, DistanceFunc computeDistanceFunc)
