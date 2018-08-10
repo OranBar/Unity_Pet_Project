@@ -926,7 +926,7 @@ public class LaPulzellaD_Orleans
         buildInfluenceMap = new InfluenceMap(mapWidth, mapHeight, minInfluence, maxInfluence, new ManhattanDistance());
 
         int searchRange = QUEEN_MOVEMENT * 2;
-        double favorCloseSitesOverOpenSquares = 1.5;
+        double favorCloseSitesOverOpenSquares = 3;
         
         //Avoid enemy towers!!
         foreach (var tower in g.EnemySites.Where(s => s.structureType == StructureType.Tower))
@@ -934,27 +934,29 @@ public class LaPulzellaD_Orleans
             int siteRadius = GetRadius(tower);
             int towerRange = (int) Math.Ceiling(tower.param2 / squareLength);
                 
-            ScaleAndApplyInfluence_Circle(tower.pos, -100, siteRadius, towerRange - siteRadius + 1, polynomial2Propagation, ref buildInfluenceMap);
+            ScaleAndApplyInfluence_Circle(tower.pos, -50, siteRadius, towerRange - siteRadius + 1, linearPropagation, ref buildInfluenceMap);
         }
         
-        //Heal my towers!
         foreach (var tower in g.MySites.Where(s => s.structureType == StructureType.Tower))
         {
             int siteRadius = GetRadius(tower);
             int towerRange = (int) Math.Ceiling(tower.param2 / squareLength);
+        
+            //Heal my towers!
             double towerHp = tower.param1;
 //            if (towerHp < HEAL_TOWER)
 //            {
-                var towerHp_norm = 1 - (towerHp / 799);
-                double influence = towerHp_norm * 3;
+                var towerHp_norm = 1 - (towerHp / 800);
+                double influence = towerHp_norm;
                 
-                ScaleAndApplyInfluence_Circle(tower.pos, influence, siteRadius+1, 10, polynomial2Propagation, ref buildInfluenceMap);
-                ScaleAndApplyInfluence_Circle(tower.pos, influence * favorCloseSitesOverOpenSquares, siteRadius+1, 0, linearPropagation, ref buildInfluenceMap);
+                ScaleAndApplyInfluence_Circle(tower.pos, towerHp_norm, siteRadius+1, 10, polynomial2Propagation, ref buildInfluenceMap);
+                ScaleAndApplyInfluence_Circle(tower.pos, towerHp_norm * favorCloseSitesOverOpenSquares, siteRadius+1, 0, linearPropagation, ref buildInfluenceMap);
 
 //            }
-            
-                
 //            ScaleAndApplyInfluence_Circle(tower.pos, -100, siteRadius, towerRange - siteRadius + 1, polynomial2Propagation, ref buildInfluenceMap);
+            
+            //Towers should make all nearby sites more influencial, because now I have control over it.
+            //ScaleAndApplyInfluence_Circle(tower.pos, 10, 0, towerRange, linearPropagation, ref buildInfluenceMap);
         }
         
         //Enemy units influence
@@ -1009,9 +1011,19 @@ public class LaPulzellaD_Orleans
                 int siteX = (int) Math.Ceiling(site.pos.x / squareLength);
                 int siteY = (int) Math.Ceiling(site.pos.y / squareLength);
                 //Only if not mine in control of enemy, spread influence
+
+                influence = distanceToCenter_norm;
+                
                 if (buildInfluenceMap[siteX, siteY] >= -50)
                 {
-                    influence = 6;
+                    if(buildInfluenceMap[siteX, siteY] >= 20)
+                    {
+                        influence = 4;
+                    }   
+                    else
+                    {
+                        influence = 2;
+                    }
                 }
             
                 //TODO: maybe do siteRadius and siteRadius-1
@@ -1037,6 +1049,15 @@ public class LaPulzellaD_Orleans
 //            
 //        }
 
+        if (turn >= 100)
+        {
+            searchRange *= 3;
+        }
+        if (turn >= 300)
+        {
+            searchRange *= 5;
+        }
+        
         var survivorModeChosenSite = UnscaledBestInBox(g.MyQueen, searchRange, buildInfluenceMap);
 
 #if UNITY_EDITOR
@@ -1929,7 +1950,8 @@ public class InfluenceMap
                 if (distanceSqr > fullDistance * fullDistance)
                 {
 //                    double mahnattanDistance = Math.Abs(x - xCenter) + Math.Abs(y - yCenter);
-                    cellAmount = decayedDistanceFunc(amount, Math.Sqrt(distanceSqr) - fullDistance, decayDistance);
+//                    cellAmount = decayedDistanceFunc(amount, Math.Sqrt(distanceSqr) - fullDistance, decayDistance);
+                    cellAmount = decayedDistanceFunc(amount, distanceSqr, LaPulzellaD_Orleans.MAX_DISTANCE);
                 }
 
                 AddAmount_IfInBounds(x, y, cellAmount);

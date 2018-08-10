@@ -88,8 +88,8 @@ public class Main : MonoBehaviour
         Debug.Log("chosen action "+action.queenAction);
         
         var myQueenPosition = giovannaD_Arco.game.MyQueen.pos;
-        int xIndex = myQueenPosition.x / LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH;
-        int yIndex = myQueenPosition.y / LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH;
+        int xIndex = (int) Math.Ceiling(myQueenPosition.x / LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH*1.0);
+        int yIndex = (int) Math.Ceiling(myQueenPosition.y / LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH*1.0);
         
 
         visualizer.SetMyQueenPosition(new Position(xIndex, yIndex));
