@@ -965,11 +965,11 @@ public class LaPulzellaD_Orleans
             double enemyInfluence = GetEnemyInfluence(enemy);
             ScaleAndApplyInfluence_Circle(enemy.pos, enemyInfluence, 1, GetEnemyInfluenceRadius(enemy) *2, linearPropagation, ref buildInfluenceMap);
 
-            var points = buildInfluenceMap.GetPointsInLine(enemy.pos.x, enemy.pos.y, game.MyQueen.pos.x, game.MyQueen.pos.y);
-            foreach (var point in points)
-            {
-                buildInfluenceMap.ApplyInfluence_Diamond(point.x, point.y, 5, 1, 2, 0.75);
-            }
+//            var points = buildInfluenceMap.GetPointsInLine(enemy.pos.x, enemy.pos.y, game.MyQueen.pos.x, game.MyQueen.pos.y);
+//            foreach (var point in points)
+//            {
+//                buildInfluenceMap.ApplyInfluence_Diamond(point.x, point.y, 5, 1, 2, 0.75);
+//            }
 
         }
 
@@ -998,6 +998,7 @@ public class LaPulzellaD_Orleans
             }
             else if(site.owner == Owner.Neutral)
             {
+                //TODO: I only need to do this once, then copy it every time. It will cost much less than computing it again every time. Unless the influence values change with the time
                 double influence = 0;
             
                 double distanceToMyQueen = g.MyQueen.DistanceSqr(site.pos);
@@ -1030,7 +1031,7 @@ public class LaPulzellaD_Orleans
                 ScaleAndApplyInfluence_Circle(site.pos, influence * favorCloseSitesOverOpenSquares, siteRadius+1, 0, polynomial2Propagation, ref buildInfluenceMap);
                 
                 ScaleAndApplyInfluence_Circle(site.pos, influence/2 * favorCloseSitesOverOpenSquares, siteRadius+1, 7, polynomial2Propagation, ref buildInfluenceMap);
-                ScaleAndApplyInfluence_Circle(site.pos, influence, siteRadius+1, 60, linearPropagation,  ref buildInfluenceMap);
+                ScaleAndApplyInfluence_Circle(site.pos, influence, siteRadius+1, 40, linearPropagation,  ref buildInfluenceMap);
             
             }
             
@@ -1571,7 +1572,14 @@ public class LaPulzellaD_Orleans
             }
             else
             {
-                chosenBuildMove = new BuildMine(game.touchedSiteId);
+                if (g.Owned_mines >= 3 && g.Owned_giant_barrackses < 1)
+                {
+                    chosenBuildMove = new BuildBarracks(game.touchedSiteId, BarracksType.Giant);
+                }
+                else
+                {
+                    chosenBuildMove = new BuildMine(game.touchedSiteId);
+                }
             }
             
             

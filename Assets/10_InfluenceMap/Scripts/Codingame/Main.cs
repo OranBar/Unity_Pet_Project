@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using NaughtyAttributes;
 using OranUnityUtils;
+using UnityEngine.Profiling;
 
 public class Main : MonoBehaviour
 {
@@ -38,12 +39,13 @@ public class Main : MonoBehaviour
     [Button]
     public void ReRunSimulation()
     {
-        Start();
+        RunTurn();
     }
     
     
     public void RunTurn()
     {
+        Profiler.BeginSample("Run Turn - BEGIN");
         var tmp = gameState_and_pulzella_encoded.Split('-');
         gameState_encoded = tmp[0];
         pulzella_encoded = tmp[1];
@@ -84,6 +86,8 @@ public class Main : MonoBehaviour
         InfluenceMap map = new InfluenceMap();
         InfluenceMap buildMap = new InfluenceMap();
         TurnAction action = giovannaD_Arco.think(out map, out buildMap);
+        
+        Profiler.EndSample();
         
         Debug.Log("chosen action "+action.queenAction);
         
