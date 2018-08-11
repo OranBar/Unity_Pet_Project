@@ -916,7 +916,7 @@ public class LaPulzellaD_Orleans
         int mapHeight = (int) Math.Ceiling(1000 / squareLength)+1;
         double minInfluence = -120;
         double maxInfluence = 120;
-        buildInfluenceMap = new InfluenceMap(mapWidth, mapHeight, minInfluence, maxInfluence, new EuclideanDistance());
+        buildInfluenceMap = new InfluenceMap(mapWidth, mapHeight, minInfluence, maxInfluence, new ManhattanDistance());
 
         int searchRange = QUEEN_MOVEMENT * 2;
         double favorCloseSitesOverOpenSquares = 5;
@@ -1912,20 +1912,67 @@ public class InfluenceMap
     {
         InfluenceMapCell startCell = influenceMapCells[xPos, yPos];
 
-        foreach (var squareAndDist in GetSquaresInRange_WithDistance(xPos, yPos, fullDistance + decayDistance))
+        HashSet<InfluenceMapCell> visited = new HashSet<InfluenceMapCell>();
+        List<Tuple<InfluenceMapCell, double>> frontier = new List<Tuple<InfluenceMapCell, double>>();
+        
+        frontier.Add(Tuple.Create(startCell,0.0));
+        visited.Add(startCell);
+        while (frontier.Count > 0)
         {
-            Position square = squareAndDist.Item1;
-            InfluenceMapCell currCell = influenceMapCells[square.x, square.y];
-            double distance = squareAndDist.Item2;
+            var currFrontierCellInfo = frontier.OrderBy(f => f.Item2).First();
+            frontier.Remove(currFrontierCellInfo);
             
+            InfluenceMapCell currCell = currFrontierCellInfo.Item1;
+            double distance = currFrontierCellInfo.Item2;
+
             double cellAmount = amount;
             if (distance > fullDistance)
             {
                 cellAmount = decayedDistanceFunc(amount, distance, maxDistance);
             }
             
-            _influenceMap[square.x, square.y] = cellAmount;
+            _influenceMap[currCell.x, currCell.y] = cellAmount;
+            
+            //visited.Add(currCell);
+            foreach (var neighbourAndDistance in currCell.neighboursAndDistance.OrderBy(nAd => nAd.Item2))
+            {
+                if (visited.Contains(neighbourAndDistance.Item1) == false)
+                {
+                    var neighbour = neighbourAndDistance.Item1;
+                    var distanceToCell = neighbourAndDistance.Item2;
+
+                    if (distanceToCell + distance <= fullDistance + decayDistance)
+                    {
+                        var newFrontierCandidate = Tuple.Create(neighbour, distance + distanceToCell);
+                        if(frontier.Select(f=>f.Item1).Contains(newFrontierCandidate.Item1))
+                        {
+                            Debug.LogError("This is a rocky problem");
+                        }
+                        if(visited.Contains(newFrontierCandidate.Item1))
+                        {
+                            Debug.LogError("This is a edgy problem");
+                        }
+                        visited.Add(neighbour);
+                        frontier.Add(newFrontierCandidate);
+                    }
+                }
+            }
         }
+        
+//        foreach (var squareAndDist in GetSquaresInRange_WithDistance(xPos, yPos, fullDistance + decayDistance))
+//        {
+//            Position square = squareAndDist.Item1;
+//            InfluenceMapCell currCell = influenceMapCells[square.x, square.y];
+//            double distance = squareAndDist.Item2;
+//            
+//            double cellAmount = amount;
+//            if (distance > fullDistance)
+//            {
+//                cellAmount = decayedDistanceFunc(amount, distance, maxDistance);
+//            }
+//            
+//            _influenceMap[square.x, square.y] = cellAmount;
+//        }
 
 //        ApplyInfluence_Range_Recursive(xPos, yPos, amount, fullDistance, decayDistance, decayedDistanceFunc, new HashSet<InfluenceMapCell>(){startCell}, 0 );
     }
@@ -1943,24 +1990,39 @@ public class InfluenceMap
 
         
         
-//        var relevantNeighbours = influenceMapCells[xPos, yPos].neighboursAndDistance;//.Where(n => alreadyVisited.Contains(n.Item1) == false).ToList();
+        var relevantNeighbours = influenceMapCells[xPos, yPos].neighboursAndDistance.Where(n => alreadyVisited.Contains(n.Item1) == false).ToList();
 //        alreadyVisited.UnionWith(relevantNeighbours.Select(n => n.Item1));
         
-//        foreach (var neighbourAndDistance in relevantNeighbours)
-//        {
-//            InfluenceMapCell neighbour = neighbourAndDistance.Item1;
-//            
-//            double distance = neighbourAndDistance.Item2 + distanceSoFar;
-//
-//            double cellAmount = amount;
-//            if (distance > fullDistance)
-//            {
-//                cellAmount = decayedDistanceFunc(amount, distance, maxDistance);
-//            }
-//            
-//            ApplyInfluence_Range_Recursive(neighbour.x, neighbour.y, cellAmount,
-//                fullDistance, decayDistance, decayedDistanceFunc, alreadyVisited, distance);
-//        }
+        foreach (var neighbourAndDistance in relevantNeighbours)
+        {
+            InfluenceMapCell neighbour = neighbourAndDistance.Item1;
+            
+            double distance = neighbourAndDistance.Item2 + distanceSoFar;
+
+            double cellAmount = amount;
+            if (distance > fullDistance)
+            {
+                cellAmount = decayedDistanceFunc(amount, distance, maxDistance);
+            }
+
+            _influenceMap[neighbour.x, neighbour.y] = cellAmount;
+            alreadyVisited.Add(neighbour);
+        }
+
+        foreach (var neighbourAndDistance in relevantNeighbours)
+        {
+            InfluenceMapCell neighbour = neighbourAndDistance.Item1;
+            
+            double distance = neighbourAndDistance.Item2 + distanceSoFar;
+            double cellAmount = amount;
+            if (distance > fullDistance)
+            {
+                cellAmount = decayedDistanceFunc(amount, distance, maxDistance);
+            }
+
+            ApplyInfluence_Range_Recursive(neighbour.x, neighbour.y, cellAmount,
+                fullDistance, decayDistance, decayedDistanceFunc, alreadyVisited, distance);
+        }
     }
 
     public void AddObstacle(int x, int y, int range)
