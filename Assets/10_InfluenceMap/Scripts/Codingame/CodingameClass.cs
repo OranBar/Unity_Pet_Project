@@ -1931,7 +1931,7 @@ public class InfluenceMap
                 cellAmount = decayedDistanceFunc(amount, distance, maxDistance);
             }
             
-            _influenceMap[currCell.x, currCell.y] = cellAmount;
+            _influenceMap[currCell.x, currCell.y] += cellAmount;
             
             //visited.Add(currCell);
             foreach (var neighbourAndDistance in currCell.neighboursAndDistance.OrderBy(nAd => nAd.Item2))
