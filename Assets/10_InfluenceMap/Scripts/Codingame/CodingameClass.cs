@@ -1778,7 +1778,7 @@ public struct XAndY
 
 public class InfluenceMap
 {
-	protected double[][] _influenceMap;
+	protected double[,] _influenceMap;
 	protected int width, height;
 
 	private double minInfluence, maxInfluence;
@@ -1801,7 +1801,7 @@ public class InfluenceMap
 			return get(x, y);
 		}
 		set {
-			_influenceMap[x][y] = value;
+			_influenceMap[x,y] = value;
 		}
 	}
 
@@ -1817,7 +1817,7 @@ public class InfluenceMap
 //	    {
 //	        Array.Copy(_influenceMap[i], 0, mapToCopy._influenceMap[i], 0, height);
 //	    }
-	    _influenceMap = mapToCopy._influenceMap.Clone() as double[][];
+	    _influenceMap = mapToCopy._influenceMap.Clone() as double[,];
 	    width = mapToCopy.width;
 	    height = mapToCopy.height;
 	    minInfluence = mapToCopy.minInfluence;
@@ -1829,11 +1829,8 @@ public class InfluenceMap
 	{
 		this.width = width;
 		this.height = height;
-		this._influenceMap = new double[width][];
-		for (int i = 0; i < width; i++)
-		{
-			this._influenceMap[i] = new double[height];
-		}
+		this._influenceMap = new double[width,height];
+		
 		this.computeDistanceFunc = computeDistanceFunc;
 		this.minInfluence = minInfluence;
 		this.maxInfluence = maxInfluence;
@@ -1876,7 +1873,7 @@ public class InfluenceMap
 
 	public double get(int x, int y)
 	{
-		var amount = _influenceMap[x][y];
+		var amount = _influenceMap[x,y];
 		var clampedAmount = Clamp(amount, minInfluence, maxInfluence);
 		return clampedAmount;
 	}
@@ -2010,7 +2007,7 @@ public class InfluenceMap
         int yCenter = y1;
 
         Tuple<int, int> bestSquare = Tuple.Create(x1, y1);
-        double bestSquareInflValue = _influenceMap[bestSquare.Item1][bestSquare.Item2];
+        double bestSquareInflValue = _influenceMap[bestSquare.Item1,bestSquare.Item2];
         
         for (int x = xCenter - radius ; x <= xCenter; x++)
         {
@@ -2023,25 +2020,25 @@ public class InfluenceMap
                     int ySym = yCenter - (y - yCenter);
 
                     
-                    if (_influenceMap[x][y] > bestSquareInflValue)
+                    if (_influenceMap[x,y] > bestSquareInflValue)
                     {
                         bestSquare = Tuple.Create(x,y);
-                        bestSquareInflValue = _influenceMap[x][y];
+                        bestSquareInflValue = _influenceMap[x,y];
                     }
-                    if (_influenceMap[x][ySym] > bestSquareInflValue)
+                    if (_influenceMap[x,ySym] > bestSquareInflValue)
                     {
                         bestSquare = Tuple.Create(x,ySym);
-                        bestSquareInflValue = _influenceMap[x][ySym];
+                        bestSquareInflValue = _influenceMap[x,ySym];
                     }
-                    if (_influenceMap[xSym][y] > bestSquareInflValue)
+                    if (_influenceMap[xSym,y] > bestSquareInflValue)
                     {
                         bestSquare = Tuple.Create(xSym,y);
-                        bestSquareInflValue = _influenceMap[xSym][y];
+                        bestSquareInflValue = _influenceMap[xSym,y];
                     }
-                    if (_influenceMap[xSym][ySym] > bestSquareInflValue)
+                    if (_influenceMap[xSym,ySym] > bestSquareInflValue)
                     {
                         bestSquare = Tuple.Create(xSym,ySym);
-                        bestSquareInflValue = _influenceMap[xSym][ySym];
+                        bestSquareInflValue = _influenceMap[xSym,ySym];
                     }
 //                    AddAmount_IfInBounds(x, y, amount);
 //                    AddAmount_IfInBounds(x, ySym, amount);
@@ -2086,7 +2083,7 @@ public class InfluenceMap
 
 		try
 		{
-			double foo = _influenceMap[x][y];
+			double foo = _influenceMap[x,y];
 		}
 		catch 
 		{
@@ -2123,7 +2120,7 @@ public class InfluenceMap
 
 		if(alreadyExplored.Contains(new XAndY(x, y))==false)
 		{
-			_influenceMap[x][y] += amount;
+			_influenceMap[x,y] += amount;
 			alreadyExplored.Add(new XAndY(x,y));
 		}
 		myHashset = new HashSet<XAndY>();
