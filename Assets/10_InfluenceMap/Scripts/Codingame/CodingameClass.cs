@@ -1778,11 +1778,31 @@ public struct XAndY
 
 public class InfluenceMap
 {
+    
+    
+    public class InfluenceMapCell
+    {
+        public int x, y;
+        
+        public List<Tuple<InfluenceMapCell, double>> neighboursAndDIstance;
+
+        public HashSet<InfluenceMapCell> GetNeighbours => new HashSet<InfluenceMapCell>(neighboursAndDIstance.Select(nAd => nAd.Item1));
+    }
+    
+    public InfluenceMapCell[,] influenceMapCells;
 	protected double[,] _influenceMap;
-	protected int width, height;
+    protected bool[,] isObstacle;
+    protected int width, height;
 
 	private double minInfluence, maxInfluence;
 
+    private double maxDistance;
+    
+    
+    public int actualWidth, actualHeight;
+    public int unit;
+    
+    
 	public int getWidth()
 	{
 		return width;
@@ -1818,11 +1838,15 @@ public class InfluenceMap
 //	        Array.Copy(_influenceMap[i], 0, mapToCopy._influenceMap[i], 0, height);
 //	    }
 	    _influenceMap = mapToCopy._influenceMap.Clone() as double[,];
+	    isObstacle = mapToCopy.isObstacle.Clone() as bool[,];
+	    influenceMapCells = mapToCopy.influenceMapCells;
 	    width = mapToCopy.width;
 	    height = mapToCopy.height;
 	    minInfluence = mapToCopy.minInfluence;
 	    maxInfluence = mapToCopy.maxInfluence;
 	    computeDistanceFunc = mapToCopy.computeDistanceFunc;
+
+	    maxDistance = width * width + height * height;
 	}
 	
 	public InfluenceMap(int width, int height, double minInfluence, double maxInfluence, DistanceFunc computeDistanceFunc)
@@ -1830,12 +1854,61 @@ public class InfluenceMap
 		this.width = width;
 		this.height = height;
 		this._influenceMap = new double[width,height];
+	    this.influenceMapCells = new InfluenceMapCell[width,height];
+	    this.isObstacle = new bool[width, height];
 		
 		this.computeDistanceFunc = computeDistanceFunc;
 		this.minInfluence = minInfluence;
 		this.maxInfluence = maxInfluence;
 		myHashset = new HashSet<XAndY>();
 	}
+
+    /**
+     * Call this to refresh the distances based on all the added obstacles so far
+     */
+    public void Init_AfterSettingObstacles()
+    {
+        PrecomputeDistances();
+    }
+    
+    private void PrecomputeDistances()
+    {
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                InfluenceMapCell currCell = influenceMapCells[x, y];
+                currCell.x = x;
+                currCell.y = y;
+                List<XAndY> neighbours = getNeighbours(x, y);
+                foreach (var neighbour in neighbours)
+                {
+                    if(isObstacle[neighbour.x, neighbour.y]==false)
+                    {
+                        InfluenceMapCell neighbourgCell = influenceMapCells[neighbour.x, neighbour.y];
+                        var newTuple = Tuple.Create(neighbourgCell, computeDistanceFunc.computeDistance(x,y,neighbour.x, neighbour.y)); 
+                        currCell.neighboursAndDIstance.Add(newTuple);
+                    }
+                }
+                
+            }
+        }
+    }
+
+
+    public void AddObstacle(int x, int y, int range)
+    {
+        foreach (var square in GetSquaresInRange(x, y, range))
+        {
+            isObstacle[square.x, square.y] = true;
+            _influenceMap[square.x, square.y] = -5;
+        }
+    }
+
+    public void ResetMapToZeroes()
+    {
+        _influenceMap = new double[width, height];
+    }
 
 	private bool isInBounds(int x, int y)
 	{

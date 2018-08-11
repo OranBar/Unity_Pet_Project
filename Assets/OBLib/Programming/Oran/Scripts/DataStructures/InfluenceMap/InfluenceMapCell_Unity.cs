@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 
-public class InfluenceMapCell : MonoBehaviour {
+public class InfluenceMapCell_Unity : MonoBehaviour {
 
 	public int x, y;
 	public float influenceValue;
@@ -18,7 +18,7 @@ public class InfluenceMapCell : MonoBehaviour {
 	public Text influenceLabel;
 	private Material myMaterial;
 
-	public Action<InfluenceMapCell> OnMouseOver_Delegate { get; set; }
+	public Action<InfluenceMapCell_Unity> OnMouseOver_Delegate { get; set; }
 	
 	private void Start()
 	{

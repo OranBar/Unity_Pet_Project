@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using NaughtyAttributes;
@@ -90,13 +91,40 @@ public class Main : MonoBehaviour
         Profiler.EndSample();
         
         Debug.Log("chosen action "+action.queenAction);
-        
-        var myQueenPosition = giovannaD_Arco.game.MyQueen.pos;
-        int xIndex = (int) Math.Ceiling(myQueenPosition.x / LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH*1.0);
-        int yIndex = (int) Math.Ceiling(myQueenPosition.y / LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH*1.0);
-        
 
+
+        int xIndex, yIndex;
+        
+        buildMap.ResetMapToZeroes();
+        foreach (var site in giovannaD_Arco.game.sites)
+        {
+            xIndex = (int) Math.Ceiling(site.pos.x / LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH*1.0);
+            yIndex = (int) Math.Ceiling(site.pos.y / LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH*1.0);
+            int range = (int) Math.Ceiling(giovannaD_Arco.GetSiteInfo(site).radius / LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH * 1.0);
+            
+            buildMap.AddObstacle(xIndex, yIndex, range);        
+        }
+
+        var myQueenPosition = giovannaD_Arco.game.MyQueen.pos;
+        xIndex = (int) Math.Ceiling(myQueenPosition.x / LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH*1.0);
+        yIndex = (int) Math.Ceiling(myQueenPosition.y / LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH*1.0);
+        
         visualizer.SetMyQueenPosition(new Position(xIndex, yIndex));
+        foreach (var enemy in giovannaD_Arco.game.EnemyUnits.Where(u=>u.unitType != UnitType.Queen))
+        {
+            var myEnemyPosition = enemy.pos;
+            xIndex = (int) Math.Ceiling(myEnemyPosition.x / LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH*1.0);
+            yIndex = (int) Math.Ceiling(myEnemyPosition.y / LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH*1.0);
+            
+            visualizer.SetMyEnemyPosition(new Position(xIndex, yIndex));
+        }
+        
+        var enemyQueenPosition = giovannaD_Arco.game.EnemyQueen.pos;
+        xIndex = (int) Math.Ceiling(enemyQueenPosition.x / LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH*1.0);
+        yIndex = (int) Math.Ceiling(enemyQueenPosition.y / LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH*1.0);
+        
+        visualizer.SetEnemyQueenPosition(new Position(xIndex, yIndex));
+        
         visualizer.SetNewInfluenceMap(buildMap);
         visualizer.UpdateCells();
     }

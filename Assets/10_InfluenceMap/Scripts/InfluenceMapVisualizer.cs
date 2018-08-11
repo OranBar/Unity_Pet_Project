@@ -32,7 +32,7 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 	}
 	[SerializeField] private InfluenceMap _influenceMap;
 
-	[SerializeField] public InfluenceMapCell[,]  influenceMapCells;
+	[SerializeField] public InfluenceMapCell_Unity[,]  InfluenceMapCellsUnity;
 
 	public void applyInfluence(int x, int y, int fullDistance, int reducedDistance, double distanceDecay, double influence)
 	{
@@ -52,14 +52,16 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 	[SerializeField]
 	private bool _showNumbers;
 
-	private InfluenceMapCell currTile_mouseover;
-	private InfluenceMapCell currBestTile_mouseover, currWorstTile_mouseover;
-	private InfluenceMapCell prevTile_mouseover;
-	private InfluenceMapCell prevBestTile_mouseover, prevWorstTile_mouseover;
+	private InfluenceMapCell_Unity currTile_mouseover;
+	private InfluenceMapCell_Unity currBestTile_mouseover, currWorstTile_mouseover;
+	private InfluenceMapCell_Unity prevTile_mouseover;
+	private InfluenceMapCell_Unity prevBestTile_mouseover, prevWorstTile_mouseover;
 	
 	
 	public Color defaultTextColor, bestTextColor, worstTextColor;
 	private Position myQueenPosition = null;
+	private List<Position> myEnemiesPositions = new List<Position>();
+	private Position enemyQueenPosition;
 
 
 	public bool EnableMouseInputCells
@@ -96,7 +98,7 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 	private void Awake()
 	{
 		//By defualt, we create an empty one.
-		influenceMapCells = new InfluenceMapCell[width, height];
+		InfluenceMapCellsUnity = new InfluenceMapCell_Unity[width, height];
 		_influenceMap = new InfluenceMap(width, height, minInfluence, maxInfluence, new EuclideanDistanceSqr());
 		ReferenceCells();
 	}
@@ -105,9 +107,9 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 	{
 		cellsContainer = transform.Find("Cells Container").gameObject;
 
-		foreach (InfluenceMapCell cell in cellsContainer.GetComponentsInChildren<InfluenceMapCell>())
+		foreach (InfluenceMapCell_Unity cell in cellsContainer.GetComponentsInChildren<InfluenceMapCell_Unity>())
 		{
-			influenceMapCells[cell.x, cell.y] = cell;
+			InfluenceMapCellsUnity[cell.x, cell.y] = cell;
 			cell.OnMouseOver_Delegate = OnCellMouseOver;
 			labels.Add(cell.influenceLabel);
 		}
@@ -116,24 +118,24 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 	public void SetNewInfluenceMap(InfluenceMap m)
 	{
 		InflMap = m;
-		foreach (var influenceMapCell in influenceMapCells)
+		foreach (var influenceMapCell in InfluenceMapCellsUnity)
 		{
 			influenceMapCell.influenceValue = (float) InflMap[influenceMapCell.x, influenceMapCell.y];
 		}
 	}
 
-	public void OnCellMouseOver(InfluenceMapCell mouseOverCell)
+	public void OnCellMouseOver(InfluenceMapCell_Unity mouseOverCellUnity)
 	{
 		//Color cells in range of mouseovercell
-		int x1 = Mathf.Max(mouseOverCell.x - mouseoverRange, 0);
-		int y1 = Mathf.Max(mouseOverCell.y - mouseoverRange, 0);
-		int x2 = Mathf.Min(mouseOverCell.x + mouseoverRange, width-1);
-		int y2 = Mathf.Min(mouseOverCell.y + mouseoverRange, height-1);
+		int x1 = Mathf.Max(mouseOverCellUnity.x - mouseoverRange, 0);
+		int y1 = Mathf.Max(mouseOverCellUnity.y - mouseoverRange, 0);
+		int x2 = Mathf.Min(mouseOverCellUnity.x + mouseoverRange, width-1);
+		int y2 = Mathf.Min(mouseOverCellUnity.y + mouseoverRange, height-1);
 		
-		Vector2 startPos = new Vector2(mouseOverCell.x, mouseOverCell.y);
+		Vector2 startPos = new Vector2(mouseOverCellUnity.x, mouseOverCellUnity.y);
 		
 		List<Text> adjacentLabels = new List<Text>();
-		InfluenceMapCell bestCell = influenceMapCells[x1, y1], worstCell = influenceMapCells[x1, y1];
+		InfluenceMapCell_Unity bestCellUnity = InfluenceMapCellsUnity[x1, y1], worstCellUnity = InfluenceMapCellsUnity[x1, y1];
 		float distToBestCell = float.MaxValue, distToWorstCell = float.MaxValue;;
 
 		if (currBestTile_mouseover != null)
@@ -150,60 +152,60 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 		{
 			for (int j = y1; j <= y2; j++)
 			{
-				InfluenceMapCell cell = influenceMapCells[i, j];
-				adjacentLabels.Add(cell.influenceLabel);
-				if (cell.influenceValue >= bestCell.influenceValue)
+				InfluenceMapCell_Unity cellUnity = InfluenceMapCellsUnity[i, j];
+				adjacentLabels.Add(cellUnity.influenceLabel);
+				if (cellUnity.influenceValue >= bestCellUnity.influenceValue)
 				{
-					if (cell.influenceValue == bestCell.influenceValue)
+					if (cellUnity.influenceValue == bestCellUnity.influenceValue)
 					{
-						float distToCell = Vector2.Distance(startPos, new Vector2(cell.x, cell.y));
+						float distToCell = Vector2.Distance(startPos, new Vector2(cellUnity.x, cellUnity.y));
 						if (distToCell < distToBestCell)
 						{
 							//We don't swap if the cell isn't any closer to the mouse.
-							bestCell = cell;
+							bestCellUnity = cellUnity;
 							distToBestCell = distToCell;
-							currBestTile_mouseover = bestCell;
+							currBestTile_mouseover = bestCellUnity;
 
 						}
 					}
 					else
 					{
-						bestCell = cell;
-						currBestTile_mouseover = bestCell;
+						bestCellUnity = cellUnity;
+						currBestTile_mouseover = bestCellUnity;
 					}
 
 				}
-				if (cell.influenceValue <= worstCell.influenceValue)
+				if (cellUnity.influenceValue <= worstCellUnity.influenceValue)
 				{
-					if (cell.influenceValue == worstCell.influenceValue)
+					if (cellUnity.influenceValue == worstCellUnity.influenceValue)
 					{
-						float distToCell = Vector2.Distance(startPos, new Vector2(cell.x, cell.y));
+						float distToCell = Vector2.Distance(startPos, new Vector2(cellUnity.x, cellUnity.y));
 						if (distToCell < distToWorstCell)
 						{
 							//We don't swap if the cell isn't any closer to the mouse.
-							worstCell = cell;
+							worstCellUnity = cellUnity;
 							distToWorstCell = distToCell;
-							currWorstTile_mouseover = worstCell;
+							currWorstTile_mouseover = worstCellUnity;
 
 						}
 					}
 					else
 					{
-						worstCell = cell;
-						currWorstTile_mouseover = worstCell;
+						worstCellUnity = cellUnity;
+						currWorstTile_mouseover = worstCellUnity;
 					}
 					
 				}
 			}
 		}
 
-		bestCell.influenceLabel.color = bestTextColor;
-		worstCell.influenceLabel.color = worstTextColor;
+		bestCellUnity.influenceLabel.color = bestTextColor;
+		worstCellUnity.influenceLabel.color = worstTextColor;
 
 		labels.Except(adjacentLabels).ForEach(l => SetLabelColorAlpha(l, 0));
 		adjacentLabels.ForEach(l => SetLabelColorAlpha(l, 1));
 		
-		currTile_mouseover = mouseOverCell;
+		currTile_mouseover = mouseOverCellUnity;
 		
 		//Update range if mouse scroll (ctrl is already pressed if we're here, because of the check done before calling the delegate by influencemapcell
 		if (Input.mouseScrollDelta.y != 0)
@@ -252,9 +254,9 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 	[Button("Generate Map")]
 	public void GenerateMap()
 	{
-		this.Assert(cellPrefab.GetComponent<InfluenceMapCell>() != null);
+		this.Assert(cellPrefab.GetComponent<InfluenceMapCell_Unity>() != null);
 
-		influenceMapCells = new InfluenceMapCell[width, height];
+		InfluenceMapCellsUnity = new InfluenceMapCell_Unity[width, height];
 		
 		cellsContainer = new GameObject("Cells Container");
 		cellsContainer.transform.parent = this.transform;
@@ -265,7 +267,7 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 			{
 				GameObject cell = GenerateCell(x, y);
 				cell.transform.parent = cellsContainer.transform;
-				influenceMapCells[x, y] = cell.GetComponent<InfluenceMapCell>();
+				InfluenceMapCellsUnity[x, y] = cell.GetComponent<InfluenceMapCell_Unity>();
 			}
 		}
 	}
@@ -291,7 +293,7 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 		newTile.name = newTile.name.Replace("Clone", x + " ," + y);
 		
 //		newTile.GetComponent<Renderer>().sharedMaterial = cellPrefab.GetComponent<Renderer>().sharedMaterial;
-		newTile.GetComponent<InfluenceMapCell>().Init(x, y);
+		newTile.GetComponent<InfluenceMapCell_Unity>().Init(x, y);
 
 		return newTile;
 	}
@@ -315,22 +317,32 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 				
 				float normalizedAmount = Mathf.InverseLerp((float)minInfluence, (float)maxInfluence, (float)amount);
 				var color = influenceColorGradient.Evaluate(normalizedAmount);
-				influenceMapCells[x, y].ChangeColor(color);
-				influenceMapCells[x, y].UpdateLabel();
+				InfluenceMapCellsUnity[x, y].ChangeColor(color);
+				InfluenceMapCellsUnity[x, y].UpdateLabel();
 				//influenceMapCells[x, y].GetComponent<Renderer>().material.color = color;
 			}
 		}
 
 		if (myQueenPosition != null)
 		{
-			influenceMapCells[myQueenPosition.x, myQueenPosition.y].ChangeColor(Color.green);
+			InfluenceMapCellsUnity[myQueenPosition.x, myQueenPosition.y].ChangeColor(Color.green);
+		}
+		
+		if (enemyQueenPosition != null)
+		{
+			InfluenceMapCellsUnity[enemyQueenPosition.x, enemyQueenPosition.y].ChangeColor(Color.magenta);
+		}
+
+		foreach (var position in myEnemiesPositions)
+		{
+			InfluenceMapCellsUnity[position.x, position.y].ChangeColor(Color.red);
 		}
 		
 	}
 
 	public void EnableMouseInput(bool enable)
 	{
-		foreach (var influenceMapCell in influenceMapCells)
+		foreach (var influenceMapCell in InfluenceMapCellsUnity)
 		{
 			influenceMapCell.enableMouseInput = enable;
 		}
@@ -338,7 +350,7 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 	
 	public void EnableNumbers(bool enable)
 	{
-		foreach (var influenceMapCell in influenceMapCells)
+		foreach (var influenceMapCell in InfluenceMapCellsUnity)
 		{
 			influenceMapCell.influenceLabel.enabled = enable;
 		}
@@ -347,5 +359,14 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 	public void SetMyQueenPosition(Position position)
 	{
 		myQueenPosition = position;
+	}
+	
+	public void SetMyEnemyPosition(Position position)
+	{
+		myEnemiesPositions.Add(position);
+	}
+	public void SetEnemyQueenPosition(Position position)
+	{
+		enemyQueenPosition = position;
 	}
 }
