@@ -916,7 +916,7 @@ public class LaPulzellaD_Orleans
         int mapHeight = (int) Math.Ceiling(1000 / squareLength)+1;
         double minInfluence = -120;
         double maxInfluence = 120;
-        buildInfluenceMap = new InfluenceMap(mapWidth, mapHeight, minInfluence, maxInfluence, new ManhattanDistance());
+        buildInfluenceMap = new InfluenceMap(mapWidth, mapHeight, minInfluence, maxInfluence, new EuclideanDistance());
 
         int searchRange = QUEEN_MOVEMENT * 2;
         double favorCloseSitesOverOpenSquares = 5;
@@ -1784,9 +1784,9 @@ public class InfluenceMap
     {
         public int x, y;
         
-        public List<Tuple<InfluenceMapCell, double>> neighboursAndDIstance;
+        public List<Tuple<InfluenceMapCell, double>> neighboursAndDistance = new List<Tuple<InfluenceMapCell, double>>();
 
-        public HashSet<InfluenceMapCell> GetNeighbours => new HashSet<InfluenceMapCell>(neighboursAndDIstance.Select(nAd => nAd.Item1));
+        public HashSet<InfluenceMapCell> GetNeighbours => new HashSet<InfluenceMapCell>(neighboursAndDistance.Select(nAd => nAd.Item1));
     }
     
     public InfluenceMapCell[,] influenceMapCells;
@@ -1861,6 +1861,9 @@ public class InfluenceMap
 		this.minInfluence = minInfluence;
 		this.maxInfluence = maxInfluence;
 		myHashset = new HashSet<XAndY>();
+	    
+	    this.maxDistance = width * width + height * height;
+
 	}
 
     /**
@@ -1877,9 +1880,19 @@ public class InfluenceMap
         {
             for (int x = 0; x < width; x++)
             {
-                InfluenceMapCell currCell = influenceMapCells[x, y];
+                InfluenceMapCell currCell = new InfluenceMapCell();
                 currCell.x = x;
                 currCell.y = y;
+                influenceMapCells[x, y] = currCell;
+            }
+        }
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                InfluenceMapCell currCell = influenceMapCells[x, y];
+                
                 List<XAndY> neighbours = getNeighbours(x, y);
                 foreach (var neighbour in neighbours)
                 {
@@ -1887,7 +1900,7 @@ public class InfluenceMap
                     {
                         InfluenceMapCell neighbourgCell = influenceMapCells[neighbour.x, neighbour.y];
                         var newTuple = Tuple.Create(neighbourgCell, computeDistanceFunc.computeDistance(x,y,neighbour.x, neighbour.y)); 
-                        currCell.neighboursAndDIstance.Add(newTuple);
+                        currCell.neighboursAndDistance.Add(newTuple);
                     }
                 }
                 
@@ -1895,6 +1908,60 @@ public class InfluenceMap
         }
     }
 
+    public void ApplyInfluence_Range(int xPos, int yPos, double amount, int fullDistance, int decayDistance, PropagationFunction decayedDistanceFunc)
+    {
+        InfluenceMapCell startCell = influenceMapCells[xPos, yPos];
+
+        foreach (var squareAndDist in GetSquaresInRange_WithDistance(xPos, yPos, fullDistance + decayDistance))
+        {
+            Position square = squareAndDist.Item1;
+            InfluenceMapCell currCell = influenceMapCells[square.x, square.y];
+            double distance = squareAndDist.Item2;
+            
+            double cellAmount = amount;
+            if (distance > fullDistance)
+            {
+                cellAmount = decayedDistanceFunc(amount, distance, maxDistance);
+            }
+            
+            _influenceMap[square.x, square.y] = cellAmount;
+        }
+
+//        ApplyInfluence_Range_Recursive(xPos, yPos, amount, fullDistance, decayDistance, decayedDistanceFunc, new HashSet<InfluenceMapCell>(){startCell}, 0 );
+    }
+    
+    public void ApplyInfluence_Range_Recursive(int xPos, int yPos, double amount, int fullDistance, int decayDistance, PropagationFunction decayedDistanceFunc, HashSet<InfluenceMapCell> alreadyVisited, double distanceSoFar)
+    {
+        //base case
+        if (distanceSoFar >= fullDistance + decayDistance)
+        {
+            return;
+        }
+        
+        //apply influence to self
+        _influenceMap[xPos, yPos] = amount;
+
+        
+        
+//        var relevantNeighbours = influenceMapCells[xPos, yPos].neighboursAndDistance;//.Where(n => alreadyVisited.Contains(n.Item1) == false).ToList();
+//        alreadyVisited.UnionWith(relevantNeighbours.Select(n => n.Item1));
+        
+//        foreach (var neighbourAndDistance in relevantNeighbours)
+//        {
+//            InfluenceMapCell neighbour = neighbourAndDistance.Item1;
+//            
+//            double distance = neighbourAndDistance.Item2 + distanceSoFar;
+//
+//            double cellAmount = amount;
+//            if (distance > fullDistance)
+//            {
+//                cellAmount = decayedDistanceFunc(amount, distance, maxDistance);
+//            }
+//            
+//            ApplyInfluence_Range_Recursive(neighbour.x, neighbour.y, cellAmount,
+//                fullDistance, decayDistance, decayedDistanceFunc, alreadyVisited, distance);
+//        }
+    }
 
     public void AddObstacle(int x, int y, int range)
     {
@@ -2072,6 +2139,29 @@ public class InfluenceMap
         return results;
 
     }
+    
+    public List<Tuple<Position,double>> GetSquaresInRange_WithDistance(int xPos, int yPos, int radius)
+    {
+        List<Tuple<Position,double>> results = new List<Tuple<Position,double>>();
+            
+        int x, y;
+
+        for (y = -radius; y <= radius; y++)
+        {
+            for (x = -radius; x <=  radius; x++)
+            {
+                double distanceSqr = (x * x) + (y * y);
+                if (distanceSqr <= (radius * radius))
+                {
+                    results.Add(Tuple.Create(new Position(xPos+x,yPos+y), distanceSqr));
+                }
+            }
+        }
+
+        return results;
+
+    }
+
 
 
     public Tuple<int, int> selectBestInCircle(int x1, int y1, int radius)

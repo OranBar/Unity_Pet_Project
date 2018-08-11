@@ -104,10 +104,14 @@ public class Main : MonoBehaviour
             
             buildMap.AddObstacle(xIndex, yIndex, range);        
         }
+        
+        buildMap.Init_AfterSettingObstacles();
 
         var myQueenPosition = giovannaD_Arco.game.MyQueen.pos;
         xIndex = (int) Math.Ceiling(myQueenPosition.x / LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH*1.0);
         yIndex = (int) Math.Ceiling(myQueenPosition.y / LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH*1.0);
+        buildMap.ApplyInfluence_Range(xIndex, yIndex, 10, 0, 5, LaPulzellaD_Orleans.linearPropagation);
+        
         
         visualizer.SetMyQueenPosition(new Position(xIndex, yIndex));
         foreach (var enemy in giovannaD_Arco.game.EnemyUnits.Where(u=>u.unitType != UnitType.Queen))
@@ -117,11 +121,14 @@ public class Main : MonoBehaviour
             yIndex = (int) Math.Ceiling(myEnemyPosition.y / LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH*1.0);
             
             visualizer.SetMyEnemyPosition(new Position(xIndex, yIndex));
+//            buildMap.ApplyInfluence_Range(xIndex, yIndex, 1, 1, 5, LaPulzellaD_Orleans.linearPropagation);
+
         }
         
         var enemyQueenPosition = giovannaD_Arco.game.EnemyQueen.pos;
         xIndex = (int) Math.Ceiling(enemyQueenPosition.x / LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH*1.0);
         yIndex = (int) Math.Ceiling(enemyQueenPosition.y / LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH*1.0);
+//        buildMap.ApplyInfluence_Range(xIndex, yIndex, 20, 1, 5, LaPulzellaD_Orleans.linearPropagation);
         
         visualizer.SetEnemyQueenPosition(new Position(xIndex, yIndex));
         
