@@ -10,7 +10,6 @@ using System.IO;
 using System.Text;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.Analytics;
 #if UNITY_EDITOR
 using UnityEditorInternal;
 using OranUnityUtils;
@@ -1033,7 +1032,8 @@ public class LaPulzellaD_Orleans
                 //TODO: maybe do siteRadius and siteRadius-1
 //                ScaleAndApplyInfluence_Circle(site.pos, influence * favorCloseSitesOverOpenSquares, siteRadius+1, 0, polynomial2Propagation, influenceMap);
                 
-                ScaleAndApplyInfluence_Range(site.pos.x, site.pos.y, influence/2 * favorCloseSitesOverOpenSquares, siteRadius+1, 7, polynomial2Propagation, influenceMap, siteRadius);
+                //ScaleAndApplyInfluence_Range(site.pos.x, site.pos.y, influence/2 * favorCloseSitesOverOpenSquares, siteRadius+1, 7, polynomial2Propagation, influenceMap, siteRadius);
+                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, influence/2 * favorCloseSitesOverOpenSquares, siteRadius+1, 7, polynomial2Propagation, siteRadius);
 //                ScaleAndApplyInfluence_Circle(site.pos, influence/2, siteRadius+1, 40, polynomial2Propagation,  influenceMap);
             
             }
@@ -1738,7 +1738,9 @@ public class LaPulzellaD_Orleans
             
             SiteInfo newSiteInfo = new SiteInfo(siteId, new Position(x,y), radius);
             gameInfo.sites[siteId] = newSiteInfo;
+            Console.Error.Write("Radius " + radius+" ");
         }
+        Console.Error.WriteLine();
     }
 
 //    public string InitGameInfo(string l1, string l2)
@@ -1952,6 +1954,74 @@ public class InfluenceMap
         }
     }
 
+    public void ApplyInfluence_Range_Unscaled(int xPos, int yPos, double amount, int fullDistance, int decayDistance, PropagationFunction decayedDistanceFunc, int initialRadiusSkip = 0, int unit = 20)
+    {
+        InfluenceMapCell startCell = influenceMapCells[xPos/unit, yPos/unit];
+
+        HashSet<InfluenceMapCell> visited = new HashSet<InfluenceMapCell>();
+        List<Tuple<InfluenceMapCell, double>> frontier = new List<Tuple<InfluenceMapCell, double>>();
+
+//        if (isObstacle[startCell.x, startCell.y])
+        if(initialRadiusSkip != 0)
+        {
+            //We need to do a radius scan and put in the frontier some squares that are not obstacles. The closest ones to this center
+            var squaresAndDistanceAround = GetSquaresInRange_WithDistance(xPos, yPos, initialRadiusSkip+2);
+            var aroundNotObstacle = squaresAndDistanceAround.Where(sAd => isObstacle[sAd.Item1.x/unit,sAd.Item1.y/unit]==false);
+            double closestOutsideRange = aroundNotObstacle.Min(sAd1 => sAd1.Item2);
+
+            int flag = 0;
+            foreach (var newFrontierMember in squaresAndDistanceAround.Where(sAd => sAd.Item2 == closestOutsideRange))
+            {
+                var currCell = influenceMapCells[newFrontierMember.Item1.x / unit, newFrontierMember.Item1.y / unit];
+                frontier.Add(Tuple.Create(currCell, newFrontierMember.Item2));
+                flag++;
+            }
+
+            if (flag > 0)
+            {
+                Console.Error.WriteLine("A new frontier with "+flag+" tiles was created. The closestRange was "+closestOutsideRange);
+            }
+        }
+        else
+        {
+            frontier.Add(Tuple.Create(startCell,0.0));
+        }
+        
+        visited.Add(startCell);
+        while (frontier.Count > 0)
+        {
+            var currFrontierCellInfo = frontier.OrderBy(f => f.Item2).First();
+            frontier.Remove(currFrontierCellInfo);
+            
+            InfluenceMapCell currCell = currFrontierCellInfo.Item1;
+            double distance = currFrontierCellInfo.Item2;
+
+            double cellAmount = amount;
+            if (distance > fullDistance)
+            {
+                cellAmount = decayedDistanceFunc(amount, distance, maxDistance);
+            }
+            
+            _influenceMap[currCell.x, currCell.y] += cellAmount;
+            
+            foreach (var neighbourAndDistance in currCell.neighboursAndDistance.OrderBy(nAd => nAd.Item2))
+            {
+                if (visited.Contains(neighbourAndDistance.Item1) == false)
+                {
+                    var neighbour = neighbourAndDistance.Item1;
+                    var distanceToCell = neighbourAndDistance.Item2;
+
+                    if (distanceToCell + distance <= fullDistance + decayDistance)
+                    {
+                        var newFrontierCandidate = Tuple.Create(neighbour, distance + distanceToCell);
+                        visited.Add(neighbour);
+                        frontier.Add(newFrontierCandidate);
+                    }
+                }
+            }
+        }
+    }
+    
     public void ApplyInfluence_Range(int xPos, int yPos, double amount, int fullDistance, int decayDistance, PropagationFunction decayedDistanceFunc, int initialRadiusSkip = 0)
     {
         InfluenceMapCell startCell = influenceMapCells[xPos, yPos];
@@ -2018,7 +2088,6 @@ public class InfluenceMap
             }
         }
     }
-    
     
 
     public void AddObstacle(int x, int y, int range)
@@ -2207,7 +2276,7 @@ public class InfluenceMap
 
     }
     
-    public List<Tuple<Position,double>> GetSquaresInRange_WithDistance(int xPos, int yPos, int radius)
+    public List<Tuple<Position,double>> GetSquaresInRange_WithDistance(int xPos, int yPos, int radius, int unit = 20)
     {
         List<Tuple<Position,double>> results = new List<Tuple<Position,double>>();
             
@@ -2217,18 +2286,18 @@ public class InfluenceMap
         {
             for (x = -radius; x <=  radius; x++)
             {
-//                double distanceSqr = (x * x) + (y * y);
-                double distance = computeDistanceFunc.computeDistance(0, 0, x, y);
-//                if (distanceSqr <= (radius * radius))
-                if (distance <= radius)
+                double distanceSqr = (x * x) + (y * y);
+//                double distance = computeDistanceFunc.computeDistance(0, 0, x, y);
+                if (distanceSqr <= (radius * radius))
+//                if (distance <= radius)
 
                 {
-                    if (x + xPos < 0 || x + xPos >= width || y + yPos < 0 || y + yPos >= height)
+                    if (x + xPos < 0 || x + xPos >= width * unit || y + yPos < 0 || y + yPos >= height * unit)
                     {
                         continue;
                     }
                     
-                    results.Add(Tuple.Create(new Position(xPos+x,yPos+y), distance));
+                    results.Add(Tuple.Create(new Position(xPos+x,yPos+y), Math.Sqrt(distanceSqr)));
                 }
             }
         }
@@ -2236,7 +2305,6 @@ public class InfluenceMap
         return results;
 
     }
-    
     
 
 
