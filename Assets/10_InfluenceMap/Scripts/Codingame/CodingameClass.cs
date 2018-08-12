@@ -734,7 +734,7 @@ public class LaPulzellaD_Orleans
 
     private int buildOrder_stateMachine_stateIndex = -1;
 
-    private InfluenceMap _survivorModeMap = new InfluenceMap(96, 50, -120, 120, new ManhattanDistance());
+    private InfluenceMap _survivorModeMap = new InfluenceMap(1920, 1000, -120, 120, new ManhattanDistance(), INFLUENCEMAP_SQUARELENGTH);
 
     public InfluenceMap SurvivorModeMap
     {
@@ -915,8 +915,6 @@ public class LaPulzellaD_Orleans
     {
         double squareLength = INFLUENCEMAP_SQUARELENGTH; //Maximum common divisor between 60, 100, 75, 50 (movement speeds)
 
-        int mapWidth = (int) Math.Ceiling(1920 / squareLength)+1;
-        int mapHeight = (int) Math.Ceiling(1000 / squareLength)+1;
         double minInfluence = -120;
         double maxInfluence = 120;
         
@@ -927,7 +925,7 @@ public class LaPulzellaD_Orleans
         double favorCloseSitesOverOpenSquares = 5;
         
         
-        var move = UnscaledBestInBox(g.MyQueen, searchRange, influenceMap);
+        //var move = UnscaledBestInBox(g.MyQueen, searchRange, influenceMap);
         
         //Avoid enemy towers!!
         foreach (var tower in g.EnemySites.Where(s => s.structureType == StructureType.Tower))
@@ -1033,7 +1031,7 @@ public class LaPulzellaD_Orleans
 //                ScaleAndApplyInfluence_Circle(site.pos, influence * favorCloseSitesOverOpenSquares, siteRadius+1, 0, polynomial2Propagation, influenceMap);
                 
                 //ScaleAndApplyInfluence_Range(site.pos.x, site.pos.y, influence/2 * favorCloseSitesOverOpenSquares, siteRadius+1, 7, polynomial2Propagation, influenceMap, siteRadius);
-                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, influence/2 * favorCloseSitesOverOpenSquares, siteRadius+1, 7, polynomial2Propagation, siteRadius);
+//                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, influence/2 * favorCloseSitesOverOpenSquares,(int) squareLength+1, (int)squareLength, polynomial2Propagation);
 //                ScaleAndApplyInfluence_Circle(site.pos, influence/2, siteRadius+1, 40, polynomial2Propagation,  influenceMap);
             
             }
@@ -1084,169 +1082,169 @@ public class LaPulzellaD_Orleans
 //        map.setInfluence(scaledPosX ,scaledPosY ,amount,fullDistance,decayedDistance,distanceDecay);
 //    }
 
-    private IAction Wood1Strategy(GameState g, out InfluenceMap buildInfluenceMap)
-    {
-        double squareLength = INFLUENCEMAP_SQUARELENGTH; //Maximum common divisor between 60, 100, 75, 50 (movement speeds)
-
-        int mapWidth = (int) Math.Ceiling(1920 / squareLength)+1;
-        int mapHeight = (int) Math.Ceiling(1000 / squareLength)+1;
-        double minInfluence = -120;
-        double maxInfluence = 120;
-        buildInfluenceMap = new InfluenceMap(mapWidth, mapHeight, minInfluence, maxInfluence, new EuclideanDistanceSqr());
-        
-        ScaleAndApplyInfluence_Diamond(g.MyQueen, 20, QUEEN_MOVEMENT/INFLUENCEMAP_SQUARELENGTH, 0,0, buildInfluenceMap);
-        
-        
-        foreach (var site in game.sites.Where(s => s.owner == Owner.Neutral))
-        {
-            int sitePosX = (int) Math.Ceiling(site.pos.x / squareLength);
-            int sitePosY = (int) Math.Ceiling(site.pos.y / squareLength);
-
-
-            double influenceValue = 10;// + (site.pos.Distance(myQueen.pos) / 500);  
-            if (g.Owned_mines < MAX_CONCURRENT_MINES)
-            {
-                influenceValue = influenceValue + ((960 - site.pos.x) / 960.0) * 10 ;
-            }
-            else
-            {
-                //Bonus for being closer to center
-                //nfluenceValue = 6 * 3;
-                //70 should cover most of the map
-//                    buildInfluenceMap.applyInfluence(960, 500, influenceValue*10, 0, 70, 0.9998);
-            }
-            
-            
-            int siteRadius = (int) Math.Floor(GetSiteInfo(site).radius / squareLength);
-            int distanceDecay = 25;
-            
-            
-            //Being close to the site is good
-            buildInfluenceMap.ApplyInfluence_Diamond(sitePosX, sitePosY, influenceValue, siteRadius+1, distanceDecay, 0.9);
-            //Let's not move inside the radius of sites.
-            buildInfluenceMap.ApplyInfluence_Diamond(sitePosX, sitePosY, -influenceValue, siteRadius, 0, 0);
-            
-            //Touching the site is very good
-            buildInfluenceMap.ApplyInfluence_Diamond(sitePosX, sitePosY, influenceValue * 3.1, siteRadius+1, 0, 0);
-            buildInfluenceMap.ApplyInfluence_Diamond(sitePosX, sitePosY, influenceValue * -3.1, siteRadius, 0, 0);
-            
-        }
-
-        Func<Site, bool> isBusyAttackingEnemies = t => game.units
-            .Any(u1 => u1.owner == Owner.Friendly && u1.DistanceTo(t) < t.param2);
-            
-        
-        var enemyTowers = game.sites
-            .Where(u => u.owner == Owner.Enemy && u.structureType == StructureType.Tower)
-            .Where(t => isBusyAttackingEnemies(t) == false);
-        
-        foreach (var tower in enemyTowers)
-        {
-//                int towerPosX = (int) Math.Ceiling(tower.pos.x / squareLength);
-//                int towerPosY = (int) Math.Ceiling(tower.pos.y / squareLength);
-            double towerInfluence = 50;
-            //4 is health decay per turn
-            int decayedDistance = (int) Math.Ceiling((tower.param2 - 4) / squareLength);
-//            int decayedDistance = 3;
-
-//                mapForBuilding.applyInfluence(towerPosX, towerPosY, -towerInfluence, 3, decayedDistance, 0.8);
-//                mapForBuilding.applyInfluence(towerPosX, towerPosY, towerInfluence, 1, 0, 0);
+//    private IAction Wood1Strategy(GameState g, out InfluenceMap buildInfluenceMap)
+//    {
+//        double squareLength = INFLUENCEMAP_SQUARELENGTH; //Maximum common divisor between 60, 100, 75, 50 (movement speeds)
+//
+//        int mapWidth = (int) Math.Ceiling(1920 / squareLength)+1;
+//        int mapHeight = (int) Math.Ceiling(1000 / squareLength)+1;
+//        double minInfluence = -120;
+//        double maxInfluence = 120;
+//        buildInfluenceMap = new InfluenceMap(mapWidth, mapHeight, minInfluence, maxInfluence, new EuclideanDistanceSqr());
+//        
+//        ScaleAndApplyInfluence_Diamond(g.MyQueen, 20, QUEEN_MOVEMENT/INFLUENCEMAP_SQUARELENGTH, 0,0, buildInfluenceMap);
+//        
+//        
+//        foreach (var site in game.sites.Where(s => s.owner == Owner.Neutral))
+//        {
+//            int sitePosX = (int) Math.Ceiling(site.pos.x / squareLength);
+//            int sitePosY = (int) Math.Ceiling(site.pos.y / squareLength);
+//
+//
+//            double influenceValue = 10;// + (site.pos.Distance(myQueen.pos) / 500);  
+//            if (g.Owned_mines < MAX_CONCURRENT_MINES)
+//            {
+//                influenceValue = influenceValue + ((960 - site.pos.x) / 960.0) * 10 ;
+//            }
+//            else
+//            {
+//                //Bonus for being closer to center
+//                //nfluenceValue = 6 * 3;
+//                //70 should cover most of the map
+////                    buildInfluenceMap.applyInfluence(960, 500, influenceValue*10, 0, 70, 0.9998);
+//            }
+//            
+//            
+//            int siteRadius = (int) Math.Floor(GetSiteInfo(site).radius / squareLength);
+//            int distanceDecay = 25;
+//            
+//            
+//            //Being close to the site is good
+//            buildInfluenceMap.ApplyInfluence_Diamond(sitePosX, sitePosY, influenceValue, siteRadius+1, distanceDecay, 0.9);
+//            //Let's not move inside the radius of sites.
+//            buildInfluenceMap.ApplyInfluence_Diamond(sitePosX, sitePosY, -influenceValue, siteRadius, 0, 0);
+//            
+//            //Touching the site is very good
+//            buildInfluenceMap.ApplyInfluence_Diamond(sitePosX, sitePosY, influenceValue * 3.1, siteRadius+1, 0, 0);
+//            buildInfluenceMap.ApplyInfluence_Diamond(sitePosX, sitePosY, influenceValue * -3.1, siteRadius, 0, 0);
+//            
+//        }
+//
+//        Func<Site, bool> isBusyAttackingEnemies = t => game.units
+//            .Any(u1 => u1.owner == Owner.Friendly && u1.DistanceTo(t) < t.param2);
+//            
+//        
+//        var enemyTowers = game.sites
+//            .Where(u => u.owner == Owner.Enemy && u.structureType == StructureType.Tower)
+//            .Where(t => isBusyAttackingEnemies(t) == false);
+//        
+//        foreach (var tower in enemyTowers)
+//        {
+////                int towerPosX = (int) Math.Ceiling(tower.pos.x / squareLength);
+////                int towerPosY = (int) Math.Ceiling(tower.pos.y / squareLength);
+//            double towerInfluence = 50;
+//            //4 is health decay per turn
+//            int decayedDistance = (int) Math.Ceiling((tower.param2 - 4) / squareLength);
+////            int decayedDistance = 3;
+//
+////                mapForBuilding.applyInfluence(towerPosX, towerPosY, -towerInfluence, 3, decayedDistance, 0.8);
+////                mapForBuilding.applyInfluence(towerPosX, towerPosY, towerInfluence, 1, 0, 0);
+////                
+//            ScaleAndApplyInfluence_Diamond(tower, -towerInfluence, 3, decayedDistance, 0.95, buildInfluenceMap);
+//            ScaleAndApplyInfluence_Diamond(tower, towerInfluence, 1,0,0, buildInfluenceMap);
+//        }
+//        
+//        
+//        var bestSiteForBuilding = UnscaledBestInBox(g.MyQueen, QUEEN_MOVEMENT, buildInfluenceMap);
+//        Console.Error.WriteLine("best site for building is "+bestSiteForBuilding.Item1+", "+bestSiteForBuilding.Item2);
+//
+//        TurnAction chosenMove = null;
+//        
+//        if (bestSiteForBuilding.Item1 + bestSiteForBuilding.Item2 == 0)
+//        {
+//            chosenMove.queenAction = new Wait();
+//        }
+//        else
+//        {
+//            chosenMove.queenAction = new Move(bestSiteForBuilding.Item1, bestSiteForBuilding.Item2);
+//        }
+//
+//        if (/*closestUnbuiltMines.FirstOrDefault() != null &&*/ g.Owned_mines < MAX_CONCURRENT_MINES)
+//        {
+//            //Go To Next Mine (Tries to filter our the mined out sites.
+////                chosenMove.queenAction = new Move(GetSiteInfo(closestUnbuiltMines.First()).pos);
+//        }
+//        else if (g.Total_owned_barrackses < MAX_BARRACKSES_KNIGHTS + MAX_BARRACKSES_ARCER + MAX_BARRACKSES_GIANT || g.Owned_towers < MAX_TOWERS)
+//        {
+//            //Go to next closest site
+////                chosenMove.queenAction = new Move(GetSiteInfo(closestUnbuiltSite).pos);
+//            //Run to angle if close to enemies. Running takes priority, so we do the computations last
+//        }
+//        else
+//        {
+//            buildOrder_stateMachine_stateIndex++;
+//
+//            
+//            if (buildOrder_stateMachine_stateIndex == 0)
+//            {
+////                    MAX_BARRACKSES_ARCER++;
+////                    MAX_CONCURRENT_MINES++;
+////                    MAX_CONCURRENT_MINES++;
+//                MAX_CONCURRENT_MINES++;
+////                    MAX_BARRACKSES_KNIGHTS++;
+////                    MAX_BARRACKSES_KNIGHTS++;
+////                    MAX_BARRACKSES_GIANT++;
+////                    MAX_TOWERS++;
+////                    MAX_TOWERS++;
+//                MAX_TOWERS++;
+////                    MAX_TOWERS++;
+//            }
+//            
+//            if (buildOrder_stateMachine_stateIndex == 1)
+//            {
+////                    MAX_BARRACKSES_ARCER++;
+////                    MAX_CONCURRENT_MINES++;
+////                    MAX_CONCURRENT_MINES++;
+////                    MAX_CONCURRENT_MINES++;
+////                    MAX_BARRACKSES_KNIGHTS++;
+////                    MAX_BARRACKSES_KNIGHTS++;
+////                    MAX_BARRACKSES_GIANT++;
+//                MAX_TOWERS++;
+//                MAX_TOWERS++;
+//                MAX_TOWERS++;
+////                    MAX_TOWERS++;
+//
+//            }
+//            else if (buildOrder_stateMachine_stateIndex == 2)
+//            {
+////                    MAX_CONCURRENT_MINES++;
+//                MAX_CONCURRENT_MINES++;
+//
+//                MAX_BARRACKSES_GIANT++;
+//                MAX_BARRACKSES_KNIGHTS++;
 //                
-            ScaleAndApplyInfluence_Diamond(tower, -towerInfluence, 3, decayedDistance, 0.95, buildInfluenceMap);
-            ScaleAndApplyInfluence_Diamond(tower, towerInfluence, 1,0,0, buildInfluenceMap);
-        }
-        
-        
-        var bestSiteForBuilding = UnscaledBestInBox(g.MyQueen, QUEEN_MOVEMENT, buildInfluenceMap);
-        Console.Error.WriteLine("best site for building is "+bestSiteForBuilding.Item1+", "+bestSiteForBuilding.Item2);
-
-        TurnAction chosenMove = null;
-        
-        if (bestSiteForBuilding.Item1 + bestSiteForBuilding.Item2 == 0)
-        {
-            chosenMove.queenAction = new Wait();
-        }
-        else
-        {
-            chosenMove.queenAction = new Move(bestSiteForBuilding.Item1, bestSiteForBuilding.Item2);
-        }
-
-        if (/*closestUnbuiltMines.FirstOrDefault() != null &&*/ g.Owned_mines < MAX_CONCURRENT_MINES)
-        {
-            //Go To Next Mine (Tries to filter our the mined out sites.
-//                chosenMove.queenAction = new Move(GetSiteInfo(closestUnbuiltMines.First()).pos);
-        }
-        else if (g.Total_owned_barrackses < MAX_BARRACKSES_KNIGHTS + MAX_BARRACKSES_ARCER + MAX_BARRACKSES_GIANT || g.Owned_towers < MAX_TOWERS)
-        {
-            //Go to next closest site
-//                chosenMove.queenAction = new Move(GetSiteInfo(closestUnbuiltSite).pos);
-            //Run to angle if close to enemies. Running takes priority, so we do the computations last
-        }
-        else
-        {
-            buildOrder_stateMachine_stateIndex++;
-
-            
-            if (buildOrder_stateMachine_stateIndex == 0)
-            {
-//                    MAX_BARRACKSES_ARCER++;
-//                    MAX_CONCURRENT_MINES++;
-//                    MAX_CONCURRENT_MINES++;
-                MAX_CONCURRENT_MINES++;
-//                    MAX_BARRACKSES_KNIGHTS++;
-//                    MAX_BARRACKSES_KNIGHTS++;
-//                    MAX_BARRACKSES_GIANT++;
-//                    MAX_TOWERS++;
-//                    MAX_TOWERS++;
-                MAX_TOWERS++;
-//                    MAX_TOWERS++;
-            }
-            
-            if (buildOrder_stateMachine_stateIndex == 1)
-            {
-//                    MAX_BARRACKSES_ARCER++;
-//                    MAX_CONCURRENT_MINES++;
-//                    MAX_CONCURRENT_MINES++;
-//                    MAX_CONCURRENT_MINES++;
-//                    MAX_BARRACKSES_KNIGHTS++;
-//                    MAX_BARRACKSES_KNIGHTS++;
-//                    MAX_BARRACKSES_GIANT++;
-                MAX_TOWERS++;
-                MAX_TOWERS++;
-                MAX_TOWERS++;
-//                    MAX_TOWERS++;
-
-            }
-            else if (buildOrder_stateMachine_stateIndex == 2)
-            {
-//                    MAX_CONCURRENT_MINES++;
-                MAX_CONCURRENT_MINES++;
-
-                MAX_BARRACKSES_GIANT++;
-                MAX_BARRACKSES_KNIGHTS++;
-                
-            }
-            else if (buildOrder_stateMachine_stateIndex == 3){
-                MAX_CONCURRENT_MINES++;
-                MAX_TOWERS++;
-                MAX_TOWERS++;
-                MAX_TOWERS++;
-            }
-        }
-
-        return chosenMove;
-    }
+//            }
+//            else if (buildOrder_stateMachine_stateIndex == 3){
+//                MAX_CONCURRENT_MINES++;
+//                MAX_TOWERS++;
+//                MAX_TOWERS++;
+//                MAX_TOWERS++;
+//            }
+//        }
+//
+//        return chosenMove;
+//    }
 
     private InfluenceMap CreateInfluenceMap()
     {
 //        double squareLength = (60 * 0.4);
         double squareLength = INFLUENCEMAP_SQUARELENGTH; //Maximum common divisor between 60, 100, 75, 50 (movement speeds)
 
-        int mapWidth = (int) Math.Ceiling(1920 / squareLength)+1;
-        int mapHeight = (int) Math.Ceiling(1000 / squareLength)+1;
+//        int mapWidth = (int) Math.Ceiling(1920 / squareLength)+1;
+//        int mapHeight = (int) Math.Ceiling(1000 / squareLength)+1;
         double minInfluence = -40;
         double maxInfluence = 40;
-        InfluenceMap map = new InfluenceMap(mapWidth, mapHeight, minInfluence, maxInfluence, new EuclideanDistanceSqr());
+        InfluenceMap map = new InfluenceMap(1920, 1000, minInfluence, maxInfluence, new EuclideanDistanceSqr(), INFLUENCEMAP_SQUARELENGTH);
 
         var enemyUnits = game.units
             .Where(u => u.owner == Owner.Enemy);
@@ -1831,6 +1829,7 @@ public class InfluenceMap
         public int x, y;
         
         public List<Tuple<InfluenceMapCell, double>> neighboursAndDistance = new List<Tuple<InfluenceMapCell, double>>();
+        public List<Tuple<InfluenceMapCell, double>> neighbourObstaclesAndDistance = new List<Tuple<InfluenceMapCell, double>>();
 
         public HashSet<InfluenceMapCell> GetNeighbours => new HashSet<InfluenceMapCell>(neighboursAndDistance.Select(nAd => nAd.Item1));
     }
@@ -1838,26 +1837,17 @@ public class InfluenceMap
     public InfluenceMapCell[,] influenceMapCells;
 	protected double[,] _influenceMap;
     protected bool[,] isObstacle;
-    protected int width, height;
+    
+    
+    protected int gridWidth, gridHeight;
 
-	private double minInfluence, maxInfluence;
-
-    private double maxDistance;
+	public double minInfluence, maxInfluence;
+    private double maxDistance_EuclSqr, maxDistance_Eucl, maxDistance_Manh;
     
     
     public int actualWidth, actualHeight;
     public int unit;
     
-    
-	public int getWidth()
-	{
-		return width;
-	}
-
-	public int getHeight()
-	{
-		return height;
-	}
 
 	public DistanceFunc computeDistanceFunc;
 
@@ -1883,34 +1873,77 @@ public class InfluenceMap
 //	    {
 //	        Array.Copy(_influenceMap[i], 0, mapToCopy._influenceMap[i], 0, height);
 //	    }
-	    _influenceMap = mapToCopy._influenceMap.Clone() as double[,];
-	    isObstacle = mapToCopy.isObstacle.Clone() as bool[,];
-	    influenceMapCells = mapToCopy.influenceMapCells;
-	    width = mapToCopy.width;
-	    height = mapToCopy.height;
-	    minInfluence = mapToCopy.minInfluence;
-	    maxInfluence = mapToCopy.maxInfluence;
-	    computeDistanceFunc = mapToCopy.computeDistanceFunc;
+	    this._influenceMap = mapToCopy._influenceMap.Clone() as double[,];
+	    this.isObstacle = mapToCopy.isObstacle.Clone() as bool[,];
+	    this.influenceMapCells = mapToCopy.influenceMapCells;
+	    this.gridWidth = mapToCopy.gridWidth;
+	    this.gridHeight = mapToCopy.gridHeight;
+	    this.minInfluence = mapToCopy.minInfluence;
+	    this.maxInfluence = mapToCopy.maxInfluence;
+	    this.computeDistanceFunc = mapToCopy.computeDistanceFunc;
+	    this.unit = mapToCopy.unit;
 
-	    maxDistance = width * width + height * height;
+        this.maxDistance_EuclSqr = mapToCopy.maxDistance_EuclSqr;
+        this.maxDistance_Eucl = mapToCopy.maxDistance_Eucl;
+        this.maxDistance_Manh = mapToCopy.maxDistance_Manh;
 	}
-	
-	public InfluenceMap(int width, int height, double minInfluence, double maxInfluence, DistanceFunc computeDistanceFunc)
-	{
-		this.width = width;
-		this.height = height;
-		this._influenceMap = new double[width,height];
-	    this.influenceMapCells = new InfluenceMapCell[width,height];
-	    this.isObstacle = new bool[width, height];
+    
+    public InfluenceMap(int actualWidth, int actualHeight, double minInfluence, double maxInfluence, DistanceFunc computeDistanceFunc, int unit)
+    {
+        this.unit = unit;
+        this.actualWidth = actualWidth;
+        this.actualHeight = actualHeight;
+        this.gridWidth = Unitize(actualWidth) ;
+        this.gridHeight = Unitize(actualHeight);
+        this._influenceMap = new double[gridWidth,gridHeight];
+        this.influenceMapCells = new InfluenceMapCell[gridWidth,gridHeight];
+        this.isObstacle = new bool[gridWidth,gridHeight];
 		
-		this.computeDistanceFunc = computeDistanceFunc;
-		this.minInfluence = minInfluence;
-		this.maxInfluence = maxInfluence;
-		myHashset = new HashSet<XAndY>();
+        this.computeDistanceFunc = computeDistanceFunc;
+        this.minInfluence = minInfluence;
+        this.maxInfluence = maxInfluence;
+        myHashset = new HashSet<XAndY>();
 	    
-	    this.maxDistance = width * width + height * height;
+        this.maxDistance_EuclSqr = actualWidth * actualWidth + actualHeight * actualHeight;
+        this.maxDistance_Eucl = Math.Sqrt(maxDistance_EuclSqr);
+        this.maxDistance_Manh = new ManhattanDistance().computeDistance(0, 0, actualWidth, actualHeight);
 
-	}
+    }
+    
+    private int Unitize(int coord)
+    {
+        int unitizedCoord = (int) Math.Round(1.0*coord / unit);
+        return unitizedCoord;
+    }
+    
+    private Position Unitize(Position pos)
+    {
+        return Unitize(pos.x, pos.y);
+    }
+
+    private Position Unitize(int x, int y)
+    {
+        int unitizedX = (int) Math.Round(1.0*x / unit);
+        int unitizedY = (int) Math.Round(1.0*y / unit);
+        return new Position(x, y);
+    }
+    
+//	public InfluenceMap(int gridWidth, int gridHeight, double minInfluence, double maxInfluence, DistanceFunc computeDistanceFunc)
+//	{
+//		this.gridWidth = gridWidth;
+//		this.gridHeight = gridHeight;
+//		this._influenceMap = new double[gridWidth,gridHeight];
+//	    this.influenceMapCells = new InfluenceMapCell[gridWidth,gridHeight];
+//	    this.isObstacle = new bool[gridWidth, gridHeight];
+//		
+//		this.computeDistanceFunc = computeDistanceFunc;
+//		this.minInfluence = minInfluence;
+//		this.maxInfluence = maxInfluence;
+//		myHashset = new HashSet<XAndY>();
+//	    
+//	    this.maxDistance = gridWidth * gridWidth + gridHeight * gridHeight;
+//
+//	}
 
     /**
      * Call this to refresh the distances based on all the added obstacles so far
@@ -1922,9 +1955,9 @@ public class InfluenceMap
     
     private void PrecomputeDistances()
     {
-        for (int y = 0; y < height; y++)
+        for (int y = 0; y < gridHeight; y++)
         {
-            for (int x = 0; x < width; x++)
+            for (int x = 0; x < gridWidth; x++)
             {
                 InfluenceMapCell currCell = new InfluenceMapCell();
                 currCell.x = x;
@@ -1933,9 +1966,9 @@ public class InfluenceMap
             }
         }
 
-        for (int y = 0; y < height; y++)
+        for (int y = 0; y < gridHeight; y++)
         {
-            for (int x = 0; x < width; x++)
+            for (int x = 0; x < gridWidth; x++)
             {
                 InfluenceMapCell currCell = influenceMapCells[x, y];
                 
@@ -1948,46 +1981,86 @@ public class InfluenceMap
                         var newTuple = Tuple.Create(neighbourgCell, computeDistanceFunc.computeDistance(x,y,neighbour.x, neighbour.y)); 
                         currCell.neighboursAndDistance.Add(newTuple);
                     }
+                    else
+                    {
+                        InfluenceMapCell neighbourgCell = influenceMapCells[neighbour.x, neighbour.y];
+                        var newTuple = Tuple.Create(neighbourgCell, computeDistanceFunc.computeDistance(x,y,neighbour.x, neighbour.y)); 
+                        currCell.neighbourObstaclesAndDistance.Add(newTuple);
+                    }
                 }
-                
+
+                currCell.neighbourObstaclesAndDistance =
+                    currCell.neighbourObstaclesAndDistance.OrderBy(nAd => nAd.Item2).ToList();
             }
         }
     }
 
-    public void ApplyInfluence_Range_Unscaled(int xPos, int yPos, double amount, int fullDistance, int decayDistance, PropagationFunction decayedDistanceFunc, int initialRadiusSkip = 0, int unit = 20)
+    public void ApplyInfluence_Range_Unscaled(int xPos, int yPos, double amount, int fullDistance, int decayDistance, PropagationFunction decayedDistanceFunc, int initialRadiusSkip = 0)
     {
-        InfluenceMapCell startCell = influenceMapCells[xPos/unit, yPos/unit];
+        InfluenceMapCell startCell = influenceMapCells[Unitize(xPos), Unitize(yPos)];
 
         HashSet<InfluenceMapCell> visited = new HashSet<InfluenceMapCell>();
         List<Tuple<InfluenceMapCell, double>> frontier = new List<Tuple<InfluenceMapCell, double>>();
 
-//        if (isObstacle[startCell.x, startCell.y])
-        if(initialRadiusSkip != 0)
-        {
-            //We need to do a radius scan and put in the frontier some squares that are not obstacles. The closest ones to this center
-            var squaresAndDistanceAround = GetSquaresInRange_WithDistance(xPos, yPos, initialRadiusSkip+2);
-            var aroundNotObstacle = squaresAndDistanceAround.Where(sAd => isObstacle[sAd.Item1.x/unit,sAd.Item1.y/unit]==false);
-            double closestOutsideRange = aroundNotObstacle.Min(sAd1 => sAd1.Item2);
-
-            int flag = 0;
-            foreach (var newFrontierMember in squaresAndDistanceAround.Where(sAd => sAd.Item2 == closestOutsideRange))
-            {
-                var currCell = influenceMapCells[newFrontierMember.Item1.x / unit, newFrontierMember.Item1.y / unit];
-                frontier.Add(Tuple.Create(currCell, newFrontierMember.Item2));
-                flag++;
-            }
-
-            if (flag > 0)
-            {
-                Console.Error.WriteLine("A new frontier with "+flag+" tiles was created. The closestRange was "+closestOutsideRange);
-            }
-        }
-        else
-        {
-            frontier.Add(Tuple.Create(startCell,0.0));
-        }
         
+        double distanceToStartCell = new Position(xPos, yPos).DistanceTo(new Position(startCell.x * unit, startCell.y * unit));
+        frontier.Add(Tuple.Create(startCell,distanceToStartCell));
         visited.Add(startCell);
+        
+        while (frontier.Any(f => isObstacle[f.Item1.x, f.Item1.y]))
+        {
+            var currFrontierCellInfo = frontier.First(f => isObstacle[f.Item1.x, f.Item1.y]);
+            frontier.Remove(currFrontierCellInfo);
+            
+            InfluenceMapCell currCell = currFrontierCellInfo.Item1;
+            double distance = currFrontierCellInfo.Item2;
+            
+            if (currCell.neighboursAndDistance.Count != 0)
+            {
+                foreach (var neighbourAndDistance in currCell.neighboursAndDistance)
+                {
+                    if (visited.Contains(neighbourAndDistance.Item1) == false)
+                    {
+                        var neighbour = neighbourAndDistance.Item1;
+                        var distanceToCell = neighbourAndDistance.Item2;
+
+                       
+                        var newFrontierCandidate = Tuple.Create(neighbour, distance + distanceToCell);
+                        visited.Add(neighbour);
+                        frontier.Add(newFrontierCandidate);
+                        
+                    }
+                }
+            }
+            else
+            {
+                foreach (var neighbourAndDistance in currCell.neighbourObstaclesAndDistance)
+                {
+                    if (visited.Contains(neighbourAndDistance.Item1) == false)
+                    {
+                        var neighbour = neighbourAndDistance.Item1;
+                        var distanceToCell = neighbourAndDistance.Item2;
+
+                       
+                        var newFrontierCandidate = Tuple.Create(neighbour, distance + distanceToCell);
+                        visited.Add(neighbour);
+                        frontier.Add(newFrontierCandidate);
+                    
+                    }
+                }
+            }
+        }
+
+        //TODO: ricalcola ristanze delle celle nella frontiera
+        frontier = frontier.Select(f => Tuple.Create(f.Item1, 0.0)).ToList();
+
+//        foreach (var f in frontier)
+//        {
+//            _influenceMap[f.Item1.x, f.Item1.y] += 10;
+//        }
+
+        
+        
         while (frontier.Count > 0)
         {
             var currFrontierCellInfo = frontier.OrderBy(f => f.Item2).First();
@@ -1999,12 +2072,12 @@ public class InfluenceMap
             double cellAmount = amount;
             if (distance > fullDistance)
             {
-                cellAmount = decayedDistanceFunc(amount, distance, maxDistance);
+                cellAmount = decayedDistanceFunc(amount, distance, maxDistance_Manh);
             }
             
             _influenceMap[currCell.x, currCell.y] += cellAmount;
             
-            foreach (var neighbourAndDistance in currCell.neighboursAndDistance.OrderBy(nAd => nAd.Item2))
+            foreach (var neighbourAndDistance in currCell.neighboursAndDistance)
             {
                 if (visited.Contains(neighbourAndDistance.Item1) == false)
                 {
@@ -2033,7 +2106,7 @@ public class InfluenceMap
         if(initialRadiusSkip != 0)
         {
             //We need to do a radius scan and put in the frontier some squares that are not obstacles. The closest ones to this center
-            var squaresAndDistanceAround = GetSquaresInRange_WithDistance(startCell.x, startCell.y, initialRadiusSkip+10);
+            var squaresAndDistanceAround = GetSquaresInRange_WithDistance_Unscaled(startCell.x, startCell.y, initialRadiusSkip+10);
             double closestOutsideRange = squaresAndDistanceAround.Where(sAd => isObstacle[sAd.Item1.x,sAd.Item1.y]==false).Min(sAd1 => sAd1.Item2);
 
             int flag = 0;
@@ -2066,7 +2139,7 @@ public class InfluenceMap
             double cellAmount = amount;
             if (distance > fullDistance)
             {
-                cellAmount = decayedDistanceFunc(amount, distance, maxDistance);
+                cellAmount = decayedDistanceFunc(amount, distance, maxDistance_Manh);
             }
             
             _influenceMap[currCell.x, currCell.y] += cellAmount;
@@ -2101,12 +2174,12 @@ public class InfluenceMap
 
     public void ResetMapToZeroes()
     {
-        _influenceMap = new double[width, height];
+        _influenceMap = new double[gridWidth, gridHeight];
     }
 
 	private bool isInBounds(int x, int y)
 	{
-		return x >= 0 && x < width && y>=0 && y < height;
+		return x >= 0 && x < gridWidth && y>=0 && y < gridHeight;
 	}
 
 	/**
@@ -2160,8 +2233,8 @@ public class InfluenceMap
 				if (i == 0 && j == 0) { continue; }
 
 				int xNeighbour = x - i, yNeighbour = y - j;
-				if (xNeighbour >= 0 && xNeighbour <= width - 1
-				&& yNeighbour >= 0 && yNeighbour <= height - 1)
+				if (xNeighbour >= 0 && xNeighbour <= gridWidth - 1
+				&& yNeighbour >= 0 && yNeighbour <= gridHeight - 1)
 				{
 					neighbours.Add(new XAndY( xNeighbour, yNeighbour ));
 				}
@@ -2262,7 +2335,7 @@ public class InfluenceMap
                 if (distance <= radius)
 
                 {
-                    if (x + xPos < 0 || x + xPos >= width || y + yPos < 0 || y + yPos >= height)
+                    if (x + xPos < 0 || x + xPos >= gridWidth || y + yPos < 0 || y + yPos >= gridHeight)
                     {
                         continue;
                     }
@@ -2276,31 +2349,61 @@ public class InfluenceMap
 
     }
     
-    public List<Tuple<Position,double>> GetSquaresInRange_WithDistance(int xPos, int yPos, int radius, int unit = 20)
+    //This should be able to correctly handle the squares. Returns unscaled positions
+    public List<Tuple<Position,double>> GetSquaresInRange_WithDistance_Unscaled(int xCenter, int yCenter, int radius)
     {
         List<Tuple<Position,double>> results = new List<Tuple<Position,double>>();
-            
-        int x, y;
 
-        for (y = -radius; y <= radius; y++)
+        Position currSquare;
+        double radiusSqr = radius * radius;
+//        int x, y;
+        //Adding unit/2 is the same as rounding up the distance. This is to make up for stepping by unit
+        for (int x = xCenter; x <= xCenter - radius +unit/2; x=x+unit)
+//        for (int x = xCenter - radius ; x <= xCenter; x++)
         {
-            for (x = -radius; x <=  radius; x++)
+            for (int y = yCenter; y <= yCenter - radius + unit/2; y=y+unit)
             {
-                double distanceSqr = (x * x) + (y * y);
-//                double distance = computeDistanceFunc.computeDistance(0, 0, x, y);
-                if (distanceSqr <= (radius * radius))
-//                if (distance <= radius)
-
+                // we don't have to take the square root, it's slow
+                double distanceSqr = (x - xCenter) * (x - xCenter) + (y - yCenter) * (y - yCenter); 
+                if (distanceSqr < radiusSqr) 
                 {
-                    if (x + xPos < 0 || x + xPos >= width * unit || y + yPos < 0 || y + yPos >= height * unit)
-                    {
-                        continue;
-                    }
+                    int xSym = xCenter - (x - xCenter);
+                    int ySym = yCenter - (y - yCenter);
+
+                    double distance = Math.Sqrt(distanceSqr);
                     
-                    results.Add(Tuple.Create(new Position(xPos+x,yPos+y), Math.Sqrt(distanceSqr)));
+                    results.Add(Tuple.Create(new Position(x,y), distance));
+                    results.Add(Tuple.Create(new Position(x,ySym), distance));
+                    results.Add(Tuple.Create(new Position(xSym,y), distance));
+                    results.Add(Tuple.Create(new Position(xSym,ySym), distance));
+                    
+//                    AddAmount_IfInBounds(x, y, amount);
+//                    AddAmount_IfInBounds(x, ySym, amount);
+//                    AddAmount_IfInBounds(xSym, y, amount);
+//                    AddAmount_IfInBounds(xSym, ySym, amount);
+                    // (x, y), (x, ySym), (xSym , y), (xSym, ySym) are in the circle
                 }
             }
-        }
+        }        
+//        for (y = -radius; y <= radius+unit/2; y = y+unit)
+//        {
+//            for (x = -radius; x <=  radius+unit/2; x = x+unit)
+//            {
+//                double distanceSqr = (x * x) + (y * y);
+////                double distance = computeDistanceFunc.computeDistance(0, 0, x, y);
+//                if (distanceSqr <= (radius * radius) )
+////                if (distance <= radius)
+//
+//                {
+//                    if (x + xPos < 0 || x + xPos >= gridWidth * unit || y + yPos < 0 || y + yPos >= gridHeight * unit)
+//                    {
+//                        continue;
+//                    }
+//                    
+//                    results.Add(Tuple.Create(new Position(xPos+x,yPos+y), Math.Sqrt(distanceSqr)));
+//                }
+//            }
+//        }
 
         return results;
 

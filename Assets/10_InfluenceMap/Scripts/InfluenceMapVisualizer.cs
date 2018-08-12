@@ -99,7 +99,7 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 	{
 		//By defualt, we create an empty one.
 		InfluenceMapCellsUnity = new InfluenceMapCell_Unity[width, height];
-		_influenceMap = new InfluenceMap(width, height, minInfluence, maxInfluence, new EuclideanDistanceSqr());
+		_influenceMap = new InfluenceMap(width, height, minInfluence, maxInfluence, new EuclideanDistanceSqr(), LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH);
 		ReferenceCells();
 	}
 
