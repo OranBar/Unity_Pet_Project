@@ -372,45 +372,57 @@ public class GameState
     public int money;
     public int touchedSiteId;
 
-
-    //Properties
-    public IEnumerable<Site> MySites => sites.Where(s => s.owner == Owner.Friendly);
-    public IEnumerable<Site> EnemySites => sites.Where(s => s.owner == Owner.Enemy);
-    
-    public IEnumerable<Unit> EnemyUnits => units.Where(u => u.owner == Owner.Enemy && u.unitType != UnitType.Queen);
-    public IEnumerable<Unit> MyUnits => units.Where(u => u.owner == Owner.Friendly && u.unitType != UnitType.Queen);
-
-    public Site TouchedSite => (touchedSiteId != -1)? sites[touchedSiteId] : null;  
-    
-    public Unit MyQueen => units.First(u => u.owner == Owner.Friendly && u.unitType == UnitType.Queen);
-    public Unit EnemyQueen => units.First(u => u.owner == Owner.Enemy && u.unitType == UnitType.Queen);
-    
-    public int UnitsCount => units.Count;
-    
-    public int Owned_knight_barrackses => MySites.Count(ob => ob.structureType == StructureType.Barracks && ob.CreepsType == UnitType.Knight);
-    public int Owned_archer_barrackses => MySites.Count(ob => ob.structureType == StructureType.Barracks && ob.CreepsType == UnitType.Archer);
-    public int Owned_giant_barrackses => MySites.Count(ob => ob.structureType == StructureType.Barracks && ob.CreepsType == UnitType.Giant);
-    public int Owned_mines => MySites.Count(ob => ob.structureType == StructureType.Mine && ob.gold > 0);
-    public int Owned_towers => MySites.Count(ob => ob.structureType == StructureType.Tower && ob.owner == Owner.Friendly);
-
-    public int Total_owned_barrackses => Owned_archer_barrackses + Owned_giant_barrackses + Owned_knight_barrackses;
-           
-    public bool TouchingNeutralSite => TouchedSite != null && TouchedSite.owner == Owner.Neutral;
-    public bool TouchingMyMine => TouchedSite != null && TouchedSite.owner == Owner.Friendly &&
-                          TouchedSite.structureType == StructureType.Mine;
-        
-    public bool TouchingMyTower => TouchedSite != null && TouchedSite.owner == Owner.Friendly &&
-                           TouchedSite.structureType == StructureType.Tower;
-        
-    public bool Prev_touchingMyMine => TouchedSite != null && TouchedSite.owner == Owner.Friendly &&
-                               TouchedSite.structureType == StructureType.Mine;
-
     public int EnemyUnitsInRangeOfMyQueen(int range) => units.Count(u => u.owner == Owner.Enemy && MyQueen.DistanceTo(u) <= range);
     public int EnemyUnitsInRangeOf(Position p, int range) => units.Count(u => u.owner == Owner.Enemy && p.DistanceTo(u.pos) <= range);
     public int AlliedTowersInRangeOf(Position p, int range) => sites.Count(s => s.owner == Owner.Friendly && p.DistanceTo(s.pos) <= range);
+    
+    //Properties
+    public List<Site> MySites {get;private set;}
+    public List<Site> EnemySites {get;private set;}
+    public List<Unit> EnemyUnits {get;private set;}
+    public List<Unit> MyUnits {get;private set;}
+    public Site TouchedSite {get;private set;}  
+    public Unit MyQueen {get;private set;}
+    public Unit EnemyQueen {get;private set;}
+    public int UnitsCount {get;private set;}
+    public int Owned_knight_barrackses {get;private set;}
+    public int Owned_archer_barrackses {get;private set;}
+    public int Owned_giant_barrackses {get;private set;}
+    public int Owned_mines {get;private set;}
+    public int Owned_towers {get;private set;}
+    public int Total_owned_barrackses {get;private set;}
+    public bool TouchingNeutralSite {get;private set;}
+    public bool TouchingMyMine {get;private set;}
+    public bool TouchingMyTower {get;private set;}
+    public bool Prev_touchingMyMine {get;private set;}
+    
+    public int Owned_giants {get;private set;}
 
-    public int Owned_giants => units.Count(u => u.owner == Owner.Friendly && u.unitType == UnitType.Giant);
-
+    /**
+     * Call this if the properties are null or 0
+     */
+    public void PreLoadProperties()
+    {
+        MySites = sites.Where(s => s.owner == Owner.Friendly).ToList();
+        EnemySites = sites.Where(s => s.owner == Owner.Enemy).ToList();
+        EnemyUnits = units.Where(u => u.owner == Owner.Enemy && u.unitType != UnitType.Queen).ToList();
+        MyUnits = units.Where(u => u.owner == Owner.Friendly && u.unitType != UnitType.Queen).ToList();
+        TouchedSite = (touchedSiteId != -1)? sites[touchedSiteId] : null;  
+        MyQueen = units.First(u => u.owner == Owner.Friendly && u.unitType == UnitType.Queen);
+        EnemyQueen = units.First(u => u.owner == Owner.Enemy && u.unitType == UnitType.Queen);
+        UnitsCount = units.Count;
+        Owned_knight_barrackses = MySites.Count(ob => ob.structureType == StructureType.Barracks && ob.CreepsType == UnitType.Knight);
+        Owned_archer_barrackses = MySites.Count(ob => ob.structureType == StructureType.Barracks && ob.CreepsType == UnitType.Archer);
+        Owned_giant_barrackses = MySites.Count(ob => ob.structureType == StructureType.Barracks && ob.CreepsType == UnitType.Giant);
+        Owned_mines = MySites.Count(ob => ob.structureType == StructureType.Mine && ob.gold > 0);
+        Owned_towers = MySites.Count(ob => ob.structureType == StructureType.Tower && ob.owner == Owner.Friendly);
+        Total_owned_barrackses = Owned_archer_barrackses + Owned_giant_barrackses + Owned_knight_barrackses;
+        TouchingNeutralSite = TouchedSite != null && TouchedSite.owner == Owner.Neutral;
+        TouchingMyMine = TouchedSite != null && TouchedSite.owner == Owner.Friendly && TouchedSite.structureType == StructureType.Mine;
+        TouchingMyTower = TouchedSite != null && TouchedSite.owner == Owner.Friendly && TouchedSite.structureType == StructureType.Tower;
+        Prev_touchingMyMine = TouchedSite != null && TouchedSite.owner == Owner.Friendly && TouchedSite.structureType == StructureType.Mine;
+        Owned_giants = units.Count(u => u.owner == Owner.Friendly && u.unitType == UnitType.Giant);
+    }
     
     public string Encode()
     {
@@ -455,6 +467,8 @@ public class GameState
 
         this.money = int.Parse(values[values.Length - 2]);
         this.touchedSiteId= int.Parse(values.Last());
+
+        PreLoadProperties();
     }
 
     public override string ToString()
@@ -944,7 +958,9 @@ public class LaPulzellaD_Orleans
 //            {
                 var towerHp_norm = 1 - (towerHp / 800);     //[0,1]
                 // Towers covering a tower make it better. If there are more enemies, then it should be even better
-                int enemyThreat = (g.EnemyUnits.Count() / 2) * g.AlliedTowersInRangeOf(tower.pos, tower.param2);             
+                int enemyThreat = g.EnemyUnits.Count(); /** g.AlliedTowersInRangeOf(tower.pos, tower.param2)*/             
+
+                influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, enemyThreat, (int)(towerRange - (siteRadius/squareLength)), 2, linearPropagation);
                 
 //                ScaleAndApplyInfluence_Circle(tower.pos, towerHp_norm, siteRadius+1, 10, polynomial2Propagation,  influenceMap);
 //                ScaleAndApplyInfluence_Circle(tower.pos, towerHp_norm * favorCloseSitesOverOpenSquares, siteRadius+1, 0, linearPropagation, ref buildInfluenceMap);
@@ -963,7 +979,7 @@ public class LaPulzellaD_Orleans
         {
             double enemyInfluence = GetEnemyInfluence(enemy);
 //            ScaleAndApplyInfluence_Range(enemy.pos, enemyInfluence, 1, GetEnemyInfluenceRadius(enemy) *4, linearPropagation, influenceMap);
-            influenceMap.ApplyInfluence_Range_Unscaled(enemy.pos.x, enemy.pos.y, -5, 2, 4, linearPropagation);
+            influenceMap.ApplyInfluence_Range_Unscaled(enemy.pos.x, enemy.pos.y, -50, 2, 9, linearPropagation);
 
         }
 
@@ -1385,11 +1401,11 @@ public class LaPulzellaD_Orleans
     //range is length of a square's vertex to position in center
     private Tuple<int, int> UnscaledBestInBox(Position pos, int range, InfluenceMap map)
     {
-        int x1 = Math.Max(0 , pos.x - range);
-        int x2 = Math.Min(1920, pos.x + range);
+        int x1 = Math.Max(1 , pos.x - range);
+        int x2 = Math.Min(1919, pos.x + range);
         
-        int y1 = Math.Max(0 , pos.y - range);
-        int y2 = Math.Min(1000, pos.y + range);
+        int y1 = Math.Max(1 , pos.y - range);
+        int y2 = Math.Min(998, pos.y + range);
         
         
         return UnscaledBestInBox(x1, y1, x2, y2, map);
@@ -1719,6 +1735,9 @@ public class LaPulzellaD_Orleans
             Unit unit = new Unit(x,y,owner,unitType,health);
             game.units.Add(unit);
         }
+        
+        game.PreLoadProperties();
+        
     }
     
     public void ParseInputs_Begin()
@@ -2699,7 +2718,25 @@ public class InfluenceMap
         }
       // assert ((y == y2) && (x == x2));  // the last point (y2,x2) has to be the same with the last point of the algorithm
         return result;
-    } 
+    }
 
 
+    public Tuple<int, int> SelectBestInBox_Unscaled(int x1, int y1, int x2, int y2)
+    {
+        //TODO: handle casse where x1>x2 or y1>y2?
+		double currBestScore = double.MinValue;
+		Tuple<int, int> currBest = Tuple.Create(-1, -1);
+		for (int currX = x1; currX <= x2; currX++)
+		{
+			for (int currY = y1; currY <= y2; currY++)
+			{
+				if (get(currX/unit, currY/unit) > currBestScore)
+				{
+					currBestScore = get(currX/unit, currY/unit);
+					currBest = Tuple.Create(currX/unit, currY/unit);
+				}
+			}
+		}
+		return currBest;
+    }
 }
