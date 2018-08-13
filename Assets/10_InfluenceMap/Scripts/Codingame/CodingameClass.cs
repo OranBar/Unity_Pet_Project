@@ -754,9 +754,12 @@ public class LaPulzellaD_Orleans
 
     private InfluenceMap _survivorModeMap = new InfluenceMap(1920, 1000, -120, 120, new ManhattanDistance(), INFLUENCEMAP_SQUARELENGTH);
 
+    private InfluenceMap cacheMap_SitesAndObstacles;
+    
     public InfluenceMap SurvivorModeMap
     {
         get { return _survivorModeMap; }
+        set { _survivorModeMap = value; }
     }
 
     public LaPulzellaD_Orleans()
@@ -1893,21 +1896,19 @@ public class InfluenceMap
     
 	public InfluenceMap(InfluenceMap mapToCopy)
 	{
-//	    _influenceMap = new double[mapToCopy.width][mapToCopy.height];
-//	    for (int i = 0; i < mapToCopy.width; i++)
-//	    {
-//	        Array.Copy(_influenceMap[i], 0, mapToCopy._influenceMap[i], 0, height);
-//	    }
 	    this._influenceMap = mapToCopy._influenceMap.Clone() as double[,];
 	    this.isObstacle = mapToCopy.isObstacle.Clone() as bool[,];
-	    this.influenceMapCells = mapToCopy.influenceMapCells;
+	    this.influenceMapCells = mapToCopy.influenceMapCells;    //It's okay to copy as reference since the maps are the same, and the cells don't contain any information particular to the instance
 	    this.gridWidth = mapToCopy.gridWidth;
 	    this.gridHeight = mapToCopy.gridHeight;
 	    this.minInfluence = mapToCopy.minInfluence;
 	    this.maxInfluence = mapToCopy.maxInfluence;
 	    this.computeDistanceFunc = mapToCopy.computeDistanceFunc;
 	    this.unit = mapToCopy.unit;
-
+	    this.actualWidth = mapToCopy.actualWidth;
+	    this.actualHeight = mapToCopy.actualHeight;
+	    myHashset = new HashSet<XAndY>();
+	    
         this.maxDistance_EuclSqr = mapToCopy.maxDistance_EuclSqr;
         this.maxDistance_Eucl = mapToCopy.maxDistance_Eucl;
         this.maxDistance_Manh = mapToCopy.maxDistance_Manh;
@@ -2088,8 +2089,7 @@ public class InfluenceMap
         
         while (frontier.Count > 0)
         {
-            var currFrontierCellInfo = frontier.OrderBy(f => f.Item2).First();
-            frontier.Remove(currFrontierCellInfo);
+            var currFrontierCellInfo = GetBestFrontierCell(frontier, true);
             
             InfluenceMapCell currCell = currFrontierCellInfo.Item1;
             double distance = currFrontierCellInfo.Item2;
@@ -2118,6 +2118,28 @@ public class InfluenceMap
                 }
             }
         }
+    }
+
+    private Tuple<InfluenceMapCell, double> GetBestFrontierCell(List<Tuple<InfluenceMapCell, double>> frontier, bool removeCellFromCollection = false)
+    {
+        Tuple<InfluenceMapCell, double> bestSoFar = frontier.First();
+        int bestIndex = 0;
+        for (var i = 0; i < frontier.Count; i++)
+        {
+            var candidate = frontier[i];
+            if (candidate.Item2 < bestSoFar.Item2)
+            {
+                bestSoFar = candidate;
+                bestIndex = i;
+            }
+        }
+
+        if (removeCellFromCollection)
+        {
+            frontier.RemoveAt(bestIndex);
+        }
+        
+        return bestSoFar;
     }
     
     public void ApplyInfluence_Range(int xPos, int yPos, double amount, int fullDistance, int decayDistance, PropagationFunction decayedDistanceFunc, int initialRadiusSkip = 0)
@@ -2201,6 +2223,7 @@ public class InfluenceMap
     {
         _influenceMap = new double[gridWidth, gridHeight];
     }
+    
 
 	private bool isInBounds(int x, int y)
 	{
