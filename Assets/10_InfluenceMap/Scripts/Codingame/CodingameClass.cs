@@ -942,8 +942,6 @@ public class LaPulzellaD_Orleans
         //var move = UnscaledBestInBox(g.MyQueen, searchRange, influenceMap);
         
         //Avoid enemy towers!!
-        foreach (var tower in g.EnemySites.Where(s => s.structureType == StructureType.Tower))
-
         foreach (var tower in g.EnemyTowers)
         {
             int siteRadius = GetSiteInfo(tower).radius;
@@ -953,7 +951,6 @@ public class LaPulzellaD_Orleans
             influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, -25, (int)((towerRange - siteRadius)/squareLength), 0, linearPropagation);
         }
         
-        foreach (var tower in g.MySites.Where(s => s.structureType == StructureType.Tower))
         int enemyThreat = g.EnemyUnits.Count(); /** g.AlliedTowersInRangeOf(tower.pos, tower.param2)*/             
 
         foreach (var tower in g.MyTowers)
