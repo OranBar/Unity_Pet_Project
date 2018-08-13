@@ -397,6 +397,8 @@ public class GameState
     public bool Prev_touchingMyMine {get;private set;}
     
     public int Owned_giants {get;private set;}
+    public List<Site> EnemyTowers { get; set; }
+    public List<Site> MyTowers { get; set; }
 
     /**
      * Call this if the properties are null or 0
@@ -422,6 +424,8 @@ public class GameState
         TouchingMyTower = TouchedSite != null && TouchedSite.owner == Owner.Friendly && TouchedSite.structureType == StructureType.Tower;
         Prev_touchingMyMine = TouchedSite != null && TouchedSite.owner == Owner.Friendly && TouchedSite.structureType == StructureType.Mine;
         Owned_giants = units.Count(u => u.owner == Owner.Friendly && u.unitType == UnitType.Giant);
+        EnemyTowers = sites.Where(t => t.owner == Owner.Enemy && t.structureType == StructureType.Tower).ToList();
+        MyTowers = sites.Where(t => t.owner == Owner.Friendly && t.structureType == StructureType.Tower).ToList();
     }
     
     public string Encode()
@@ -939,6 +943,8 @@ public class LaPulzellaD_Orleans
         
         //Avoid enemy towers!!
         foreach (var tower in g.EnemySites.Where(s => s.structureType == StructureType.Tower))
+
+        foreach (var tower in g.EnemyTowers)
         {
             int siteRadius = GetSiteInfo(tower).radius;
             int towerRange = tower.param2;
@@ -948,6 +954,9 @@ public class LaPulzellaD_Orleans
         }
         
         foreach (var tower in g.MySites.Where(s => s.structureType == StructureType.Tower))
+        int enemyThreat = g.EnemyUnits.Count(); /** g.AlliedTowersInRangeOf(tower.pos, tower.param2)*/             
+
+        foreach (var tower in g.MyTowers)
         {
             int siteRadius = GetRadius(tower);
             int towerRange = (int) Math.Ceiling(tower.param2 / squareLength);
@@ -958,9 +967,8 @@ public class LaPulzellaD_Orleans
 //            {
                 var towerHp_norm = 1 - (towerHp / 800);     //[0,1]
                 // Towers covering a tower make it better. If there are more enemies, then it should be even better
-                int enemyThreat = g.EnemyUnits.Count(); /** g.AlliedTowersInRangeOf(tower.pos, tower.param2)*/             
 
-                influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, enemyThreat, (int)(towerRange - (siteRadius/squareLength)), 2, linearPropagation);
+                influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, enemyThreat, 2, (int)(towerRange - (siteRadius/squareLength)), linearPropagation);
                 
 //                ScaleAndApplyInfluence_Circle(tower.pos, towerHp_norm, siteRadius+1, 10, polynomial2Propagation,  influenceMap);
 //                ScaleAndApplyInfluence_Circle(tower.pos, towerHp_norm * favorCloseSitesOverOpenSquares, siteRadius+1, 0, linearPropagation, ref buildInfluenceMap);
@@ -984,7 +992,7 @@ public class LaPulzellaD_Orleans
         }
 
         
-        List<Site> influencingSites = g.sites.Where(s => s.owner==Owner.Neutral).ToList();
+//        List<Site> influencingSites = g.sites.Where(s => s.owner==Owner.Neutral).ToList();
 
 //        if (g.Owned_mines < 3 && g.Owned_towers >= 5 + g.Owned_mines)
 //        {
