@@ -914,9 +914,6 @@ public class LaPulzellaD_Orleans
     private IAction SurvivorMode(GameState g)
     {
         double squareLength = INFLUENCEMAP_SQUARELENGTH; //Maximum common divisor between 60, 100, 75, 50 (movement speeds)
-
-        double minInfluence = -120;
-        double maxInfluence = 120;
         
         var influenceMap = SurvivorModeMap;
         influenceMap.ResetMapToZeroes();
@@ -930,10 +927,11 @@ public class LaPulzellaD_Orleans
         //Avoid enemy towers!!
         foreach (var tower in g.EnemySites.Where(s => s.structureType == StructureType.Tower))
         {
-            int siteRadius = GetRadius(tower);
-            int towerRange = (int) Math.Ceiling(tower.param2 / squareLength);
+            int siteRadius = GetSiteInfo(tower).radius;
+            int towerRange = tower.param2;
                 
-//            ScaleAndApplyInfluence_Circle(tower.pos, -25, siteRadius, towerRange - siteRadius + 1, linearPropagation, influenceMap);
+//            ScaleAndApplyInfluence_Range(tower.pos, -25, towerRange - siteRadius, 0, linearPropagation, influenceMap);
+            influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, -25, (int)((towerRange - siteRadius)/squareLength), 0, linearPropagation);
         }
         
         foreach (var tower in g.MySites.Where(s => s.structureType == StructureType.Tower))
@@ -966,6 +964,8 @@ public class LaPulzellaD_Orleans
         {
             double enemyInfluence = GetEnemyInfluence(enemy);
 //            ScaleAndApplyInfluence_Range(enemy.pos, enemyInfluence, 1, GetEnemyInfluenceRadius(enemy) *4, linearPropagation, influenceMap);
+            influenceMap.ApplyInfluence_Range_Unscaled(enemy.pos.x, enemy.pos.y, -5, 2, 1, linearPropagation);
+
         }
 
         
@@ -1031,7 +1031,7 @@ public class LaPulzellaD_Orleans
 //                ScaleAndApplyInfluence_Circle(site.pos, influence * favorCloseSitesOverOpenSquares, siteRadius+1, 0, polynomial2Propagation, influenceMap);
                 
                 //ScaleAndApplyInfluence_Range(site.pos.x, site.pos.y, influence/2 * favorCloseSitesOverOpenSquares, siteRadius+1, 7, polynomial2Propagation, influenceMap, siteRadius);
-//                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, influence/2 * favorCloseSitesOverOpenSquares,(int) squareLength+1, (int)squareLength, polynomial2Propagation);
+                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, influence/2 * favorCloseSitesOverOpenSquares, 1, 10, polynomial2Propagation);
 //                ScaleAndApplyInfluence_Circle(site.pos, influence/2, siteRadius+1, 40, polynomial2Propagation,  influenceMap);
             
             }
