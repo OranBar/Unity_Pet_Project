@@ -5,7 +5,6 @@
 //The max characters that can be put into the error stream is 1028
 
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.IO;
 using System.Text;
@@ -46,14 +45,9 @@ class Player
                 Console.Error.WriteLine("Game Info");
                 Console.Error.WriteLine(giovannaD_Arco.gameInfo.Encode());
             }
-            
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
             Console.Error.WriteLine(giovannaD_Arco.game.Encode()+"-");
 
             Console.Error.WriteLine(giovannaD_Arco.Encode());
-            sw.Stop();
-            Console.Error.WriteLine("Encoding ={0}",sw.Elapsed);
             
             TurnAction move = giovannaD_Arco.think();
             move.PrintMove();
@@ -944,14 +938,11 @@ public class LaPulzellaD_Orleans
         int searchRange = QUEEN_MOVEMENT * 2;
         double favorCloseSitesOverOpenSquares = 5;
         
-        Stopwatch total = new Stopwatch();
-        
         
         //var move = UnscaledBestInBox(g.MyQueen, searchRange, influenceMap);
-        Stopwatch sw = new Stopwatch();
+        
         //Avoid enemy towers!!
-        total.Start();
-        sw.Start();
+        foreach (var tower in g.EnemySites.Where(s => s.structureType == StructureType.Tower))
 
         foreach (var tower in g.EnemyTowers)
         {
@@ -961,12 +952,8 @@ public class LaPulzellaD_Orleans
 //            ScaleAndApplyInfluence_Range(tower.pos, -25, towerRange - siteRadius, 0, linearPropagation, influenceMap);
             influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, -25, (int)((towerRange - siteRadius)/squareLength), 0, linearPropagation);
         }
-        sw.Stop();
-        Console.Error.WriteLine("Enemy Towers={0}",sw.ElapsedMilliseconds);
-        sw.Reset();
         
-        sw.Start();
-
+        foreach (var tower in g.MySites.Where(s => s.structureType == StructureType.Tower))
         int enemyThreat = g.EnemyUnits.Count(); /** g.AlliedTowersInRangeOf(tower.pos, tower.param2)*/             
 
         foreach (var tower in g.MyTowers)
@@ -992,14 +979,10 @@ public class LaPulzellaD_Orleans
             //Towers should make all nearby sites more influencial, because now I have control over it.
             //ScaleAndApplyInfluence_Circle(tower.pos, 10, 0, towerRange, linearPropagation, ref buildInfluenceMap);
         }
-        sw.Stop();
-        Console.Error.WriteLine("My Towers={0}",sw.ElapsedMilliseconds);
-        sw.Reset();
+        
         
        
-        sw.Start();
-
-        //Enemy units influence
+//Enemy units influence
         foreach (var enemy in g.EnemyUnits)
         {
             double enemyInfluence = GetEnemyInfluence(enemy);
@@ -1007,9 +990,7 @@ public class LaPulzellaD_Orleans
             influenceMap.ApplyInfluence_Range_Unscaled(enemy.pos.x, enemy.pos.y, -50, 2, 9, linearPropagation);
 
         }
-        sw.Stop();
-        Console.Error.WriteLine("Enemy Units ={0}",sw.ElapsedMilliseconds);
-        sw.Reset();
+
         
 //        List<Site> influencingSites = g.sites.Where(s => s.owner==Owner.Neutral).ToList();
 
@@ -1018,7 +999,7 @@ public class LaPulzellaD_Orleans
 //            influencingSites.    
 //        }
 //        
-        sw.Start();
+        
         foreach (var site in g.sites)
         {
             int siteRadius = (int) Math.Floor(GetSiteInfo(site).radius / squareLength);
@@ -1083,14 +1064,7 @@ public class LaPulzellaD_Orleans
             //Take out siteradius from the map :D
 //            ScaleAndApplyInfluence_Circle(site.pos, minInfluence, siteRadius, 0,polynomial2Propagation, influenceMap);
         }
-        sw.Stop();
-        Console.Error.WriteLine("Sites ={0}",sw.ElapsedMilliseconds);
-        sw.Reset();
-        
-        total.Stop();
-        Console.Error.WriteLine("Total ={0}",total.ElapsedMilliseconds);
-        
-        
+
 
         
     //Favor center
@@ -1102,17 +1076,12 @@ public class LaPulzellaD_Orleans
 //            
 //        }
 
-        
         if (turn >= 100)
         {
             searchRange *= 3;
         }
         
-        sw.Start();
         var survivorModeChosenSite = UnscaledBestInBox(g.MyQueen, searchRange, influenceMap);
-        sw.Stop();
-        Console.Error.WriteLine("Select best in bos ={0}",sw.Elapsed);
-        sw.Reset();
 
 #if UNITY_EDITOR
         UnityEngine.Debug.Log("Survivor Mode tile is is ("+survivorModeChosenSite.Item1/INFLUENCEMAP_SQUARELENGTH+", "+survivorModeChosenSite.Item2/INFLUENCEMAP_SQUARELENGTH+") with amount = "+influenceMap[survivorModeChosenSite.Item1/INFLUENCEMAP_SQUARELENGTH, survivorModeChosenSite.Item2/INFLUENCEMAP_SQUARELENGTH]);
@@ -2066,8 +2035,6 @@ public class InfluenceMap
         frontier.Add(Tuple.Create(startCell,distanceToStartCell));
         visited.Add(startCell);
         
-        Stopwatch sw = new Stopwatch();
-        sw.Start();
         while (frontier.Any(f => isObstacle[f.Item1.x, f.Item1.y]))
         {
             var currFrontierCellInfo = frontier.First(f => isObstacle[f.Item1.x, f.Item1.y]);
@@ -2112,10 +2079,6 @@ public class InfluenceMap
             }
         }
 
-        sw.Stop();
-        Console.Error.WriteLine("Find nonObstacles={0}",sw.Elapsed);
-        sw.Reset();
-        
         //TODO: ricalcola ristanze delle celle nella frontiera
         frontier = frontier.Select(f => Tuple.Create(f.Item1, 0.0)).ToList();
 
@@ -2125,7 +2088,7 @@ public class InfluenceMap
 //        }
 
         
-        sw.Start();
+        
         while (frontier.Count > 0)
         {
             var currFrontierCellInfo = frontier.OrderBy(f => f.Item2).First();
@@ -2158,10 +2121,6 @@ public class InfluenceMap
                 }
             }
         }
-        
-        sw.Stop();
-        Console.Error.WriteLine("Finish influence spreading ={0}",sw.Elapsed);
-        sw.Reset();
     }
     
     public void ApplyInfluence_Range(int xPos, int yPos, double amount, int fullDistance, int decayDistance, PropagationFunction decayedDistanceFunc, int initialRadiusSkip = 0)

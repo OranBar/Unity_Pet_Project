@@ -36,24 +36,11 @@ public class Main : MonoBehaviour
     {
         RunTurn();
     }
-
-    public bool runTurn;
-
-    private void Update()
-    {
-        if (runTurn)
-        {
-            Profiler.BeginSample("------------------------------------------------ Run Turn - BEGIN");
-            RunTurn();
-            Profiler.EndSample();
-            runTurn = false;
-        }
-    }
-
-
+    
+    
     public void RunTurn()
     {
-//        Profiler.BeginSample("Run Turn - BEGIN");
+        Profiler.BeginSample("Run Turn - BEGIN");
         var tmp = gameState_and_pulzella_encoded.Split('-');
         gameState_encoded = tmp[0];
         pulzella_encoded = tmp[1];
@@ -90,7 +77,7 @@ public class Main : MonoBehaviour
 
         TurnAction action = giovannaD_Arco.think();
         
-//        Profiler.EndSample();
+        Profiler.EndSample();
         
         Debug.Log("chosen action "+action.queenAction);
 
