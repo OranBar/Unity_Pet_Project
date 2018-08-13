@@ -778,17 +778,16 @@ public class LaPulzellaD_Orleans
         TurnAction chosenMove = new TurnAction();
         GameState g = game;
 
-
+        
+        var bestMove = SurvivorMode(g);
         bool isSafeToBuild = g.EnemyUnitsInRangeOfMyQueen(ENEMY_CHECK_RANGE) < 2;
         
         //If we are touching a site, we do something with it
         //Second condition makes him less likely to build when enemies are close
         if (g.EnemyUnitsInRangeOfMyQueen(ENEMY_CHECK_RANGE) > 2)
         {
-            var im = CreateInfluenceMap();
-            var bestMove = UnscaledBestInBox(g.MyQueen, QUEEN_MOVEMENT * 2, im);
-            
-            chosenMove.queenAction = new Move(bestMove.Item1, bestMove.Item2);
+            //TODO: look for move in close squares. not far away.
+            chosenMove.queenAction = bestMove;
             Console.Error.WriteLine("Running Away");
         }
         
@@ -818,7 +817,7 @@ public class LaPulzellaD_Orleans
         
         if(chosenMove.queenAction is Wait)
         {
-            chosenMove.queenAction = SurvivorMode(g);
+            chosenMove.queenAction = bestMove;
 //            chosenMove.queenAction = Wood1Strategy(g, out buildInfluenceMap);
             Console.Error.WriteLine($"SurivorMode move is {chosenMove.queenAction}");
         }
@@ -964,7 +963,7 @@ public class LaPulzellaD_Orleans
         {
             double enemyInfluence = GetEnemyInfluence(enemy);
 //            ScaleAndApplyInfluence_Range(enemy.pos, enemyInfluence, 1, GetEnemyInfluenceRadius(enemy) *4, linearPropagation, influenceMap);
-            influenceMap.ApplyInfluence_Range_Unscaled(enemy.pos.x, enemy.pos.y, -5, 2, 1, linearPropagation);
+            influenceMap.ApplyInfluence_Range_Unscaled(enemy.pos.x, enemy.pos.y, -5, 2, 4, linearPropagation);
 
         }
 
@@ -1028,11 +1027,13 @@ public class LaPulzellaD_Orleans
 //                }
             
                 //TODO: maybe do siteRadius and siteRadius-1
-//                ScaleAndApplyInfluence_Circle(site.pos, influence * favorCloseSitesOverOpenSquares, siteRadius+1, 0, polynomial2Propagation, influenceMap);
+//                ScaleAndApplyInfluence_Circle(site.pos, influence * favorCloseSitesOverOpenSquares, siteRadius+1, 0, polynomial2Propagation);
                 
-                //ScaleAndApplyInfluence_Range(site.pos.x, site.pos.y, influence/2 * favorCloseSitesOverOpenSquares, siteRadius+1, 7, polynomial2Propagation, influenceMap, siteRadius);
-                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, influence/2 * favorCloseSitesOverOpenSquares, 1, 10, polynomial2Propagation);
-//                ScaleAndApplyInfluence_Circle(site.pos, influence/2, siteRadius+1, 40, polynomial2Propagation,  influenceMap);
+//                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, influence/2 * favorCloseSitesOverOpenSquares, siteRadius+1, 7, polynomial2Propagation);
+                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, influence * favorCloseSitesOverOpenSquares, 1, 0, polynomial2Propagation);
+                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, influence, 1, 12, polynomial2Propagation);
+
+//                influenceMap.ApplyInfluence_Range_Unscaled(site.pos, influence/2, siteRadius+1, 40, polynomial2Propagation);
             
             }
             
