@@ -752,7 +752,7 @@ public class LaPulzellaD_Orleans
 
     private int buildOrder_stateMachine_stateIndex = -1;
 
-    private InfluenceMap _survivorModeMap = new InfluenceMap(1920, 1000, -120, 120, new ManhattanDistance(), INFLUENCEMAP_SQUARELENGTH);
+    private InfluenceMap _survivorModeMap = new InfluenceMap(1920, 1000, -120, 120, new EuclideanDistance(), INFLUENCEMAP_SQUARELENGTH);
 
     private InfluenceMap cacheMap_SitesAndObstacles;
     
@@ -947,11 +947,14 @@ public class LaPulzellaD_Orleans
         //Avoid enemy towers!!
         foreach (var tower in g.EnemyTowers)
         {
-            int siteRadius = GetSiteInfo(tower).radius;
-            int towerRange = tower.param2;
+            int siteRadius = GetRadius(tower);
+            int towerRange = (int) Math.Ceiling(tower.param2 / squareLength);
                 
 //            ScaleAndApplyInfluence_Range(tower.pos, -25, towerRange - siteRadius, 0, linearPropagation, influenceMap);
-            influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, -25, (int)((towerRange - siteRadius)/squareLength), 0, linearPropagation);
+            influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, -25, towerRange - siteRadius, 0, linearPropagation, true);
+//            ScaleAndApplyInfluence_Circle(tower.pos, -25, towerRange, 0, linearPropagation, influenceMap);
+//            ScaleAndApplyInfluence_Circle(tower.pos, -25, 3, 0, linearPropagation, influenceMap);
+
         }
         
         int enemyThreat = g.EnemyUnits.Count(); /** g.AlliedTowersInRangeOf(tower.pos, tower.param2)*/             
@@ -968,7 +971,7 @@ public class LaPulzellaD_Orleans
                 var towerHp_norm = 1 - (towerHp / 800);     //[0,1]
                 // Towers covering a tower make it better. If there are more enemies, then it should be even better
 
-                influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, enemyThreat, 2, (int)(towerRange - (siteRadius/squareLength)), linearPropagation);
+                influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, enemyThreat, 2, towerRange - siteRadius, linearPropagation);
                 
 //                ScaleAndApplyInfluence_Circle(tower.pos, towerHp_norm, siteRadius+1, 10, polynomial2Propagation,  influenceMap);
 //                ScaleAndApplyInfluence_Circle(tower.pos, towerHp_norm * favorCloseSitesOverOpenSquares, siteRadius+1, 0, linearPropagation, ref buildInfluenceMap);
@@ -980,17 +983,17 @@ public class LaPulzellaD_Orleans
             //ScaleAndApplyInfluence_Circle(tower.pos, 10, 0, towerRange, linearPropagation, ref buildInfluenceMap);
         }
         
-        
+        /*
        
 //Enemy units influence
         foreach (var enemy in g.EnemyUnits)
         {
             double enemyInfluence = GetEnemyInfluence(enemy);
 //            ScaleAndApplyInfluence_Range(enemy.pos, enemyInfluence, 1, GetEnemyInfluenceRadius(enemy) *4, linearPropagation, influenceMap);
-            influenceMap.ApplyInfluence_Range_Unscaled(enemy.pos.x, enemy.pos.y, -50, 2, 9, linearPropagation);
+            influenceMap.ApplyInfluence_Range_Unscaled(enemy.pos.x, enemy.pos.y, -10, 2, 18, polynomial4Propagation);
 
         }
-
+*/
         
 //        List<Site> influencingSites = g.sites.Where(s => s.owner==Owner.Neutral).ToList();
 
@@ -2021,7 +2024,7 @@ public class InfluenceMap
         }
     }
 
-    public void ApplyInfluence_Range_Unscaled(int xPos, int yPos, double amount, int fullDistance, int decayDistance, PropagationFunction decayedDistanceFunc, int initialRadiusSkip = 0)
+    public void ApplyInfluence_Range_Unscaled(int xPos, int yPos, double amount, int fullDistance, int decayDistance, PropagationFunction decayedDistanceFunc, bool ignoreObstacles = false)
     {
         InfluenceMapCell startCell = influenceMapCells[Unitize(xPos), Unitize(yPos)];
 
@@ -2116,6 +2119,25 @@ public class InfluenceMap
                         frontier.Add(newFrontierCandidate);
                     }
                 }
+            }
+
+            if (ignoreObstacles)
+            {
+                foreach (var neighbourAndDistanceObst in currCell.neighbourObstaclesAndDistance)
+                {
+                    if (visited.Contains(neighbourAndDistanceObst.Item1) == false)
+                    {
+                        var neighbour = neighbourAndDistanceObst.Item1;
+                        var distanceToCell = neighbourAndDistanceObst.Item2;
+
+                        if (distanceToCell + distance <= fullDistance + decayDistance)
+                        {
+                            var newFrontierCandidate = Tuple.Create(neighbour, distance + distanceToCell);
+                            visited.Add(neighbour);
+                            frontier.Add(newFrontierCandidate);
+                        }
+                    }
+                }    
             }
         }
     }
@@ -2339,29 +2361,32 @@ public class InfluenceMap
             int x = pos.x;
             int y = pos.y;
 
+            if (isObstacle[x, y])
+            {
+                continue;
+            }
+            
             var distanceSqr = (x - xCenter) * (x - xCenter) + (y - yCenter) * (y - yCenter);
             double manhattanDistance = Math.Abs(x - xCenter) + Math.Abs(y - yCenter);
-            if (distanceSqr <= radius * radius)
-            {
-                double cellAmount = amount;
+            double cellAmount = amount;
 
-                if (distanceSqr > fullDistance * fullDistance)
-                {
+            if (manhattanDistance > fullDistance)
+            {
 //                    double mahnattanDistance = Math.Abs(x - xCenter) + Math.Abs(y - yCenter);
 //                    cellAmount = decayedDistanceFunc(amount, Math.Sqrt(distanceSqr) - fullDistance, decayDistance);
-                    cellAmount = decayedDistanceFunc(amount, distanceSqr, LaPulzellaD_Orleans.MAX_DISTANCE);
-                }
-
-                AddAmount_IfInBounds(x, y, cellAmount);
-                
-                
+                cellAmount = decayedDistanceFunc(amount, distanceSqr, LaPulzellaD_Orleans.MAX_DISTANCE);
+            }
+            
+            AddAmount_IfInBounds(x, y, cellAmount);
+            
+            
 //                int xSym = xCenter - (x - xCenter);
 //                int ySym = yCenter - (y - yCenter);
 
 //                AddAmount_IfInBounds(xSym, y, cellAmount);
 //                AddAmount_IfInBounds(x, ySym, cellAmount);
 //                AddAmount_IfInBounds(xSym, ySym, cellAmount);
-            }
+
         }
     }
 
@@ -2377,7 +2402,7 @@ public class InfluenceMap
         {
             for (x = -radius; x <=  radius; x++)
             {
-                double distanceSqr = (x * x) + (y * y);
+//                double distanceSqr = (x * x) + (y * y);
                 double distance = computeDistanceFunc.computeDistance(0, 0, x, y);
 //                if (distanceSqr <= (radius * radius))
                 if (distance <= radius)

@@ -21,18 +21,18 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 	public int mouseoverRange = 10;
 	private List<Text> labels = new List<Text>();
 
-	
-	
-	
-	public InfluenceMap InflMap {
-		get {
-			return this._influenceMap;
-		}
+
+
+
+	public InfluenceMap InflMap
+	{
+		get { return this._influenceMap; }
 		private set { _influenceMap = value; }
 	}
-	[SerializeField] private InfluenceMap _influenceMap;
+	
+	private InfluenceMap _influenceMap;
 
-	[SerializeField] public InfluenceMapCell_Unity[,]  InfluenceMapCellsUnity;
+	public InfluenceMapCell_Unity[,]  InfluenceMapCellsUnity;
 
 	public void applyInfluence(int x, int y, int fullDistance, int reducedDistance, double distanceDecay, double influence)
 	{
