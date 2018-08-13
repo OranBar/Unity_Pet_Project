@@ -983,7 +983,7 @@ public class LaPulzellaD_Orleans
             //ScaleAndApplyInfluence_Circle(tower.pos, 10, 0, towerRange, linearPropagation, ref buildInfluenceMap);
         }
         
-        /*
+        
        
 //Enemy units influence
         foreach (var enemy in g.EnemyUnits)
@@ -993,7 +993,7 @@ public class LaPulzellaD_Orleans
             influenceMap.ApplyInfluence_Range_Unscaled(enemy.pos.x, enemy.pos.y, -10, 2, 18, polynomial4Propagation);
 
         }
-*/
+
         
 //        List<Site> influencingSites = g.sites.Where(s => s.owner==Owner.Neutral).ToList();
 
@@ -1005,7 +1005,7 @@ public class LaPulzellaD_Orleans
         
         foreach (var site in g.sites)
         {
-            int siteRadius = (int) Math.Floor(GetSiteInfo(site).radius / squareLength);
+//            int siteRadius = (int) Math.Floor(GetSiteInfo(site).radius / squareLength);
             
 
             
@@ -1027,45 +1027,20 @@ public class LaPulzellaD_Orleans
                 //TODO: I only need to do this once, then copy it every time. It will cost much less than computing it again every time. Unless the influence values change with the time
                 double influence = 0;
             
-                double distanceToMyQueen = g.MyQueen.DistanceSqr(site.pos);
-                double distanceToEnemyQueen = g.EnemyQueen.DistanceSqr(site.pos);
                 double distanceToCenter = CENTER.DistanceSqr(site.pos); 
 
-                double distanceToMyQueen_norm = 1 - NormalizeDistance(distanceToMyQueen);
-                double distanceToEnemyQueen_norm = NormalizeDistance(distanceToEnemyQueen);
                 double distanceToCenter_norm = 1 - NormalizeDistance(distanceToCenter);
-
-                int siteX = (int) Math.Ceiling(site.pos.x / squareLength);
-                int siteY = (int) Math.Ceiling(site.pos.y / squareLength);
-                //Only if not mine in control of enemy, spread influence
 
                 influence = 1+distanceToCenter_norm;
                 
-//                if (buildInfluenceMap[siteX, siteY] >= -50)
-//                {
-//                    if(buildInfluenceMap[siteX, siteY] >= 20)
-//                    {
-//                        influence *= 4;
-//                    }   
-//                    else
-//                    {
-//                        influence *= 2;
-//                    }
-//                }
             
                 //TODO: maybe do siteRadius and siteRadius-1
-//                ScaleAndApplyInfluence_Circle(site.pos, influence * favorCloseSitesOverOpenSquares, siteRadius+1, 0, polynomial2Propagation);
                 
 //                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, influence/2 * favorCloseSitesOverOpenSquares, siteRadius+1, 7, polynomial2Propagation);
                 influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, influence * favorCloseSitesOverOpenSquares, 1, 0, polynomial2Propagation);
                 influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, influence, 1, 12, polynomial2Propagation);
 
-//                influenceMap.ApplyInfluence_Range_Unscaled(site.pos, influence/2, siteRadius+1, 40, polynomial2Propagation);
-            
             }
-            
-            //Take out siteradius from the map :D
-//            ScaleAndApplyInfluence_Circle(site.pos, minInfluence, siteRadius, 0,polynomial2Propagation, influenceMap);
         }
 
 
@@ -2102,8 +2077,11 @@ public class InfluenceMap
             {
                 cellAmount = decayedDistanceFunc(amount, distance, maxDistance_Manh);
             }
-            
-            _influenceMap[currCell.x, currCell.y] += cellAmount;
+
+            if (isObstacle[currCell.x, currCell.y] == false)
+            {
+                _influenceMap[currCell.x, currCell.y] += cellAmount;
+            }
             
             foreach (var neighbourAndDistance in currCell.neighboursAndDistance)
             {
