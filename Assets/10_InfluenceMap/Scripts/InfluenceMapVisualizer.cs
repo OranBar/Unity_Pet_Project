@@ -135,7 +135,7 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 		Vector2 startPos = new Vector2(mouseOverCellUnity.x, mouseOverCellUnity.y);
 		
 		List<Text> adjacentLabels = new List<Text>();
-		InfluenceMapCell_Unity bestCellUnity = InfluenceMapCellsUnity[x1, y1], worstCellUnity = InfluenceMapCellsUnity[x1, y1];
+		InfluenceMapCell_Unity bestCellUnity = mouseOverCellUnity, worstCellUnity = mouseOverCellUnity;
 		float distToBestCell = float.MaxValue, distToWorstCell = float.MaxValue;;
 
 		if (currBestTile_mouseover != null)
@@ -154,7 +154,14 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 			{
 				InfluenceMapCell_Unity cellUnity = InfluenceMapCellsUnity[i, j];
 				adjacentLabels.Add(cellUnity.influenceLabel);
-				if (cellUnity.influenceValue >= bestCellUnity.influenceValue)
+
+				if (_influenceMap.IsObstacle(cellUnity.x, cellUnity.y))
+				{
+					continue;
+				}
+				
+				
+				if (cellUnity.influenceValue >= bestCellUnity.influenceValue )
 				{
 					if (cellUnity.influenceValue == bestCellUnity.influenceValue)
 					{
