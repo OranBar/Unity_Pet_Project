@@ -1768,18 +1768,18 @@ public class InfluenceMap
     }
 
     //TODO
-//    HashSet<InfluenceMapCell> visited = new HashSet<InfluenceMapCell>();
-//    List<CellAndDistance> frontier = new List<CellAndDistance>();
+    HashSet<InfluenceMapCell> visited = new HashSet<InfluenceMapCell>();
+    List<CellAndDistance> frontier = new List<CellAndDistance>();
     
     public void ApplyInfluence_Range_Unscaled(int xPos, int yPos, double amount, int fullDistance, int decayDistance, PropagationFunction decayedDistanceFunc, bool ignoreObstacles = false)
     {
         InfluenceMapCell startCell = influenceMapCells[Unitize(xPos), Unitize(yPos)];
 
-        HashSet<InfluenceMapCell> visited = new HashSet<InfluenceMapCell>();
-        List<CellAndDistance> frontier = new List<CellAndDistance>();
+//        HashSet<InfluenceMapCell> visited = new HashSet<InfluenceMapCell>();
+//        List<CellAndDistance> frontier = new List<CellAndDistance>();
         //TODO
-//        visited.Clear();
-//        frontier.Clear();
+        visited.Clear();
+        frontier.Clear();
 
         double distanceToStartCell = new Position(xPos, yPos).DistanceTo(new Position(startCell.x * unit, startCell.y * unit));
         frontier.Add(new CellAndDistance(startCell,distanceToStartCell));
