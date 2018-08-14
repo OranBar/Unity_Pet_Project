@@ -5,6 +5,7 @@
 //The max characters that can be put into the error stream is 1028
 
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.IO;
 using System.Text;
@@ -45,9 +46,14 @@ class Player
                 Console.Error.WriteLine("Game Info");
                 Console.Error.WriteLine(giovannaD_Arco.gameInfo.Encode());
             }
+            
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             Console.Error.WriteLine(giovannaD_Arco.game.Encode()+"-");
 
             Console.Error.WriteLine(giovannaD_Arco.Encode());
+            sw.Stop();
+            Console.Error.WriteLine("Encoding ={0}",sw.Elapsed);
             
             TurnAction move = giovannaD_Arco.think();
             move.PrintMove();
@@ -755,7 +761,8 @@ public class LaPulzellaD_Orleans
     private InfluenceMap _survivorModeMap = new InfluenceMap(1920, 1000, -120, 120, new EuclideanDistance(), INFLUENCEMAP_SQUARELENGTH);
 
     private InfluenceMap cacheMap_SitesAndObstacles;
-    
+    private List<long> totals = new List<long>();
+
     public InfluenceMap SurvivorModeMap
     {
         get { return _survivorModeMap; }
@@ -941,10 +948,15 @@ public class LaPulzellaD_Orleans
         int searchRange = QUEEN_MOVEMENT * 2;
         double favorCloseSitesOverOpenSquares = 5;
         
+        Stopwatch total = new Stopwatch();
+        
         
         //var move = UnscaledBestInBox(g.MyQueen, searchRange, influenceMap);
-        
+        Stopwatch sw = new Stopwatch();
         //Avoid enemy towers!!
+        total.Start();
+        sw.Start();
+
         foreach (var tower in g.EnemyTowers)
         {
             int siteRadius = GetRadius(tower);
@@ -956,7 +968,12 @@ public class LaPulzellaD_Orleans
 //            ScaleAndApplyInfluence_Circle(tower.pos, -25, 3, 0, linearPropagation, influenceMap);
 
         }
+        sw.Stop();
+        Console.Error.WriteLine("Enemy Towers={0}",sw.ElapsedMilliseconds);
+        sw.Reset();
         
+        sw.Start();
+
         int enemyThreat = g.EnemyUnits.Count(); /** g.AlliedTowersInRangeOf(tower.pos, tower.param2)*/             
 
         foreach (var tower in g.MyTowers)
@@ -982,10 +999,14 @@ public class LaPulzellaD_Orleans
             //Towers should make all nearby sites more influencial, because now I have control over it.
             //ScaleAndApplyInfluence_Circle(tower.pos, 10, 0, towerRange, linearPropagation, ref buildInfluenceMap);
         }
-        
+        sw.Stop();
+        Console.Error.WriteLine("My Towers={0}",sw.ElapsedMilliseconds);
+        sw.Reset();
         
        
-//Enemy units influence
+        sw.Start();
+
+        //Enemy units influence
         foreach (var enemy in g.EnemyUnits)
         {
             double enemyInfluence = GetEnemyInfluence(enemy);
@@ -993,7 +1014,9 @@ public class LaPulzellaD_Orleans
             influenceMap.ApplyInfluence_Range_Unscaled(enemy.pos.x, enemy.pos.y, -10, 2, 18, polynomial4Propagation);
 
         }
-
+        sw.Stop();
+        Console.Error.WriteLine("Enemy Units ={0}",sw.ElapsedMilliseconds);
+        sw.Reset();
         
 //        List<Site> influencingSites = g.sites.Where(s => s.owner==Owner.Neutral).ToList();
 
@@ -1002,7 +1025,7 @@ public class LaPulzellaD_Orleans
 //            influencingSites.    
 //        }
 //        
-        
+        sw.Start();
         foreach (var site in g.sites)
         {
 //            int siteRadius = (int) Math.Floor(GetSiteInfo(site).radius / squareLength);
@@ -1042,7 +1065,15 @@ public class LaPulzellaD_Orleans
 
             }
         }
-
+        sw.Stop();
+        Console.Error.WriteLine("Sites ={0}",sw.ElapsedMilliseconds);
+        sw.Reset();
+        
+        total.Stop();
+        totals.Add(total.ElapsedMilliseconds);
+        Console.Error.WriteLine("Total ={0}, Average = {1}",total.ElapsedMilliseconds, totals.Average());
+        
+        
 
         
     //Favor center
@@ -1054,12 +1085,17 @@ public class LaPulzellaD_Orleans
 //            
 //        }
 
+        
         if (turn >= 100)
         {
             searchRange *= 3;
         }
         
+        sw.Start();
         var survivorModeChosenSite = UnscaledBestInBox(g.MyQueen, searchRange, influenceMap);
+        sw.Stop();
+        Console.Error.WriteLine("Select best in bos ={0}",sw.Elapsed);
+        sw.Reset();
 
 #if UNITY_EDITOR
         UnityEngine.Debug.Log("Survivor Mode tile is is ("+survivorModeChosenSite.Item1/INFLUENCEMAP_SQUARELENGTH+", "+survivorModeChosenSite.Item2/INFLUENCEMAP_SQUARELENGTH+") with amount = "+influenceMap[survivorModeChosenSite.Item1/INFLUENCEMAP_SQUARELENGTH, survivorModeChosenSite.Item2/INFLUENCEMAP_SQUARELENGTH]);
@@ -1238,88 +1274,88 @@ public class LaPulzellaD_Orleans
 //        return chosenMove;
 //    }
 
-    private InfluenceMap CreateInfluenceMap()
-    {
-//        double squareLength = (60 * 0.4);
-        double squareLength = INFLUENCEMAP_SQUARELENGTH; //Maximum common divisor between 60, 100, 75, 50 (movement speeds)
-
-//        int mapWidth = (int) Math.Ceiling(1920 / squareLength)+1;
-//        int mapHeight = (int) Math.Ceiling(1000 / squareLength)+1;
-        double minInfluence = -40;
-        double maxInfluence = 40;
-        InfluenceMap map = new InfluenceMap(1920, 1000, minInfluence, maxInfluence, new EuclideanDistanceSqr(), INFLUENCEMAP_SQUARELENGTH);
-
-        var enemyUnits = game.units
-            .Where(u => u.owner == Owner.Enemy);
-
-        var myTowers = game.sites
-            .Where(u => u.owner == Owner.Friendly && u.structureType == StructureType.Tower);
-        
-        var enemyTowers = game.sites
-            .Where(u => u.owner == Owner.Enemy && u.structureType == StructureType.Tower);
-        
-        foreach (var tower in myTowers)
-        {
-            double towerInfluence = 40;
-            //int decayedDistance = (int)Math.Floor((int)Math.Ceiling(tower.param2 / squareLength) * 1.6);
-            int decayedDistance = (int)Math.Ceiling(tower.param2 / squareLength);
-//            int decayedDistance = 3;
-            
-            ScaleAndApplyInfluence_Diamond(tower, towerInfluence, 1, decayedDistance, 0.96,  map);
-            ScaleAndApplyInfluence_Diamond(tower, -towerInfluence, 1, 0, 0,  map);
-            
-        }
-        
-        foreach (var tower in enemyTowers)
-        {
-            double towerInfluence = 40;
-            int decayedDistance = (int) Math.Ceiling(tower.param2 / squareLength);
-//            int decayedDistance = 3;
-
-            ScaleAndApplyInfluence_Diamond(tower, -towerInfluence, 3, decayedDistance, 0.7,  map);
-            ScaleAndApplyInfluence_Diamond(tower, towerInfluence, 1, 0, 0,  map);
-        }
-        
-        //Enemy units influence
-        foreach (var enemy in enemyUnits)
-        {
-            double enemyInfluence = GetEnemyInfluence(enemy);
-            ScaleAndApplyInfluence_Diamond(enemy, enemyInfluence, 1, GetEnemyInfluenceRadius(enemy) *2, 0.9,  map);
-
-            var points = map.GetPointsInLine(enemy.pos.x, enemy.pos.y, game.MyQueen.pos.x, game.MyQueen.pos.y);
-            foreach (var point in points)
-            {
-                map.ApplyInfluence_Range(point.x, point.y, 5, 1, 2, linearPropagation);
-            }
-
-        }
-
-        var myMines =
-            game.sites.Where(s => s.owner == Owner.Friendly && s.structureType == StructureType.Mine);
-        
-        foreach (var mine in myMines)
-        {
-            double mineInfluence = -5;
-            int mineRadius = GetSiteInfo(mine).radius / INFLUENCEMAP_SQUARELENGTH;
-            int decayedDistance = 5;
-            
-            ScaleAndApplyInfluence_Diamond(mine, -mineInfluence, mineRadius+1, decayedDistance, 0.9,  map);
-            ScaleAndApplyInfluence_Diamond(mine, mineInfluence, mineRadius, 0, 0,  map);
-        }
-        
-        
-//        //My Queen
-//        Unit myQueen = currGameState.MyQueen;
-//        int myQueenPosX = (int) Math.Ceiling(myQueen.pos.x / squareLength);
-//        int myQueenPosY = (int) Math.Ceiling(myQueen.pos.y / squareLength);
-
-//        map.applyInfluence(myQueenPosX, myQueenPosY, 10.0, 0, 0, 0.0);
-
-        
-        return map;
-
-    }
-    
+//    private InfluenceMap CreateInfluenceMap()
+//    {
+////        double squareLength = (60 * 0.4);
+//        double squareLength = INFLUENCEMAP_SQUARELENGTH; //Maximum common divisor between 60, 100, 75, 50 (movement speeds)
+//
+////        int mapWidth = (int) Math.Ceiling(1920 / squareLength)+1;
+////        int mapHeight = (int) Math.Ceiling(1000 / squareLength)+1;
+//        double minInfluence = -40;
+//        double maxInfluence = 40;
+//        InfluenceMap map = new InfluenceMap(1920, 1000, minInfluence, maxInfluence, new EuclideanDistanceSqr(), INFLUENCEMAP_SQUARELENGTH);
+//
+//        var enemyUnits = game.units
+//            .Where(u => u.owner == Owner.Enemy);
+//
+//        var myTowers = game.sites
+//            .Where(u => u.owner == Owner.Friendly && u.structureType == StructureType.Tower);
+//        
+//        var enemyTowers = game.sites
+//            .Where(u => u.owner == Owner.Enemy && u.structureType == StructureType.Tower);
+//        
+//        foreach (var tower in myTowers)
+//        {
+//            double towerInfluence = 40;
+//            //int decayedDistance = (int)Math.Floor((int)Math.Ceiling(tower.param2 / squareLength) * 1.6);
+//            int decayedDistance = (int)Math.Ceiling(tower.param2 / squareLength);
+////            int decayedDistance = 3;
+//            
+//            ScaleAndApplyInfluence_Diamond(tower, towerInfluence, 1, decayedDistance, 0.96,  map);
+//            ScaleAndApplyInfluence_Diamond(tower, -towerInfluence, 1, 0, 0,  map);
+//            
+//        }
+//        
+//        foreach (var tower in enemyTowers)
+//        {
+//            double towerInfluence = 40;
+//            int decayedDistance = (int) Math.Ceiling(tower.param2 / squareLength);
+////            int decayedDistance = 3;
+//
+//            ScaleAndApplyInfluence_Diamond(tower, -towerInfluence, 3, decayedDistance, 0.7,  map);
+//            ScaleAndApplyInfluence_Diamond(tower, towerInfluence, 1, 0, 0,  map);
+//        }
+//        
+//        //Enemy units influence
+//        foreach (var enemy in enemyUnits)
+//        {
+//            double enemyInfluence = GetEnemyInfluence(enemy);
+//            ScaleAndApplyInfluence_Diamond(enemy, enemyInfluence, 1, GetEnemyInfluenceRadius(enemy) *2, 0.9,  map);
+//
+//            var points = map.GetPointsInLine(enemy.pos.x, enemy.pos.y, game.MyQueen.pos.x, game.MyQueen.pos.y);
+//            foreach (var point in points)
+//            {
+//                map.ApplyInfluence_Range(point.x, point.y, 5, 1, 2, linearPropagation);
+//            }
+//
+//        }
+//
+//        var myMines =
+//            game.sites.Where(s => s.owner == Owner.Friendly && s.structureType == StructureType.Mine);
+//        
+//        foreach (var mine in myMines)
+//        {
+//            double mineInfluence = -5;
+//            int mineRadius = GetSiteInfo(mine).radius / INFLUENCEMAP_SQUARELENGTH;
+//            int decayedDistance = 5;
+//            
+//            ScaleAndApplyInfluence_Diamond(mine, -mineInfluence, mineRadius+1, decayedDistance, 0.9,  map);
+//            ScaleAndApplyInfluence_Diamond(mine, mineInfluence, mineRadius, 0, 0,  map);
+//        }
+//        
+//        
+////        //My Queen
+////        Unit myQueen = currGameState.MyQueen;
+////        int myQueenPosX = (int) Math.Ceiling(myQueen.pos.x / squareLength);
+////        int myQueenPosY = (int) Math.Ceiling(myQueen.pos.y / squareLength);
+//
+////        map.applyInfluence(myQueenPosX, myQueenPosY, 10.0, 0, 0, 0.0);
+//
+//        
+//        return map;
+//
+//    }
+//    
     private void ScaleAndApplyInfluence_Diamond(Site site, double amount, int fullDistance, int decayedDistance, double distanceDecay, InfluenceMap map)
     {
         ScaleAndApplyInfluence_Diamond(site.pos, amount, fullDistance, decayedDistance, distanceDecay, map);
@@ -1335,10 +1371,10 @@ public class LaPulzellaD_Orleans
         ScaleAndApplyInfluence_Diamond(pos.x, pos.y, amount, fullDistance, decayedDistance, distanceDecay, map);
     }
     
-    private void ScaleAndApplyInfluence_Range(Position pos, double amount, int fullDistance, int decayedDistance, PropagationFunction propagationFunc, InfluenceMap map)
-    {
-        ScaleAndApplyInfluence_Range(pos.x, pos.y, amount, fullDistance,decayedDistance,propagationFunc, map);     
-    }
+//    private void ScaleAndApplyInfluence_Range(Position pos, double amount, int fullDistance, int decayedDistance, PropagationFunction propagationFunc, InfluenceMap map)
+//    {
+//        ScaleAndApplyInfluence_Range(pos.x, pos.y, amount, fullDistance,decayedDistance,propagationFunc, map);     
+//    }
 
     private void ScaleAndApplyInfluence_Circle(Position pos, double amount, int fullDistance, int decayedDistance, PropagationFunction propagationFunc, InfluenceMap map)
     {
@@ -1354,14 +1390,14 @@ public class LaPulzellaD_Orleans
         
     }
     
-    private void ScaleAndApplyInfluence_Range(int x, int y, double amount, int fullDistance, int decayedDistance, PropagationFunction propagationFunc, InfluenceMap map, int initialRadiusSkip = 0)
-    {
-        int scaledPosX = (int) Math.Ceiling(x*1.0 / INFLUENCEMAP_SQUARELENGTH);
-        int scaledPosY = (int) Math.Ceiling(y*1.0 / INFLUENCEMAP_SQUARELENGTH);
-        
-        map.ApplyInfluence_Range(scaledPosX ,scaledPosY ,amount,fullDistance,decayedDistance, propagationFunc, initialRadiusSkip );
-        
-    }
+//    private void ScaleAndApplyInfluence_Range(int x, int y, double amount, int fullDistance, int decayedDistance, PropagationFunction propagationFunc, InfluenceMap map, int initialRadiusSkip = 0)
+//    {
+//        int scaledPosX = (int) Math.Ceiling(x*1.0 / INFLUENCEMAP_SQUARELENGTH);
+//        int scaledPosY = (int) Math.Ceiling(y*1.0 / INFLUENCEMAP_SQUARELENGTH);
+//        
+//        map.ApplyInfluence_Range(scaledPosX ,scaledPosY ,amount,fullDistance,decayedDistance, propagationFunc, initialRadiusSkip );
+//        
+//    }
     
     private void ScaleAndApplyInfluence_Diamond(int x, int y, double amount, int fullDistance, int decayedDistance, double distanceDecay, InfluenceMap map)
     {
@@ -1828,16 +1864,26 @@ public struct XAndY
 
 public class InfluenceMap
 {
-    
+    public class CellAndDistance
+    {
+        public readonly InfluenceMapCell cell;
+        public readonly double distance;
+
+        public CellAndDistance(InfluenceMapCell cell, double distance)
+        {
+            this.cell = cell;
+            this.distance = distance;
+        }
+    }
     
     public class InfluenceMapCell
     {
         public int x, y;
         
-        public List<Tuple<InfluenceMapCell, double>> neighboursAndDistance = new List<Tuple<InfluenceMapCell, double>>();
-        public List<Tuple<InfluenceMapCell, double>> neighbourObstaclesAndDistance = new List<Tuple<InfluenceMapCell, double>>();
+        public CellAndDistance[] neighboursAndDistance = null;
+        public CellAndDistance[] neighbourObstaclesAndDistance = null;
 
-        public HashSet<InfluenceMapCell> GetNeighbours => new HashSet<InfluenceMapCell>(neighboursAndDistance.Select(nAd => nAd.Item1));
+        public HashSet<InfluenceMapCell> GetNeighbours => new HashSet<InfluenceMapCell>(neighboursAndDistance.Select(nAd => nAd.cell));
     }
     
     public InfluenceMapCell[,] influenceMapCells;
@@ -1975,26 +2021,28 @@ public class InfluenceMap
             for (int x = 0; x < gridWidth; x++)
             {
                 InfluenceMapCell currCell = influenceMapCells[x, y];
+
+                List<CellAndDistance> neighboursAndDistance = new List<CellAndDistance>();
+                List<CellAndDistance> neighbourObstaclesAndDistance = new List<CellAndDistance>();
                 
                 List<XAndY> neighbours = getNeighbours(x, y);
                 foreach (var neighbour in neighbours)
                 {
-                    if(isObstacle[neighbour.x, neighbour.y]==false)
+                    InfluenceMapCell neighbourCell = influenceMapCells[neighbour.x, neighbour.y];
+                    var distanceAndCell = new CellAndDistance(neighbourCell, computeDistanceFunc.computeDistance(x,y,neighbour.x, neighbour.y));
+
+                    if (isObstacle[neighbour.x, neighbour.y])
                     {
-                        InfluenceMapCell neighbourgCell = influenceMapCells[neighbour.x, neighbour.y];
-                        var newTuple = Tuple.Create(neighbourgCell, computeDistanceFunc.computeDistance(x,y,neighbour.x, neighbour.y)); 
-                        currCell.neighboursAndDistance.Add(newTuple);
+                        neighbourObstaclesAndDistance.Add(distanceAndCell);
                     }
                     else
                     {
-                        InfluenceMapCell neighbourgCell = influenceMapCells[neighbour.x, neighbour.y];
-                        var newTuple = Tuple.Create(neighbourgCell, computeDistanceFunc.computeDistance(x,y,neighbour.x, neighbour.y)); 
-                        currCell.neighbourObstaclesAndDistance.Add(newTuple);
+                        neighboursAndDistance.Add(distanceAndCell);
                     }
                 }
 
-                currCell.neighbourObstaclesAndDistance =
-                    currCell.neighbourObstaclesAndDistance.OrderBy(nAd => nAd.Item2).ToList();
+                currCell.neighboursAndDistance = neighboursAndDistance.OrderBy(nAd => nAd.distance).ToArray();
+                currCell.neighbourObstaclesAndDistance = neighbourObstaclesAndDistance.OrderBy(nAd => nAd.distance).ToArray();
             }
         }
     }
@@ -2004,59 +2052,68 @@ public class InfluenceMap
         InfluenceMapCell startCell = influenceMapCells[Unitize(xPos), Unitize(yPos)];
 
         HashSet<InfluenceMapCell> visited = new HashSet<InfluenceMapCell>();
-        List<Tuple<InfluenceMapCell, double>> frontier = new List<Tuple<InfluenceMapCell, double>>();
+        List<CellAndDistance> frontier = new List<CellAndDistance>();
 
         
         double distanceToStartCell = new Position(xPos, yPos).DistanceTo(new Position(startCell.x * unit, startCell.y * unit));
-        frontier.Add(Tuple.Create(startCell,distanceToStartCell));
+        frontier.Add(new CellAndDistance(startCell,distanceToStartCell));
         visited.Add(startCell);
+
+        int steps = 0, obstacleSteps = 0;
         
-        while (frontier.Any(f => isObstacle[f.Item1.x, f.Item1.y]))
+        Stopwatch sw = new Stopwatch();
+//        sw.Start();
+        while (frontier.Any(f => isObstacle[f.cell.x, f.cell.y]))
         {
-            var currFrontierCellInfo = frontier.First(f => isObstacle[f.Item1.x, f.Item1.y]);
+            obstacleSteps++;
+            var currFrontierCellInfo = frontier.First(f => isObstacle[f.cell.x, f.cell.y]);
             frontier.Remove(currFrontierCellInfo);
             
-            InfluenceMapCell currCell = currFrontierCellInfo.Item1;
-            double distance = currFrontierCellInfo.Item2;
+            InfluenceMapCell currCell = currFrontierCellInfo.cell;
+            double distance = currFrontierCellInfo.distance;
             
-            if (currCell.neighboursAndDistance.Count != 0)
+            if (currCell.neighboursAndDistance.Length != 0)
             {
-                foreach (var neighbourAndDistance in currCell.neighboursAndDistance)
+                for (var index = 0; index < currCell.neighboursAndDistance.Length; index++)
                 {
-                    if (visited.Contains(neighbourAndDistance.Item1) == false)
+                    var neighbourAndDistance = currCell.neighboursAndDistance[index];
+                    if (visited.Contains(neighbourAndDistance.cell) == false)
                     {
-                        var neighbour = neighbourAndDistance.Item1;
-                        var distanceToCell = neighbourAndDistance.Item2;
+                        var neighbour = neighbourAndDistance.cell;
+                        var distanceToCell = neighbourAndDistance.distance;
 
-                       
-                        var newFrontierCandidate = Tuple.Create(neighbour, distance + distanceToCell);
+
+                        var newFrontierCandidate = new CellAndDistance(neighbour, distance + distanceToCell);
                         visited.Add(neighbour);
                         frontier.Add(newFrontierCandidate);
-                        
                     }
                 }
             }
             else
             {
-                foreach (var neighbourAndDistance in currCell.neighbourObstaclesAndDistance)
+                for (var index = 0; index < currCell.neighbourObstaclesAndDistance.Length; index++)
                 {
-                    if (visited.Contains(neighbourAndDistance.Item1) == false)
+                    var neighbourAndDistance = currCell.neighbourObstaclesAndDistance[index];
+                    if (visited.Contains(neighbourAndDistance.cell) == false)
                     {
-                        var neighbour = neighbourAndDistance.Item1;
-                        var distanceToCell = neighbourAndDistance.Item2;
+                        var neighbour = neighbourAndDistance.cell;
+                        var distanceToCell = neighbourAndDistance.distance;
 
-                       
-                        var newFrontierCandidate = Tuple.Create(neighbour, distance + distanceToCell);
+
+                        var newFrontierCandidate = new CellAndDistance(neighbour, distance + distanceToCell);
                         visited.Add(neighbour);
                         frontier.Add(newFrontierCandidate);
-                    
                     }
                 }
             }
         }
 
+//        sw.Stop();
+//        Console.Error.WriteLine("Find nonObstacles={0}",sw.Elapsed);
+//        sw.Reset();
+        
         //TODO: ricalcola ristanze delle celle nella frontiera
-        frontier = frontier.Select(f => Tuple.Create(f.Item1, 0.0)).ToList();
+        frontier = frontier.Select(f => new CellAndDistance(f.cell, 0.0)).ToList();
 
 //        foreach (var f in frontier)
 //        {
@@ -2064,15 +2121,18 @@ public class InfluenceMap
 //        }
 
         
-        
+        sw.Start();
         while (frontier.Count > 0)
         {
+            steps++;
+            
             var currFrontierCellInfo = GetBestFrontierCell(frontier, true);
             
-            InfluenceMapCell currCell = currFrontierCellInfo.Item1;
-            double distance = currFrontierCellInfo.Item2;
+            InfluenceMapCell currCell = currFrontierCellInfo.cell;
+            double distance = currFrontierCellInfo.distance;
 
             double cellAmount = amount;
+            
             if (distance > fullDistance)
             {
                 cellAmount = decayedDistanceFunc(amount, distance, maxDistance_Manh);
@@ -2085,14 +2145,14 @@ public class InfluenceMap
             
             foreach (var neighbourAndDistance in currCell.neighboursAndDistance)
             {
-                if (visited.Contains(neighbourAndDistance.Item1) == false)
+                if (visited.Contains(neighbourAndDistance.cell) == false)
                 {
-                    var neighbour = neighbourAndDistance.Item1;
-                    var distanceToCell = neighbourAndDistance.Item2;
+                    var neighbour = neighbourAndDistance.cell;
+                    var distanceToCell = neighbourAndDistance.distance;
 
                     if (distanceToCell + distance <= fullDistance + decayDistance)
                     {
-                        var newFrontierCandidate = Tuple.Create(neighbour, distance + distanceToCell);
+                        var newFrontierCandidate = new CellAndDistance(neighbour, distance + distanceToCell);
                         visited.Add(neighbour);
                         frontier.Add(newFrontierCandidate);
                     }
@@ -2103,14 +2163,14 @@ public class InfluenceMap
             {
                 foreach (var neighbourAndDistanceObst in currCell.neighbourObstaclesAndDistance)
                 {
-                    if (visited.Contains(neighbourAndDistanceObst.Item1) == false)
+                    if (visited.Contains(neighbourAndDistanceObst.cell) == false)
                     {
-                        var neighbour = neighbourAndDistanceObst.Item1;
-                        var distanceToCell = neighbourAndDistanceObst.Item2;
+                        var neighbour = neighbourAndDistanceObst.cell;
+                        var distanceToCell = neighbourAndDistanceObst.distance;
 
                         if (distanceToCell + distance <= fullDistance + decayDistance)
                         {
-                            var newFrontierCandidate = Tuple.Create(neighbour, distance + distanceToCell);
+                            var newFrontierCandidate = new CellAndDistance(neighbour, distance + distanceToCell);
                             visited.Add(neighbour);
                             frontier.Add(newFrontierCandidate);
                         }
@@ -2118,16 +2178,31 @@ public class InfluenceMap
                 }    
             }
         }
+        
+        sw.Stop();
+//        Console.Error.WriteLine("Fill time={0}",sw.Elapsed);
+        #if UNITY_EDITOR
+//        UnityEngine.Debug.LogFormat("Fill time={0}",sw.Elapsed);
+        #endif
+        sw.Reset();
+        
+//        sw.Stop();
+//        Console.Error.WriteLine("Steps ={0} ObstacleSteps={1}",steps, obstacleSteps);
+//        #if UNITY_EDITOR
+//        UnityEngine.Debug.LogFormat("Steps ={0} ObstacleSteps={1}",steps, obstacleSteps);
+//        #endif
+//        sw.Reset();
     }
 
-    private Tuple<InfluenceMapCell, double> GetBestFrontierCell(List<Tuple<InfluenceMapCell, double>> frontier, bool removeCellFromCollection = false)
+    private CellAndDistance GetBestFrontierCell(List<CellAndDistance> frontier, bool removeCellFromCollection = false)
     {
-        Tuple<InfluenceMapCell, double> bestSoFar = frontier.First();
+        CellAndDistance bestSoFar = frontier.First();
         int bestIndex = 0;
-        for (var i = 0; i < frontier.Count; i++)
+        int frontierCardinality = frontier.Count;
+        for (var i = 0; i < frontierCardinality; i++)
         {
             var candidate = frontier[i];
-            if (candidate.Item2 < bestSoFar.Item2)
+            if (candidate.distance < bestSoFar.distance)
             {
                 bestSoFar = candidate;
                 bestIndex = i;
@@ -2142,73 +2217,73 @@ public class InfluenceMap
         return bestSoFar;
     }
     
-    public void ApplyInfluence_Range(int xPos, int yPos, double amount, int fullDistance, int decayDistance, PropagationFunction decayedDistanceFunc, int initialRadiusSkip = 0)
-    {
-        InfluenceMapCell startCell = influenceMapCells[xPos, yPos];
-
-        HashSet<InfluenceMapCell> visited = new HashSet<InfluenceMapCell>();
-        List<Tuple<InfluenceMapCell, double>> frontier = new List<Tuple<InfluenceMapCell, double>>();
-
-//        if (isObstacle[startCell.x, startCell.y])
-        if(initialRadiusSkip != 0)
-        {
-            //We need to do a radius scan and put in the frontier some squares that are not obstacles. The closest ones to this center
-            var squaresAndDistanceAround = GetSquaresInRange_WithDistance_Unscaled(startCell.x, startCell.y, initialRadiusSkip+10);
-            double closestOutsideRange = squaresAndDistanceAround.Where(sAd => isObstacle[sAd.Item1.x,sAd.Item1.y]==false).Min(sAd1 => sAd1.Item2);
-
-            int flag = 0;
-            foreach (var newFrontierMember in squaresAndDistanceAround.Where(sAd => sAd.Item2 == closestOutsideRange))
-            {
-                var currCell = influenceMapCells[newFrontierMember.Item1.x, newFrontierMember.Item1.y];
-                frontier.Add(Tuple.Create(currCell, newFrontierMember.Item2));
-                flag++;
-            }
-
-            if (flag > 0)
-            {
-                Console.Error.WriteLine("A new frontier with "+flag+" tiles was created. The closestRange was "+closestOutsideRange);
-            }
-        }
-        else
-        {
-            frontier.Add(Tuple.Create(startCell,0.0));
-        }
-        
-        visited.Add(startCell);
-        while (frontier.Count > 0)
-        {
-            var currFrontierCellInfo = frontier.OrderBy(f => f.Item2).First();
-            frontier.Remove(currFrontierCellInfo);
-            
-            InfluenceMapCell currCell = currFrontierCellInfo.Item1;
-            double distance = currFrontierCellInfo.Item2;
-
-            double cellAmount = amount;
-            if (distance > fullDistance)
-            {
-                cellAmount = decayedDistanceFunc(amount, distance, maxDistance_Manh);
-            }
-            
-            _influenceMap[currCell.x, currCell.y] += cellAmount;
-            
-            foreach (var neighbourAndDistance in currCell.neighboursAndDistance.OrderBy(nAd => nAd.Item2))
-            {
-                if (visited.Contains(neighbourAndDistance.Item1) == false)
-                {
-                    var neighbour = neighbourAndDistance.Item1;
-                    var distanceToCell = neighbourAndDistance.Item2;
-
-                    if (distanceToCell + distance <= fullDistance + decayDistance)
-                    {
-                        var newFrontierCandidate = Tuple.Create(neighbour, distance + distanceToCell);
-                        visited.Add(neighbour);
-                        frontier.Add(newFrontierCandidate);
-                    }
-                }
-            }
-        }
-    }
-    
+//    public void ApplyInfluence_Range(int xPos, int yPos, double amount, int fullDistance, int decayDistance, PropagationFunction decayedDistanceFunc, int initialRadiusSkip = 0)
+//    {
+//        InfluenceMapCell startCell = influenceMapCells[xPos, yPos];
+//
+//        HashSet<InfluenceMapCell> visited = new HashSet<InfluenceMapCell>();
+//        List<Tuple<InfluenceMapCell, double>> frontier = new List<Tuple<InfluenceMapCell, double>>();
+//
+////        if (isObstacle[startCell.x, startCell.y])
+//        if(initialRadiusSkip != 0)
+//        {
+//            //We need to do a radius scan and put in the frontier some squares that are not obstacles. The closest ones to this center
+//            var squaresAndDistanceAround = GetSquaresInRange_WithDistance_Unscaled(startCell.x, startCell.y, initialRadiusSkip+10);
+//            double closestOutsideRange = squaresAndDistanceAround.Where(sAd => isObstacle[sAd.Item1.x,sAd.Item1.y]==false).Min(sAd1 => sAd1.Item2);
+//
+//            int flag = 0;
+//            foreach (var newFrontierMember in squaresAndDistanceAround.Where(sAd => sAd.Item2 == closestOutsideRange))
+//            {
+//                var currCell = influenceMapCells[newFrontierMember.Item1.x, newFrontierMember.Item1.y];
+//                frontier.Add(Tuple.Create(currCell, newFrontierMember.Item2));
+//                flag++;
+//            }
+//
+//            if (flag > 0)
+//            {
+//                Console.Error.WriteLine("A new frontier with "+flag+" tiles was created. The closestRange was "+closestOutsideRange);
+//            }
+//        }
+//        else
+//        {
+//            frontier.Add(Tuple.Create(startCell,0.0));
+//        }
+//        
+//        visited.Add(startCell);
+//        while (frontier.Count > 0)
+//        {
+//            var currFrontierCellInfo = frontier.OrderBy(f => f.Item2).First();
+//            frontier.Remove(currFrontierCellInfo);
+//            
+//            InfluenceMapCell currCell = currFrontierCellInfo.Item1;
+//            double distance = currFrontierCellInfo.Item2;
+//
+//            double cellAmount = amount;
+//            if (distance > fullDistance)
+//            {
+//                cellAmount = decayedDistanceFunc(amount, distance, maxDistance_Manh);
+//            }
+//            
+//            _influenceMap[currCell.x, currCell.y] += cellAmount;
+//            
+//            foreach (var neighbourAndDistance in currCell.neighboursAndDistance.OrderBy(nAd => nAd.distance))
+//            {
+//                if (visited.Contains(neighbourAndDistance.Item1) == false)
+//                {
+//                    var neighbour = neighbourAndDistance.Item1;
+//                    var distanceToCell = neighbourAndDistance.Item2;
+//
+//                    if (distanceToCell + distance <= fullDistance + decayDistance)
+//                    {
+//                        var newFrontierCandidate = Tuple.Create(neighbour, distance + distanceToCell);
+//                        visited.Add(neighbour);
+//                        frontier.Add(newFrontierCandidate);
+//                    }
+//                }
+//            }
+//        }
+//    }
+//    
 
     public void AddObstacle(int x, int y, int range)
     {
