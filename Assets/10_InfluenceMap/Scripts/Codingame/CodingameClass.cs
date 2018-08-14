@@ -826,8 +826,13 @@ public class LaPulzellaD_Orleans
             chosenMove.queenAction = chosenBuildMove;
             Console.Error.WriteLine("Build Neutral Site");
         }
+        else if (SurvivorModeMap[queenX, queenY] >= 0)
+        {
+            //Do nothing. Will trigger if(chosenMove.queenAction is Wait) as next instruction, picking the best move since it's too dangerous to stay put 
+        }
         else if (g.TouchingMyTower && g.Owned_towers > MAX_TOWERS && IsSiteMinedOut(g.touchedSiteId) == false && isSafeToBuild)
         {
+            //Switch tower with mine
             chosenMove.queenAction = new BuildMine(g.touchedSiteId);
         }
         else if (g.TouchingMyMine && IsMineMaxed(g.TouchedSite) == false && isSafeToBuild)
@@ -1626,7 +1631,8 @@ public class InfluenceMap
     public InfluenceMapCell[,] influenceMapCells;
 	protected double[,] _influenceMap;
     protected bool[,] isObstacle;
-    
+
+    public bool IsObstacle(int x, int y) => isObstacle[x, y];
     
     protected int gridWidth, gridHeight;
 
