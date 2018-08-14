@@ -27,7 +27,7 @@ for file in glob.glob("*.html"):
     file_name_noextension = os.path.splitext(file)[0]
     f = open(file_name_noextension+".csv","w+")
     for line in outputLine0:
-        f.write('"'+line+"'"+'\n')
+        f.write(line+'\n')
     
     f.close()
 

@@ -1,5 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 using NaughtyAttributes;
@@ -15,6 +18,12 @@ public class Main : MonoBehaviour
     [ResizableTextArea]
     public string gameState_and_pulzella_encoded;
     
+    [Button]
+    public void ReRunSimulation()
+    {
+        RunTurn();
+    }
+    
     [Space]
     
     [ShowNonSerializedField] [ReadOnly]
@@ -25,22 +34,98 @@ public class Main : MonoBehaviour
     public InfluenceMapVisualizer visualizer;
     private int squareLength;
 
+    public Slider turnSlider;
 
     private void Start()
     {
         RunTurn();
     }
 
-    [Button]
-    public void ReRunSimulation()
+    
+    
+
+    public bool runTurn;
+
+    private void Update()
     {
-        RunTurn();
+        if (runTurn)
+        {
+            Profiler.BeginSample("------------------------------------------------ Run Turn - BEGIN");
+            RunTurn();
+            Profiler.EndSample();
+            runTurn = false;
+        }
+    }
+
+    public string path;
+    
+    public string gameToParse;
+
+    private DropdownList<string> GetHtmlFiles()
+    {
+        var result = new DropdownList<string>();
+        Directory.GetFiles(path).Where(f => Path.GetExtension(f)==".html").ForEach(f1 => result.Add(f1, f1));
+        return result;
     }
     
+    string gameLog;
+
+    string[] lines;
     
+    [Button("Parse Game")]
+    private void ParseGame()
+    {
+        gameLog = File.ReadAllText(path+"\\"+gameToParse+".csv");
+
+        lines = gameLog.Split('\n');
+        
+        gameInfo_encoded = lines[0];
+
+        turnSlider.maxValue = (lines.Length-1)/2;
+        turnSlider.onValueChanged.AddListener(sliderValue => RunTargetTurn(sliderValue));
+        
+        Debug.Log("Game Parsed");
+    }
+
+    public int turnToRun;
+
+
+    public int turnToLoad;
+    [Button()]
+    private void RunTargetTurn()
+    {
+        //First line is game info. we skip it
+        gameState_and_pulzella_encoded = lines[1+ turnToLoad / 2];
+        Debug.Log("Turn loaded");
+        RunTurn();
+    }
+
+    public void RunNextTurn()
+    {
+        if (turnToLoad+2 <= (lines.Length - 1) / 2)
+        {
+            RunTargetTurn(turnToLoad+2);
+        }
+    }
+    
+    public void RunPreviousTurn()
+    {
+        if (turnToLoad-2 >= 0)
+        {
+            RunTargetTurn(turnToLoad-2);
+        }
+    }
+    
+    private void RunTargetTurn(float turn)
+    {
+        //First line is game info. we skip it
+        turnToLoad = (int) turn;
+        RunTargetTurn();
+    }
+
     public void RunTurn()
     {
-        Profiler.BeginSample("Run Turn - BEGIN");
+//        Profiler.BeginSample("Run Turn - BEGIN");
         var tmp = gameState_and_pulzella_encoded.Split('-');
         gameState_encoded = tmp[0];
         pulzella_encoded = tmp[1];
@@ -77,7 +162,7 @@ public class Main : MonoBehaviour
 
         TurnAction action = giovannaD_Arco.think();
         
-        Profiler.EndSample();
+//        Profiler.EndSample();
         
         Debug.Log("chosen action "+action.queenAction);
 
@@ -90,7 +175,7 @@ public class Main : MonoBehaviour
         yIndex = (int) Math.Ceiling(myQueenPosition.y / squareLength*1.0);
 //        giovannaD_Arco.SurvivorModeMap.ApplyInfluence_Range_Unscaled(myQueenPosition.x, myQueenPosition.y, 10, 2, 5, LaPulzellaD_Orleans.linearPropagation);
         
-//        giovannaD_Arco.SurvivorModeMap.ApplyInfluence_Range_Unscaled(giovannaD_Arco.game.sites.First().pos.x, giovannaD_Arco.game.sites.First().pos.y, 10, 1, 25, LaPulzellaD_Orleans.linearPropagation);
+//        giovannaD_Arco.SurvivorModeMap.ApplyInfluence_Range_Unscaled(giovannaD_Arco.game.sites.First().pos.x, giovannaD_Arco.game.sites.First().pos.y, 2, 1, 0, LaPulzellaD_Orleans.linearPropagation);
         
         
         visualizer.SetMyQueenPosition(new Position(xIndex, yIndex));

@@ -1539,7 +1539,6 @@ public class LaPulzellaD_Orleans
             
             SiteInfo newSiteInfo = new SiteInfo(siteId, new Position(x,y), radius);
             gameInfo.sites[siteId] = newSiteInfo;
-            Console.Error.Write("Radius " + radius+" ");
         }
         Console.Error.WriteLine();
     }
