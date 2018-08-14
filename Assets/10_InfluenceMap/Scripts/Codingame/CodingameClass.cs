@@ -1111,251 +1111,7 @@ public class LaPulzellaD_Orleans
     {
         int siteRadius = (int) Math.Floor(GetSiteInfo(site).radius / (double)INFLUENCEMAP_SQUARELENGTH);
         return siteRadius;
-    }
-
-//    private void ScaleAndSetInfluence(Position sitePos, double amount, int fullDistance, int decayedDistance, double distanceDecay, ref InfluenceMap map)
-//    {
-//        int scaledPosX = (int) Math.Ceiling(x*1.0 / INFLUENCEMAP_SQUARELENGTH);
-//        int scaledPosY = (int) Math.Ceiling(y*1.0 / INFLUENCEMAP_SQUARELENGTH);
-//        
-//        map.setInfluence(scaledPosX ,scaledPosY ,amount,fullDistance,decayedDistance,distanceDecay);
-//    }
-
-//    private IAction Wood1Strategy(GameState g, out InfluenceMap buildInfluenceMap)
-//    {
-//        double squareLength = INFLUENCEMAP_SQUARELENGTH; //Maximum common divisor between 60, 100, 75, 50 (movement speeds)
-//
-//        int mapWidth = (int) Math.Ceiling(1920 / squareLength)+1;
-//        int mapHeight = (int) Math.Ceiling(1000 / squareLength)+1;
-//        double minInfluence = -120;
-//        double maxInfluence = 120;
-//        buildInfluenceMap = new InfluenceMap(mapWidth, mapHeight, minInfluence, maxInfluence, new EuclideanDistanceSqr());
-//        
-//        ScaleAndApplyInfluence_Diamond(g.MyQueen, 20, QUEEN_MOVEMENT/INFLUENCEMAP_SQUARELENGTH, 0,0, buildInfluenceMap);
-//        
-//        
-//        foreach (var site in game.sites.Where(s => s.owner == Owner.Neutral))
-//        {
-//            int sitePosX = (int) Math.Ceiling(site.pos.x / squareLength);
-//            int sitePosY = (int) Math.Ceiling(site.pos.y / squareLength);
-//
-//
-//            double influenceValue = 10;// + (site.pos.Distance(myQueen.pos) / 500);  
-//            if (g.Owned_mines < MAX_CONCURRENT_MINES)
-//            {
-//                influenceValue = influenceValue + ((960 - site.pos.x) / 960.0) * 10 ;
-//            }
-//            else
-//            {
-//                //Bonus for being closer to center
-//                //nfluenceValue = 6 * 3;
-//                //70 should cover most of the map
-////                    buildInfluenceMap.applyInfluence(960, 500, influenceValue*10, 0, 70, 0.9998);
-//            }
-//            
-//            
-//            int siteRadius = (int) Math.Floor(GetSiteInfo(site).radius / squareLength);
-//            int distanceDecay = 25;
-//            
-//            
-//            //Being close to the site is good
-//            buildInfluenceMap.ApplyInfluence_Diamond(sitePosX, sitePosY, influenceValue, siteRadius+1, distanceDecay, 0.9);
-//            //Let's not move inside the radius of sites.
-//            buildInfluenceMap.ApplyInfluence_Diamond(sitePosX, sitePosY, -influenceValue, siteRadius, 0, 0);
-//            
-//            //Touching the site is very good
-//            buildInfluenceMap.ApplyInfluence_Diamond(sitePosX, sitePosY, influenceValue * 3.1, siteRadius+1, 0, 0);
-//            buildInfluenceMap.ApplyInfluence_Diamond(sitePosX, sitePosY, influenceValue * -3.1, siteRadius, 0, 0);
-//            
-//        }
-//
-//        Func<Site, bool> isBusyAttackingEnemies = t => game.units
-//            .Any(u1 => u1.owner == Owner.Friendly && u1.DistanceTo(t) < t.param2);
-//            
-//        
-//        var enemyTowers = game.sites
-//            .Where(u => u.owner == Owner.Enemy && u.structureType == StructureType.Tower)
-//            .Where(t => isBusyAttackingEnemies(t) == false);
-//        
-//        foreach (var tower in enemyTowers)
-//        {
-////                int towerPosX = (int) Math.Ceiling(tower.pos.x / squareLength);
-////                int towerPosY = (int) Math.Ceiling(tower.pos.y / squareLength);
-//            double towerInfluence = 50;
-//            //4 is health decay per turn
-//            int decayedDistance = (int) Math.Ceiling((tower.param2 - 4) / squareLength);
-////            int decayedDistance = 3;
-//
-////                mapForBuilding.applyInfluence(towerPosX, towerPosY, -towerInfluence, 3, decayedDistance, 0.8);
-////                mapForBuilding.applyInfluence(towerPosX, towerPosY, towerInfluence, 1, 0, 0);
-////                
-//            ScaleAndApplyInfluence_Diamond(tower, -towerInfluence, 3, decayedDistance, 0.95, buildInfluenceMap);
-//            ScaleAndApplyInfluence_Diamond(tower, towerInfluence, 1,0,0, buildInfluenceMap);
-//        }
-//        
-//        
-//        var bestSiteForBuilding = UnscaledBestInBox(g.MyQueen, QUEEN_MOVEMENT, buildInfluenceMap);
-//        Console.Error.WriteLine("best site for building is "+bestSiteForBuilding.Item1+", "+bestSiteForBuilding.Item2);
-//
-//        TurnAction chosenMove = null;
-//        
-//        if (bestSiteForBuilding.Item1 + bestSiteForBuilding.Item2 == 0)
-//        {
-//            chosenMove.queenAction = new Wait();
-//        }
-//        else
-//        {
-//            chosenMove.queenAction = new Move(bestSiteForBuilding.Item1, bestSiteForBuilding.Item2);
-//        }
-//
-//        if (/*closestUnbuiltMines.FirstOrDefault() != null &&*/ g.Owned_mines < MAX_CONCURRENT_MINES)
-//        {
-//            //Go To Next Mine (Tries to filter our the mined out sites.
-////                chosenMove.queenAction = new Move(GetSiteInfo(closestUnbuiltMines.First()).pos);
-//        }
-//        else if (g.Total_owned_barrackses < MAX_BARRACKSES_KNIGHTS + MAX_BARRACKSES_ARCER + MAX_BARRACKSES_GIANT || g.Owned_towers < MAX_TOWERS)
-//        {
-//            //Go to next closest site
-////                chosenMove.queenAction = new Move(GetSiteInfo(closestUnbuiltSite).pos);
-//            //Run to angle if close to enemies. Running takes priority, so we do the computations last
-//        }
-//        else
-//        {
-//            buildOrder_stateMachine_stateIndex++;
-//
-//            
-//            if (buildOrder_stateMachine_stateIndex == 0)
-//            {
-////                    MAX_BARRACKSES_ARCER++;
-////                    MAX_CONCURRENT_MINES++;
-////                    MAX_CONCURRENT_MINES++;
-//                MAX_CONCURRENT_MINES++;
-////                    MAX_BARRACKSES_KNIGHTS++;
-////                    MAX_BARRACKSES_KNIGHTS++;
-////                    MAX_BARRACKSES_GIANT++;
-////                    MAX_TOWERS++;
-////                    MAX_TOWERS++;
-//                MAX_TOWERS++;
-////                    MAX_TOWERS++;
-//            }
-//            
-//            if (buildOrder_stateMachine_stateIndex == 1)
-//            {
-////                    MAX_BARRACKSES_ARCER++;
-////                    MAX_CONCURRENT_MINES++;
-////                    MAX_CONCURRENT_MINES++;
-////                    MAX_CONCURRENT_MINES++;
-////                    MAX_BARRACKSES_KNIGHTS++;
-////                    MAX_BARRACKSES_KNIGHTS++;
-////                    MAX_BARRACKSES_GIANT++;
-//                MAX_TOWERS++;
-//                MAX_TOWERS++;
-//                MAX_TOWERS++;
-////                    MAX_TOWERS++;
-//
-//            }
-//            else if (buildOrder_stateMachine_stateIndex == 2)
-//            {
-////                    MAX_CONCURRENT_MINES++;
-//                MAX_CONCURRENT_MINES++;
-//
-//                MAX_BARRACKSES_GIANT++;
-//                MAX_BARRACKSES_KNIGHTS++;
-//                
-//            }
-//            else if (buildOrder_stateMachine_stateIndex == 3){
-//                MAX_CONCURRENT_MINES++;
-//                MAX_TOWERS++;
-//                MAX_TOWERS++;
-//                MAX_TOWERS++;
-//            }
-//        }
-//
-//        return chosenMove;
-//    }
-
-//    private InfluenceMap CreateInfluenceMap()
-//    {
-////        double squareLength = (60 * 0.4);
-//        double squareLength = INFLUENCEMAP_SQUARELENGTH; //Maximum common divisor between 60, 100, 75, 50 (movement speeds)
-//
-////        int mapWidth = (int) Math.Ceiling(1920 / squareLength)+1;
-////        int mapHeight = (int) Math.Ceiling(1000 / squareLength)+1;
-//        double minInfluence = -40;
-//        double maxInfluence = 40;
-//        InfluenceMap map = new InfluenceMap(1920, 1000, minInfluence, maxInfluence, new EuclideanDistanceSqr(), INFLUENCEMAP_SQUARELENGTH);
-//
-//        var enemyUnits = game.units
-//            .Where(u => u.owner == Owner.Enemy);
-//
-//        var myTowers = game.sites
-//            .Where(u => u.owner == Owner.Friendly && u.structureType == StructureType.Tower);
-//        
-//        var enemyTowers = game.sites
-//            .Where(u => u.owner == Owner.Enemy && u.structureType == StructureType.Tower);
-//        
-//        foreach (var tower in myTowers)
-//        {
-//            double towerInfluence = 40;
-//            //int decayedDistance = (int)Math.Floor((int)Math.Ceiling(tower.param2 / squareLength) * 1.6);
-//            int decayedDistance = (int)Math.Ceiling(tower.param2 / squareLength);
-////            int decayedDistance = 3;
-//            
-//            ScaleAndApplyInfluence_Diamond(tower, towerInfluence, 1, decayedDistance, 0.96,  map);
-//            ScaleAndApplyInfluence_Diamond(tower, -towerInfluence, 1, 0, 0,  map);
-//            
-//        }
-//        
-//        foreach (var tower in enemyTowers)
-//        {
-//            double towerInfluence = 40;
-//            int decayedDistance = (int) Math.Ceiling(tower.param2 / squareLength);
-////            int decayedDistance = 3;
-//
-//            ScaleAndApplyInfluence_Diamond(tower, -towerInfluence, 3, decayedDistance, 0.7,  map);
-//            ScaleAndApplyInfluence_Diamond(tower, towerInfluence, 1, 0, 0,  map);
-//        }
-//        
-//        //Enemy units influence
-//        foreach (var enemy in enemyUnits)
-//        {
-//            double enemyInfluence = GetEnemyInfluence(enemy);
-//            ScaleAndApplyInfluence_Diamond(enemy, enemyInfluence, 1, GetEnemyInfluenceRadius(enemy) *2, 0.9,  map);
-//
-//            var points = map.GetPointsInLine(enemy.pos.x, enemy.pos.y, game.MyQueen.pos.x, game.MyQueen.pos.y);
-//            foreach (var point in points)
-//            {
-//                map.ApplyInfluence_Range(point.x, point.y, 5, 1, 2, linearPropagation);
-//            }
-//
-//        }
-//
-//        var myMines =
-//            game.sites.Where(s => s.owner == Owner.Friendly && s.structureType == StructureType.Mine);
-//        
-//        foreach (var mine in myMines)
-//        {
-//            double mineInfluence = -5;
-//            int mineRadius = GetSiteInfo(mine).radius / INFLUENCEMAP_SQUARELENGTH;
-//            int decayedDistance = 5;
-//            
-//            ScaleAndApplyInfluence_Diamond(mine, -mineInfluence, mineRadius+1, decayedDistance, 0.9,  map);
-//            ScaleAndApplyInfluence_Diamond(mine, mineInfluence, mineRadius, 0, 0,  map);
-//        }
-//        
-//        
-////        //My Queen
-////        Unit myQueen = currGameState.MyQueen;
-////        int myQueenPosX = (int) Math.Ceiling(myQueen.pos.x / squareLength);
-////        int myQueenPosY = (int) Math.Ceiling(myQueen.pos.y / squareLength);
-//
-////        map.applyInfluence(myQueenPosX, myQueenPosY, 10.0, 0, 0, 0.0);
-//
-//        
-//        return map;
-//
-//    }
-//    
+    }   
     private void ScaleAndApplyInfluence_Diamond(Site site, double amount, int fullDistance, int decayedDistance, double distanceDecay, InfluenceMap map)
     {
         ScaleAndApplyInfluence_Diamond(site.pos, amount, fullDistance, decayedDistance, distanceDecay, map);
@@ -1782,25 +1538,6 @@ public class LaPulzellaD_Orleans
         }
         Console.Error.WriteLine();
     }
-
-//    public string InitGameInfo(string l1, string l2)
-//    {
-//        game = new GameInfo();
-//        string[] inputs;
-//        
-//        int numSites = int.Parse(l1);
-//        for (int i = 0; i < numSites; i++)
-//        {
-//            inputs = l2.Split(' ');
-//            int siteId = int.Parse(inputs[0]);
-//            int x = int.Parse(inputs[1]);
-//            int y = int.Parse(inputs[2]);
-//            int radius = int.Parse(inputs[3]);
-//        
-//            SiteInfo newSiteInfo = new SiteInfo(siteId, new Position(x,y), radius);
-//            game.sites[siteId] = newSiteInfo;
-//        }
-//    }
     
     /**
      * Only call asfter gameInfo was set
@@ -1977,23 +1714,6 @@ public class InfluenceMap
         int unitizedY = (int) Math.Round(1.0*y / unit);
         return new Position(x, y);
     }
-    
-//	public InfluenceMap(int gridWidth, int gridHeight, double minInfluence, double maxInfluence, DistanceFunc computeDistanceFunc)
-//	{
-//		this.gridWidth = gridWidth;
-//		this.gridHeight = gridHeight;
-//		this._influenceMap = new double[gridWidth,gridHeight];
-//	    this.influenceMapCells = new InfluenceMapCell[gridWidth,gridHeight];
-//	    this.isObstacle = new bool[gridWidth, gridHeight];
-//		
-//		this.computeDistanceFunc = computeDistanceFunc;
-//		this.minInfluence = minInfluence;
-//		this.maxInfluence = maxInfluence;
-//		myHashset = new HashSet<XAndY>();
-//	    
-//	    this.maxDistance = gridWidth * gridWidth + gridHeight * gridHeight;
-//
-//	}
 
     /**
      * Call this to refresh the distances based on all the added obstacles so far
@@ -2047,14 +1767,20 @@ public class InfluenceMap
         }
     }
 
+    //TODO
+//    HashSet<InfluenceMapCell> visited = new HashSet<InfluenceMapCell>();
+//    List<CellAndDistance> frontier = new List<CellAndDistance>();
+    
     public void ApplyInfluence_Range_Unscaled(int xPos, int yPos, double amount, int fullDistance, int decayDistance, PropagationFunction decayedDistanceFunc, bool ignoreObstacles = false)
     {
         InfluenceMapCell startCell = influenceMapCells[Unitize(xPos), Unitize(yPos)];
 
         HashSet<InfluenceMapCell> visited = new HashSet<InfluenceMapCell>();
         List<CellAndDistance> frontier = new List<CellAndDistance>();
+        //TODO
+//        visited.Clear();
+//        frontier.Clear();
 
-        
         double distanceToStartCell = new Position(xPos, yPos).DistanceTo(new Position(startCell.x * unit, startCell.y * unit));
         frontier.Add(new CellAndDistance(startCell,distanceToStartCell));
         visited.Add(startCell);
@@ -2608,102 +2334,6 @@ public class InfluenceMap
 		}
 	}
 
-	/// FullAmount Distance is the distance where the full amount will be applied. Then, reducedAmountDistance is the distance that will suffer from decay
-	//public void applyInfluence(int x, int y, double amount, int fullAmountDistance, int reducedAmountDistance, double distanceDecay)
-	//{
-	//	List <XAndY> alreadyExplored = new List<XAndY>();
-	//	applyInfluenceRecursive(x, y, amount, fullAmountDistance, reducedAmountDistance, distanceDecay, alreadyExplored);
-	//}
-	public void applyInfluenceRecursive(int x, int y, double amount, int fullAmountDistance, int reducedAmountDistance, double distanceDecay, List<XAndY> alreadyExplored)
-	{
-		if (fullAmountDistance < 0 && reducedAmountDistance < 0) { throw new Exception("Error"); }
-
-		try
-		{
-			double foo = _influenceMap[x,y];
-		}
-		catch 
-		{
-			//End of map
-			return;
-		}
-
-
-		//if (fullAmountDistance > 0)
-		//{
-		//	//System.err.println("x "+x+ " y "+y);
-		//	_influenceMap[x][y] = amount;
-		//	myHashset.Clear();
-		//	myHashset.AddRange(getNeighbours(x, y));
-		//	myHashset.ExceptWith(alreadyExplored);
-
-		//	foreach (int[] neighbour in getNeighbours(x, y))
-		//	{
-		//		applyInfluenceRecursive(neighbour[0], neighbour[1], amount, fullAmountDistance - 1, reducedAmountDistance, distanceDecay);
-		//	}
-		//}
-
-		//if (reducedAmountDistance > 0)
-		//{
-		//	_influenceMap[x][y] = amount;
-		//	foreach (int[] neighbour in getNeighbours(x, y))
-		//	{
-		//		applyInfluenceRecursive(neighbour[0], neighbour[1], amount * distanceDecay, fullAmountDistance, reducedAmountDistance - 1, distanceDecay);
-		//	}
-		//}
-
-		//System.err.println("x "+x+ " y "+y);
-
-
-		if(alreadyExplored.Contains(new XAndY(x, y))==false)
-		{
-			_influenceMap[x,y] += amount;
-			alreadyExplored.Add(new XAndY(x,y));
-		}
-		myHashset = new HashSet<XAndY>();
-		foreach (var neighbour in getNeighbours(x,y))
-		{
-			myHashset.Add(neighbour);
-		}
-//		myHashset.AddRange(getNeighbours(x, y));
-		myHashset.ExceptWith(alreadyExplored);
-		
-
-		foreach (XAndY neighbour in myHashset)
-		{
-			if (fullAmountDistance > 0)
-			{
-				applyInfluenceRecursive(neighbour.x, neighbour.y, amount, fullAmountDistance - 1, reducedAmountDistance, distanceDecay, alreadyExplored);
-
-			}
-			else if(reducedAmountDistance > 0)
-			{
-				applyInfluenceRecursive(neighbour.x, neighbour.y, amount * distanceDecay, fullAmountDistance, reducedAmountDistance - 1, distanceDecay, alreadyExplored);
-
-			}
-		}
-	}
-
-//	public void applyInfluence(double amount, int fullAmountDistance, int reducedAmountDistance, double distanceDecay, params int[] points)
-//	{
-//		if (points.Length % 2 == 1)
-//		{
-//		    throw new Exception("invalid number of points args");
-//		}
-//
-//		int noOfPoints = points.Length / 2;
-//
-//		amount /= noOfPoints;
-//
-//		for (int i = 0; i < noOfPoints; i++)
-//		{
-//			int pointX = points[(i * 2)];
-//			int pointY = points[(i * 2) + 1];
-//
-//			applyInfluence(pointX, pointY, amount, fullAmountDistance, reducedAmountDistance, distanceDecay);
-//		}
-//
-//	}
 	
 	//Use two opposite corners, where x1<x2 or y1<y2. They will define the bounds of the search. 
 	//The tile with highest score is selected. If multiple bests, it will select the last
