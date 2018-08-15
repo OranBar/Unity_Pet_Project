@@ -25,11 +25,14 @@ for file in glob.glob("*.html"):
     outputLines.append( outputLine0) #all game states and pulzella
 
     file_name_noextension = os.path.splitext(file)[0]
-    f = open(file_name_noextension+".csv","w+")
-    for line in outputLine0:
-        f.write(line+'\n')
+    if(os.path.exists(file_name_noextension+".csv") is False):
+        f = open(file_name_noextension+".csv","w+")
+        for line in outputLine0:
+            f.write(line+'\n')
     
-    f.close()
+        f.close()
+        print("Created file "+f.name)
+
 
     
     

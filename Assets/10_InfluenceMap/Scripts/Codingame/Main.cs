@@ -26,24 +26,25 @@ public class Main : MonoBehaviour
     
     [Space]
     
-    [ShowNonSerializedField] [ReadOnly]
+    [SerializeField] [ReadOnly]
     private string gameState_encoded;
-    [ShowNonSerializedField] [ReadOnly]
+    [SerializeField] [ReadOnly]
     private string pulzella_encoded;
     
     public InfluenceMapVisualizer visualizer;
     private int squareLength;
 
     public Slider turnSlider;
+    public Text sliderTurnLabel;
 
     private void Start()
     {
-        RunTurn();
+        ParseGame();
+//        RunTurn();
+        RunTargetTurn();
     }
 
     
-    
-
     public bool runTurn;
 
     private void Update()
@@ -81,9 +82,14 @@ public class Main : MonoBehaviour
         
         gameInfo_encoded = lines[0];
 
-        turnSlider.maxValue = (lines.Length-1)/2;
-        turnSlider.onValueChanged.AddListener(sliderValue => RunTargetTurn(sliderValue));
-        
+        turnSlider.maxValue = (lines.Length-1);    //max value is all my turns, so it's half of the max turns. *
+        turnSlider.onValueChanged.AddListener(sliderValue =>
+        {
+            RunTargetTurn(sliderValue);
+            sliderTurnLabel.text = (turnSlider.value * 2) + "/" + (turnSlider.maxValue*2);    // * That's why we multiply by 2
+        });
+
+        sliderTurnLabel.text = "0/" +turnSlider.maxValue*2;
         Debug.Log("Game Parsed");
     }
 
@@ -91,12 +97,13 @@ public class Main : MonoBehaviour
 
 
     public int turnToLoad;
+    
     [Button()]
     private void RunTargetTurn()
     {
         //First line is game info. we skip it
-        gameState_and_pulzella_encoded = lines[1+ turnToLoad / 2];
-        Debug.Log("Turn loaded");
+        gameState_and_pulzella_encoded = lines[1+ turnToLoad*2];
+        Debug.Log("Turn "+(turnToLoad*2)+" loaded");
         RunTurn();
     }
 
@@ -104,7 +111,8 @@ public class Main : MonoBehaviour
     {
         if (turnToLoad+2 <= (lines.Length - 1) / 2)
         {
-            RunTargetTurn(turnToLoad+2);
+            //This calls RunTargetTurn
+            turnSlider.value += 2;
         }
     }
     
@@ -112,7 +120,8 @@ public class Main : MonoBehaviour
     {
         if (turnToLoad-2 >= 0)
         {
-            RunTargetTurn(turnToLoad-2);
+            //This calls RunTargetTurn
+            turnSlider.value += 2;
         }
     }
     
@@ -160,7 +169,8 @@ public class Main : MonoBehaviour
             site.pos = giovannaD_Arco.gameInfo.sites[site.siteId].pos;
         }
 
-        TurnAction action = giovannaD_Arco.think();
+        Tuple<int, int> chosenTile = null;
+        TurnAction action = giovannaD_Arco.think(out chosenTile);
         
 //        Profiler.EndSample();
         
@@ -176,8 +186,8 @@ public class Main : MonoBehaviour
 //        giovannaD_Arco.SurvivorModeMap.ApplyInfluence_Range_Unscaled(myQueenPosition.x, myQueenPosition.y, 10, 2, 5, LaPulzellaD_Orleans.linearPropagation);
         
 //        giovannaD_Arco.SurvivorModeMap.ApplyInfluence_Range_Unscaled(giovannaD_Arco.game.sites.First().pos.x, giovannaD_Arco.game.sites.First().pos.y, 2, 1, 0, LaPulzellaD_Orleans.linearPropagation);
-        
-        
+
+        visualizer.SetChosenTile(new Position(chosenTile.Item1, chosenTile.Item2));
         visualizer.SetMyQueenPosition(new Position(xIndex, yIndex));
         foreach (var enemy in giovannaD_Arco.game.EnemyUnits.Where(u=>u.unitType != UnitType.Queen))
         {
