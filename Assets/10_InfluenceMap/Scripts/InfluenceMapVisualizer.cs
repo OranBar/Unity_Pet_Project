@@ -62,6 +62,7 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 	private Position myQueenPosition = null;
 	private List<Position> myEnemiesPositions = new List<Position>();
 	private Position enemyQueenPosition;
+	private Position chosenTilePosition;
 
 
 	public bool EnableMouseInputCells
@@ -219,7 +220,7 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 		{
 			int sign = Math.Sign(Input.mouseScrollDelta.y);
 			mouseoverRange = mouseoverRange + sign;
-			UpdateCells();
+			UpdateCells_AccordingToInfluence();
 		}
 	}
 
@@ -314,7 +315,7 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 	#endregion
 	
 	//Alligns the unity 3d objects with the InfluenceMap's current state
-	public void UpdateCells()
+	public void UpdateCells_AccordingToInfluence()
 	{
 		for (int y = 0; y < height; y++)
 		{
@@ -330,20 +331,7 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 			}
 		}
 
-		if (myQueenPosition != null)
-		{
-			InfluenceMapCellsUnity[myQueenPosition.x, myQueenPosition.y].ChangeColor(Color.green);
-		}
 		
-		if (enemyQueenPosition != null)
-		{
-			InfluenceMapCellsUnity[enemyQueenPosition.x, enemyQueenPosition.y].ChangeColor(Color.magenta);
-		}
-
-		foreach (var position in myEnemiesPositions)
-		{
-			InfluenceMapCellsUnity[position.x, position.y].ChangeColor(Color.red);
-		}
 		
 	}
 
@@ -375,5 +363,46 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 	public void SetEnemyQueenPosition(Position position)
 	{
 		enemyQueenPosition = position;
+	}
+
+	public void SetChosenTile(Position position)
+	{
+		chosenTilePosition = position;
+	}
+	
+	
+	public List<Position> highlightedTiles = new List<Position>();
+
+	public void HighlightTile(Position pos, Color c)
+	{
+		InfluenceMapCellsUnity[pos.x, pos.y].ChangeColor(c);
+		highlightedTiles.Add(pos);
+	}
+
+	public void HighlightsOff()
+	{
+		foreach (var tile in highlightedTiles)
+		{
+			InfluenceMapCellsUnity[tile.x, tile.y].ChangeColor(Color.black);
+		}
+		highlightedTiles.Clear();
+	}
+
+	public void SetSquareHighlights(GameState game, Tuple<int, int> chosenTile, Position pastChosenTile)
+	{
+		HighlightsOff();
+		
+		HighlightTile(InflMap.Unitize(game.MyQueen.pos), Color.green);	//My Queen
+
+		HighlightTile(new Position(chosenTile.Item1, chosenTile.Item2), Color.white);	//Chosen tile
+        
+		foreach (var enemy in game.EnemyUnits.Where(u=>u.unitType != UnitType.Queen))	//Enemies
+		{
+			HighlightTile(InflMap.Unitize(enemy.pos), Color.blue);
+		}
+        
+		HighlightTile(InflMap.Unitize(game.EnemyQueen.pos), Color.magenta);	//Enemy Queen
+		
+		HighlightTile(pastChosenTile, Color.red);
 	}
 }
