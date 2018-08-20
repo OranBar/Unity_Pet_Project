@@ -1,0 +1,92 @@
+diff a/Assets/10_InfluenceMap/Scripts/Codingame/CodingameClass.cs b/Assets/10_InfluenceMap/Scripts/Codingame/CodingameClass.cs	(rejected hunks)
+@@ -2052,59 +2052,68 @@
+         InfluenceMapCell startCell = influenceMapCells[Unitize(xPos), Unitize(yPos)];
+ 
+         HashSet<InfluenceMapCell> visited = new HashSet<InfluenceMapCell>();
+-        List<Tuple<InfluenceMapCell, double>> frontier = new List<Tuple<InfluenceMapCell, double>>();
++        List<CellAndDistance> frontier = new List<CellAndDistance>();
+ 
+         
+         double distanceToStartCell = new Position(xPos, yPos).DistanceTo(new Position(startCell.x * unit, startCell.y * unit));
+-        frontier.Add(Tuple.Create(startCell,distanceToStartCell));
++        frontier.Add(new CellAndDistance(startCell,distanceToStartCell));
+         visited.Add(startCell);
++
++        int steps = 0, obstacleSteps = 0;
+         
+-        while (frontier.Any(f => isObstacle[f.Item1.x, f.Item1.y]))
++        Stopwatch sw = new Stopwatch();
++//        sw.Start();
++        while (frontier.Any(f => isObstacle[f.cell.x, f.cell.y]))
+         {
+-            var currFrontierCellInfo = frontier.First(f => isObstacle[f.Item1.x, f.Item1.y]);
++            obstacleSteps++;
++            var currFrontierCellInfo = frontier.First(f => isObstacle[f.cell.x, f.cell.y]);
+             frontier.Remove(currFrontierCellInfo);
+             
+-            InfluenceMapCell currCell = currFrontierCellInfo.Item1;
+-            double distance = currFrontierCellInfo.Item2;
++            InfluenceMapCell currCell = currFrontierCellInfo.cell;
++            double distance = currFrontierCellInfo.distance;
+             
+-            if (currCell.neighboursAndDistance.Count != 0)
++            if (currCell.neighboursAndDistance.Length != 0)
+             {
+-                foreach (var neighbourAndDistance in currCell.neighboursAndDistance)
++                for (var index = 0; index < currCell.neighboursAndDistance.Length; index++)
+                 {
+-                    if (visited.Contains(neighbourAndDistance.Item1) == false)
++                    var neighbourAndDistance = currCell.neighboursAndDistance[index];
++                    if (visited.Contains(neighbourAndDistance.cell) == false)
+                     {
+-                        var neighbour = neighbourAndDistance.Item1;
+-                        var distanceToCell = neighbourAndDistance.Item2;
++                        var neighbour = neighbourAndDistance.cell;
++                        var distanceToCell = neighbourAndDistance.distance;
++
+ 
+-                       
+-                        var newFrontierCandidate = Tuple.Create(neighbour, distance + distanceToCell);
++                        var newFrontierCandidate = new CellAndDistance(neighbour, distance + distanceToCell);
+                         visited.Add(neighbour);
+                         frontier.Add(newFrontierCandidate);
+-                        
+                     }
+                 }
+             }
+             else
+             {
+-                foreach (var neighbourAndDistance in currCell.neighbourObstaclesAndDistance)
++                for (var index = 0; index < currCell.neighbourObstaclesAndDistance.Length; index++)
+                 {
+-                    if (visited.Contains(neighbourAndDistance.Item1) == false)
++                    var neighbourAndDistance = currCell.neighbourObstaclesAndDistance[index];
++                    if (visited.Contains(neighbourAndDistance.cell) == false)
+                     {
+-                        var neighbour = neighbourAndDistance.Item1;
+-                        var distanceToCell = neighbourAndDistance.Item2;
++                        var neighbour = neighbourAndDistance.cell;
++                        var distanceToCell = neighbourAndDistance.distance;
+ 
+-                       
+-                        var newFrontierCandidate = Tuple.Create(neighbour, distance + distanceToCell);
++
++                        var newFrontierCandidate = new CellAndDistance(neighbour, distance + distanceToCell);
+                         visited.Add(neighbour);
+                         frontier.Add(newFrontierCandidate);
+-                    
+                     }
+                 }
+             }
+         }
+ 
++//        sw.Stop();
++//        Console.Error.WriteLine("Find nonObstacles={0}",sw.Elapsed);
++//        sw.Reset();
++        
+         //TODO: ricalcola ristanze delle celle nella frontiera
+-        frontier = frontier.Select(f => Tuple.Create(f.Item1, 0.0)).ToList();
++        frontier = frontier.Select(f => new CellAndDistance(f.cell, 0.0)).ToList();
+ 
+ //        foreach (var f in frontier)
+ //        {
