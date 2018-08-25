@@ -20,11 +20,8 @@ for file in glob.glob("*.html"):
     outputLine1 = re.findall('trustHtml"><div class="outputLine">\s?.+?\s?\</div><div class="outputLine">\s?(.+?)\s?\</div', file_content)[0]
     
     outputFirstAndLastLines = re.findall('trustHtml">(?:<div class="outputLine">(\s?.+?\s?)\<\/div>)(?:<div class="outputLine">\s?.+?\s?\<\/div>)*<div class="outputLine">\s?(.+?)\s?\<\/div><\/pre><!-- end ngIf: ::frame.stderr -->', file_content)
-    # outputLineLast = re.findall('trustHtml">(?:<div class="outputLine">\s?.+?\s?\<\/div>)*<div class="outputLine">\s?(.+?)\s?\<\/div><\/pre><!-- end ngIf: ::frame.stderr -->', file_content)
     # outputLine1_ = re.findall('\|</div><div class="outputLine">\s?(.+?)\s?\</div', file_content)
     
- 
-    # print (outputLine0[0])  #game info
     # print (outputLine1[0])
     # print ( outputLine1)
 
@@ -32,10 +29,6 @@ for file in glob.glob("*.html"):
     # print ( outputFirstAndLastLines[0][0])
     # print ( outputFirstAndLastLines[4][1])
 
-    # outputLines.append (outputLine0[0])  #game info
-    # outputLines.append ( outputLineLast ) #Each turn is a two lines: one is all game states and pulzella separated by '-', other is chosen tile coordinates
-
-    # outputLines.append (outputLine0[0])  #game info
     # print ( outputLineLast ) #all game states and pulzella
 
     f = open(file_name_noextension+".csv","w+")

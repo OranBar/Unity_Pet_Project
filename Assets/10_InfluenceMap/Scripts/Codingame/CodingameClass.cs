@@ -742,7 +742,8 @@ public class LaPulzellaD_Orleans
     public static int TOWERCOUNT_GIANT_TRIGGER = 4;
 
     //Try using amount numbers bigger than radius. And then we think about changing this function to something more like..... 
-    public static PropagationFunction linearDecay => (amount, distance, decay) => amount - amount * 0.7 * (distance );
+    public static PropagationFunction linearDecay => (amount, distance, decay) => amount - (distance * decay); //If amount is less than distance, values will become negative towards the end! No good.    
+    
     public static PropagationFunction linearPropagation => (amount, distance, maxDistance) => amount - amount * (distance / maxDistance);
     public static PropagationFunction polynomial2Propagation => (amount, distance, maxDistance) => (1 - Math.Pow(distance / maxDistance, 2)) * amount;
     public static PropagationFunction polynomial4Propagation => (amount, distance, maxDistance) => (1 - Math.Pow(distance / maxDistance, 4)) * amount;
@@ -976,7 +977,7 @@ public class LaPulzellaD_Orleans
             int towerRange = (int) Math.Ceiling(tower.param2 / squareLength);
                 
 //            ScaleAndApplyInfluence_Range(tower.pos, -25, towerRange - siteRadius, 0, linearPropagation, influenceMap);
-            influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, -25, towerRange - siteRadius, 0, linearPropagation, true);
+            influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, -25, towerRange - siteRadius, 0, linearDecay, true);
 //            ScaleAndApplyInfluence_Circle(tower.pos, -25, towerRange, 0, linearPropagation, influenceMap);
 //            ScaleAndApplyInfluence_Circle(tower.pos, -25, 3, 0, linearPropagation, influenceMap);
 
@@ -1002,12 +1003,12 @@ public class LaPulzellaD_Orleans
                 var towerHp_norm = 1 - (towerHp / 800);     //[0,1]
                 // Towers covering a tower make it better. If there are more enemies, then it should be even better
 
-                influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, enemyThreat/2, 2, towerRange - siteRadius + 2, linearPropagation);
+                influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, enemyThreat/2, 2, towerRange - siteRadius + 2, linearDecay);
 
                 if (towerHp_norm <= 0.3)
                 {
-                    influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, towerHp_norm + favorCloseSitesOverOpenSquares, 1, 0, linearPropagation);
-                    influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, towerHp_norm, 0, 5 - siteRadius + (int)(towerHp_norm * 10), linearPropagation);
+                    influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, towerHp_norm + favorCloseSitesOverOpenSquares, 1, 0, linearDecay);
+                    influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, towerHp_norm, 0, 5 - siteRadius + (int)(towerHp_norm * 10), linearDecay);
                 }
 //                else if (towerHp_norm <= 0.6)
 //                {
@@ -1037,7 +1038,7 @@ public class LaPulzellaD_Orleans
         {
             double enemyInfluence = GetEnemyInfluence(enemy);
 //            ScaleAndApplyInfluence_Range(enemy.pos, enemyInfluence, 1, GetEnemyInfluenceRadius(enemy) *4, linearPropagation, influenceMap);
-            influenceMap.ApplyInfluence_Range_Unscaled(enemy.pos.x, enemy.pos.y, -20, 2, 18, linearPropagation);
+            influenceMap.ApplyInfluence_Range_Unscaled(enemy.pos.x, enemy.pos.y, -20, 2, 18, linearDecay);
 
         }
         sw.Stop();
@@ -1065,7 +1066,7 @@ public class LaPulzellaD_Orleans
             if (site.structureType == StructureType.Mine && site.owner == Owner.Friendly)
             {
 //                ScaleAndApplyInfluence_Circle(site.pos, -120, siteRadius+1, 0, polynomial2Propagation, influenceMap);
-                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, enemyThreat * 2, 0, 3, linearPropagation);
+                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, enemyThreat * 2, 0, 3, linearDecay);
             }
 
 //            if (site.structureType == StructureType.Barracks && site.owner == Owner.Enemy && site.param1 != 0)
@@ -1082,13 +1083,16 @@ public class LaPulzellaD_Orleans
                 double distanceToCenter_norm = 1 - NormalizeDistance(distanceToCenter);
 
                 influence = (1.75 + 1 * distanceToCenter_norm) * 2;
+
+                int decayRange = 12;
+                influence = decayRange + influence;
                 
             
                 //TODO: maybe do siteRadius and siteRadius-1
                 
 //                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, influence/2 * favorCloseSitesOverOpenSquares, siteRadius+1, 7, polynomial2Propagation);
-                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, influence+5, 1, 0, polynomial2Propagation);
-                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, influence, 1, 12, polynomial2Propagation);
+                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, influence * 2, 1, 0, linearDecay);
+                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, influence, 1, decayRange, linearDecay);
 
             }
         }
@@ -1889,7 +1893,8 @@ public class InfluenceMap
             
             if (distance > fullDistance)
             {
-                cellAmount = decayedDistanceFunc(amount, distance, maxDistance_Manh);
+                double linearDecay = 0.7;
+                cellAmount = decayedDistanceFunc(amount, distance-fullDistance, linearDecay);
             }
 
             if (isObstacle[currCell.x, currCell.y] == false)

@@ -95,7 +95,7 @@ public class Main : MonoBehaviour
         }
 
         turnSlider.minValue = 1; 
-        turnSlider.maxValue = (parsedGame_turns.Count);    //max value is all my turns, so it's half of the max turns. *
+        turnSlider.maxValue = (parsedGame_turns.Count * 2);    //max value is all my turns, so it's half of the max turns. *
         turnSlider.onValueChanged.AddListener(sliderValue =>
         {
             RunTargetTurn(sliderValue);
@@ -197,7 +197,18 @@ public class Main : MonoBehaviour
 //        Profiler.EndSample();
         
         Debug.Log("chosen action "+action.queenAction);
+        
+        //Test----------------------------------------------------
+        giovannaD_Arco.SurvivorModeMap.ResetMapToZeroes();
+        var myQueenPosition = giovannaD_Arco.game.MyQueen.pos;
+        var enemmyQueenPosition = giovannaD_Arco.game.EnemyQueen.pos;
 
+        giovannaD_Arco.SurvivorModeMap.ApplyInfluence_Range_Unscaled(myQueenPosition.x, myQueenPosition.y, 10, 5, 10, LaPulzellaD_Orleans.linearDecay);
+        
+        giovannaD_Arco.SurvivorModeMap.ApplyInfluence_Range_Unscaled(enemmyQueenPosition .x, enemmyQueenPosition .y, 10, 0, 20, LaPulzellaD_Orleans.linearDecay);
+        //----------------------------------------------------
+        
+        
         visualizer.HighlightsOff();
         
         visualizer.SetNewInfluenceMap(giovannaD_Arco.SurvivorModeMap);
@@ -205,8 +216,7 @@ public class Main : MonoBehaviour
         
         visualizer.SetSquareHighlights(giovannaD_Arco.game, chosenTile, parsedGame_turns[turnToRun].chosenTile);
         
-//        
-////        giovannaD_Arco.SurvivorModeMap.ResetMapToZeroes();
+        
 //        int xIndex, yIndex;
 //
 //        var myQueenPosition = giovannaD_Arco.game.MyQueen.pos;
