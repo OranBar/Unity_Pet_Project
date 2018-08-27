@@ -91,6 +91,29 @@ public class Position
     {
         return Math.Sqrt(Math.Pow((this.x - distanceTo.x), 2) + Math.Pow((this.y - distanceTo.y), 2));
     }
+
+    public override bool Equals(object obj)
+    {
+        Position other = obj as Position;
+        if (other == null)
+        {
+            return false;
+        }
+        return this.x == other.x && this.y == other.y;
+    }
+    
+    public static bool operator ==(Position p1, Position p2)
+    {
+        if ((object) p1 == null)
+            return ((object)p2 == null);
+
+        return p1.Equals(p2);
+    }
+    
+    public static bool operator != (Position p1, Position p2)
+    {
+        return !(p1 == p2);
+    }
 }
 
 #region IActions
@@ -811,7 +834,7 @@ public class LaPulzellaD_Orleans
         GameState g = game;
 
         chosenTile = null;
-        var bestMove = SurvivorMode(g, out chosenTile);
+        Move bestMove = (Move) SurvivorMode(g, out chosenTile);
         bool isSafeToBuild = g.EnemyUnitsInRangeOfMyQueen(ENEMY_CHECK_RANGE) < 2;
         
         //If we are touching a site, we do something with it
@@ -1045,13 +1068,6 @@ public class LaPulzellaD_Orleans
         Console.Error.WriteLine("Enemy Units ={0}",sw.ElapsedMilliseconds);
         sw.Reset();
         
-//        List<Site> influencingSites = g.sites.Where(s => s.owner==Owner.Neutral).ToList();
-
-//        if (g.Owned_mines < 3 && g.Owned_towers >= 5 + g.Owned_mines)
-//        {
-//            influencingSites.    
-//        }
-//        
         sw.Start();
         foreach (var site in g.sites)
         {
@@ -1711,6 +1727,10 @@ public class InfluenceMap
         this.maxDistance_EuclSqr = mapToCopy.maxDistance_EuclSqr;
         this.maxDistance_Eucl = mapToCopy.maxDistance_Eucl;
         this.maxDistance_Manh = mapToCopy.maxDistance_Manh;
+	    
+#if UNITY_EDITOR
+	    affectors = mapToCopy.affectors;
+#endif
 	}
     
     public InfluenceMap(int actualWidth, int actualHeight, double minInfluence, double maxInfluence, DistanceFunc computeDistanceFunc, int unit)
@@ -1733,7 +1753,10 @@ public class InfluenceMap
         this.maxDistance_Eucl = Math.Sqrt(maxDistance_EuclSqr);
 //        this.maxDistance_Manh = new ManhattanDistance().computeDistance(0, 0, gridWidth, gridHeight);
         this.maxDistance_Manh = 50;
-
+        
+#if UNITY_EDITOR
+        affectors = new List<Affector>[gridWidth,gridHeight];
+#endif
     }
     
     public int Unitize(int coord)
@@ -1799,6 +1822,35 @@ public class InfluenceMap
         }
     }
 
+    private List<Affector>[,] affectors;
+    
+    protected void ApplyInfluenceToTile(Position p, double amount, Position generatingCell)
+    {
+        int x = p.x, y = p.y;
+        
+        #if UNITY_EDITOR
+        if (affectors[x, y] == null)
+        {
+            affectors[x, y] = new List<Affector>();
+        }
+        
+        affectors[x, y].Add(new Affector(generatingCell, amount));
+        #endif
+        _influenceMap[x, y] += amount;
+
+    }
+
+    public List<Affector> GetTileAffectors(int x, int y)
+    {
+        return affectors[x, y];
+    }
+    
+    public List<Affector> GetTileAffectors(Position tile)
+    {
+        return GetTileAffectors(tile.x, tile.y);
+    }
+    
+    
     //TODO
     HashSet<InfluenceMapCell> visited = new HashSet<InfluenceMapCell>();
     List<CellAndDistance> frontier = new List<CellAndDistance>();
@@ -1880,6 +1932,7 @@ public class InfluenceMap
 
         
         sw.Start();
+        Position generatingCellPos = new Position(startCell.x, startCell.y);
         while (frontier.Count > 0)
         {
             steps++;
@@ -1899,7 +1952,9 @@ public class InfluenceMap
 
             if (isObstacle[currCell.x, currCell.y] == false)
             {
-                _influenceMap[currCell.x, currCell.y] += cellAmount;
+//                _influenceMap[currCell.x, currCell.y] += cellAmount;
+                var currCellPos = new Position(currCell.x, currCell.y);
+                ApplyInfluenceToTile(currCellPos, cellAmount, generatingCellPos);
             }
             
             foreach (var neighbourAndDistance in currCell.neighboursAndDistance)
@@ -2507,5 +2562,30 @@ public class InfluenceMap
 			}
 		}
 		return currBest;
+    }
+
+   
+}
+
+public class Affector
+{
+    public Position tile;
+    public double influenceVal;
+
+    public Affector(Position tile, double influenceVal)
+    {
+        this.tile = tile;
+        this.influenceVal = influenceVal;
+    }
+        
+    public Affector(int x, int y, double influenceVal)
+    {
+        this.tile = new Position(x,y);
+        this.influenceVal = influenceVal;
+    }
+
+    public override string ToString()
+    {
+        return "(Pos:"+tile + ", Val:"+ influenceVal+")";
     }
 }

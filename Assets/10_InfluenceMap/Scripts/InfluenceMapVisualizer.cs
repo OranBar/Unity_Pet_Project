@@ -8,17 +8,18 @@ using UnityEngine.UI;
 using NaughtyAttributes;
 using OranUnityUtils;
 
-public class InfluenceMapVisualizer : MonoBehaviour {
+public class InfluenceMapVisualizer : MonoBehaviour
+{
 
 	public int width, height;
 	public GameObject cellPrefab;
 
 	public Gradient influenceColorGradient;
 
-	
+
 
 //	public int influenceMapUnit = 25;
-	public int mouseoverRange = 10;
+	public int mouseoverRange = 5;
 	private List<Text> labels = new List<Text>();
 
 
@@ -29,12 +30,13 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 		get { return this._influenceMap; }
 		private set { _influenceMap = value; }
 	}
-	
+
 	private InfluenceMap _influenceMap;
 
-	public InfluenceMapCell_Unity[,]  InfluenceMapCellsUnity;
+	public InfluenceMapCell_Unity[,] InfluenceMapCellsUnity;
 
-	public void applyInfluence(int x, int y, int fullDistance, int reducedDistance, double distanceDecay, double influence)
+	public void applyInfluence(int x, int y, int fullDistance, int reducedDistance, double distanceDecay,
+		double influence)
 	{
 		InflMap.ApplyInfluence_Diamond(x, y, influence, fullDistance, reducedDistance, distanceDecay);
 	}
@@ -47,23 +49,26 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 	public double maxInfluence;
 	public double minInfluence;
 
-	[SerializeField]
-	private bool _enableMouseInputCells;
-	[SerializeField]
-	private bool _showNumbers;
+	[SerializeField] private bool _enableMouseInputCells;
+	[SerializeField] private bool _showNumbers;
 
 	private InfluenceMapCell_Unity currTile_mouseover;
 	private InfluenceMapCell_Unity currBestTile_mouseover, currWorstTile_mouseover;
 	private InfluenceMapCell_Unity prevTile_mouseover;
 	private InfluenceMapCell_Unity prevBestTile_mouseover, prevWorstTile_mouseover;
-	
-	
+
+
 	public Color defaultTextColor, bestTextColor, worstTextColor;
 	private Position myQueenPosition = null;
 	private List<Position> myEnemiesPositions = new List<Position>();
 	private Position enemyQueenPosition;
 	private Position chosenTilePosition;
 
+	
+	private List<InfluenceMapCell_Unity> affectorsCurrentlyShowing = new List<InfluenceMapCell_Unity>();
+	private bool showAffectors = false;
+
+	
 
 	public bool EnableMouseInputCells
 	{
@@ -74,12 +79,12 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 			{
 				return;
 			}
-			
+
 			_enableMouseInputCells = value;
 			EnableMouseInput(value);
 		}
 	}
-	
+
 	public bool ShowNumbers
 	{
 		get { return _showNumbers; }
@@ -89,7 +94,7 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 			{
 				return;
 			}
-			
+
 			_showNumbers = value;
 			EnableNumbers(value);
 		}
@@ -100,7 +105,8 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 	{
 		//By defualt, we create an empty one.
 		InfluenceMapCellsUnity = new InfluenceMapCell_Unity[width, height];
-		_influenceMap = new InfluenceMap(width, height, minInfluence, maxInfluence, new EuclideanDistanceSqr(), LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH);
+		_influenceMap = new InfluenceMap(width, height, minInfluence, maxInfluence, new EuclideanDistanceSqr(),
+			LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH);
 		ReferenceCells();
 	}
 
@@ -126,6 +132,86 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 	}
 
 	public void OnCellMouseOver(InfluenceMapCell_Unity mouseOverCellUnity)
+	{
+
+		if (mouseOverCellUnity != currTile_mouseover)
+		{
+			HideAffectors();
+			if (showAffectors)
+			{
+				ShowAffectors(mouseOverCellUnity);
+			}
+		}
+
+		if (Input.GetKey(KeyCode.LeftControl))
+		{
+			if (mouseOverCellUnity != currTile_mouseover)
+			{
+				ColorBestAndWorst_CellLabels(mouseOverCellUnity);
+			}
+
+			//Update range if mouse scroll (ctrl is already pressed if we're here, because of the check done before calling the delegate by influencemapcell
+			if (Input.mouseScrollDelta.y != 0)
+			{
+				int sign = Math.Sign(Input.mouseScrollDelta.y);
+				mouseoverRange = mouseoverRange + sign;
+				UpdateCells_AccordingToInfluence();
+			}
+		}
+
+		if (Input.GetKeyUp(KeyCode.A))
+		{
+			showAffectors = !showAffectors;
+			if (showAffectors)
+			{
+				Debug.Log("showing affectors ");
+				ShowAffectors(mouseOverCellUnity);
+			}
+			else
+			{
+				Debug.Log("hiding affectors ");
+				HideAffectors();
+			}
+		}
+		
+		currTile_mouseover = mouseOverCellUnity;
+	}
+
+		
+	private void ShowAffectors(InfluenceMapCell_Unity mouseOverCellUnity)
+	{
+		//Get Affectors
+		var mouseOverTileAffectors = InflMap.GetTileAffectors(mouseOverCellUnity.x, mouseOverCellUnity.y);
+		//Color Affectors
+		if (mouseOverTileAffectors.IsNullOrEmpty())
+		{
+			return;
+		}
+		
+		foreach (var affector in mouseOverTileAffectors)
+		{
+			InfluenceMapCell_Unity cell = InfluenceMapCellsUnity[affector.tile.x, affector.tile.y];
+			cell.ChangeColor(Color.black);
+			cell.influenceLabel.color = Color.red;
+			cell.influenceLabel.text = affector.influenceVal.ToString(".0");
+			
+			affectorsCurrentlyShowing.Add(cell);
+//			Debug.Log("Affector "+affector);
+		}
+	}
+	
+	private void HideAffectors()
+	{
+		//Color Affectors
+		foreach (InfluenceMapCell_Unity cell in affectorsCurrentlyShowing)
+		{
+			UpdateCell_AccordingToInfluence(cell.x, cell.y);
+		}
+		affectorsCurrentlyShowing.Clear();
+	}
+
+
+	private void ColorBestAndWorst_CellLabels(InfluenceMapCell_Unity mouseOverCellUnity)
 	{
 		//Color cells in range of mouseovercell
 		int x1 = Mathf.Max(mouseOverCellUnity.x - mouseoverRange, 0);
@@ -213,15 +299,8 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 		labels.Except(adjacentLabels).ForEach(l => SetLabelColorAlpha(l, 0));
 		adjacentLabels.ForEach(l => SetLabelColorAlpha(l, 1));
 		
-		currTile_mouseover = mouseOverCellUnity;
 		
-		//Update range if mouse scroll (ctrl is already pressed if we're here, because of the check done before calling the delegate by influencemapcell
-		if (Input.mouseScrollDelta.y != 0)
-		{
-			int sign = Math.Sign(Input.mouseScrollDelta.y);
-			mouseoverRange = mouseoverRange + sign;
-			UpdateCells_AccordingToInfluence();
-		}
+		
 	}
 
 	private void SetLabelColorAlpha(Text l, float alpha)
@@ -321,18 +400,20 @@ public class InfluenceMapVisualizer : MonoBehaviour {
 		{
 			for (int x = 0; x < width; x++)
 			{
-				var amount = InflMap[x, y];
-				
-				float normalizedAmount = Mathf.InverseLerp((float)minInfluence, (float)maxInfluence, (float)amount);
-				var color = influenceColorGradient.Evaluate(normalizedAmount);
-				InfluenceMapCellsUnity[x, y].ChangeColor(color);
-				InfluenceMapCellsUnity[x, y].UpdateLabel();
-				//influenceMapCells[x, y].GetComponent<Renderer>().material.color = color;
+				UpdateCell_AccordingToInfluence(x, y);
 			}
 		}
-
+	}
+	
+	public void UpdateCell_AccordingToInfluence(int x, int y)
+	{
+		var amount = InflMap[x, y];
 		
-		
+		float normalizedAmount = Mathf.InverseLerp((float)minInfluence, (float)maxInfluence, (float)amount);
+		var color = influenceColorGradient.Evaluate(normalizedAmount);
+		InfluenceMapCellsUnity[x, y].ChangeColor(color);
+		InfluenceMapCellsUnity[x, y].UpdateLabel();
+		//influenceMapCells[x, y].GetComponent<Renderer>().material.color = color;
 	}
 
 	public void EnableMouseInput(bool enable)

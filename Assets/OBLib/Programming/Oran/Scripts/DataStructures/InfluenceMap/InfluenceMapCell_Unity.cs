@@ -66,10 +66,7 @@ public class InfluenceMapCell_Unity : MonoBehaviour {
 
 	private void OnMouseOver()
 	{
-		if (Input.GetKey(KeyCode.LeftControl))
-		{
-			OnMouseOver_Delegate?.Invoke(this);
-		}
+		OnMouseOver_Delegate?.Invoke(this);
 	}
 
 	public void ChangeColor(Color color)
@@ -81,7 +78,7 @@ public class InfluenceMapCell_Unity : MonoBehaviour {
 	{
 		if (influenceValue != 0)
 		{
-			influenceLabel.text = influenceValue+"";
+			influenceLabel.text = influenceValue.ToString(".00");
 		}
 		else
 		{
