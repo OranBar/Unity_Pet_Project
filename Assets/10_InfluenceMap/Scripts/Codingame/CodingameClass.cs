@@ -774,7 +774,7 @@ public class LaPulzellaD_Orleans
     //Using this linear function, it is not the values that determine the move, but the fall offs, but the distance only. 
     //It is no good because far off sources have the same fall-off as close ones, meaning that they pull too much in the wrong direction.
     //That's why I guess we need poly?
-    public static PropagationFunction linearDecay => (amount, distance, decay) => amount - (distance * decay); //If amount is less than distance, values will become negative towards the end! No good.    
+    public static PropagationFunction linearDecay => (amount, distance, maxDistance) => amount - (distance/maxDistance * amount * 0.9); //If amount is less than distance, values will become negative towards the end! No good.    
     //TODO: make linear and poly swappable again. 
     public static PropagationFunction polyDecay => (amount, distance, maxDistance) => (1 - Math.Pow(distance / maxDistance, 0.5)) * amount;
      
@@ -799,6 +799,7 @@ public class LaPulzellaD_Orleans
 
     private InfluenceMap cacheMap_SitesAndObstacles;
     private List<long> totals = new List<long>();
+    private bool shouldEmpowerTower;
 
     public InfluenceMap SurvivorModeMap
     {
@@ -863,7 +864,18 @@ public class LaPulzellaD_Orleans
 
         bool standingStill = (bestMove.targetPos == new Position(queenX, queenY));
         
-        if (g.TouchingNeutralSite || standingStill)
+        
+        var distanceToChosenMovePosition = bestMove?.targetPos.DistanceTo(myQueenPosition) ?? 0;
+
+        Console.Error.WriteLine(distanceToChosenMovePosition);
+        if (distanceToChosenMovePosition < 30)
+        {
+            standingStill = true;
+            Console.Error.WriteLine("StandingStill = true");
+        }
+        
+        
+        if (g.TouchingNeutralSite)
         {
             //Build
             var chosenBuildMove = ChoseBuildMove(g);
@@ -878,10 +890,10 @@ public class LaPulzellaD_Orleans
                 Console.Error.WriteLine("Standing still");
             }
         }
-        else if (SurvivorModeMap[queenX, queenY] >= 0)
-        {
-            //Do nothing. Will trigger if(chosenMove.queenAction is Wait) as next instruction, picking the best move since it's too dangerous to stay put 
-        }
+//        else if (SurvivorModeMap[queenX, queenY] >= 0)
+//        {
+//            //Do nothing. Will trigger if(chosenMove.queenAction is Wait) as next instruction, picking the best move since it's too dangerous to stay put 
+//        }
         else if (g.TouchingMyTower && g.Owned_towers > MAX_TOWERS && IsSiteMinedOut(g.touchedSiteId) == false && isSafeToBuild)
         {
             //Switch tower with mine
@@ -893,11 +905,16 @@ public class LaPulzellaD_Orleans
             Console.Error.WriteLine("Empower Mine!");
             chosenMove.queenAction = new BuildMine(game.touchedSiteId);
         }
-        else if (g.TouchingMyTower && g.TouchedSite.param1 <= 300 + 145 * g.Owned_towers && g.TouchedSite.param1 <= 700 && isSafeToBuild)
+        else if (g.TouchingMyTower && g.TouchedSite.param1 <= 700/*&& g.TouchedSite.param1 <= 300 + 145 * g.Owned_towers && g.TouchedSite.param1 <= 700 && isSafeToBuild */)
         {
-            //Empower Tower
-            Console.Error.WriteLine("Empower Tower!");
-            chosenMove.queenAction = new BuildTower(game.touchedSiteId);
+            if (standingStill || shouldEmpowerTower)
+            {
+                //Empower Tower
+                Console.Error.WriteLine("Empower Tower!");
+                chosenMove.queenAction = new BuildTower(game.touchedSiteId);
+            }
+
+            shouldEmpowerTower = !shouldEmpowerTower;
         }
         
         if(chosenMove.queenAction is Wait)
@@ -921,7 +938,7 @@ public class LaPulzellaD_Orleans
         Unit enemyQueen = game.EnemyQueen;
 
         chosenMove.trainAction = ChoseTrainAction(g);
-
+        
         return chosenMove;
     }
 
@@ -1002,7 +1019,7 @@ public class LaPulzellaD_Orleans
         var influenceMap = SurvivorModeMap;
         influenceMap.ResetMapToZeroes();
 
-        int searchRange = QUEEN_MOVEMENT * 2;
+        int searchRange = QUEEN_MOVEMENT;
         double favorCloseSitesOverOpenSquares = 5;
         
         Stopwatch total = new Stopwatch();
@@ -1038,23 +1055,26 @@ public class LaPulzellaD_Orleans
         {
             int siteRadius = GetRadius(tower);
             int towerRange = (int) Math.Ceiling(tower.param2 / squareLength);
-        
+
             //Heal my towers!
             double towerHp = tower.param1;
 //            if (towerHp < HEAL_TOWER)
 //            {
                 var towerHp_norm = 1 - (towerHp / 800);     //[0,1]
                 
-            int decayDistance = 5 - siteRadius + (int) (towerHp_norm * 1.2);
+            int decayDistance = 3 - /*siteRadius */ + (int) (towerHp_norm * 1.2);
                 // Towers covering a tower make it better. If there are more enemies, then it should be even better
 
-                influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, enemiesCount/2, 2, towerRange - siteRadius + 2, polyDecay);
+//                influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, enemiesCount/2, 2, towerRange - siteRadius + 2, polyDecay);
 
-//                if (towerHp_norm <= 0.3)
-//                {
-                influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, decayDistance + towerHp_norm * 2, 1, 0, polyDecay);
-                influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, decayDistance + towerHp_norm, 0, decayDistance, polyDecay);
-//                }
+                influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, 0.5, 1, towerRange, linearDecay);
+
+            
+                if (towerHp_norm <= 0.6)
+                {
+                    influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, decayDistance + towerHp_norm * 2, 1, 0, polyDecay);
+                    influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, decayDistance + towerHp_norm, 0, decayDistance, polyDecay);
+                }
 //                else if (towerHp_norm <= 0.6)
 //                {
 //                    influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, towerHp_norm * favorCloseSitesOverOpenSquares, 1, 0, linearPropagation);
@@ -1074,6 +1094,12 @@ public class LaPulzellaD_Orleans
         sw.Stop();
         Console.Error.WriteLine("My Towers={0}",sw.ElapsedMilliseconds);
         sw.Reset();
+
+        //If I'm touching a tower, standing still i.s something I kind of want
+//        if (g.touchedSiteId != -1 && g.TouchedSite.structureType == StructureType.Tower && g.TouchedSite.param1 / 800.0 <= 0.8)
+//        {
+//            influenceMap.ApplyInfluence_Range_Unscaled(g.MyQueen.pos.x, g.MyQueen.pos.y, 4, 1, 0, polyDecay);
+//        }
         
        
         sw.Start();
@@ -1120,15 +1146,15 @@ public class LaPulzellaD_Orleans
 
                 double distanceToCenter_norm = 1 - NormalizeDistance(distanceToCenter);
 
-                influence = (1.75 + 1 * distanceToCenter_norm) * 3;
+                influence = (1.75 + 1 * distanceToCenter_norm) * 4;
 
-                int decayRange = 12;
+                int decayRange = 20;
             
                 //TODO: maybe do siteRadius and siteRadius-1
                 
 //                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, influence/2 * favorCloseSitesOverOpenSquares, siteRadius+1, 7, polynomial2Propagation);
-                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, decayRange + influence * 2, 1, 0, polyDecay);
-                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, decayRange + influence, 1, decayRange, polyDecay);
+                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, influence * 2, 0, 0, polyDecay);
+                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, influence, 1, decayRange, polyDecay);
 
             }
         }
@@ -1236,6 +1262,11 @@ public class LaPulzellaD_Orleans
     private Tuple<int, int> UnscaledBestInBox(Site site, int range, InfluenceMap map)
     {
         return UnscaledBestInBox(site.pos, range, map);
+    }
+
+    private Tuple<int, int> UnscaledBestInRange(Position pos, int range, InfluenceMap map)
+    {
+        throw new NotImplementedException();
     }
     
     //range is length of a square's vertex to position in center
@@ -1844,7 +1875,7 @@ public class InfluenceMap
 
     private List<Affector>[,] affectors;
     
-    protected void ApplyInfluenceToTile(Position p, double amount, Position generatingCell)
+    protected void SetTileInfluence(Position p, double amount, Position generatingCell)
     {
         int x = p.x, y = p.y;
         
@@ -1874,8 +1905,33 @@ public class InfluenceMap
     //TODO
     HashSet<InfluenceMapCell> visited = new HashSet<InfluenceMapCell>();
     List<CellAndDistance> frontier = new List<CellAndDistance>();
+
+    //Position currCellPos, double amount, double distance, Position generatingCellPos
+    public delegate void OperationOnCell(Position currCellPos, double amount, double distance, Position generatingCellPos);
     
+    
+//        OperationOnCell  tmp = (a1, a2, a3, a4, a5) => ApplyDecayedInfluenceToTile(a1, a2, a3, a4, a5, decayDistance, decayedDistanceFunc);
     public void ApplyInfluence_Range_Unscaled(int xPos, int yPos, double amount, int fullDistance, int decayDistance, PropagationFunction decayedDistanceFunc, bool ignoreObstacles = false)
+    {
+        OperationOnCell operation = (a1, a2, a3, a4) => ApplyDecayedInfluenceToTile(a1, a2, a3, fullDistance, a4, decayDistance, decayedDistanceFunc);
+        OperationOnRange_Unscaled(xPos, yPos, amount, fullDistance + decayDistance, operation, ignoreObstacles);
+    }
+
+    public void ApplyDecayedInfluenceToTile(Position tile, double influence, double dist, int fullDist, Position generatorTile, int decayDist, PropagationFunction decayedDistanceFunc)
+    {
+        if (dist > fullDist)
+        {
+            //                double linearDecay = 0.45;
+            //                cellAmount = decayedDistanceFunc(amount, distance-fullDistance, linearDecay);
+
+            influence = decayedDistanceFunc(influence, dist - fullDist, fullDist + decayDist);
+        }
+
+        SetTileInfluence(tile, influence, generatorTile);
+    }
+//    
+    
+    public void OperationOnRange_Unscaled(int xPos, int yPos, double amount, int fullDistance, OperationOnCell operationOnCell, bool ignoreObstacles = false)
     {
         if (amount == 0)
         {
@@ -1902,6 +1958,7 @@ public class InfluenceMap
         
         Stopwatch sw = new Stopwatch();
 //        sw.Start();
+        //Spreads until frontier is closest perimeter to generating point, without containing obstacle tiles.
         while (frontier.Any(f => isObstacle[f.cell.x, f.cell.y]))
         {
             obstacleSteps++;
@@ -1946,7 +2003,9 @@ public class InfluenceMap
                 }
             }
         }
-
+        //-----
+        
+        
 //        sw.Stop();
 //        Console.Error.WriteLine("Find nonObstacles={0}",sw.Elapsed);
 //        sw.Reset();
@@ -1972,15 +2031,7 @@ public class InfluenceMap
             double distance = currFrontierCellInfo.distance;
 
             double cellAmount = amount;
-            
-            if (distance > fullDistance)
-            {
-//                double linearDecay = 0.45;
-//                cellAmount = decayedDistanceFunc(amount, distance-fullDistance, linearDecay);
-
-                cellAmount = decayedDistanceFunc(amount, distance - fullDistance, fullDistance + decayDistance);
-            }
-
+           
             //If one is negative, and one is positive
             if (cellAmount * amount < 0)
             {
@@ -1992,7 +2043,7 @@ public class InfluenceMap
             {
 //                _influenceMap[currCell.x, currCell.y] += cellAmount;
                 var currCellPos = new Position(currCell.x, currCell.y);
-                ApplyInfluenceToTile(currCellPos, cellAmount, generatingCellPos);
+                operationOnCell(currCellPos, amount, distance, generatingCellPos);
             }
             
             foreach (var neighbourAndDistance in currCell.neighboursAndDistance)
@@ -2002,7 +2053,7 @@ public class InfluenceMap
                     var neighbour = neighbourAndDistance.cell;
                     var distanceToCell = neighbourAndDistance.distance;
 
-                    if (distanceToCell + distance <= fullDistance + decayDistance)
+                    if (distanceToCell + distance <= fullDistance)
                     {
                         var newFrontierCandidate = new CellAndDistance(neighbour, distance + distanceToCell);
                         visited.Add(neighbour);
@@ -2020,7 +2071,7 @@ public class InfluenceMap
                         var neighbour = neighbourAndDistanceObst.cell;
                         var distanceToCell = neighbourAndDistanceObst.distance;
 
-                        if (distanceToCell + distance <= fullDistance + decayDistance)
+                        if (distanceToCell + distance <= fullDistance)
                         {
                             var newFrontierCandidate = new CellAndDistance(neighbour, distance + distanceToCell);
                             visited.Add(neighbour);
@@ -2045,6 +2096,9 @@ public class InfluenceMap
 //        #endif
 //        sw.Reset();
     }
+        
+    
+    
 
     private CellAndDistance GetBestFrontierCell(List<CellAndDistance> frontier, bool removeCellFromCollection = false)
     {

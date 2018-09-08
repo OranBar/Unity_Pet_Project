@@ -3,6 +3,7 @@ from nt import chdir
 import re
 import pandas as pd
 import os
+import shutil
 
 
 pathname = r"E:\Unity Projects\InfluenceMap_Code_Royale_Codingame\Assets\10_InfluenceMap\Scripts\Codingame\ExtractGames_Data"
@@ -41,6 +42,12 @@ for file in glob.glob("*.html"):
 
     f.close()
     print("Created file "+f.name)
+    os.remove(file)
+    print("Deleted file "+file)
+    # os.remove(file_name_noextension+"_files")
+    shutil.rmtree(file_name_noextension+"_files")
+    print("Removed Folder "+file_name_noextension+"_files")
+    
 
 
     

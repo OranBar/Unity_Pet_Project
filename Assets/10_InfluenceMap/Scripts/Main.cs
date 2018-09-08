@@ -23,7 +23,9 @@ public class Main : MonoBehaviour
     [Button]
     public void ReRunSimulation()
     {
-        RunTurn();
+        ParseGame();
+        turnToRun = 1;
+        RunTargetTurn();
     }
     
     [Space]
