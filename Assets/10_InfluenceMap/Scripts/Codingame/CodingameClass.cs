@@ -846,7 +846,7 @@ public class LaPulzellaD_Orleans
 
         chosenTile = null;
         Move bestMove = (Move) SurvivorMode(g, out chosenTile);
-        bool isSafeToBuild = g.EnemyUnitsInRangeOfMyQueen(ENEMY_CHECK_RANGE) < 2;
+        bool isSafeToBuild = g.EnemyUnitsInRangeOfMyQueen(ENEMY_CHECK_RANGE) <= 2;
         
         //If we are touching a site, we do something with it
         //Second condition makes him less likely to build when enemies are close
@@ -856,7 +856,12 @@ public class LaPulzellaD_Orleans
 //            chosenMove.queenAction = bestMove;
 //            Console.Error.WriteLine("Running Away");
 //        }
-        var myQueenPosition = game.MyQueen.pos;
+        
+        if(g.TouchedSite != null)
+            Console.Error.WriteLine("Touching "+g.TouchedSite);
+        
+        
+        var myQueenPosition = g.MyQueen.pos;
         var squareLength = LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH;
         int queenX = InfluenceMap.Unitize(myQueenPosition.x);
         int queenY = InfluenceMap.Unitize(myQueenPosition.y);
@@ -905,7 +910,7 @@ public class LaPulzellaD_Orleans
             Console.Error.WriteLine("Empower Mine!");
             chosenMove.queenAction = new BuildMine(game.touchedSiteId);
         }
-        else if (g.TouchingMyTower && g.TouchedSite.param1 <= 700/*&& g.TouchedSite.param1 <= 300 + 145 * g.Owned_towers && g.TouchedSite.param1 <= 700 && isSafeToBuild */)
+        else if (g.TouchingMyTower && g.TouchedSite.param1 <= 700/*&& g.TouchedSite.param1 <= 300 + 145 * g.Owned_towers && g.TouchedSite.param1 <= 700 */&& isSafeToBuild )
         {
             if (standingStill || shouldEmpowerTower)
             {
@@ -1043,7 +1048,7 @@ public class LaPulzellaD_Orleans
 
         }
         sw.Stop();
-        Console.Error.WriteLine("Enemy Towers={0}",sw.ElapsedMilliseconds);
+//        Console.Error.WriteLine("Enemy Towers={0}",sw.ElapsedMilliseconds);
         sw.Reset();
         
         sw.Start();
@@ -1072,7 +1077,7 @@ public class LaPulzellaD_Orleans
             
                 if (towerHp_norm <= 0.6)
                 {
-                    influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, decayDistance + towerHp_norm * 2, 1, 0, polyDecay);
+//                    influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, decayDistance + towerHp_norm * 2, 1, 0, polyDecay);
                     influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, decayDistance + towerHp_norm, 0, decayDistance, polyDecay);
                 }
 //                else if (towerHp_norm <= 0.6)
@@ -1092,7 +1097,7 @@ public class LaPulzellaD_Orleans
             //ScaleAndApplyInfluence_Circle(tower.pos, 10, 0, towerRange, linearPropagation, ref buildInfluenceMap);
         }
         sw.Stop();
-        Console.Error.WriteLine("My Towers={0}",sw.ElapsedMilliseconds);
+//        Console.Error.WriteLine("My Towers={0}",sw.ElapsedMilliseconds);
         sw.Reset();
 
         //If I'm touching a tower, standing still i.s something I kind of want
@@ -1113,7 +1118,7 @@ public class LaPulzellaD_Orleans
 
         }
         sw.Stop();
-        Console.Error.WriteLine("Enemy Units ={0}",sw.ElapsedMilliseconds);
+//        Console.Error.WriteLine("Enemy Units ={0}",sw.ElapsedMilliseconds);
         sw.Reset();
         
         sw.Start();
@@ -1153,18 +1158,18 @@ public class LaPulzellaD_Orleans
                 //TODO: maybe do siteRadius and siteRadius-1
                 
 //                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, influence/2 * favorCloseSitesOverOpenSquares, siteRadius+1, 7, polynomial2Propagation);
-                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, influence * 2, 0, 0, polyDecay);
+//                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, influence * 2, 0, 0, polyDecay);
                 influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, influence, 1, decayRange, polyDecay);
 
             }
         }
         sw.Stop();
-        Console.Error.WriteLine("Sites ={0}",sw.ElapsedMilliseconds);
+//        Console.Error.WriteLine("Sites ={0}",sw.ElapsedMilliseconds);
         sw.Reset();
         
         total.Stop();
         totals.Add(total.ElapsedMilliseconds);
-        Console.Error.WriteLine("Total ={0}, Average = {1}",total.ElapsedMilliseconds, totals.Average());
+//        Console.Error.WriteLine("Total ={0}, Average = {1}",total.ElapsedMilliseconds, totals.Average());
         
         
 
@@ -1655,9 +1660,9 @@ public class LaPulzellaD_Orleans
     
         foreach (var site in gameInfo.sites.Values)
         {
-            xIndex = (int) Math.Ceiling(site.pos.x / LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH*1.0);
-            yIndex = (int) Math.Ceiling(site.pos.y / LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH*1.0);
-            int range = (int) Math.Ceiling(site.radius / LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH * 1.0);
+            xIndex = InfluenceMap.Unitize(site.pos.x);
+            yIndex = InfluenceMap.Unitize(site.pos.y);
+            int range = (int) Math.Floor(site.radius / LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH * 1.0);
 
             SurvivorModeMap.AddObstacle(xIndex, yIndex, range);        
         }
@@ -1940,7 +1945,7 @@ public class InfluenceMap
         {
 
 #if UNITY_EDITOR
-            Debug.LogError("Amount was zero. Skipping");
+//            Debug.LogError("Amount was zero. Skipping");
 #endif
             return;
         }
