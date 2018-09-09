@@ -193,7 +193,7 @@ public class Main : MonoBehaviour
             site.pos = giovannaD_Arco.gameInfo.sites[site.siteId].pos;
         }
 
-        Tuple<int, int> chosenTile = null;
+        Position chosenTile = null;
         TurnAction action = giovannaD_Arco.think(out chosenTile);
         
 //        Profiler.EndSample();

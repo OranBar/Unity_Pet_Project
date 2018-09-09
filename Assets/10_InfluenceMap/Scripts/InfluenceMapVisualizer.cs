@@ -469,21 +469,21 @@ public class InfluenceMapVisualizer : MonoBehaviour
 		highlightedTiles.Clear();
 	}
 
-	public void SetSquareHighlights(GameState game, Tuple<int, int> chosenTile, Position pastChosenTile)
+	public void SetSquareHighlights(GameState game, Position chosenTile, Position pastChosenTile)
 	{
 		HighlightsOff();
 		
-		HighlightTile(InflMap.Unitize(game.MyQueen.pos), Color.green);	//My Queen
+		HighlightTile(InfluenceMap.Unitize(game.MyQueen.pos), Color.green);	//My Queen
 
-		HighlightTile(new Position(chosenTile.Item1, chosenTile.Item2), Color.white);	//Chosen tile
+		HighlightTile(/*InfluenceMap.Unitize(*/new Position(chosenTile.x, chosenTile.y), Color.white);	//Chosen tile
         
 		foreach (var enemy in game.EnemyUnits.Where(u=>u.unitType != UnitType.Queen))	//Enemies
 		{
-			HighlightTile(InflMap.Unitize(enemy.pos), Color.blue);
+			HighlightTile(InfluenceMap.Unitize(enemy.pos), Color.blue);
 		}
         
-		HighlightTile(InflMap.Unitize(game.EnemyQueen.pos), Color.magenta);	//Enemy Queen
+		HighlightTile(InfluenceMap.Unitize(game.EnemyQueen.pos), Color.magenta);	//Enemy Queen
 		
-		HighlightTile(pastChosenTile, Color.red);
+		HighlightTile(/*InfluenceMap.Unitize(*/pastChosenTile, Color.red);
 	}
 }

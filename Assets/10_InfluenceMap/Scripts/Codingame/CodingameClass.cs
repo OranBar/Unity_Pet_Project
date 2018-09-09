@@ -1,5 +1,4 @@
 ﻿#define RUNLOCAL
-
 /** Code by Oran Bar **/
 
 //The max characters that can be put into the error stream is 1028
@@ -55,9 +54,9 @@ class Player
 //            sw.Stop();
 //            Console.Error.WriteLine("Encoding ={0}",sw.Elapsed);
 
-            Tuple<int, int> chosenMove;
+            Position chosenMove;
             TurnAction move = giovannaD_Arco.think(out chosenMove);
-            Console.Error.WriteLine(chosenMove.Item1+"."+chosenMove.Item2);
+            Console.Error.WriteLine(chosenMove.x+"."+chosenMove.y);
             move.PrintMove();
         }
     }
@@ -764,6 +763,7 @@ public class LaPulzellaD_Orleans
 
     public static int GIANT_COST = 140, KNIGHT_COST = 80, ARCHER_COST = 100;
     public static int ENEMY_CHECK_RANGE = 260, TOO_MANY_UNITS_NEARBY = 2;
+    //if you change me, change tileUNit
     public static int INFLUENCEMAP_SQUARELENGTH = 20;
     public static int QUEEN_MOVEMENT = 60;
     public static int MAX_DISTANCE = 4686400;
@@ -838,7 +838,7 @@ public class LaPulzellaD_Orleans
     }
 
     
-    public TurnAction think(out Tuple<int,int> chosenTile)
+    public TurnAction think(out Position chosenTile)
     {
 //        this.SurvivorModeMap.ResetMapToZeroes();
         TurnAction chosenMove = new TurnAction();
@@ -858,10 +858,10 @@ public class LaPulzellaD_Orleans
 //        }
         var myQueenPosition = game.MyQueen.pos;
         var squareLength = LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH;
-        int queenX= (int) Math.Ceiling(myQueenPosition.x / squareLength*1.0);
-        int queenY = (int) Math.Ceiling(myQueenPosition.y / squareLength*1.0);
-
-
+        int queenX = InfluenceMap.Unitize(myQueenPosition.x);
+        int queenY = InfluenceMap.Unitize(myQueenPosition.y);
+        
+        
         bool standingStill = (bestMove.targetPos == new Position(queenX, queenY));
         
         
@@ -1012,7 +1012,7 @@ public class LaPulzellaD_Orleans
         return result;
     }
     
-    private IAction SurvivorMode(GameState g, out Tuple<int, int> chosenTile)
+    private IAction SurvivorMode(GameState g, out Position chosenTile)
     {
         double squareLength = INFLUENCEMAP_SQUARELENGTH; //Maximum common divisor between 60, 100, 75, 50 (movement speeds)
         
@@ -1109,7 +1109,7 @@ public class LaPulzellaD_Orleans
         {
             double enemyInfluence = GetEnemyInfluence(enemy);
 //            ScaleAndApplyInfluence_Range(enemy.pos, enemyInfluence, 1, GetEnemyInfluenceRadius(enemy) *4, linearPropagation, influenceMap);
-            influenceMap.ApplyInfluence_Range_Unscaled(enemy.pos.x, enemy.pos.y, -20, 2, 18, polyDecay);
+            influenceMap.ApplyInfluence_Range_Unscaled(enemy.pos.x, enemy.pos.y, -20, 2, 5, polyDecay);
 
         }
         sw.Stop();
@@ -1185,17 +1185,20 @@ public class LaPulzellaD_Orleans
         }
         
         sw.Start();
-        var survivorModeChosenSite = UnscaledBestInBox(g.MyQueen, searchRange, influenceMap);
+//        var survivorModeChosenSite = UnscaledBestInBox(g.MyQueen, searchRange, influenceMap);
+        chosenTile = influenceMap.GetBestSquareInRange_Unscaled(g.MyQueen.pos, InfluenceMap.Unitize(searchRange));
+        
+        Move myMove = new Move(InfluenceMap.DeUnitize(chosenTile));
+        
         sw.Stop();
         Console.Error.WriteLine("Select best in bos ={0}",sw.Elapsed);
         sw.Reset();
 
-        chosenTile = Tuple.Create(survivorModeChosenSite.Item1/INFLUENCEMAP_SQUARELENGTH, survivorModeChosenSite.Item2/INFLUENCEMAP_SQUARELENGTH);
 #if UNITY_EDITOR
-        UnityEngine.Debug.Log("Survivor Mode tile is is ("+chosenTile.Item1+", "+chosenTile.Item2+") with amount = "+influenceMap[chosenTile.Item1, chosenTile.Item2]);
+        UnityEngine.Debug.Log("Survivor Mode tile is is ("+chosenTile.x+", "+chosenTile.y+") with amount = "+influenceMap[chosenTile.x, chosenTile.y]);
 #endif
 
-        return new Move(survivorModeChosenSite.Item1, survivorModeChosenSite.Item2);
+        return myMove;
 
     }
 
@@ -1705,6 +1708,9 @@ public struct XAndY
 
 public class InfluenceMap
 {
+    //if you change me, change INFLUENCEMAP_SQUARELENGTH 
+    public static int tileUnit = 20;
+    
     public class CellAndDistance
     {
         public readonly InfluenceMapCell cell;
@@ -1741,6 +1747,7 @@ public class InfluenceMap
     
     public int actualWidth, actualHeight;
     public int unit;
+    
     
 
 	public DistanceFunc computeDistanceFunc;
@@ -1810,15 +1817,25 @@ public class InfluenceMap
 #endif
     }
     
-    public int Unitize(int coord)
+    public static int Unitize(int coord)
     {
-        int unitizedCoord = (int) Math.Round(1.0*coord / unit);
+        int unitizedCoord = (int) Math.Round(1.0*coord / tileUnit);
         return unitizedCoord;
     }
     
-    public Position Unitize(Position pos)
+    public static Position Unitize(Position pos)
     {
         return new Position(Unitize(pos.x), Unitize(pos.y));
+    }
+
+    public static int DeUnitize(int coord)
+    {
+        return coord * tileUnit;
+    }
+    
+    public static Position DeUnitize(Position pos)
+    {
+        return new Position(DeUnitize(pos.x), DeUnitize(pos.y));
     }
 
     /**
@@ -1907,33 +1924,19 @@ public class InfluenceMap
     List<CellAndDistance> frontier = new List<CellAndDistance>();
 
     //Position currCellPos, double amount, double distance, Position generatingCellPos
-    public delegate void OperationOnCell(Position currCellPos, double amount, double distance, Position generatingCellPos);
+    public delegate void OperationOnCell(Position currCellPos, double distance, Position generatingCellPos);
     
     
 //        OperationOnCell  tmp = (a1, a2, a3, a4, a5) => ApplyDecayedInfluenceToTile(a1, a2, a3, a4, a5, decayDistance, decayedDistanceFunc);
     public void ApplyInfluence_Range_Unscaled(int xPos, int yPos, double amount, int fullDistance, int decayDistance, PropagationFunction decayedDistanceFunc, bool ignoreObstacles = false)
     {
-        OperationOnCell operation = (a1, a2, a3, a4) => ApplyDecayedInfluenceToTile(a1, a2, a3, fullDistance, a4, decayDistance, decayedDistanceFunc);
-        OperationOnRange_Unscaled(xPos, yPos, amount, fullDistance + decayDistance, operation, ignoreObstacles);
+        OperationOnCell operation = (a1, a2, a3) => ApplyDecayedInfluenceToTile(a1, amount, a2, fullDistance, a3, decayDistance, decayedDistanceFunc);
+        OperationOnRange_Unscaled(xPos, yPos, fullDistance + decayDistance, operation, ignoreObstacles);
     }
 
     public void ApplyDecayedInfluenceToTile(Position tile, double influence, double dist, int fullDist, Position generatorTile, int decayDist, PropagationFunction decayedDistanceFunc)
     {
-        if (dist > fullDist)
-        {
-            //                double linearDecay = 0.45;
-            //                cellAmount = decayedDistanceFunc(amount, distance-fullDistance, linearDecay);
-
-            influence = decayedDistanceFunc(influence, dist - fullDist, fullDist + decayDist);
-        }
-
-        SetTileInfluence(tile, influence, generatorTile);
-    }
-//    
-    
-    public void OperationOnRange_Unscaled(int xPos, int yPos, double amount, int fullDistance, OperationOnCell operationOnCell, bool ignoreObstacles = false)
-    {
-        if (amount == 0)
+        if (influence == 0)
         {
 
 #if UNITY_EDITOR
@@ -1941,9 +1944,54 @@ public class InfluenceMap
 #endif
             return;
         }
+         
         
-        InfluenceMapCell startCell = influenceMapCells[Unitize(xPos), Unitize(yPos)];
+        if (dist > fullDist)
+        {
+            //                double linearDecay = 0.45;
+            //                cellAmount = decayedDistanceFunc(amount, distance-fullDistance, linearDecay);
+            double oldInfluenceValue = influence;
+            influence = decayedDistanceFunc(influence, dist - fullDist, fullDist + decayDist);
+            
+            //If one is negative, and one is positive
+            if (oldInfluenceValue * influence < 0)
+            {
+                //Don't apply nor spread. This is as far as we go
+                //We would be spreading influence with the wrong sign, becuase of the decay. 
+                return;
+            }
+        }
 
+        SetTileInfluence(tile, influence, generatorTile);
+    }
+
+    public Position GetBestSquareInRange_Unscaled(Position startPos, int range)
+    {
+        Position bestCell = null;
+        double bestCellScore = double.MinValue;
+        OperationOnCell operation = (cellPos, dist, genCell) =>
+        {
+            double cellAmount = _influenceMap[cellPos.x, cellPos.y];
+            if (cellAmount > bestCellScore)
+            {
+                bestCell = cellPos;
+                bestCellScore = cellAmount;
+            }
+        };
+        OperationOnRange_Unscaled(startPos.x, startPos.y, range, operation);
+        return bestCell;
+    }
+//    
+    public void OperationOnRange_Unscaled(int xPos, int yPos, int fullDistance, OperationOnCell operationOnCell, bool ignoreObstacles = false)
+    {
+
+        OperationOnRange(Unitize(xPos), Unitize(yPos), fullDistance, operationOnCell, ignoreObstacles);
+    }
+
+
+    public void OperationOnRange(int xPos, int yPos, int fullDistance, OperationOnCell operationOnCell, bool ignoreObstacles = false)
+    {
+        InfluenceMapCell startCell = influenceMapCells[xPos, yPos];
 //        HashSet<InfluenceMapCell> visited = new HashSet<InfluenceMapCell>();
 //        List<CellAndDistance> frontier = new List<CellAndDistance>();
         //TODO
@@ -2029,21 +2077,13 @@ public class InfluenceMap
             
             InfluenceMapCell currCell = currFrontierCellInfo.cell;
             double distance = currFrontierCellInfo.distance;
-
-            double cellAmount = amount;
-           
-            //If one is negative, and one is positive
-            if (cellAmount * amount < 0)
-            {
-                //Don't apply nor spread. This is as far as we go
-                continue;
-            }    
+ 
 
             if (isObstacle[currCell.x, currCell.y] == false)
             {
 //                _influenceMap[currCell.x, currCell.y] += cellAmount;
                 var currCellPos = new Position(currCell.x, currCell.y);
-                operationOnCell(currCellPos, amount, distance, generatingCellPos);
+                operationOnCell(currCellPos, distance, generatingCellPos);
             }
             
             foreach (var neighbourAndDistance in currCell.neighboursAndDistance)
