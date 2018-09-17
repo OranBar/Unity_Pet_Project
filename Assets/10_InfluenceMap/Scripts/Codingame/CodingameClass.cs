@@ -1660,11 +1660,7 @@ public class LaPulzellaD_Orleans
     
         foreach (var site in gameInfo.sites.Values)
         {
-            xIndex = InfluenceMap.Unitize(site.pos.x);
-            yIndex = InfluenceMap.Unitize(site.pos.y);
-            int range = (int) Math.Floor(site.radius / LaPulzellaD_Orleans.INFLUENCEMAP_SQUARELENGTH * 1.0);
-
-            SurvivorModeMap.AddObstacle(xIndex, yIndex, range);        
+            SurvivorModeMap.AddObstacle(site.pos, site.radius);        
         }
 
         SurvivorModeMap.Init_AfterSettingObstacles();
@@ -2236,9 +2232,13 @@ public class InfluenceMap
 //    }
 //    
 
-    public void AddObstacle(int x, int y, int range)
+    public void AddObstacle(Position p, int range)
     {
-        foreach (var square in GetSquaresInRange(x, y, range))
+        int unitizedX = InfluenceMap.Unitize(p.x);
+        int unitizedY = InfluenceMap.Unitize(p.y);
+        int unitizedRange = InfluenceMap.Unitize(range);
+        
+        foreach (var square in GetSquaresInRange(unitizedX, unitizedY, range))
         {
             isObstacle[square.x, square.y] = true;
             _influenceMap[square.x, square.y] = -5;
