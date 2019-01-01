@@ -770,6 +770,8 @@ public class LaPulzellaD_Orleans
     public static int HEAL_TOWER = 800 / 3;
     public static int TOWERCOUNT_GIANT_TRIGGER = 4;
 
+    public static int GIANT_MAX_HEALTH = 200, KNIGHT_MAX_HEALTH = 25, ARCHER__MAX_HEALTH = 45, QUEEN_MAX_HEALTH = 200;
+    
     //Try using amount numbers bigger than radius. And then we think about changing this function to something more like..... 
     //Using this linear function, it is not the values that determine the move, but the fall offs, but the distance only. 
     //It is no good because far off sources have the same fall-off as close ones, meaning that they pull too much in the wrong direction.
@@ -1318,12 +1320,15 @@ public class LaPulzellaD_Orleans
     
     private double GetEnemyInfluence(Unit enemy)
     {
+        double normalizedHealth;
+        
         switch (enemy.unitType)
         {
             case UnitType.Queen:
                 return 0;
             case UnitType.Knight:
-                return -5;
+                normalizedHealth = (1 - (KNIGHT_MAX_HEALTH - enemy.health));
+                return -10 * normalizedHealth;
             case UnitType.Archer:
                 return 0;
             case UnitType.Giant:
