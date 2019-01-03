@@ -848,7 +848,7 @@ public class LaPulzellaD_Orleans
 
         chosenTile = null;
         Move bestMove = (Move) SurvivorMode(g, out chosenTile);
-        bool isSafeToBuild = g.EnemyUnitsInRangeOfMyQueen(ENEMY_CHECK_RANGE) <= 2;
+        bool isSafeToBuild = g.EnemyUnitsInRangeOfMyQueen(ENEMY_CHECK_RANGE) <= 0;
         
         //If we are touching a site, we do something with it
         //Second condition makes him less likely to build when enemies are close
