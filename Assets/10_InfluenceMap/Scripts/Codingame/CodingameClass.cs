@@ -1041,7 +1041,7 @@ public class LaPulzellaD_Orleans
         var influenceMap = SurvivorModeMap;
         influenceMap.ResetMapToZeroes();
 
-        int searchRange = QUEEN_MOVEMENT;
+        int searchRange = (int) (QUEEN_MOVEMENT );    
         double favorCloseSitesOverOpenSquares = 5;
         
         Stopwatch total = new Stopwatch();
@@ -1095,7 +1095,7 @@ public class LaPulzellaD_Orleans
             double empower_me_amount = 30;
             int empower_me_callrange = 400;
      
-            double normalizedEnemyUnitsCount = Math.Min(enemiesCount/20, 1) ; // 14 is max alert number. More than 20 units will have the same alert level al 20
+            double normalizedEnemyUnitsCount = Math.Min(enemiesCount/20.0, 1) ; // 14 is max alert number. More than 20 units will have the same alert level al 20
 
             //800 is max tower hp. 100 is heal amount per turn when empowering
             if (towerHp >= 601)
@@ -1206,7 +1206,7 @@ public class LaPulzellaD_Orleans
             if (site.structureType == StructureType.Mine && site.owner == Owner.Friendly)
             {
 //                ScaleAndApplyInfluence_Circle(site.pos, -120, siteRadius+1, 0, polynomial2Propagation, influenceMap);
-                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, (0.7 + enemiesCount) * -3, 0, 4, polyDecay);
+                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, (0.7 + enemiesCount) * -2.9, 0, 4, polyDecay);
             }
 
 //            if (site.structureType == StructureType.Barracks && site.owner == Owner.Enemy && site.param1 != 0)
