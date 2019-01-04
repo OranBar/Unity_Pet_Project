@@ -414,7 +414,7 @@ public class GameState
     //Properties
     public List<Site> MySites {get;private set;}
     public List<Site> EnemySites {get;private set;}
-    public List<Unit> EnemyUnits {get;private set;}
+    public List<Unit> EnemyUnits {get;private set;}    //Doesn't count enemy queen
     public List<Unit> MyUnits {get;private set;}
     public Site TouchedSite {get;private set;}  
     public Unit MyQueen {get;private set;}
@@ -849,6 +849,7 @@ public class LaPulzellaD_Orleans
         chosenTile = null;
         Move bestMove = (Move) SurvivorMode(g, out chosenTile);
         bool isSafeToBuild = g.EnemyUnitsInRangeOfMyQueen(ENEMY_CHECK_RANGE) <= 0;
+        bool isSafeToEmpower = g.EnemyUnitsInRangeOfMyQueen(125) < 2;
         
         //If we are touching a site, we do something with it
         //Second condition makes him less likely to build when enemies are close
@@ -912,16 +913,18 @@ public class LaPulzellaD_Orleans
             Console.Error.WriteLine("Empower Mine!");
             chosenMove.queenAction = new BuildMine(game.touchedSiteId);
         }
-        else if (g.TouchingMyTower && g.TouchedSite.param1 <= 700/*&& g.TouchedSite.param1 <= 300 + 145 * g.Owned_towers && g.TouchedSite.param1 <= 700 */&& isSafeToBuild )
+
+//        else if (g.TouchingMyTower && g.TouchedSite.param1 <= 700/*&& g.TouchedSite.param1 <= 300 + 145 * g.Owned_towers && g.TouchedSite.param1 <= 700 */&& isSafeToEmpower )
+        else if (g.TouchingMyTower && g.MyTowers.Count >= 3 && g.TouchedSite.param1 <= 700 && (standingStill || isSafeToEmpower) /*&& g.TouchedSite.param1 <= 300 + 145 * g.Owned_towers && g.TouchedSite.param1 <= 700 */ )
         {
-            if (standingStill || shouldEmpowerTower)
+//            if (standingStill /*|| shouldEmpowerTower*/)
             {
                 //Empower Tower
                 Console.Error.WriteLine("Empower Tower!");
                 chosenMove.queenAction = new BuildTower(game.touchedSiteId);
             }
 
-            shouldEmpowerTower = !shouldEmpowerTower;
+//            shouldEmpowerTower = !shouldEmpowerTower;
         }
         
         if(chosenMove.queenAction is Wait)
@@ -1074,14 +1077,44 @@ public class LaPulzellaD_Orleans
 
 //                influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, enemiesCount/2, 2, towerRange - siteRadius + 2, polyDecay);
 
-                influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, 0.5, 1, towerRange, linearDecay);
+//                influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, 0.5, 1, towerRange, linearDecay);
 
+            double empower_me_amount = 30;
+            int empower_me_callrange = 400;
+     
+            double normalizedEnemyUnitsCount = Math.Min(enemiesCount/20, 1) ; // 14 is max alert number. More than 20 units will have the same alert level al 20
+
+            //800 is max tower hp. 100 is heal amount per turn when empowering
+            if (towerHp >= 601)
+            {
+                empower_me_amount  -= 5;
+            }
+            if (towerHp >= 701)
+            {
+                empower_me_amount  = 0;
+            }
             
-                if (towerHp_norm <= 0.6)
-                {
-//                    influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, decayDistance + towerHp_norm * 2, 1, 0, polyDecay);
-                    influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, decayDistance + towerHp_norm, 0, decayDistance, polyDecay);
-                }
+            
+            empower_me_amount = empower_me_amount * 0.15 +normalizedEnemyUnitsCount * (1-towerHp_norm);
+            empower_me_callrange = (int) (empower_me_callrange * normalizedEnemyUnitsCount);
+             
+            influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, empower_me_amount, 0, empower_me_callrange, polyDecay);
+            
+//            switch (g.EnemyUnits.Count)
+//            {
+//                case 0: empower_me_amount += 10; break;
+//                case 1: empower_me_amount += 8; break;
+//                case 2: empower_me_amount += 5; break;
+//                default: empower_me_amount += 0; break;
+//            }
+            
+            
+            
+//                if (towerHp_norm <= 0.6)
+//                {
+////                    influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, decayDistance + towerHp_norm * 2, 1, 0, polyDecay);
+//                    influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, decayDistance + towerHp_norm, 0, decayDistance, polyDecay);
+//                }
 //                else if (towerHp_norm <= 0.6)
 //                {
 //                    influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, towerHp_norm * favorCloseSitesOverOpenSquares, 1, 0, linearPropagation);
@@ -1116,7 +1149,7 @@ public class LaPulzellaD_Orleans
         {
             double enemyInfluence = GetEnemyInfluence(enemy);
 //            ScaleAndApplyInfluence_Range(enemy.pos, enemyInfluence, 1, GetEnemyInfluenceRadius(enemy) *4, linearPropagation, influenceMap);
-            influenceMap.ApplyInfluence_Range_Unscaled(enemy.pos.x, enemy.pos.y, -20, 2, 5, polyDecay);
+            influenceMap.ApplyInfluence_Range_Unscaled(enemy.pos.x, enemy.pos.y, -20, 3, /*decayDistance*/ 11, polyDecay);
 
         }
         sw.Stop();
