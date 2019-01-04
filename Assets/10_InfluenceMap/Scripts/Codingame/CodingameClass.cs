@@ -409,7 +409,7 @@ public class GameState
 
     public int EnemyUnitsInRangeOfMyQueen(int range) => units.Count(u => u.owner == Owner.Enemy && MyQueen.DistanceTo(u) <= range);
     public int EnemyUnitsInRangeOf(Position p, int range) => units.Count(u => u.owner == Owner.Enemy && p.DistanceTo(u.pos) <= range);
-    public int AlliedTowersInRangeOf(Position p, int range) => sites.Count(s => s.owner == Owner.Friendly && p.DistanceTo(s.pos) <= range);
+    public int AlliedTowersInRangeOf(Position p, int range) => MyTowers.Count(t => p.DistanceTo(t.pos) <= range);
     
     //Properties
     public List<Site> MySites {get;private set;}
@@ -754,11 +754,11 @@ public class StringEncoderBuilder
 
 public class LaPulzellaD_Orleans
 {
-    public static int MAX_CONCURRENT_MINES = 1,
-        MAX_BARRACKSES_KNIGHTS = 1,
+    public static int MAX_CONCURRENT_MINES = 2,
+        MAX_BARRACKSES_KNIGHTS = 0,
         MAX_BARRACKSES_ARCER = 0,
         MAX_BARRACKSES_GIANT = 0,
-        MAX_TOWERS = 6;
+        MAX_TOWERS = 3;
         
 
     public static int GIANT_COST = 140, KNIGHT_COST = 80, ARCHER_COST = 100;
@@ -768,7 +768,7 @@ public class LaPulzellaD_Orleans
     public static int QUEEN_MOVEMENT = 60;
     public static int MAX_DISTANCE = 4686400;
     public static int HEAL_TOWER = 800 / 3;
-    public static int TOWERCOUNT_GIANT_TRIGGER = 4;
+    public static int TOWERCOUNT_GIANT_TRIGGER = 3;
 
     public static int GIANT_MAX_HEALTH = 200, KNIGHT_MAX_HEALTH = 25, ARCHER__MAX_HEALTH = 45, QUEEN_MAX_HEALTH = 200;
     
@@ -842,7 +842,7 @@ public class LaPulzellaD_Orleans
     
     public TurnAction think(out Position chosenTile)
     {
-//        this.SurvivorModeMap.ResetMapToZeroes();
+          this.SurvivorModeMap.ResetMapToZeroes();
         TurnAction chosenMove = new TurnAction();
         GameState g = game;
 
@@ -859,6 +859,16 @@ public class LaPulzellaD_Orleans
 //            chosenMove.queenAction = bestMove;
 //            Console.Error.WriteLine("Running Away");
 //        }
+
+        if (g.MyTowers.Count == MAX_TOWERS)
+        {
+            if (MAX_BARRACKSES_KNIGHTS == 0)
+            {
+                MAX_BARRACKSES_KNIGHTS = 1;
+            }
+            
+            MAX_TOWERS++;
+        }
         
         if(g.TouchedSite != null)
             Console.Error.WriteLine("Touching "+g.TouchedSite);
@@ -915,15 +925,17 @@ public class LaPulzellaD_Orleans
         }
 
 //        else if (g.TouchingMyTower && g.TouchedSite.param1 <= 700/*&& g.TouchedSite.param1 <= 300 + 145 * g.Owned_towers && g.TouchedSite.param1 <= 700 */&& isSafeToEmpower )
-        else if (g.TouchingMyTower && g.TouchedSite.param1 <= 700 && (standingStill ||(g.MyTowers.Count >= 3 && isSafeToEmpower)) /*&& g.TouchedSite.param1 <= 300 + 145 * g.Owned_towers && g.TouchedSite.param1 <= 700 */ )
+        else if (g.TouchingMyTower)
         {
+            
 //            if (standingStill /*|| shouldEmpowerTower*/)
+            if( (g.TouchedSite.param1 <= 700 && (standingStill ||(g.MyTowers.Count >= 3 && isSafeToEmpower)))     
+                || g.TouchedSite.param1 <= 300 && (standingStill || isSafeToEmpower))    //When built, even if towers <=3 try to get the towers to at least 300 health. 
             {
                 //Empower Tower
                 Console.Error.WriteLine("Empower Tower!");
                 chosenMove.queenAction = new BuildTower(game.touchedSiteId);
             }
-
 //            shouldEmpowerTower = !shouldEmpowerTower;
         }
         
@@ -1176,7 +1188,7 @@ public class LaPulzellaD_Orleans
             if (site.structureType == StructureType.Mine && site.owner == Owner.Friendly)
             {
 //                ScaleAndApplyInfluence_Circle(site.pos, -120, siteRadius+1, 0, polynomial2Propagation, influenceMap);
-                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, enemiesCount * -2, 0, 3, polyDecay);
+                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, (0.7 + enemiesCount) * -3, 0, 4, polyDecay);
             }
 
 //            if (site.structureType == StructureType.Barracks && site.owner == Owner.Enemy && site.param1 != 0)
@@ -1192,11 +1204,15 @@ public class LaPulzellaD_Orleans
 
                 double distanceToCenter_norm = 1 - NormalizeDistance(distanceToCenter);
 
-                influence = (1.75 + 1 * distanceToCenter_norm) * 4;
+                int towersCoveringSite = g.MyTowers.Count(t => t.pos.DistanceTo(site.pos) < t.param2);
+                
+                influence = 1.75 + 0.5 * towersCoveringSite;
+                   
+                influence = (influence + 1 * distanceToCenter_norm) * 4;
 
                 int decayRange = 20;
             
-                //TODO: maybe do siteRadius and siteRadius-1
+                //TODO: maybe do siteRadius and siteRadius-1 
                 
 //                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, influence/2 * favorCloseSitesOverOpenSquares, siteRadius+1, 7, polynomial2Propagation);
 //                influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, influence * 2, 0, 0, polyDecay);
