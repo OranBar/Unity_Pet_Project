@@ -1179,7 +1179,25 @@ public class LaPulzellaD_Orleans
         {
 //            int siteRadius = (int) Math.Floor(GetSiteInfo(site).radius / squareLength);
             
-
+            //Basiscally, if you can get to a knight barracks before it makes troops to kill you, it's awesome 
+            if (site.structureType == StructureType.Barracks && site.owner == Owner.Enemy)
+            {
+                //Touching a Giant barraks kills it. Then we make tower. It's always good move
+                if (site.CreepsType == UnitType.Giant)
+                {
+                    influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, 19, 1, 2, linearDecay); //<--
+                }
+                else if( site.CreepsType == UnitType.Knight)
+                {
+                    int turnsToCreateUnits = (site.param1 == 0) ? 5 : site.param1;    //5 is turns to create units from scratch
+                    
+                    //Only go for knight barraks if it doesn't inflict us damage (a.k.a. clean approach, no knights)
+                    if(site.pos.DistanceTo(g.MyQueen.pos) <= turnsToCreateUnits * 60)
+                    {
+                        influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, 19, 1, InfluenceMap.Unitize(site.param1*60), linearDecay); //<--
+                    }
+                }
+            }
             
             if (site.structureType != StructureType.Mine && site.owner == Owner.Friendly)
             {
@@ -1248,7 +1266,19 @@ public class LaPulzellaD_Orleans
         
         sw.Start();
 //        var survivorModeChosenSite = UnscaledBestInBox(g.MyQueen, searchRange, influenceMap);
-        chosenTile = influenceMap.GetBestSquareInRange_Unscaled(g.MyQueen.pos, InfluenceMap.Unitize(searchRange));
+        double chosenTileScore = 0;
+        chosenTile = influenceMap.GetBestSquareInRange_Unscaled(g.MyQueen.pos, InfluenceMap.Unitize(searchRange), out chosenTileScore);
+
+        int serach_Expands = 0;
+        int beginSearchRange = searchRange;
+        while (chosenTileScore <= 0.1)
+        {
+            chosenTile = influenceMap.GetBestSquareInRange_Unscaled(g.MyQueen.pos, InfluenceMap.Unitize(searchRange), out chosenTileScore);
+            
+            searchRange += searchRange + beginSearchRange*3;
+            
+            serach_Expands++;
+        }
         
         Move myMove = new Move(InfluenceMap.DeUnitize(chosenTile));
         
@@ -1512,12 +1542,16 @@ public class LaPulzellaD_Orleans
         //touchedSite == closestUnbuiltMine
         bool siteHasGold = g.TouchedSite.gold > 0;
 
+        double distanceFromLeft = g.TouchedSite.pos.DistanceTo(new Position(0, g.TouchedSite.pos.y));
+        double distanceFromRight = g.TouchedSite.pos.DistanceTo(new Position(1920, g.TouchedSite.pos.y));
+
+        bool siteNearBorder = Math.Min(distanceFromLeft, distanceFromRight) <= 260; // Arbitrary number I felt like was gonna work well.
+            
         bool isSafeToBuild = g.EnemyUnitsInRangeOfMyQueen(ENEMY_CHECK_RANGE) < 2;
 
-        if (g.Owned_mines < MAX_CONCURRENT_MINES /*&& currGameState.touchedSiteId == closestUnbuiltMines.First().siteId*/
-                                               && siteHasGold && isSafeToBuild )
+        
+        if (siteHasGold && isSafeToBuild && (g.Owned_mines < MAX_CONCURRENT_MINES || siteNearBorder))
         {
-            //chosenMove.queenAction = new BuildMine(currGameState.touchedSiteId);
             chosenBuildMove = new BuildMine(g.touchedSiteId);
         }
         else if (g.Owned_archer_barrackses < MAX_BARRACKSES_ARCER)
@@ -1525,7 +1559,7 @@ public class LaPulzellaD_Orleans
             //chosenMove.queenAction = new BuildBarracks(currGameState.touchedSiteId, BarracksType.Archer);
             chosenBuildMove = new BuildBarracks(game.touchedSiteId, BarracksType.Archer);
         }
-        else if (g.Owned_knight_barrackses < MAX_BARRACKSES_KNIGHTS)
+        else if (g.Owned_knight_barrackses < MAX_BARRACKSES_KNIGHTS && siteNearBorder == false)
         {
             //chosenMove.queenAction = new BuildBarracks(currGameState.touchedSiteId, BarracksType.Knight);
             chosenBuildMove = new BuildBarracks(game.touchedSiteId, BarracksType.Knight);
@@ -1534,7 +1568,7 @@ public class LaPulzellaD_Orleans
         {
             chosenBuildMove = new BuildTower(game.touchedSiteId);
         }
-        else if (g.Owned_giant_barrackses < MAX_BARRACKSES_GIANT)
+        else if (g.Owned_giant_barrackses < MAX_BARRACKSES_GIANT && siteNearBorder == false)
         {
             //chosenMove.queenAction = new BuildBarracks(currGameState.touchedSiteId, BarracksType.Archer);
             chosenBuildMove = new BuildBarracks(game.touchedSiteId, BarracksType.Giant);
@@ -1549,6 +1583,7 @@ public class LaPulzellaD_Orleans
             //By default build towers. #SurvivorMode
             if (g.EnemyUnitsInRangeOf(g.TouchedSite.pos, 400) >= 2)
             {
+                //By default build towers. #SurvivorMode
                 chosenBuildMove = new BuildTower(g.touchedSiteId);
             }
             else
@@ -2044,6 +2079,24 @@ public class InfluenceMap
             }
         };
         OperationOnRange_Unscaled(startPos.x, startPos.y, range, operation);
+        return bestCell;
+    }
+    
+    public Position GetBestSquareInRange_Unscaled(Position startPos, int range, out double score)
+    {
+        Position bestCell = null;
+        double bestCellScore = double.MinValue;
+        OperationOnCell operation = (cellPos, dist, genCell) =>
+        {
+            double cellAmount = _influenceMap[cellPos.x, cellPos.y];
+            if (cellAmount > bestCellScore)
+            {
+                bestCell = cellPos;
+                bestCellScore = cellAmount;
+            }
+        };
+        OperationOnRange_Unscaled(startPos.x, startPos.y, range, operation);
+        score = bestCellScore;
         return bestCell;
     }
 //    
