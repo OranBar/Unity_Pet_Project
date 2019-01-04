@@ -1041,6 +1041,7 @@ public class LaPulzellaD_Orleans
         total.Start();
         sw.Start();
 
+        
         foreach (var tower in g.EnemyTowers)
         {
             int siteRadius = GetRadius(tower);
@@ -1182,7 +1183,7 @@ public class LaPulzellaD_Orleans
 //            {
 //                ScaleAndApplyInfluence_Circle(site.pos, -25 * (6 - site.param1) , siteRadius, 8, linearPropagation, ref buildInfluenceMap);
 //            }
-            else if(site.owner == Owner.Neutral)
+            else if(site.owner == Owner.Neutral && g.EnemyTowers.Count(t => t.pos.DistanceTo(site.pos) < t.param2) ==0 )
             {
                 //TODO: I only need to do this once, then copy it every time. It will cost much less than computing it again every time. Unless the influence values change with the time
                 double influence = 0;
