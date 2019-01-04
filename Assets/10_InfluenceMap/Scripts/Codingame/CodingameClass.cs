@@ -915,7 +915,7 @@ public class LaPulzellaD_Orleans
         }
 
 //        else if (g.TouchingMyTower && g.TouchedSite.param1 <= 700/*&& g.TouchedSite.param1 <= 300 + 145 * g.Owned_towers && g.TouchedSite.param1 <= 700 */&& isSafeToEmpower )
-        else if (g.TouchingMyTower && g.MyTowers.Count >= 3 && g.TouchedSite.param1 <= 700 && (standingStill || isSafeToEmpower) /*&& g.TouchedSite.param1 <= 300 + 145 * g.Owned_towers && g.TouchedSite.param1 <= 700 */ )
+        else if (g.TouchingMyTower && g.TouchedSite.param1 <= 700 && (standingStill ||(g.MyTowers.Count >= 3 && isSafeToEmpower)) /*&& g.TouchedSite.param1 <= 300 + 145 * g.Owned_towers && g.TouchedSite.param1 <= 700 */ )
         {
 //            if (standingStill /*|| shouldEmpowerTower*/)
             {
@@ -1090,6 +1090,11 @@ public class LaPulzellaD_Orleans
                 empower_me_amount  -= 5;
             }
             if (towerHp >= 701)
+            {
+                empower_me_amount  = 0;
+            }
+            
+            if (g.MyTowers.Count <= 3)
             {
                 empower_me_amount  = 0;
             }
