@@ -1554,6 +1554,11 @@ public class LaPulzellaD_Orleans
         {
             chosenBuildMove = new BuildMine(g.touchedSiteId);
         }
+        else if (g.EnemyUnitsInRangeOf(g.TouchedSite.pos, 400) >= 2)
+        {
+            //By default build towers. #SurvivorMode
+            chosenBuildMove = new BuildTower(g.touchedSiteId);
+        }
         else if (g.Owned_archer_barrackses < MAX_BARRACKSES_ARCER)
         {
             //chosenMove.queenAction = new BuildBarracks(currGameState.touchedSiteId, BarracksType.Archer);
@@ -1581,13 +1586,13 @@ public class LaPulzellaD_Orleans
         {
             //If enemies are close, no point in building a mine. Let's build a tower instead.
             //By default build towers. #SurvivorMode
-            if (g.EnemyUnitsInRangeOf(g.TouchedSite.pos, 400) >= 2)
-            {
-                //By default build towers. #SurvivorMode
-                chosenBuildMove = new BuildTower(g.touchedSiteId);
-            }
-            else
-            {
+//            if (g.EnemyUnitsInRangeOf(g.TouchedSite.pos, 400) >= 2)
+//            {
+//                //By default build towers. #SurvivorMode
+//                chosenBuildMove = new BuildTower(g.touchedSiteId);
+//            }
+//            else
+//            {
                 if (g.Owned_mines >= 3 && g.Owned_giant_barrackses < 1)
                 {
                     chosenBuildMove = new BuildBarracks(game.touchedSiteId, BarracksType.Giant);
@@ -1596,7 +1601,7 @@ public class LaPulzellaD_Orleans
                 {
                     chosenBuildMove = new BuildMine(game.touchedSiteId);
                 }
-            }
+//            }
             
             
 //            chosenBuildMove = new Wait();
