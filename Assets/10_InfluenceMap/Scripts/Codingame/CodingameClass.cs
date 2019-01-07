@@ -1034,7 +1034,7 @@ public class LaPulzellaD_Orleans
 
         }
         sw.Stop();
-        Console.Error.WriteLine("Enemy Towers={0}",sw.ElapsedMilliseconds);
+//        Console.Error.WriteLine("Enemy Towers={0}",sw.ElapsedMilliseconds);
 
         sw.Reset();
         sw.Start();
@@ -1083,13 +1083,13 @@ public class LaPulzellaD_Orleans
             
             empower_me_amount = empower_me_amount * (1-towerHp_norm);
 
-            Console.Error.Write(string.Format("Tower {0} - Amount {1} - Range {2}", tower.siteId, empower_me_amount, empower_me_callrange));
+//            Console.Error.Write(string.Format("Tower {0} - Amount {1} - Range {2}", tower.siteId, empower_me_amount, empower_me_callrange));
             sw.Restart();
             
             influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, empower_me_amount, 0, empower_me_callrange, linearDecay);
             
             sw.Stop();
-            Console.Error.WriteLine("--- Time="+sw.ElapsedMilliseconds);
+//            Console.Error.WriteLine("--- Time="+sw.ElapsedMilliseconds);
             
            
 //            switch (g.EnemyUnits.Count)
@@ -1103,7 +1103,7 @@ public class LaPulzellaD_Orleans
             //ScaleAndApplyInfluence_Circle(tower.pos, 10, 0, towerRange, linearPropagation, ref buildInfluenceMap);
         }
         sw.Stop();
-        Console.Error.WriteLine("My Towers={0}",sw.ElapsedMilliseconds);
+//        Console.Error.WriteLine("My Towers={0}",sw.ElapsedMilliseconds);
         sw.Reset();
         sw.Start();
 
@@ -1117,7 +1117,7 @@ public class LaPulzellaD_Orleans
 
         }
         sw.Stop();
-        Console.Error.WriteLine("Enemy Units ={0}",sw.ElapsedMilliseconds);
+//        Console.Error.WriteLine("Enemy Units ={0}",sw.ElapsedMilliseconds);
         sw.Reset();
         
         
@@ -1208,19 +1208,19 @@ public class LaPulzellaD_Orleans
         Console.Error.WriteLine();
         
         sw.Stop();
-        Console.Error.WriteLine("Sites ={0}",sw.ElapsedMilliseconds);
+//        Console.Error.WriteLine("Sites ={0}",sw.ElapsedMilliseconds);
         sw.Reset();
         
         total.Stop();
         totals.Add(total.ElapsedMilliseconds);
-        Console.Error.WriteLine("Total ={0}, Average = {1}",total.ElapsedMilliseconds, totals.Average());
+//        Console.Error.WriteLine("Total ={0}, Average = {1}",total.ElapsedMilliseconds, totals.Average());
         
         if (turn >= 100)
         {
             searchRange *= 3;
         }
         
-        sw.Start();
+//        sw.Start();
 //        var survivorModeChosenSite = UnscaledBestInBox(g.MyQueen, searchRange, influenceMap);
         double chosenTileScore = 0;
         chosenTile = influenceMap.GetBestSquareInRange_Unscaled(g.MyQueen.pos, InfluenceMap.Unitize(searchRange), out chosenTileScore);
@@ -1242,7 +1242,7 @@ public class LaPulzellaD_Orleans
             
         }
         
-        Console.Error.WriteLine("search_Expands = "+serach_Expands);
+//        Console.Error.WriteLine("search_Expands = "+serach_Expands);
 #if UNITY_EDITOR
         Debug.LogError("serach_Expands = "+serach_Expands);
 #endif
@@ -1250,7 +1250,7 @@ public class LaPulzellaD_Orleans
         Move myMove = new Move(InfluenceMap.DeUnitize(chosenTile));
         
         sw.Stop();
-        Console.Error.WriteLine("Best Square Search = {0}",sw.ElapsedMilliseconds);
+//        Console.Error.WriteLine("Best Square Search = {0}",sw.ElapsedMilliseconds);
         sw.Reset();
 
 #if UNITY_EDITOR
