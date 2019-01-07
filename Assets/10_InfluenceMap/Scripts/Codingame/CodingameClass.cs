@@ -40,12 +40,25 @@ class Player
             turn = turn + 2;
             giovannaD_Arco.turn = turn;
             
+            Stopwatch sw = new Stopwatch();
+            
+//            sw.Start();
             giovannaD_Arco.ParseInputs_Turn();
+//            sw.Stop();
+//            Console.Error.WriteLine("Parsing Turn Data ={0}",sw.ElapsedMilliseconds);
+
+            sw.Reset();
+            sw.Start();
             Console.Error.WriteLine(giovannaD_Arco.game.Encode()+"-"+giovannaD_Arco.Encode());
             if (turn == 2)
             {
+//                Console.Error.WriteLine("Game Info");
                 Console.Error.WriteLine(giovannaD_Arco.gameInfo.Encode());
             }
+            
+//            Console.Error.WriteLine(giovannaD_Arco.Encode());
+            sw.Stop();
+//            Console.Error.WriteLine("Encoding ={0}",sw.ElapsedMilliseconds);
 
             Position chosenMove;
             TurnAction move = giovannaD_Arco.think(out chosenMove);
@@ -55,11 +68,11 @@ class Player
     }
 }
 
-public class Position
+public struct Position
 {
     public int x, y;
 
-    public Position(){}
+//    public Position(){}
     
     public Position(int x, int y)
     {
@@ -84,19 +97,12 @@ public class Position
 
     public override bool Equals(object obj)
     {
-        Position other = obj as Position;
-        if (other == null)
-        {
-            return false;
-        }
+        Position other = (Position) obj ;
         return this.x == other.x && this.y == other.y;
     }
     
     public static bool operator ==(Position p1, Position p2)
     {
-        if ((object) p1 == null)
-            return ((object)p2 == null);
-
         return p1.Equals(p2);
     }
     
@@ -765,6 +771,7 @@ public class LaPulzellaD_Orleans
     //Using this linear function, it is not the values that determine the move, but the fall offs, but the distance only. 
     //It is no good because far off sources have the same fall-off as close ones, meaning that they pull too much in the wrong direction.
     //That's why I guess we need poly?
+    public static PropagationFunction alliedTowersDecay => (amount, distance, maxDistance) => amount - (distance/maxDistance * amount * 0.9); //If amount is less than distance, values will become negative towards the end! No good.
     public static PropagationFunction linearDecay => (amount, distance, maxDistance) => amount - (distance/maxDistance * amount * 0.9); //If amount is less than distance, values will become negative towards the end! No good.    
     //TODO: make linear and poly swappable again. 
     public static PropagationFunction polyDecay => (amount, distance, maxDistance) => (1 - Math.Pow(distance / maxDistance, 0.5)) * amount;
@@ -835,7 +842,7 @@ public class LaPulzellaD_Orleans
         TurnAction chosenMove = new TurnAction();
         GameState g = game;
 
-        chosenTile = null;
+        chosenTile = new Position(-1,-1);
         Move bestMove = (Move) SurvivorMode(g, out chosenTile);
         bool isSafeToBuild = g.EnemyUnitsInRangeOfMyQueen(ENEMY_CHECK_RANGE) <= 0;
         bool isSafeToEmpower = g.EnemyUnitsInRangeOfMyQueen(125) < 2;
@@ -852,7 +859,7 @@ public class LaPulzellaD_Orleans
         
         if(g.TouchedSite != null)
         {
-            Console.Error.WriteLine("Touching " + g.TouchedSite);
+//            Console.Error.WriteLine("Touching " + g.TouchedSite);
         }
         
         var myQueenPosition = g.MyQueen.pos;
@@ -866,7 +873,7 @@ public class LaPulzellaD_Orleans
         
         var distanceToChosenMovePosition = bestMove?.targetPos.DistanceTo(myQueenPosition) ?? 0;
 
-        Console.Error.WriteLine(distanceToChosenMovePosition);
+//        Console.Error.WriteLine(distanceToChosenMovePosition);
         if (distanceToChosenMovePosition < 30)
         {
             standingStill = true;
@@ -918,7 +925,7 @@ public class LaPulzellaD_Orleans
         if(chosenMove.queenAction is Wait)
         {
             chosenMove.queenAction = bestMove;
-            Console.Error.WriteLine($"SurivorMode move is {chosenMove.queenAction}");
+//            Console.Error.WriteLine($"SurivorMode move is {chosenMove.queenAction}");
         }
         
         Unit enemyQueen = game.EnemyQueen;
@@ -1027,18 +1034,27 @@ public class LaPulzellaD_Orleans
 
         }
         sw.Stop();
-//        Console.Error.WriteLine("Enemy Towers={0}",sw.ElapsedMilliseconds);
+        Console.Error.WriteLine("Enemy Towers={0}",sw.ElapsedMilliseconds);
+
         sw.Reset();
-        
         sw.Start();
 
         int enemiesCount = g.EnemyUnits.Count(); /** g.AlliedTowersInRangeOf(tower.pos, tower.param2)*/
         int maxTowerRange = 800;
         
+        int myTowersCount = g.MyTowers.Count;
+        double normalizedEnemyUnitsCount = Math.Min(enemiesCount/20.0, 1) ; // 14 is max alert number. More than 20 units will have the same alert level al 20
+        
+        double empower_global_amount = 30;
+        int empower_global_callrange = 400;
+
+        empower_global_amount = empower_global_amount * 0.15 +normalizedEnemyUnitsCount;
+        empower_global_callrange = (int) (empower_global_callrange * normalizedEnemyUnitsCount);
+        
         foreach (var tower in g.MyTowers)
         {
-            int siteRadius = GetRadius(tower);
-            int towerRange = (int) Math.Ceiling(tower.param2 / squareLength);
+//            int siteRadius = GetRadius(tower);
+//            int towerRange = (int) Math.Ceiling(tower.param2 / squareLength);
 
             //Heal my towers!
             double towerHp = tower.param1;
@@ -1047,32 +1063,35 @@ public class LaPulzellaD_Orleans
             int decayDistance = 3 - /*siteRadius */ + (int) (towerHp_norm * 1.2);
             // Towers covering a tower make it better. If there are more enemies, then it should be even better
 
-            double empower_me_amount = 30;
-             int empower_me_callrange = 400;
-     
-            double normalizedEnemyUnitsCount = Math.Min(enemiesCount/20.0, 1) ; // 14 is max alert number. More than 20 units will have the same alert level al 20
-
+            int empower_me_callrange = empower_global_callrange;
+            double empower_me_amount = empower_global_amount;
             //800 is max tower hp. 100 is heal amount per turn when empowering
             if (towerHp >= 601)
             {
                 empower_me_amount  -= 5;
+                empower_me_amount = Math.Max(0, empower_me_amount);
             }
             if (towerHp >= 701)
             {
                 empower_me_amount  = 0;
             }
-            
-            if (g.MyTowers.Count <= 3)
+
+            if (myTowersCount <= 3)
             {
                 empower_me_amount  = 0;
             }
             
+            empower_me_amount = empower_me_amount * (1-towerHp_norm);
+
+            Console.Error.Write(string.Format("Tower {0} - Amount {1} - Range {2}", tower.siteId, empower_me_amount, empower_me_callrange));
+            sw.Restart();
             
-            empower_me_amount = empower_me_amount * 0.15 +normalizedEnemyUnitsCount * (1-towerHp_norm);
-            empower_me_callrange = (int) (empower_me_callrange * normalizedEnemyUnitsCount);
-             
-            influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, empower_me_amount, 0, empower_me_callrange, polyDecay);
+            influenceMap.ApplyInfluence_Range_Unscaled(tower.pos.x, tower.pos.y, empower_me_amount, 0, empower_me_callrange, linearDecay);
             
+            sw.Stop();
+            Console.Error.WriteLine("--- Time="+sw.ElapsedMilliseconds);
+            
+           
 //            switch (g.EnemyUnits.Count)
 //            {
 //                case 0: empower_me_amount += 10; break;
@@ -1084,9 +1103,10 @@ public class LaPulzellaD_Orleans
             //ScaleAndApplyInfluence_Circle(tower.pos, 10, 0, towerRange, linearPropagation, ref buildInfluenceMap);
         }
         sw.Stop();
-//        Console.Error.WriteLine("My Towers={0}",sw.ElapsedMilliseconds);
+        Console.Error.WriteLine("My Towers={0}",sw.ElapsedMilliseconds);
         sw.Reset();
-       sw.Start();
+        sw.Start();
+
 
         //Enemy units influence
         foreach (var enemy in g.EnemyUnits)
@@ -1097,15 +1117,32 @@ public class LaPulzellaD_Orleans
 
         }
         sw.Stop();
-//        Console.Error.WriteLine("Enemy Units ={0}",sw.ElapsedMilliseconds);
+        Console.Error.WriteLine("Enemy Units ={0}",sw.ElapsedMilliseconds);
         sw.Reset();
         
+        
         sw.Start();
+        var noOfSites = g.sites.Count;
+        int index = 0;
+        
+        int decayRange = 19;
+        
         foreach (var site in g.sites)
         {
+            sw.Restart();
+            
+            if (site.pos.DistanceTo(g.MyQueen.pos) > InfluenceMap.DeUnitize((int) (decayRange * 1.6)))
+            {
+                continue;
+            }
+            
+            
+            
 //            int siteRadius = (int) Math.Floor(GetSiteInfo(site).radius / squareLength);
             
             //Basiscally, if you can get to a knight barracks before it makes troops to kill you, it's awesome 
+            
+            /* -----------------------------------
             if (site.structureType == StructureType.Barracks && site.owner == Owner.Enemy)
             {
                 //Touching a Giant barraks kills it. Then we make tower. It's always good move
@@ -1124,6 +1161,7 @@ public class LaPulzellaD_Orleans
                     }
                 }
             }
+            ------------------------------------------- */
             
             if (site.structureType != StructureType.Mine && site.owner == Owner.Friendly)
             {
@@ -1154,7 +1192,7 @@ public class LaPulzellaD_Orleans
                    
                 influence = (influence + 1 * distanceToCenter_norm) * 4;
 
-                int decayRange = 20;
+                
             
                 //TODO: maybe do siteRadius and siteRadius-1 
                 
@@ -1163,14 +1201,19 @@ public class LaPulzellaD_Orleans
                 influenceMap.ApplyInfluence_Range_Unscaled(site.pos.x, site.pos.y, influence, 1, decayRange, polyDecay);
 
             }
+            
+            sw.Stop();
+//            Console.Error.Write(" Site (id = "+site.siteId+")"+ (index++));
         }
+        Console.Error.WriteLine();
+        
         sw.Stop();
-//        Console.Error.WriteLine("Sites ={0}",sw.ElapsedMilliseconds);
+        Console.Error.WriteLine("Sites ={0}",sw.ElapsedMilliseconds);
         sw.Reset();
         
         total.Stop();
         totals.Add(total.ElapsedMilliseconds);
-//        Console.Error.WriteLine("Total ={0}, Average = {1}",total.ElapsedMilliseconds, totals.Average());
+        Console.Error.WriteLine("Total ={0}, Average = {1}",total.ElapsedMilliseconds, totals.Average());
         
         if (turn >= 100)
         {
@@ -1196,16 +1239,18 @@ public class LaPulzellaD_Orleans
             searchRange += searchRange + beginSearchRange*3;
             
             serach_Expands++;
-            Console.Error.WriteLine("search_Expands = "+serach_Expands);
-            #if UNITY_EDITOR
-            Debug.LogError("serach_Expands = "+serach_Expands);
-            #endif
+            
         }
+        
+        Console.Error.WriteLine("search_Expands = "+serach_Expands);
+#if UNITY_EDITOR
+        Debug.LogError("serach_Expands = "+serach_Expands);
+#endif
         
         Move myMove = new Move(InfluenceMap.DeUnitize(chosenTile));
         
         sw.Stop();
-        Console.Error.WriteLine("Select best in bos ={0}",sw.Elapsed);
+        Console.Error.WriteLine("Best Square Search = {0}",sw.ElapsedMilliseconds);
         sw.Reset();
 
 #if UNITY_EDITOR
@@ -1489,7 +1534,6 @@ public class LaPulzellaD_Orleans
         }
         
         game.PreLoadProperties();
-        
     }
     
     public void ParseInputs_Begin()
@@ -1577,7 +1621,7 @@ public class InfluenceMap
     //if you change me, change INFLUENCEMAP_SQUARELENGTH 
     public static int tileUnit = 20;
     
-    public class CellAndDistance
+    public struct CellAndDistance
     {
         public readonly InfluenceMapCell cell;
         public readonly double distance;
@@ -1796,6 +1840,11 @@ public class InfluenceMap
 //        OperationOnCell  tmp = (a1, a2, a3, a4, a5) => ApplyDecayedInfluenceToTile(a1, a2, a3, a4, a5, decayDistance, decayedDistanceFunc);
     public void ApplyInfluence_Range_Unscaled(int xPos, int yPos, double amount, int fullDistance, int decayDistance, PropagationFunction decayedDistanceFunc, bool ignoreObstacles = false)
     {
+        if (amount == 0)
+        {
+            return;
+        }
+        
         OperationOnCell operation = (a1, a2, a3) => ApplyDecayedInfluenceToTile(a1, amount, a2, fullDistance, a3, decayDistance, decayedDistanceFunc);
         OperationOnRange_Unscaled(xPos, yPos, fullDistance + decayDistance, operation, ignoreObstacles);
     }
@@ -1833,7 +1882,7 @@ public class InfluenceMap
 
     public Position GetBestSquareInRange_Unscaled(Position startPos, int range)
     {
-        Position bestCell = null;
+        Position bestCell = new Position(-1, -1);
         double bestCellScore = double.MinValue;
         OperationOnCell operation = (cellPos, dist, genCell) =>
         {
@@ -1850,7 +1899,7 @@ public class InfluenceMap
     
     public Position GetBestSquareInRange_Unscaled(Position startPos, int range, out double score)
     {
-        Position bestCell = null;
+        Position bestCell  = new Position(-1, -1);
         double bestCellScore = double.MinValue;
         OperationOnCell operation = (cellPos, dist, genCell) =>
         {
@@ -1875,13 +1924,15 @@ public class InfluenceMap
 
     public void OperationOnRange(int xPos, int yPos, int fullDistance, OperationOnCell operationOnCell, bool ignoreObstacles = false)
     {
+//        addToFrontierSteps_Record.Clear();
+        
         InfluenceMapCell startCell = influenceMapCells[xPos, yPos];
         //TODO
         visited.Clear();
         frontier.Clear();
 
         double distanceToStartCell = new Position(xPos, yPos).DistanceTo(new Position(startCell.x * unit, startCell.y * unit));
-        frontier.Add(new CellAndDistance(startCell,distanceToStartCell));
+        AddToFrontier_QuickSort(new CellAndDistance(startCell,distanceToStartCell));
         visited.Add(startCell);
 
         int steps = 0, obstacleSteps = 0;
@@ -1911,7 +1962,7 @@ public class InfluenceMap
 
                         var newFrontierCandidate = new CellAndDistance(neighbour, distance + distanceToCell);
                         visited.Add(neighbour);
-                        frontier.Add(newFrontierCandidate);
+                        AddToFrontier_QuickSort(newFrontierCandidate);
                     }
                 }
             }
@@ -1928,7 +1979,7 @@ public class InfluenceMap
 
                         var newFrontierCandidate = new CellAndDistance(neighbour, distance + distanceToCell);
                         visited.Add(neighbour);
-                        frontier.Add(newFrontierCandidate);
+                        AddToFrontier_QuickSort(newFrontierCandidate);
                     }
                 }
             }
@@ -1979,7 +2030,7 @@ public class InfluenceMap
                     {
                         var newFrontierCandidate = new CellAndDistance(neighbour, distance + distanceToCell);
                         visited.Add(neighbour);
-                        frontier.Add(newFrontierCandidate);
+                        AddToFrontier_QuickSort(newFrontierCandidate);
                     }
                 }
             }
@@ -1997,7 +2048,7 @@ public class InfluenceMap
                         {
                             var newFrontierCandidate = new CellAndDistance(neighbour, distance + distanceToCell);
                             visited.Add(neighbour);
-                            frontier.Add(newFrontierCandidate);
+                            AddToFrontier_QuickSort(newFrontierCandidate);
                         }
                     }
                 }    
@@ -2010,7 +2061,24 @@ public class InfluenceMap
 //        UnityEngine.Debug.LogFormat("Fill time={0}",sw.Elapsed);
         #endif
         sw.Reset();
+
+//        if (frontierLoopingTime.ElapsedMilliseconds != 0)
+//        {
+//            Console.Error.WriteLine("Time looping frontier = "+frontierLoopingTime.ElapsedMilliseconds);
+//        }
+//        frontierLoopingTime.Reset();
         
+        //Get average addToFrontierSteps_Record
+//        double average = 0;
+//        int total = addToFrontierSteps_Record.Values.Sum();
+//        foreach (var steps_and_count in addToFrontierSteps_Record)
+//        {
+//            average = average + ((steps_and_count.Key * steps_and_count.Value) / total) ;
+//        }
+//        Console.Error.WriteLine("Average Frontier Steps ={0}",average);
+//        Console.Error.WriteLine("Max Frontier Steps ={0}",addToFrontierSteps_Record.Keys.Max());
+//        Console.Error.WriteLine("Max Frontier Count ={0}",maxFrontierCount);
+//        addToFrontierSteps_Record.Clear();
 //        sw.Stop();
 //        Console.Error.WriteLine("Steps ={0} ObstacleSteps={1}",steps, obstacleSteps);
 //        #if UNITY_EDITOR
@@ -2020,30 +2088,169 @@ public class InfluenceMap
     }
         
     
-    
+//    private static Stopwatch frontierLoopingTime = new Stopwatch();
+//
+//    private static Dictionary<int,int> addToFrontierSteps_Record = new Dictionary<int,int>();
+//
+//    private int maxFrontierCount = 0;
 
+//    private static void IncrementSteps_Record(int newSteps_data)
+//    {
+//        if (addToFrontierSteps_Record.ContainsKey(newSteps_data) == false)
+//        {
+//            addToFrontierSteps_Record[newSteps_data] = 0;
+//        }
+//
+//        addToFrontierSteps_Record[newSteps_data] = addToFrontierSteps_Record[newSteps_data] + 1;
+//    }
+    
+    
+    private void AddToFrontier_InsertionSort(CellAndDistance newEntry)
+    {
+//        frontierLoopingTime.Start();
+        //Insertion Sort
+        //Base Case
+        var frontierCount = frontier.Count;
+//        maxFrontierCount = Math.Max(maxFrontierCount, frontierCount);
+        if (frontierCount == 0)
+        {
+            frontier.Insert(0, newEntry);
+//            frontierLoopingTime.Stop();
+        }
+        else
+        {
+            CellAndDistance current;
+            for (int i = 0; i < frontierCount; i++)
+            {
+                current = frontier[i];
+                if (newEntry.distance < current.distance)
+                {
+                    frontier.Insert(i, newEntry);
+//                    frontierLoopingTime.Stop();
+//                    IncrementSteps_Record(i+1);
+                    return;
+                }
+            }
+            
+//            IncrementSteps_Record(frontierCount);
+            frontier.Add(newEntry);
+//            frontierLoopingTime.Stop();
+        }
+    }
+    
+    private void AddToFrontier_QuickSort(CellAndDistance newEntry)
+    {
+//        frontierLoopingTime.Start();
+        //Insertion Sort
+        //Base Case
+        var frontierCount = frontier.Count;
+        if (frontierCount == 0)
+        {
+            frontier.Insert(0, newEntry);
+//            frontierLoopingTime.Stop();
+        }
+        else
+        {
+            //We try to place at first and last position. If they don't succed, we use quicksort
+            if (newEntry.distance <= frontier[0].distance)
+            {
+//                IncrementSteps_Record(1);
+
+                frontier.Insert(0, newEntry);
+            }
+            else if (newEntry.distance >= frontier[frontierCount-1].distance)
+            {
+//                IncrementSteps_Record(1);
+
+                frontier.Insert(frontierCount, newEntry);
+            }
+            
+            CellAndDistance current;
+            int lower_index = 0, upper_index = frontierCount;
+            int steps = 0;
+
+            while (upper_index - lower_index > 1)
+            {
+                steps++;
+                int middle_index = (lower_index + upper_index) / 2;
+                current = frontier[middle_index];
+                if (newEntry.distance < current.distance)
+                {
+                    upper_index = middle_index;
+                }
+                else if(newEntry.distance > current.distance)
+                {
+                    lower_index = middle_index;
+                }
+                else if (newEntry.distance == current.distance)
+                {
+                    lower_index = upper_index = middle_index;
+                    break;
+                }
+            }
+//            IncrementSteps_Record(steps);
+
+            frontier.Insert(upper_index, newEntry);
+//            frontierLoopingTime.Stop();
+
+            
+            
+//            for (int i = 0; i < frontierCount; i++)
+//            {
+//                current = frontier[i];
+//                if (newEntry.distance < current.distance)
+//                {
+//                    frontier.Insert(i, newEntry);
+//                    frontierLoopingTime.Stop();
+//                    IncrementSteps_Record(i+1);
+//                    return;
+//                }
+//            }
+            
+//            IncrementSteps_Record(frontierCount);
+//            frontier.Add(newEntry);
+        }
+    }
+    
     private CellAndDistance GetBestFrontierCell(List<CellAndDistance> frontier, bool removeCellFromCollection = false)
     {
-        CellAndDistance bestSoFar = frontier.First();
-        int bestIndex = 0;
-        int frontierCardinality = frontier.Count;
-        for (var i = 0; i < frontierCardinality; i++)
-        {
-            var candidate = frontier[i];
-            if (candidate.distance < bestSoFar.distance)
-            {
-                bestSoFar = candidate;
-                bestIndex = i;
-            }
-        }
-
+//        frontierLoopingTime.Start();
+        CellAndDistance best = frontier.First();
+        
         if (removeCellFromCollection)
         {
-            frontier.RemoveAt(bestIndex);
+            frontier.RemoveAt(0);
         }
+//        frontierLoopingTime.Stop();
         
-        return bestSoFar;
+        return best;
     }
+    
+//    private CellAndDistance GetBestFrontierCell(List<CellAndDistance> frontier, bool removeCellFromCollection = false)
+//    {
+//        frontierLoopingTime.Start();
+//        CellAndDistance bestSoFar = frontier.First();
+//        int bestIndex = 0;
+//        int frontierCardinality = frontier.Count;
+//        for (var i = 0; i < frontierCardinality; i++)
+//        {
+//            var candidate = frontier[i];
+//            if (candidate.distance < bestSoFar.distance)
+//            {
+//                bestSoFar = candidate;
+//                bestIndex = i;
+//            }
+//        }
+//
+//        if (removeCellFromCollection)
+//        {
+//            frontier.RemoveAt(bestIndex);
+//        }
+//
+//        frontierLoopingTime.Stop();
+//        
+//        return bestSoFar;
+//    }
     
     public void AddObstacle(int x, int y, int range)
     {
@@ -2056,7 +2263,8 @@ public class InfluenceMap
 
     public void ResetMapToZeroes()
     {
-        _influenceMap = new double[gridWidth, gridHeight];
+//        _influenceMap = new double[gridWidth, gridHeight];
+        Array.Clear(_influenceMap, 0 , _influenceMap.Length);
     }
     
 

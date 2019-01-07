@@ -193,7 +193,7 @@ public class Main : MonoBehaviour
             site.pos = giovannaD_Arco.gameInfo.sites[site.siteId].pos;
         }
 
-        Position chosenTile = null;
+        Position chosenTile = new Position(-1,-1);
         TurnAction action = giovannaD_Arco.think(out chosenTile);
         
 //        Profiler.EndSample();
