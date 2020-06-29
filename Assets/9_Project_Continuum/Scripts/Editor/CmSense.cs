@@ -391,7 +391,7 @@ namespace TonRan.Continuum
 			//Filter all symbols SHORTER than the guess. 
 			result = result.Where(symbol => symbol.name.Length >= guess.Length).ToList();
 
-
+			//Check if the provided letters are present in the results, in the correct order (i.e. frm triggerstransFoRM )
 			outer: for (int i = result.Count - 1; i >= 0; i--)
 			{
 				string field = result[i].name.ToLower(); //Let's be case insensitive.
