@@ -114,10 +114,7 @@ public class CmCompiler {
 
 		// bring in Unity assemblies
 		options.ReferencedAssemblies.Add(typeof(EditorWindow).Assembly.Location);
-		options.ReferencedAssemblies.Add(typeof(Transform).Assembly.Location);
-		options.ReferencedAssemblies.Add(typeof(UnityEngine.Object).Assembly.Location);
-		//TODO: reference to something more secure... To import project code.
-		options.ReferencedAssemblies.Add(typeof(ZDontTouch_Continuum).Assembly.Location);
+		options.ReferencedAssemblies.Add(Assembly.GetExecutingAssembly().Location);
 
 		//CompilerResults result = codeProvider.CompileAssemblyFromSource(options, string.Format(scriptFormat_Base, code));
 		//CompilerResults result = codeProvider.CompileAssemblyFromSource(options, string.Format(scriptFormat_Selection, code));
