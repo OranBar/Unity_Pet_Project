@@ -68,7 +68,9 @@ public abstract class AutoFamily : Attribute, IAutoAttribute
 			});
 		//we want to pass true as arg, to get from inactive objs too
 		MethodInfo generic = method.MakeGenericMethod(listElementType);
-		dynamic componentsToReference = generic.Invoke(go, new object[] { true });
+		object componentsToReference = generic.Invoke(go, new object[] { true });
+
+		
 
 		if (componentsToReference.Length == 0)
 		{
