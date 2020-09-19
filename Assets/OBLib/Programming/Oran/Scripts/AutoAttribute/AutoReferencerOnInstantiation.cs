@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using BarbarO.Attributes.ScriptTiming;
 
 [ScriptTiming(-900)]
 public class AutoReferencerOnInstantiation : MonoBehaviour {
@@ -9,7 +8,7 @@ public class AutoReferencerOnInstantiation : MonoBehaviour {
 
 	void Awake() 
     {
-        AutoAttributeManager.AutoReference(this.gameObject, out int succ, out int fail);
+		AutoAttributeManager.AutoReference(this.gameObject, out int succ, out int fail);
 
         if(alsoReferenceChildren)
         {

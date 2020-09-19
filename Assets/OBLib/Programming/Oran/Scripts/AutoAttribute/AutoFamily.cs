@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using BarbarO.Utils.Reflection;
 
 public abstract class AutoFamily : Attribute, IAutoAttribute
 {

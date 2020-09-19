@@ -2,6 +2,7 @@
 using System;
 using System.Reflection;
 using UnityEngine.Assertions;
+using BarbarO.Utils.Reflection;
 
 public static class ComponentEx
 {

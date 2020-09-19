@@ -1,12 +1,15 @@
 ﻿using System;
 
-[AttributeUsage(AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
-public class ScriptTiming : Attribute
+namespace BarbarO.Attributes.ScriptTiming
 {
-	public readonly int timing_offset;
-
-	public ScriptTiming(int timing_offset)
+	[AttributeUsage(AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
+	public class ScriptTiming : Attribute
 	{
-		this.timing_offset = timing_offset;
+		public readonly int timing_offset;
+
+		public ScriptTiming(int timing_offset)
+		{
+			this.timing_offset = timing_offset;
+		}
 	}
 }

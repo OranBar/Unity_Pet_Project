@@ -23,7 +23,8 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Debug = UnityEngine.Debug;
-
+using BarbarO.Utils.Reflection;
+using BarbarO.Attributes.ScriptTiming;
 
 [ScriptTiming(-1000)]
 public class AutoAttributeManager : MonoBehaviour
@@ -34,6 +35,16 @@ public class AutoAttributeManager : MonoBehaviour
 		// print("[Auto]: Start Scene Sweep");
 		SweeepScene();
 		// print("[Auto]: All Variables Referenced!");
+	}
+
+	public static void AutoReference(GameObject targetGo)
+	{
+		AutoReference(targetGo, out int succ, out int fail);
+	}
+
+	public static void AutoReference(MonoBehaviour mb)
+	{
+		AutoReference(mb, out int succ, out int fail);
 	}
 
 	public static void AutoReference(GameObject targetGo, out int successfullyAssigments, out int failedAssignments)
