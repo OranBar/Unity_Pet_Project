@@ -6,12 +6,12 @@ using UnityEngine.Assertions;
 
 public class Tester_AutoMulti : MonoBehaviour {
 
-	[AutoChildren] private Light myLight;
-	[AutoChildren] private Collider[] myChildrenCollidersArr;
-	[AutoChildren] public Collider[] MyChildrenCollidersArr { get; set; }
-	[AutoParent] private Collider[] myParentCollidersArr;
+	[AutoChildren] private Light myLight = null;
+	[AutoChildren] private Collider[] myChildrenCollidersArr = null;
+	[AutoChildren] public Collider[] MyChildrenCollidersArr { get; set; } = null;
+	[AutoParent] private Collider[] myParentCollidersArr = null;
 
-	[AutoChildren] private List<Collider> myChildrenCollidersList;
+	[AutoChildren] private List<Collider> myChildrenCollidersList = null;
 
 	// Use this for initialization
 	[Button]
