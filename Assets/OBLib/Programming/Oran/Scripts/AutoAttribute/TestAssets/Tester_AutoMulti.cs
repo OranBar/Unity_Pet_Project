@@ -16,10 +16,10 @@ public class Tester_AutoMulti : MonoBehaviour {
 	// Use this for initialization
 	[Button]
 	void RunTest () {
-		AutoAttributeManager.AutoReference(this);
+		AutoAttributeManager.AutoReference(this, out int succ, out int fail);
 
 		Assert.IsNotNull(myChildrenCollidersArr);
-		Assert.IsNotNull(MyChildrenCollidersArr);
+		Assert.IsNotNull(MyChildrenCollidersArr); 
 		Assert.AreEqual(1, myParentCollidersArr.Length); //Parent of this object has one collider
 		Assert.IsNotNull(myChildrenCollidersList);
 		Assert.IsNotNull(myLight);   //Child has light component

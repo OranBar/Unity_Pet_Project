@@ -9,20 +9,20 @@ public class AutoReferencerOnInstantiation : MonoBehaviour {
 
 	void Awake() 
     {
-        AutoAttributeManager.AutoReference(this.gameObject);
+        AutoAttributeManager.AutoReference(this.gameObject, out int succ, out int fail);
 
         if(alsoReferenceChildren)
         {
             foreach(Transform child in this.transform)
             {
-                AutoAttributeManager.AutoReference(child.gameObject);
+                AutoAttributeManager.AutoReference(child.gameObject, out succ, out fail);
             }
         }
 	}
 
     private void RecursivelyReferenceChildren(GameObject go)
     {
-        AutoAttributeManager.AutoReference(go);
+        AutoAttributeManager.AutoReference(go, out int succ, out int fail);
 
         foreach(Transform child in this.transform)
         {

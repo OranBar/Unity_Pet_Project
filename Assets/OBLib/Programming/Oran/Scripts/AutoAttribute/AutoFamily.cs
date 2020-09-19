@@ -35,22 +35,23 @@ public abstract class AutoFamily : Attribute, IAutoAttribute
 		this.logErrorIfMissing = getMadIfMissing;
 	}
 
-	public void Execute(MonoBehaviour mb, Type componentType, Action<MonoBehaviour, object> setVariable)
+	public bool Execute(MonoBehaviour mb, Type componentType, Action<MonoBehaviour, object> setVariable)
 	{
 		GameObject go = mb.gameObject;
 
 		if(componentType.IsArray){
-			AssignArray(mb, go, componentType, setVariable);
+			return AssignArray(mb, go, componentType, setVariable);
 		} else if (
 			// componentType.IsArray || 
 			Rhm.IsList(componentType))
 		{
 			// MultipleComponentAssignment(mb, go, componentType, SetVariableType);
-			AssignList(mb, go, componentType, setVariable);
+			return AssignList(mb, go, componentType, setVariable);
 		}
 		else
 		{
 			setVariable(mb, GetTheSingleComponent(mb, componentType));
+			return true;
 		}
 	}
 
@@ -78,7 +79,7 @@ public abstract class AutoFamily : Attribute, IAutoAttribute
 		return componentsToReference;
 	}
 
-	private void AssignList(MonoBehaviour mb, GameObject go, Type componentType, Action<MonoBehaviour, object> setVariable)
+	private bool AssignList(MonoBehaviour mb, GameObject go, Type componentType, Action<MonoBehaviour, object> setVariable)
 	{
 		object[] componentsToReference = GetComponentsToReference(mb, go, componentType);
 
@@ -88,13 +89,14 @@ public abstract class AutoFamily : Attribute, IAutoAttribute
 					componentType.Name, mb.GetType().Name, go.name, MonoBehaviourNameColor)
 				, go);
 			
-			return;
+			return false;
 		}
 
 		setVariable(mb, Enumerable.ToList(componentsToReference));
+		return true;
 	}
 
-	private void AssignArray(MonoBehaviour mb, GameObject go, Type componentType, Action<MonoBehaviour, object> setVariable)
+	private bool AssignArray(MonoBehaviour mb, GameObject go, Type componentType, Action<MonoBehaviour, object> setVariable)
 	{
 		object[] componentsToReference = GetComponentsToReference(mb, go, componentType);
 
@@ -103,10 +105,11 @@ public abstract class AutoFamily : Attribute, IAutoAttribute
 				string.Format("[Auto]: <color={3}><b>{1}</b></color> couldn't find any components <color=#cc3300><b>{0}</b></color> on <color=#e68a00>{2}.</color>",
 					componentType.Name, mb.GetType().Name, go.name, MonoBehaviourNameColor)
 				, go);
-			return;
+			return false;
 		}
 
 		setVariable(mb, componentsToReference);
+		return true;
 	}
 
 	// private void MultipleComponentAssignment(MonoBehaviour mb, GameObject go, Type componentType, Action<MonoBehaviour, object> setVariable)

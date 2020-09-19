@@ -8,7 +8,7 @@ public interface IAutoAttribute {
 
 	//void Execute(MonoBehaviour mb, FieldInfo field);
 	//void Execute(MonoBehaviour mb, PropertyInfo prop);
-	void Execute(MonoBehaviour mb, Type varType, Action<MonoBehaviour, object> SetVariableType);
+	bool Execute(MonoBehaviour mb, Type varType, Action<MonoBehaviour, object> SetVariableType);
 
 
 }

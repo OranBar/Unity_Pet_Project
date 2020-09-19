@@ -42,7 +42,7 @@ public class AutoAttribute : Attribute, IAutoAttribute {
 		this.logErrorIfMissing = getMadIfMissing;
 	}
 
-	public void Execute(MonoBehaviour mb, Type componentType, Action<MonoBehaviour, object> SetVariableType)
+	public bool Execute(MonoBehaviour mb, Type componentType, Action<MonoBehaviour, object> SetVariableType)
 	{
 		GameObject go = mb.gameObject;
 
@@ -58,18 +58,19 @@ public class AutoAttribute : Attribute, IAutoAttribute {
 			}
 			else
 			{
-				if (logErrorIfMissing)
-				{
+				if (logErrorIfMissing){
 					Debug.LogError(
 						string.Format("[Auto]: <color={3}><b>{1}</b></color> couldn't find <color=#cc3300><b>{0}</b></color> on <color=#e68a00>{2}</color>",
 							componentType.Name, mb.GetType().Name, go.name, MonoBehaviourNameColor)
 						, go);
 				}
-				return;
+				return false;
 			}
 		}
 
 		SetVariableType(mb, componentToReference);
+		
+		return true;
 	}
 	
 }

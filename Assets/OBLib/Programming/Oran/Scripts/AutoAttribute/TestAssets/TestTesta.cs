@@ -3,7 +3,9 @@ using System.Collections;
 
 public class TestTesta : MonoBehaviour {
 
-	[AutoChildren] public T3[] myT3s_public;
-	[AutoChildren] private T3[] myT3s_private;
+	[AutoChildren] public Collider[] colliders;
+	[Auto] public Rigidbody myRb;
+	[AutoParent] public Collider[] parentColliders;
+	[AutoChildren] public Rigidbody childRigidbody;
 
 }

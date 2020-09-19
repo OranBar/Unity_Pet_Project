@@ -31,21 +31,27 @@ public class AutoAttributeManager : MonoBehaviour
 
 	private void Awake()
 	{
-		print("[Auto]: Start Scene Sweep");
+		// print("[Auto]: Start Scene Sweep");
 		SweeepScene();
-		print("[Auto]: All Variables Referenced!");
+		// print("[Auto]: All Variables Referenced!");
 	}
 
-	public static void AutoReference(GameObject targetGo)
+	public static void AutoReference(GameObject targetGo, out int successfullyAssigments, out int failedAssignments)
 	{
+		successfullyAssigments = failedAssignments = 0;
+
 		foreach(var mb in targetGo.GetComponents<MonoBehaviour>(true))
 		{
-			AutoReference(mb);
+			AutoReference(mb, out int succ, out int fail);
+			successfullyAssigments += succ;
+			failedAssignments += fail;
 		}
 	}
 
-    public static void AutoReference(MonoBehaviour targetMb)
+    public static void AutoReference(MonoBehaviour targetMb, out int successfullyAssigments, out int failedAssignments)
 	{
+		successfullyAssigments = failedAssignments = 0;
+
 		//Fields
 		IEnumerable<FieldInfo> fields = GetFieldsWithAuto(targetMb);
 
@@ -54,7 +60,12 @@ public class AutoAttributeManager : MonoBehaviour
 			foreach (IAutoAttribute autofind in field.GetCustomAttributes(typeof(IAutoAttribute), true))
 			{
 				var currentReferenceValue = field.GetValue(targetMb);
-				autofind.Execute(targetMb, field.FieldType, (mb, val)=>field.SetValue(mb, val));
+				bool result = autofind.Execute(targetMb, field.FieldType, (mb, val)=>field.SetValue(mb, val));
+				if(result){
+					successfullyAssigments++;
+				}else{
+					failedAssignments++;
+				}
 			}
 		}
 
@@ -66,7 +77,12 @@ public class AutoAttributeManager : MonoBehaviour
 			foreach (IAutoAttribute autofind in prop.GetCustomAttributes(typeof(IAutoAttribute), true))
 			{
 				var currentReferenceValue = prop.GetValue(targetMb, null);
-				autofind.Execute(targetMb, prop.PropertyType, (mb, val) => prop.SetValue(mb, val));
+				bool result = autofind.Execute(targetMb, prop.PropertyType, (mb, val) => prop.SetValue(mb, val));
+				if(result){
+					successfullyAssigments++;
+				}else{
+					failedAssignments++;
+				}
 			}
 		}
 	}
@@ -80,7 +96,9 @@ public class AutoAttributeManager : MonoBehaviour
 		sw.Start();
 		//////////////////
 #endif
-
+		int autoVarialbesAssigned_count = 0;
+		int autoVarialbesNotAssigned_count = 0;
+	
 		var activeScene = SceneManager.GetActiveScene();
 
 		IEnumerable<MonoBehaviour> monoBehaviours = Resources.FindObjectsOfTypeAll<MonoBehaviour>()
@@ -89,7 +107,7 @@ public class AutoAttributeManager : MonoBehaviour
 
 		foreach (var mb in monoBehaviours)
 		{
-			AutoReference(mb);
+			AutoReference(mb, out autoVarialbesAssigned_count, out autoVarialbesNotAssigned_count);
 		}
 
 #if DEB
@@ -108,7 +126,8 @@ public class AutoAttributeManager : MonoBehaviour
 			);
 
 		//Debug.Log("Elapsed "+sw.ElapsedMilliseconds+" milliseconds.");
-		Debug.LogFormat("[Auto] Scan Time - {3} Milliseconds. \nAnalized {0} MonoBehaviours and {1} variables. {2}/{1} variables had [Auto]", monoBehaviours.Count(), variablesAnalized, variablesWithAuto, sw.ElapsedMilliseconds);
+		string result_color = (autoVarialbesNotAssigned_count > 0) ? "red" : "green";
+		Debug.LogFormat("[Auto] Assigned <color={5}><b>{4}/{2}</b></color> [Auto*] variables in <color=#cc3300><b>{3} Milliseconds </b></color> - Analized {0} MonoBehaviours and {1} variables", monoBehaviours.Count(), variablesAnalized, variablesWithAuto, sw.ElapsedMilliseconds, autoVarialbesAssigned_count, autoVarialbesNotAssigned_count, result_color );
 		/////////////////////
 #endif
 	}
