@@ -35,25 +35,29 @@ public abstract class AutoFamily : Attribute, IAutoAttribute
 		this.logErrorIfMissing = getMadIfMissing;
 	}
 
-	public void Execute(MonoBehaviour mb, Type componentType, Action<MonoBehaviour, object> SetVariableType)
+	public void Execute(MonoBehaviour mb, Type componentType, Action<MonoBehaviour, object> setVariable)
 	{
 		GameObject go = mb.gameObject;
 
-		if (componentType.IsArray || Rhm.IsList(componentType))
+		if(componentType.IsArray){
+			AssignArray(mb, go, componentType, setVariable);
+		} else if (
+			// componentType.IsArray || 
+			Rhm.IsList(componentType))
 		{
-			MultipleComponentAssignment(mb, go, componentType, SetVariableType);
+			// MultipleComponentAssignment(mb, go, componentType, SetVariableType);
+			AssignList(mb, go, componentType, setVariable);
 		}
 		else
 		{
-			SetVariableType(mb, GetTheSingleComponent(mb, componentType));
+			setVariable(mb, GetTheSingleComponent(mb, componentType));
 		}
 	}
 
 	protected abstract object GetTheSingleComponent(MonoBehaviour mb, Type componentType);
 	protected abstract string GetMethodName();
 	
-	private void MultipleComponentAssignment(MonoBehaviour mb, GameObject go, Type componentType, Action<MonoBehaviour, object> SetVariable)
-	{
+	private object[] GetComponentsToReference(MonoBehaviour mb, GameObject go, Type componentType){
 		Type listElementType = AutoUtils.GetElementType(componentType);
 
 		MethodInfo method = typeof(GameObject).GetMethods()
@@ -69,33 +73,83 @@ public abstract class AutoFamily : Attribute, IAutoAttribute
 		//we want to pass true as arg, to get from inactive objs too
 		MethodInfo generic = method.MakeGenericMethod(listElementType);
 		//TODO: We know it's gonna be either an array or a list. We do not need to use dynamic, I think
-		dynamic componentsToReference = generic.Invoke(go, new object[] { true });
+		object[] componentsToReference = generic.Invoke(go, new object[] { true }) as object[];
 
-		
+		return componentsToReference;
+	}
 
-		if (componentsToReference.Length == 0)
-		{
-			if (logErrorIfMissing)
-			{
-				Debug.LogError(
-					string.Format("[Auto]: <color={3}><b>{1}</b></color> couldn't find any components <color=#cc3300><b>{0}</b></color> on <color=#e68a00>{2}.</color>",
-						componentType.Name, mb.GetType().Name, go.name, MonoBehaviourNameColor)
-					, go);
-			}
+	private void AssignList(MonoBehaviour mb, GameObject go, Type componentType, Action<MonoBehaviour, object> setVariable)
+	{
+		object[] componentsToReference = GetComponentsToReference(mb, go, componentType);
+
+		if (logErrorIfMissing && componentsToReference.Length == 0){
+			Debug.LogError(
+				string.Format("[Auto]: <color={3}><b>{1}</b></color> couldn't find any components <color=#cc3300><b>{0}</b></color> on <color=#e68a00>{2}.</color>",
+					componentType.Name, mb.GetType().Name, go.name, MonoBehaviourNameColor)
+				, go);
+			
 			return;
 		}
 
-		if (componentType.IsArray)
-		{
-			SetVariable(mb, componentsToReference);
-		}
-		else if (Rhm.IsList(componentType))
-		{
-			SetVariable(mb, Enumerable.ToList(componentsToReference));
-		}
+		setVariable(mb, Enumerable.ToList(componentsToReference));
 	}
 
-	
+	private void AssignArray(MonoBehaviour mb, GameObject go, Type componentType, Action<MonoBehaviour, object> setVariable)
+	{
+		object[] componentsToReference = GetComponentsToReference(mb, go, componentType);
+
+		if (logErrorIfMissing && componentsToReference.Length == 0)	{
+			Debug.LogError(
+				string.Format("[Auto]: <color={3}><b>{1}</b></color> couldn't find any components <color=#cc3300><b>{0}</b></color> on <color=#e68a00>{2}.</color>",
+					componentType.Name, mb.GetType().Name, go.name, MonoBehaviourNameColor)
+				, go);
+			return;
+		}
+
+		setVariable(mb, componentsToReference);
+	}
+
+	// private void MultipleComponentAssignment(MonoBehaviour mb, GameObject go, Type componentType, Action<MonoBehaviour, object> setVariable)
+	// {
+	// 	Type listElementType = AutoUtils.GetElementType(componentType);
+
+	// 	MethodInfo method = typeof(GameObject).GetMethods()
+	// 		.First(m =>
+	// 		{
+	// 			bool result = true;
+	// 			result = result && m.Name == GetMethodName();
+	// 			result = result && m.IsGenericMethod;
+	// 			result = result && m.GetParameters().Length == 1;
+	// 			result = result && m.GetParameters()[0].ParameterType == typeof(bool);
+	// 			return result;
+	// 		});
+	// 	//we want to pass true as arg, to get from inactive objs too
+	// 	MethodInfo generic = method.MakeGenericMethod(listElementType);
+	// 	//TODO: We know it's gonna be either an array or a list. We do not need to use dynamic, I think
+	// 	dynamic componentsToReference = generic.Invoke(go, new object[] { true });
+		
+
+	// 	if (componentsToReference.Length == 0)
+	// 	{
+	// 		if (logErrorIfMissing)
+	// 		{
+	// 			Debug.LogError(
+	// 				string.Format("[Auto]: <color={3}><b>{1}</b></color> couldn't find any components <color=#cc3300><b>{0}</b></color> on <color=#e68a00>{2}.</color>",
+	// 					componentType.Name, mb.GetType().Name, go.name, MonoBehaviourNameColor)
+	// 				, go);
+	// 		}
+	// 		return;
+	// 	}
+
+	// 	if (componentType.IsArray)
+	// 	{
+	// 		setVariable(mb, componentsToReference);
+	// 	}
+	// 	else if (Rhm.IsList(componentType))
+	// 	{
+	// 		setVariable(mb, Enumerable.ToList(componentsToReference));
+	// 	}
+	// }
 }
 
 public static class AutoUtils
